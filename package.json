@@ -1,0 +1,8 @@
+{
+  "name": "tb2e-foundry-vtt",
+  "version": "0.1.0",
+  "type": "module",
+  "description": "Torchbearer 2nd Edition system for Foundry VTT",
+  "license": "UNLICENSED",
+  "private": true
+}

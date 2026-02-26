@@ -1,0 +1,33 @@
+<section class="tab scrollable{{#if tab.active}} active{{/if}}" data-group="{{tab.group}}" data-tab="{{tab.id}}">
+
+  {{!-- Who You Are --}}
+  <fieldset class="who-you-are">
+    <legend><i class="fa-solid fa-scroll"></i> {{localize "TB2E.Section.WhoYouAre"}}</legend>
+    <div class="field-grid">
+      {{#each whoYouAreFields}}
+      <div class="field-pair">
+        <label for="system-{{name}}">{{label}}</label>
+        {{#if (eq type "number")}}
+        <input type="number" id="system-{{name}}" name="system.{{name}}" value="{{value}}" min="1" max="10">
+        {{else}}
+        <input type="text" id="system-{{name}}" name="system.{{name}}" value="{{value}}">
+        {{/if}}
+      </div>
+      {{/each}}
+    </div>
+  </fieldset>
+
+  {{!-- What You Fight For --}}
+  <fieldset class="what-you-fight-for">
+    <legend><i class="fa-solid fa-fire"></i> {{localize "TB2E.Section.WhatYouFightFor"}}</legend>
+
+    {{#each convictionFields}}
+    <div class="conviction-field">
+      <label for="system-{{name}}">{{label}}</label>
+      <textarea id="system-{{name}}" name="system.{{name}}" rows="2">{{value}}</textarea>
+      <p class="hint">{{hint}}</p>
+    </div>
+    {{/each}}
+  </fieldset>
+
+</section>

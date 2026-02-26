@@ -1,0 +1,22 @@
+<section class="tab scrollable{{#if tab.active}} active{{/if}}" data-group="{{tab.group}}" data-tab="{{tab.id}}">
+
+  <div class="skills-grid">
+    {{#each skills}}
+    <div class="skill-row rollable{{#if hasRating}} has-rating{{/if}}" data-action="rollTest" data-type="skill" data-key="{{key}}">
+      <span class="skill-name">{{label}}</span>
+      <span class="skill-bl" title="Beginner's Luck: {{bl}}">{{bl}}</span>
+      {{#if canAdvance}}
+      <button type="button" class="btn-advance" data-action="advance" data-type="skill" data-key="{{key}}">
+        <i class="fa-solid fa-arrow-up"></i>
+      </button>
+      {{else}}
+      <span class="btn-advance-spacer"></span>
+      {{/if}}
+      <input type="number" name="{{path}}.rating" value="{{rating}}" min="0" max="10" class="skill-rating">
+      {{> "systems/tb2e/templates/actors/parts/advancement-bubbles.hbs"
+          path=path rating=rating pass=pass fail=fail passArray=passArray failArray=failArray}}
+    </div>
+    {{/each}}
+  </div>
+
+</section>

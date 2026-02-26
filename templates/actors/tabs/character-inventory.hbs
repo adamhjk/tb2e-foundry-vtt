@@ -1,0 +1,43 @@
+<section class="tab scrollable{{#if tab.active}} active{{/if}}" data-group="{{tab.group}}" data-tab="{{tab.id}}">
+
+  {{!-- Pack Configuration --}}
+  <div class="inventory-config">
+    <div class="field-pair">
+      <label>{{localize "TB2E.Fields.PackType"}}</label>
+      <select name="system.inventory.packType">
+        {{#each packOptions}}
+        <option value="{{key}}"{{#if selected}} selected{{/if}}>{{label}}</option>
+        {{/each}}
+      </select>
+    </div>
+    <label class="checkbox-field">
+      <input type="checkbox" name="system.inventory.hasLargeSack" {{#if system.inventory.hasLargeSack}}checked{{/if}}>
+      {{localize "TB2E.Fields.LargeSack"}}
+    </label>
+    <div class="field-pair">
+      <label>{{localize "TB2E.Fields.SmallSacks"}}</label>
+      <input type="number" name="system.inventory.smallSacks" value="{{system.inventory.smallSacks}}" min="0" max="3">
+    </div>
+  </div>
+
+  {{!-- Slot Grid --}}
+  <div class="inventory-grid">
+    {{#each inventorySlots}}
+    <div class="inventory-slot-group">
+      <h3 class="slot-heading">{{label}} <span class="slot-count">({{count}})</span></h3>
+      <div class="slot-list">
+        {{#each slots}}
+        <div class="inventory-slot{{#unless occupied}} empty{{/unless}}" data-slot="{{../key}}" data-index="{{@index}}">
+          {{#if occupied}}
+          <span class="slot-item">{{name}}</span>
+          {{else}}
+          <span class="slot-empty">—</span>
+          {{/if}}
+        </div>
+        {{/each}}
+      </div>
+    </div>
+    {{/each}}
+  </div>
+
+</section>

@@ -1,0 +1,23 @@
+{
+  "id": "tb2e",
+  "title": "Torchbearer 2nd Edition",
+  "version": "0.1.0",
+  "compatibility": {
+    "minimum": "13",
+    "verified": "13"
+  },
+  "esmodules": ["tb2e.mjs"],
+  "styles": ["tb2e.css"],
+  "languages": [
+    {
+      "lang": "en",
+      "name": "English",
+      "path": "lang/en.json"
+    }
+  ],
+  "documentTypes": {
+    "Actor": {
+      "character": {}
+    }
+  }
+}

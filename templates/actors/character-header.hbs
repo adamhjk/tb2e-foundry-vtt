@@ -1,0 +1,32 @@
+<header class="character-header">
+  <div class="portrait">
+    <img src="{{actor.img}}" data-edit="img" alt="{{actor.name}}">
+  </div>
+  <div class="header-fields">
+    <div class="header-top-row">
+      <img class="torchbearer-logo" src="systems/tb2e/assets/torchbearer-logo.png" alt="Torchbearer">
+    </div>
+    <input type="text" name="name" value="{{actor.name}}"
+           placeholder="{{localize 'TB2E.Fields.Name'}}" class="character-name">
+    <div class="header-summary">
+      <span class="summary-line">
+        {{#if system.stock}}{{system.stock}}{{/if}}
+        {{#if system.class}} {{system.class}}{{/if}}
+        {{#if system.level}} Lv.{{system.level}}{{/if}}
+      </span>
+      {{#if system.goal}}
+      <span class="header-goal" title="{{localize 'TB2E.Fields.Goal'}}">
+        <i class="fa-solid fa-bullseye"></i> {{system.goal}}
+      </span>
+      {{/if}}
+    </div>
+  </div>
+  <div class="header-points">
+    {{> "systems/tb2e/templates/actors/parts/point-boxes.hbs" label=fateLabel path="system.fate"
+        current=system.fate.current total=system.fate.total spent=system.fate.spent
+        pips=fatePips icon="fa-solid fa-star"}}
+    {{> "systems/tb2e/templates/actors/parts/point-boxes.hbs" label=personaLabel path="system.persona"
+        current=system.persona.current total=system.persona.total spent=system.persona.spent
+        pips=personaPips icon="fa-solid fa-mask"}}
+  </div>
+</header>

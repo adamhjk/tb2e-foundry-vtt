@@ -1,0 +1,32 @@
+<div class="tb2e-versus-card">
+  <div class="versus-card-header">
+    <span class="versus-card-title">{{versusTestLabel}}</span>
+  </div>
+
+  <div class="versus-combatants">
+    <div class="versus-combatant {{#if initiatorWins}}versus-winner{{/if}}">
+      <img class="versus-portrait" src="{{initiatorImg}}" alt="{{initiatorName}}">
+      <span class="versus-name">{{initiatorName}}</span>
+      <span class="versus-skill">{{initiatorLabel}}</span>
+      <span class="versus-successes">{{initiatorSuccesses}} {{successesLabel}}</span>
+    </div>
+
+    <div class="versus-divider">VS</div>
+
+    <div class="versus-combatant {{#unless initiatorWins}}versus-winner{{/unless}}">
+      <img class="versus-portrait" src="{{opponentImg}}" alt="{{opponentName}}">
+      <span class="versus-name">{{opponentName}}</span>
+      <span class="versus-skill">{{opponentLabel}}</span>
+      <span class="versus-successes">{{opponentSuccesses}} {{successesLabel}}</span>
+    </div>
+  </div>
+
+  <div class="versus-banner">
+    {{#if initiatorWins}}
+    <span class="versus-winner-name">{{initiatorName}}</span>
+    {{else}}
+    <span class="versus-winner-name">{{opponentName}}</span>
+    {{/if}}
+    <span>{{winsLabel}}</span>
+  </div>
+</div>

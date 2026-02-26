@@ -1,0 +1,68 @@
+<section class="tab scrollable{{#if tab.active}} active{{/if}}" data-group="{{tab.group}}" data-tab="{{tab.id}}">
+
+  {{!-- Traits --}}
+  <fieldset class="traits-section">
+    <legend><i class="fa-solid fa-star"></i> {{localize "TB2E.Section.Traits"}}</legend>
+    <div class="traits-list">
+      {{#each traits}}
+      <div class="trait-row">
+        <input type="text" name="system.traits.{{idx}}.name" value="{{name}}" placeholder="Trait name"
+               class="trait-name">
+        <div class="trait-level">
+          <label>Lv</label>
+          {{#each levels}}
+          <button type="button" class="level-pip{{#if active}} active{{/if}}"
+                  data-action="setTraitLevel" data-index="{{../idx}}" data-level="{{value}}">
+            {{value}}
+          </button>
+          {{/each}}
+        </div>
+        <div class="trait-counters">
+          <div class="trait-counter">
+            <label title="{{localize 'TB2E.Fields.Beneficial'}}"><i class="fa-solid fa-plus"></i></label>
+            <input type="number" name="system.traits.{{idx}}.beneficial" value="{{beneficial}}" min="0"
+                   class="trait-count">
+          </div>
+          <div class="trait-counter">
+            <label title="{{localize 'TB2E.Fields.Checks'}}"><i class="fa-solid fa-check"></i></label>
+            <input type="number" name="system.traits.{{idx}}.checks" value="{{checks}}" min="0"
+                   class="trait-count">
+          </div>
+        </div>
+      </div>
+      {{/each}}
+    </div>
+  </fieldset>
+
+  {{!-- Wises --}}
+  <fieldset class="wises-section">
+    <legend><i class="fa-solid fa-lightbulb"></i> {{localize "TB2E.Section.Wises"}}</legend>
+    <div class="wises-list">
+      {{#each wises}}
+      <div class="wise-row">
+        <input type="text" name="system.wises.{{@index}}.name" value="{{name}}" placeholder="Wise name"
+               class="wise-name">
+        <div class="wise-checks">
+          <label class="wise-check">
+            <input type="checkbox" name="system.wises.{{@index}}.pass" {{#if pass}}checked{{/if}}>
+            <span title="{{localize 'TB2E.Fields.Pass'}}">P</span>
+          </label>
+          <label class="wise-check">
+            <input type="checkbox" name="system.wises.{{@index}}.fail" {{#if fail}}checked{{/if}}>
+            <span title="{{localize 'TB2E.Fields.Fail'}}">F</span>
+          </label>
+          <label class="wise-check">
+            <input type="checkbox" name="system.wises.{{@index}}.fate" {{#if fate}}checked{{/if}}>
+            <span title="{{localize 'TB2E.Fields.Fate'}}">Fa</span>
+          </label>
+          <label class="wise-check">
+            <input type="checkbox" name="system.wises.{{@index}}.persona" {{#if persona}}checked{{/if}}>
+            <span title="{{localize 'TB2E.Fields.Persona'}}">Pe</span>
+          </label>
+        </div>
+      </div>
+      {{/each}}
+    </div>
+  </fieldset>
+
+</section>

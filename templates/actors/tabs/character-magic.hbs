@@ -1,0 +1,84 @@
+<section class="tab scrollable{{#if tab.active}} active{{/if}}" data-group="{{tab.group}}" data-tab="{{tab.id}}">
+
+  {{!-- Arcane Spells --}}
+  <fieldset class="spells-section">
+    <legend><i class="fa-solid fa-hat-wizard"></i> {{localize "TB2E.Section.ArcaneSpells"}}</legend>
+    <table class="spells-table">
+      <thead>
+        <tr>
+          <th>{{localize "TB2E.Fields.Name"}}</th>
+          <th>{{localize "TB2E.Fields.Obstacle"}}</th>
+          <th title="{{localize 'TB2E.Fields.Library'}}">Lib</th>
+          <th title="{{localize 'TB2E.Fields.Spellbook'}}">Sb</th>
+          <th title="{{localize 'TB2E.Fields.Memorized'}}">Mem</th>
+          <th title="{{localize 'TB2E.Fields.Cast'}}">Cast</th>
+          <th title="{{localize 'TB2E.Fields.Scroll'}}">Scr</th>
+          <th>{{localize "TB2E.Fields.Supplies"}}</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        {{#each spells}}
+        <tr>
+          <td><input type="text" name="system.spells.{{@index}}.name" value="{{name}}"></td>
+          <td><input type="text" name="system.spells.{{@index}}.obstacle" value="{{obstacle}}" class="input-sm"></td>
+          <td><input type="checkbox" name="system.spells.{{@index}}.library" {{#if library}}checked{{/if}}></td>
+          <td><input type="checkbox" name="system.spells.{{@index}}.spellbook" {{#if spellbook}}checked{{/if}}></td>
+          <td><input type="checkbox" name="system.spells.{{@index}}.memorized" {{#if memorized}}checked{{/if}}></td>
+          <td><input type="checkbox" name="system.spells.{{@index}}.cast" {{#if cast}}checked{{/if}}></td>
+          <td><input type="checkbox" name="system.spells.{{@index}}.scroll" {{#if scroll}}checked{{/if}}></td>
+          <td><input type="text" name="system.spells.{{@index}}.supplies" value="{{supplies}}"></td>
+          <td><button type="button" data-action="deleteRow" data-array="spells" data-index="{{@index}}" class="btn-icon" title="{{localize 'TB2E.Action.DeleteRow'}}"><i class="fa-solid fa-trash"></i></button></td>
+        </tr>
+        {{/each}}
+      </tbody>
+    </table>
+    <button type="button" data-action="addRow" data-array="spells" class="btn-add">
+      <i class="fa-solid fa-plus"></i> {{localize "TB2E.Action.AddRow"}}
+    </button>
+  </fieldset>
+
+  {{!-- Relics --}}
+  <fieldset class="relics-section">
+    <legend><i class="fa-solid fa-gem"></i> {{localize "TB2E.Section.Relics"}}</legend>
+    <table class="relics-table">
+      <thead>
+        <tr>
+          <th>{{localize "TB2E.Fields.Name"}}</th>
+          <th>{{localize "TB2E.Fields.Inventory"}}</th>
+          <th>{{localize "TB2E.Fields.Invocation"}}</th>
+          <th>{{localize "TB2E.Fields.Circle"}}</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        {{#each relics}}
+        <tr>
+          <td><input type="text" name="system.relics.{{@index}}.name" value="{{name}}"></td>
+          <td><input type="text" name="system.relics.{{@index}}.inventory" value="{{inventory}}"></td>
+          <td><input type="text" name="system.relics.{{@index}}.invocation" value="{{invocation}}"></td>
+          <td><input type="text" name="system.relics.{{@index}}.circle" value="{{circle}}" class="input-sm"></td>
+          <td><button type="button" data-action="deleteRow" data-array="relics" data-index="{{@index}}" class="btn-icon" title="{{localize 'TB2E.Action.DeleteRow'}}"><i class="fa-solid fa-trash"></i></button></td>
+        </tr>
+        {{/each}}
+      </tbody>
+    </table>
+    <button type="button" data-action="addRow" data-array="relics" class="btn-add">
+      <i class="fa-solid fa-plus"></i> {{localize "TB2E.Action.AddRow"}}
+    </button>
+  </fieldset>
+
+  {{!-- Urðr --}}
+  <fieldset class="urdr-section">
+    <legend><i class="fa-solid fa-brain"></i> {{localize "TB2E.Section.Urdr"}}</legend>
+    <div class="field-pair">
+      <label>{{localize "TB2E.Fields.Burden"}}</label>
+      <input type="number" name="system.urdr.burden" value="{{system.urdr.burden}}" min="0">
+    </div>
+    <div class="urdr-memory">
+      <label>{{localize "TB2E.Fields.MemoryPalace"}}</label>
+      {{editor system.urdr.memoryPalace target="system.urdr.memoryPalace" button=true editable=true}}
+    </div>
+  </fieldset>
+
+</section>

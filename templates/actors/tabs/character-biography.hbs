@@ -1,0 +1,62 @@
+<section class="tab scrollable{{#if tab.active}} active{{/if}}" data-group="{{tab.group}}" data-tab="{{tab.id}}">
+
+  {{!-- Biography --}}
+  <fieldset class="bio-section">
+    <legend><i class="fa-solid fa-book-open"></i> {{localize "TB2E.Bio"}}</legend>
+    {{editor system.bio target="system.bio" button=true editable=true}}
+  </fieldset>
+
+  {{!-- Allies & Enemies --}}
+  <fieldset class="allies-section">
+    <legend><i class="fa-solid fa-users"></i> {{localize "TB2E.Section.Allies"}}</legend>
+    <table class="allies-table">
+      <thead>
+        <tr>
+          <th>{{localize "TB2E.Fields.Name"}}</th>
+          <th>{{localize "TB2E.Fields.Location"}}</th>
+          <th>{{localize "TB2E.Fields.Status"}}</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        {{#each allies}}
+        <tr>
+          <td><input type="text" name="system.allies.{{@index}}.name" value="{{name}}"></td>
+          <td><input type="text" name="system.allies.{{@index}}.location" value="{{location}}"></td>
+          <td><input type="text" name="system.allies.{{@index}}.status" value="{{status}}"></td>
+          <td><button type="button" data-action="deleteRow" data-array="allies" data-index="{{@index}}" class="btn-icon" title="{{localize 'TB2E.Action.DeleteRow'}}"><i class="fa-solid fa-trash"></i></button></td>
+        </tr>
+        {{/each}}
+      </tbody>
+    </table>
+    <button type="button" data-action="addRow" data-array="allies" class="btn-add">
+      <i class="fa-solid fa-plus"></i> {{localize "TB2E.Action.AddRow"}}
+    </button>
+  </fieldset>
+
+  {{!-- Level Requirements Reference --}}
+  <fieldset class="level-req-section">
+    <legend><i class="fa-solid fa-chart-line"></i> {{localize "TB2E.Section.LevelRequirements"}}</legend>
+    <table class="level-req-table">
+      <thead>
+        <tr>
+          <th>{{localize "TB2E.Fields.Level"}}</th>
+          <th>{{localize "TB2E.Fields.Fate"}}</th>
+          <th>{{localize "TB2E.Fields.Persona"}}</th>
+          <th>Benefit</th>
+        </tr>
+      </thead>
+      <tbody>
+        {{#each levelRequirements}}
+        <tr{{#if (eq level ../currentLevel)}} class="current-level"{{/if}}>
+          <td>{{level}}</td>
+          <td>{{fate}}</td>
+          <td>{{persona}}</td>
+          <td>{{benefit}}</td>
+        </tr>
+        {{/each}}
+      </tbody>
+    </table>
+  </fieldset>
+
+</section>

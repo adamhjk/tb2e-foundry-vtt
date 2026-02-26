@@ -1,0 +1,46 @@
+<div class="tb2e-roll-card">
+  <div class="roll-card-header">
+    <img class="roll-card-portrait" src="{{actorImg}}" alt="{{actorName}}">
+    <div class="roll-card-info">
+      <span class="roll-card-name">{{actorName}}</span>
+      <span class="roll-card-test">{{versusLabel}} {{label}} {{testLabel}}</span>
+    </div>
+  </div>
+
+  <div class="roll-card-breakdown">
+    <div class="breakdown-line">
+      <i class="fa-solid fa-dice"></i>
+      <span class="breakdown-label">{{label}}</span>
+      <span class="breakdown-value">{{baseDice}}D</span>
+    </div>
+    {{#each modifiers}}
+    <div class="breakdown-line breakdown-modifier" style="--mod-color: var({{color}})">
+      <i class="{{icon}}"></i>
+      <span class="breakdown-label">{{label}}</span>
+      <span class="breakdown-value">{{display}}</span>
+    </div>
+    {{/each}}
+    <div class="breakdown-total">
+      <span>{{poolSize}}D</span>
+    </div>
+  </div>
+
+  <div class="roll-card-dice">
+    {{#each diceResults}}
+    <span class="die-result {{#if isSun}}die-sun{{else if success}}die-success{{else}}die-fail{{/if}}">
+      {{#if isSun}}<i class="fa-solid fa-sun"></i>
+      {{else if success}}<i class="fa-solid fa-shield-halved"></i>
+      {{else}}<i class="fa-solid fa-dragon"></i>
+      {{/if}}
+    </span>
+    {{/each}}
+  </div>
+
+  <div class="roll-card-tally">
+    <span class="tally-successes">{{successesLabel}}: {{successes}}</span>
+  </div>
+
+  <div class="roll-card-banner banner-pending">
+    <i class="fa-solid fa-hourglass-half"></i> {{pendingLabel}}
+  </div>
+</div>

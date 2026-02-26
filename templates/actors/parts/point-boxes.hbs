@@ -1,0 +1,21 @@
+{{!--
+  Point boxes for Fate/Persona display.
+  Expected context:
+    label   - localized label ("Fate" or "Persona")
+    path    - data path prefix (e.g. "system.fate")
+    current - current points available
+    total   - total points earned
+    spent   - points spent lifetime
+    icon    - FontAwesome icon class
+--}}
+<div class="point-boxes">
+  <span class="point-label"><i class="{{icon}}"></i> {{label}}</span>
+  <div class="point-pips">
+    {{#each pips}}
+    <button type="button" class="pip{{#if filled}} filled{{/if}}"
+            data-action="togglePoint" data-path="{{../path}}.current" data-index="{{@index}}">
+    </button>
+    {{/each}}
+  </div>
+  <span class="point-spent" title="{{localize 'TB2E.Fields.Spent'}}">{{spent}}</span>
+</div>

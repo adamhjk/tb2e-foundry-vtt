@@ -1,0 +1,1795 @@
+/* ============================================ */
+/*  Torchbearer 2E — Foundry VTT System Sheet   */
+/*  Nordic frost aesthetic — white & blue        */
+/* ============================================ */
+
+@import url("https://fonts.googleapis.com/css2?family=MedievalSharp&display=swap");
+
+/* -------------------------------------------- */
+/*  Design Tokens                               */
+/* -------------------------------------------- */
+
+.tb2e.sheet {
+  /* Surfaces — snow and ice */
+  --tb-bg-darkest: #dfe4eb;
+  --tb-bg-dark: #e6eaf0;
+  --tb-bg-mid: #ebeef3;
+  --tb-bg-surface: #f0f2f6;
+  --tb-bg-raised: #f5f7fa;
+
+  /* Text — slate tones */
+  --tb-text-bright: #0f172a;
+  --tb-text-body: #1e293b;
+  --tb-text-dim: #64748b;
+  --tb-text-faint: #94a3b8;
+
+  /* Accent — fjord blue */
+  --tb-blue: #2563eb;
+  --tb-blue-bright: #3b82f6;
+  --tb-blue-dim: #1d4ed8;
+  --tb-blue-glow: rgba(37, 99, 235, 0.12);
+  --tb-blue-glow-strong: rgba(37, 99, 235, 0.25);
+
+  /* Steel — for headings, accents */
+  --tb-steel: #475569;
+  --tb-steel-bright: #334155;
+  --tb-steel-dim: #64748b;
+
+  /* Frost — for subtle highlights */
+  --tb-frost: #dbeafe;
+  --tb-frost-bright: #bfdbfe;
+  --tb-frost-deep: #93c5fd;
+
+  /* Borders */
+  --tb-border: #e2e8f0;
+  --tb-border-light: #cbd5e1;
+
+  /* Condition colors */
+  --tb-cond-fresh: #22c55e;
+  --tb-cond-hungry: #ca8a04;
+  --tb-cond-angry: #dc2626;
+  --tb-cond-afraid: #7c3aed;
+  --tb-cond-exhausted: #ea580c;
+  --tb-cond-injured: #991b1b;
+  --tb-cond-sick: #6b7280;
+  --tb-cond-dead: #111827;
+
+  /* Advancement bubbles */
+  --tb-pass-color: #2563eb;
+  --tb-fail-color: #ea580c;
+
+  /* Fonts */
+  --tb-font-logo: "MedievalSharp", "Modesto Condensed", serif;
+  --tb-font-heading: "Modesto Condensed", "Signika", serif;
+  --tb-font-body: "Signika", sans-serif;
+
+  /* Radius */
+  --tb-radius: 4px;
+  --tb-radius-lg: 6px;
+}
+
+/* -------------------------------------------- */
+/*  Sheet Shell                                 */
+/* -------------------------------------------- */
+
+.tb2e.sheet {
+  background: var(--tb-bg-mid);
+  color: var(--tb-text-body);
+  font-family: var(--tb-font-body);
+  min-width: 500px;
+  min-height: 400px;
+}
+
+.tb2e.sheet .window-content {
+  background: var(--tb-bg-mid);
+  padding: 0;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+/* -------------------------------------------- */
+/*  Character Header                            */
+/* -------------------------------------------- */
+
+.tb2e.sheet .character-header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.75rem 1rem;
+  background: var(--tb-bg-raised);
+  border-bottom: 2px solid var(--tb-blue-dim);
+  position: relative;
+  flex-shrink: 0;
+}
+
+.tb2e.sheet .character-header::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at 30% 50%, var(--tb-blue-glow) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.tb2e.sheet .portrait {
+  flex: 0 0 auto;
+  position: relative;
+  z-index: 1;
+}
+
+.tb2e.sheet .portrait img {
+  width: 64px;
+  height: 64px;
+  object-fit: cover;
+  border: 2px solid var(--tb-blue-dim);
+  border-radius: var(--tb-radius);
+  cursor: pointer;
+  display: block;
+  transition: border-color 0.2s;
+}
+
+.tb2e.sheet .portrait img:hover {
+  border-color: var(--tb-blue);
+}
+
+.tb2e.sheet .header-fields {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  position: relative;
+  z-index: 1;
+  min-width: 0;
+}
+
+.tb2e.sheet .header-top-row {
+  display: flex;
+  align-items: baseline;
+  gap: 1rem;
+}
+
+.tb2e.sheet .header-summary {
+  display: flex;
+  align-items: baseline;
+  gap: 1rem;
+  font-size: 0.85rem;
+  color: var(--tb-text-dim);
+}
+
+.tb2e.sheet .summary-line {
+  font-family: var(--tb-font-heading);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.tb2e.sheet .header-goal {
+  font-style: italic;
+  color: var(--tb-text-dim);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 300px;
+}
+
+.tb2e.sheet .header-goal i {
+  color: var(--tb-blue);
+  margin-right: 0.25em;
+}
+
+/* Header Points */
+.tb2e.sheet .header-points {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  flex: 0 0 auto;
+  position: relative;
+  z-index: 1;
+}
+
+.tb2e.sheet .point-boxes {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.tb2e.sheet .point-label {
+  font-family: var(--tb-font-heading);
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--tb-text-dim);
+  min-width: 4.5rem;
+}
+
+.tb2e.sheet .point-label i {
+  color: var(--tb-blue);
+  margin-right: 0.2em;
+}
+
+.tb2e.sheet .point-pips {
+  display: flex;
+  gap: 3px;
+}
+
+.tb2e.sheet .pip {
+  all: unset;
+  width: 14px;
+  height: 14px;
+  min-width: 14px;
+  min-height: 14px;
+  max-width: 14px;
+  max-height: 14px;
+  border-radius: 50%;
+  border: 2px solid var(--tb-blue);
+  background: transparent;
+  cursor: pointer;
+  box-sizing: content-box;
+  display: inline-block;
+  transition: background-color 0.15s, box-shadow 0.15s;
+}
+
+.tb2e.sheet .pip.filled {
+  background: var(--tb-blue);
+  box-shadow: 0 0 4px var(--tb-blue-glow-strong);
+}
+
+.tb2e.sheet .pip:hover {
+  box-shadow: 0 0 6px var(--tb-blue-glow-strong);
+}
+
+.tb2e.sheet .point-spent {
+  font-size: 0.75rem;
+  color: var(--tb-text-faint);
+  min-width: 1.5em;
+  text-align: center;
+}
+
+/* -------------------------------------------- */
+/*  Torchbearer Logo                            */
+/* -------------------------------------------- */
+
+.tb2e.sheet .torchbearer-logo {
+  height: 1.75rem;
+  width: auto;
+  object-fit: contain;
+  margin: 0;
+}
+
+/* -------------------------------------------- */
+/*  Character Name Input                        */
+/* -------------------------------------------- */
+
+.tb2e.sheet .character-name {
+  font-family: var(--tb-font-heading);
+  font-size: 1.35rem;
+  color: var(--tb-text-bright);
+  background: transparent;
+  border: 1px solid transparent;
+  border-bottom-color: var(--tb-border);
+  border-radius: 0;
+  padding: 0.15rem 0.25rem;
+  transition: border-color 0.2s, background-color 0.2s;
+}
+
+.tb2e.sheet .character-name:hover {
+  border-bottom-color: var(--tb-border-light);
+}
+
+.tb2e.sheet .character-name:focus {
+  background: var(--tb-frost);
+  border-color: var(--tb-blue);
+  outline: none;
+  box-shadow: 0 0 0 1px var(--tb-blue-glow);
+}
+
+.tb2e.sheet .character-name::placeholder {
+  color: var(--tb-text-faint);
+  font-style: italic;
+}
+
+/* -------------------------------------------- */
+/*  Conditions Strip                            */
+/* -------------------------------------------- */
+
+.tb2e.sheet .conditions-strip {
+  display: flex;
+  gap: 0;
+  background: var(--tb-bg-darkest);
+  border-bottom: 1px solid var(--tb-border);
+  padding: 0;
+  justify-content: stretch;
+  flex-shrink: 0;
+}
+
+.tb2e.sheet .conditions-strip > .condition-btn {
+  all: unset;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  padding: 10px 4px 8px;
+  background: transparent;
+  border-bottom: 3px solid transparent;
+  cursor: pointer;
+  color: var(--tb-text-faint);
+  font-size: 0.7rem;
+  text-align: center;
+  box-sizing: border-box;
+  transition: color 0.2s, border-color 0.2s, background-color 0.2s, box-shadow 0.2s;
+}
+
+.tb2e.sheet .conditions-strip > .condition-btn > i {
+  font-size: 1rem;
+  line-height: 1;
+  transition: color 0.2s;
+}
+
+.tb2e.sheet .conditions-strip > .condition-btn:hover {
+  color: var(--tb-text-dim);
+  background: var(--tb-bg-mid);
+}
+
+.tb2e.sheet .conditions-strip > .condition-btn.active {
+  color: var(--cond-color);
+  border-bottom-color: var(--cond-color);
+  background: color-mix(in srgb, var(--cond-color) 8%, transparent);
+  box-shadow: inset 0 -8px 12px -8px color-mix(in srgb, var(--cond-color) 20%, transparent);
+}
+
+.tb2e.sheet .conditions-strip > .condition-btn.active > i {
+  color: var(--cond-color);
+}
+
+.tb2e.sheet .condition-label {
+  font-family: var(--tb-font-heading);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  line-height: 1;
+}
+
+/* -------------------------------------------- */
+/*  Tab Navigation                              */
+/* -------------------------------------------- */
+
+.tb2e.sheet .sheet-tabs.tabs {
+  display: flex;
+  gap: 0;
+  background: var(--tb-bg-raised);
+  border-bottom: 1px solid var(--tb-border);
+  padding: 0 1rem;
+  margin: 0;
+  flex-shrink: 0;
+}
+
+.tb2e.sheet .sheet-tabs.tabs a {
+  font-family: var(--tb-font-heading);
+  font-size: 0.95rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--tb-text-dim);
+  padding: 0.6rem 1rem;
+  border-bottom: 2px solid transparent;
+  transition: color 0.2s, border-color 0.2s;
+  text-decoration: none;
+  position: relative;
+}
+
+.tb2e.sheet .sheet-tabs.tabs a:hover {
+  color: var(--tb-text-body);
+}
+
+.tb2e.sheet .sheet-tabs.tabs a.active {
+  color: var(--tb-blue);
+  border-bottom-color: var(--tb-blue);
+}
+
+.tb2e.sheet .sheet-tabs.tabs a.active::after {
+  content: "";
+  position: absolute;
+  bottom: -1px;
+  left: 0;
+  right: 0;
+  height: 6px;
+  background: linear-gradient(to top, var(--tb-blue-glow-strong), transparent);
+  pointer-events: none;
+}
+
+.tb2e.sheet .sheet-tabs.tabs a i {
+  margin-right: 0.4em;
+  font-size: 0.85em;
+}
+
+/* -------------------------------------------- */
+/*  Tab Content                                 */
+/* -------------------------------------------- */
+
+.tb2e.sheet .tab {
+  display: none;
+  padding: 1rem;
+}
+
+.tb2e.sheet .tab.active {
+  display: block;
+}
+
+.tb2e.sheet .tab.scrollable {
+  overflow-y: auto;
+  flex: 1;
+  min-height: 0;
+}
+
+/* -------------------------------------------- */
+/*  Fieldsets                                   */
+/* -------------------------------------------- */
+
+.tb2e.sheet fieldset {
+  background: var(--tb-bg-raised);
+  border: 1px solid var(--tb-border);
+  border-radius: var(--tb-radius-lg);
+  padding: 0.75rem 1rem 1rem;
+  margin: 0 0 1rem;
+}
+
+.tb2e.sheet fieldset legend {
+  font-family: var(--tb-font-heading);
+  font-size: 1.05rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--tb-blue-dim);
+  padding: 0 0.5rem;
+}
+
+.tb2e.sheet fieldset legend i {
+  color: var(--tb-blue);
+  margin-right: 0.3em;
+  font-size: 0.9em;
+}
+
+/* -------------------------------------------- */
+/*  Who You Are — Field Grid                    */
+/* -------------------------------------------- */
+
+.tb2e.sheet .field-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.5rem 1rem;
+}
+
+.tb2e.sheet .field-pair {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.tb2e.sheet .field-pair label {
+  font-family: var(--tb-font-heading);
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--tb-text-dim);
+}
+
+/* -------------------------------------------- */
+/*  Inputs & Textareas                          */
+/* -------------------------------------------- */
+
+.tb2e.sheet input[type="text"],
+.tb2e.sheet input[type="number"] {
+  font-family: var(--tb-font-body);
+  font-size: 0.9rem;
+  color: var(--tb-text-bright);
+  background: var(--tb-bg-surface);
+  border: 1px solid var(--tb-border);
+  border-radius: var(--tb-radius);
+  padding: 0.35rem 0.5rem;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.tb2e.sheet input[type="text"]:hover,
+.tb2e.sheet input[type="number"]:hover {
+  border-color: var(--tb-border-light);
+}
+
+.tb2e.sheet input[type="text"]:focus,
+.tb2e.sheet input[type="number"]:focus {
+  border-color: var(--tb-blue);
+  outline: none;
+  box-shadow: 0 0 0 2px var(--tb-blue-glow);
+}
+
+.tb2e.sheet textarea {
+  font-family: var(--tb-font-body);
+  font-size: 0.9rem;
+  color: var(--tb-text-bright);
+  background: var(--tb-bg-surface);
+  border: 1px solid var(--tb-border);
+  border-radius: var(--tb-radius);
+  padding: 0.4rem 0.5rem;
+  resize: vertical;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  width: 100%;
+}
+
+.tb2e.sheet textarea:hover {
+  border-color: var(--tb-border-light);
+}
+
+.tb2e.sheet textarea:focus {
+  border-color: var(--tb-blue);
+  outline: none;
+  box-shadow: 0 0 0 2px var(--tb-blue-glow);
+}
+
+.tb2e.sheet input[type="number"] {
+  max-width: 5rem;
+}
+
+.tb2e.sheet select {
+  font-family: var(--tb-font-body);
+  font-size: 0.9rem;
+  color: var(--tb-text-bright);
+  background: var(--tb-bg-surface);
+  border: 1px solid var(--tb-border);
+  border-radius: var(--tb-radius);
+  padding: 0.35rem 0.5rem;
+}
+
+.tb2e.sheet select:focus {
+  border-color: var(--tb-blue);
+  outline: none;
+  box-shadow: 0 0 0 2px var(--tb-blue-glow);
+}
+
+/* -------------------------------------------- */
+/*  What You Fight For — Conviction Fields      */
+/* -------------------------------------------- */
+
+.tb2e.sheet .conviction-field {
+  margin-bottom: 0.75rem;
+}
+
+.tb2e.sheet .conviction-field:last-child {
+  margin-bottom: 0;
+}
+
+.tb2e.sheet .conviction-field label {
+  font-family: var(--tb-font-heading);
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--tb-text-body);
+  display: block;
+  margin-bottom: 0.2rem;
+}
+
+.tb2e.sheet .conviction-field .hint {
+  font-size: 0.8rem;
+  font-style: italic;
+  color: var(--tb-text-faint);
+  margin: 0.25rem 0 0;
+  line-height: 1.3;
+}
+
+/* -------------------------------------------- */
+/*  Advancement Bubbles                         */
+/* -------------------------------------------- */
+
+.tb2e.sheet .advancement-bubbles {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+
+.tb2e.sheet .bubble-row {
+  display: flex;
+  align-items: center;
+  gap: 1px;
+}
+
+.tb2e.sheet .bubble-label {
+  font-family: var(--tb-font-heading);
+  font-size: 0.6rem;
+  text-transform: uppercase;
+  color: var(--tb-text-faint);
+  width: 0.8em;
+  text-align: center;
+}
+
+.tb2e.sheet .bubble {
+  all: unset;
+  width: 10px;
+  height: 10px;
+  min-width: 10px;
+  min-height: 10px;
+  max-width: 10px;
+  max-height: 10px;
+  border-radius: 50%;
+  border: 1.5px solid var(--tb-border-light);
+  background: transparent;
+  cursor: pointer;
+  box-sizing: content-box;
+  display: inline-block;
+  transition: background-color 0.15s, border-color 0.15s, box-shadow 0.15s;
+}
+
+.tb2e.sheet .bubble:hover {
+  border-color: var(--tb-text-dim);
+}
+
+.tb2e.sheet .pass-bubble.filled {
+  background: var(--tb-pass-color);
+  border-color: var(--tb-pass-color);
+  box-shadow: 0 0 4px rgba(37, 99, 235, 0.3);
+}
+
+.tb2e.sheet .fail-bubble.filled {
+  background: var(--tb-fail-color);
+  border-color: var(--tb-fail-color);
+  box-shadow: 0 0 4px rgba(234, 88, 12, 0.3);
+}
+
+/* -------------------------------------------- */
+/*  Abilities Tab                               */
+/* -------------------------------------------- */
+
+.tb2e.sheet .abilities-group {
+  margin-bottom: 1rem;
+}
+
+.tb2e.sheet .ability-row {
+  display: grid;
+  /* name | rating input | bubbles */
+  grid-template-columns: 7rem 3.5rem 1fr;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.4rem 0;
+  border-bottom: 1px solid var(--tb-border);
+}
+
+.tb2e.sheet .ability-row:last-child {
+  border-bottom: none;
+}
+
+.tb2e.sheet .ability-name {
+  font-family: var(--tb-font-heading);
+  font-size: 0.95rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--tb-text-body);
+}
+
+.tb2e.sheet .ability-rating {
+  width: 3.5rem;
+  text-align: center;
+  font-weight: bold;
+}
+
+
+.tb2e.sheet .nature-descriptors {
+  margin-top: 0.5rem;
+  padding-top: 0.5rem;
+  border-top: 1px solid var(--tb-border);
+}
+
+.tb2e.sheet .nature-descriptors label {
+  font-family: var(--tb-font-heading);
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--tb-text-dim);
+  display: block;
+  margin-bottom: 0.2rem;
+}
+
+.tb2e.sheet .nature-descriptors input {
+  width: 100%;
+}
+
+.tb2e.sheet .might-row .ability-name {
+  color: var(--tb-blue-dim);
+}
+
+/* Checks */
+.tb2e.sheet .checks-group .checks-row {
+  display: flex;
+  gap: 1.5rem;
+}
+
+/* -------------------------------------------- */
+/*  Skills Tab                                  */
+/* -------------------------------------------- */
+
+.tb2e.sheet .skills-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0 1.5rem;
+}
+
+.tb2e.sheet .skill-row {
+  display: grid;
+  /* name | BL badge | rating input | bubbles */
+  grid-template-columns: 1fr 1.5rem 3rem 9rem;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.3rem 0.25rem;
+  border-bottom: 1px solid var(--tb-border);
+  border-radius: var(--tb-radius);
+}
+
+.tb2e.sheet .skill-row:hover {
+  background: var(--tb-frost);
+}
+
+.tb2e.sheet .skill-row.has-rating .skill-name {
+  color: var(--tb-text-bright);
+  font-weight: bold;
+}
+
+.tb2e.sheet .skill-name {
+  font-family: var(--tb-font-heading);
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--tb-text-dim);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.tb2e.sheet .skill-bl {
+  font-size: 0.7rem;
+  font-weight: bold;
+  color: var(--tb-text-faint);
+  padding: 1px 4px;
+  border: 1px solid var(--tb-border);
+  border-radius: 2px;
+  line-height: 1;
+}
+
+.tb2e.sheet .skill-rating {
+  width: 3rem;
+  text-align: center;
+  font-weight: bold;
+}
+
+/* -------------------------------------------- */
+/*  Traits & Wises Tab                          */
+/* -------------------------------------------- */
+
+.tb2e.sheet .traits-list,
+.tb2e.sheet .wises-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.tb2e.sheet .trait-row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.35rem 0;
+  border-bottom: 1px solid var(--tb-border);
+}
+
+.tb2e.sheet .trait-row:last-child {
+  border-bottom: none;
+}
+
+.tb2e.sheet .trait-name {
+  flex: 1;
+  min-width: 0;
+}
+
+.tb2e.sheet .trait-level {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}
+
+.tb2e.sheet .trait-level label {
+  font-family: var(--tb-font-heading);
+  font-size: 0.75rem;
+  color: var(--tb-text-faint);
+  margin-right: 2px;
+}
+
+.tb2e.sheet .level-pip {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  border: 2px solid var(--tb-border-light);
+  background: transparent;
+  cursor: pointer;
+  font-size: 0.7rem;
+  font-weight: bold;
+  color: var(--tb-text-faint);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  transition: all 0.15s;
+}
+
+.tb2e.sheet .level-pip:hover {
+  border-color: var(--tb-blue);
+  color: var(--tb-blue);
+}
+
+.tb2e.sheet .level-pip.active {
+  background: var(--tb-blue);
+  border-color: var(--tb-blue);
+  color: white;
+}
+
+.tb2e.sheet .trait-counters {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.tb2e.sheet .trait-counter {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+}
+
+.tb2e.sheet .trait-counter label {
+  color: var(--tb-text-faint);
+  font-size: 0.8rem;
+}
+
+.tb2e.sheet .trait-count {
+  width: 2.5rem;
+  text-align: center;
+}
+
+/* Wises */
+.tb2e.sheet .wise-row {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.35rem 0;
+  border-bottom: 1px solid var(--tb-border);
+}
+
+.tb2e.sheet .wise-row:last-child {
+  border-bottom: none;
+}
+
+.tb2e.sheet .wise-name {
+  flex: 1;
+  min-width: 0;
+}
+
+.tb2e.sheet .wise-checks {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.tb2e.sheet .wise-check {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  cursor: pointer;
+}
+
+.tb2e.sheet .wise-check span {
+  font-family: var(--tb-font-heading);
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  color: var(--tb-text-faint);
+}
+
+.tb2e.sheet .wise-check input[type="checkbox"] {
+  accent-color: var(--tb-blue);
+}
+
+/* -------------------------------------------- */
+/*  Inventory Tab                               */
+/* -------------------------------------------- */
+
+.tb2e.sheet .inventory-config {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  margin-bottom: 1rem;
+  padding: 0.75rem 1rem;
+  background: var(--tb-bg-raised);
+  border: 1px solid var(--tb-border);
+  border-radius: var(--tb-radius-lg);
+}
+
+.tb2e.sheet .checkbox-field {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.9rem;
+  cursor: pointer;
+}
+
+.tb2e.sheet .checkbox-field input[type="checkbox"] {
+  accent-color: var(--tb-blue);
+}
+
+.tb2e.sheet .inventory-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+.tb2e.sheet .inventory-slot-group {
+  background: var(--tb-bg-raised);
+  border: 1px solid var(--tb-border);
+  border-radius: var(--tb-radius-lg);
+  padding: 0.5rem 0.75rem;
+}
+
+.tb2e.sheet .slot-heading {
+  font-family: var(--tb-font-heading);
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--tb-blue-dim);
+  margin: 0 0 0.35rem;
+}
+
+.tb2e.sheet .slot-count {
+  color: var(--tb-text-faint);
+  font-size: 0.8em;
+}
+
+.tb2e.sheet .slot-list {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.tb2e.sheet .inventory-slot {
+  padding: 0.3rem 0.5rem;
+  border-radius: var(--tb-radius);
+  background: var(--tb-bg-surface);
+  border: 1px solid var(--tb-border);
+  min-height: 1.8rem;
+  display: flex;
+  align-items: center;
+}
+
+.tb2e.sheet .inventory-slot.empty {
+  border-style: dashed;
+  background: var(--tb-bg-mid);
+}
+
+.tb2e.sheet .slot-empty {
+  color: var(--tb-text-faint);
+  font-size: 0.85rem;
+}
+
+.tb2e.sheet .slot-item {
+  color: var(--tb-text-body);
+  font-size: 0.85rem;
+}
+
+/* -------------------------------------------- */
+/*  Magic Tab                                   */
+/* -------------------------------------------- */
+
+.tb2e.sheet .spells-table,
+.tb2e.sheet .relics-table,
+.tb2e.sheet .allies-table,
+.tb2e.sheet .level-req-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.85rem;
+}
+
+.tb2e.sheet .spells-table th,
+.tb2e.sheet .relics-table th,
+.tb2e.sheet .allies-table th,
+.tb2e.sheet .level-req-table th {
+  font-family: var(--tb-font-heading);
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--tb-text-dim);
+  padding: 0.3rem 0.4rem;
+  border-bottom: 2px solid var(--tb-border);
+  text-align: left;
+}
+
+.tb2e.sheet .spells-table td,
+.tb2e.sheet .relics-table td,
+.tb2e.sheet .allies-table td,
+.tb2e.sheet .level-req-table td {
+  padding: 0.25rem 0.4rem;
+  border-bottom: 1px solid var(--tb-border);
+  vertical-align: middle;
+}
+
+.tb2e.sheet .spells-table input[type="text"],
+.tb2e.sheet .relics-table input[type="text"],
+.tb2e.sheet .allies-table input[type="text"] {
+  width: 100%;
+  padding: 0.2rem 0.3rem;
+  font-size: 0.85rem;
+}
+
+.tb2e.sheet .spells-table input[type="checkbox"],
+.tb2e.sheet .relics-table input[type="checkbox"] {
+  accent-color: var(--tb-blue);
+}
+
+.tb2e.sheet .input-sm {
+  max-width: 3.5rem;
+  text-align: center;
+}
+
+/* Add/Delete buttons */
+.tb2e.sheet .btn-add {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  margin-top: 0.5rem;
+  padding: 0.35rem 0.75rem;
+  font-family: var(--tb-font-heading);
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--tb-blue);
+  background: var(--tb-frost);
+  border: 1px solid var(--tb-blue-glow-strong);
+  border-radius: var(--tb-radius);
+  cursor: pointer;
+  transition: background-color 0.15s;
+}
+
+.tb2e.sheet .btn-add:hover {
+  background: var(--tb-frost-bright);
+}
+
+.tb2e.sheet .btn-icon {
+  background: none;
+  border: none;
+  color: var(--tb-text-faint);
+  cursor: pointer;
+  padding: 0.2rem;
+  font-size: 0.8rem;
+  transition: color 0.15s;
+}
+
+.tb2e.sheet .btn-icon:hover {
+  color: var(--tb-cond-angry);
+}
+
+/* -------------------------------------------- */
+/*  Biography Tab                               */
+/* -------------------------------------------- */
+
+.tb2e.sheet .bio-section .editor {
+  min-height: 150px;
+}
+
+.tb2e.sheet .urdr-memory .editor {
+  min-height: 100px;
+}
+
+/* Level requirements reference */
+.tb2e.sheet .level-req-table .current-level {
+  background: var(--tb-frost);
+  font-weight: bold;
+}
+
+.tb2e.sheet .level-req-table .current-level td {
+  color: var(--tb-blue-dim);
+}
+
+/* -------------------------------------------- */
+/*  Rollable Rows                               */
+/* -------------------------------------------- */
+
+.tb2e.sheet .rollable {
+  cursor: pointer;
+  transition: background-color 0.15s, box-shadow 0.15s;
+}
+
+.tb2e.sheet .rollable:hover {
+  background: var(--tb-frost);
+  box-shadow: inset 2px 0 0 var(--tb-blue);
+}
+
+.tb2e.sheet .rollable:hover .ability-name,
+.tb2e.sheet .rollable:hover .skill-name {
+  color: var(--tb-blue);
+}
+
+.tb2e.sheet .rollable input,
+.tb2e.sheet .rollable button.bubble {
+  cursor: default;
+}
+
+/* -------------------------------------------- */
+/*  Roll Dialog                                 */
+/* -------------------------------------------- */
+
+.tb2e.roll-dialog .tb2e-roll-dialog-form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  padding: 0.5rem 0;
+}
+
+.tb2e.roll-dialog .roll-dialog-header {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.tb2e.roll-dialog .roll-dialog-badge {
+  font-size: 0.7rem;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: #93c5fd;
+  background: rgba(37, 99, 235, 0.25);
+  padding: 2px 8px;
+  border-radius: 3px;
+}
+
+.tb2e.roll-dialog .roll-dialog-title {
+  font-family: "Modesto Condensed", "Signika", serif;
+  font-size: 1.2rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: #e2e8f0;
+  margin: 0;
+}
+
+.tb2e.roll-dialog .roll-dialog-fields {
+  display: flex;
+  gap: 1rem;
+}
+
+.tb2e.roll-dialog .roll-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  flex: 1;
+}
+
+.tb2e.roll-dialog .roll-field label {
+  font-family: "Modesto Condensed", "Signika", serif;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: #94a3b8;
+}
+
+.tb2e.roll-dialog .roll-field input {
+  text-align: center;
+  font-size: 1.1rem;
+  font-weight: bold;
+  padding: 0.4rem 0.5rem;
+}
+
+.tb2e.roll-dialog .roll-dialog-modifiers {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.tb2e.roll-dialog .roll-modifier {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.25rem 0.5rem;
+  border-radius: 3px;
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.tb2e.roll-dialog .roll-modifier i {
+  color: var(--mod-color);
+  font-size: 0.85rem;
+  width: 1.2em;
+  text-align: center;
+}
+
+.tb2e.roll-dialog .roll-modifier .mod-label {
+  flex: 1;
+  color: #94a3b8;
+  font-size: 0.85rem;
+}
+
+.tb2e.roll-dialog .roll-modifier .mod-value {
+  color: var(--mod-color);
+  font-weight: bold;
+  font-size: 0.85rem;
+}
+
+.tb2e.roll-dialog .roll-dialog-options {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.tb2e.roll-dialog .roll-option {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.85rem;
+  color: #94a3b8;
+  cursor: pointer;
+}
+
+.tb2e.roll-dialog .roll-option input[type="checkbox"] {
+  accent-color: #3b82f6;
+}
+
+.tb2e.roll-dialog .roll-dialog-summary {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  justify-content: center;
+  color: #94a3b8;
+  font-size: 0.85rem;
+  padding-top: 0.25rem;
+  border-top: 1px solid rgba(148, 163, 184, 0.2);
+}
+
+.tb2e.roll-dialog .roll-dialog-summary i {
+  color: #3b82f6;
+}
+
+/* -------------------------------------------- */
+/*  Chat Roll Card                              */
+/* -------------------------------------------- */
+
+.tb2e-roll-card {
+  border: 1px solid #e2e8f0;
+  border-radius: 6px;
+  overflow: hidden;
+  background: #f5f7fa;
+  font-family: "Signika", sans-serif;
+}
+
+.tb2e-roll-card .roll-card-header {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 0.75rem;
+  background: #ebeef3;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.tb2e-roll-card .roll-card-portrait {
+  width: 32px;
+  height: 32px;
+  border-radius: 4px;
+  object-fit: cover;
+  border: 1px solid #cbd5e1;
+}
+
+.tb2e-roll-card .roll-card-info {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.2;
+}
+
+.tb2e-roll-card .roll-card-name {
+  font-weight: bold;
+  font-size: 0.85rem;
+  color: #0f172a;
+}
+
+.tb2e-roll-card .roll-card-test {
+  font-family: "Modesto Condensed", "Signika", serif;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: #2563eb;
+}
+
+.tb2e-roll-card .roll-card-breakdown {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  padding: 0.4rem 0.75rem;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.tb2e-roll-card .breakdown-line {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.8rem;
+  color: #475569;
+}
+
+.tb2e-roll-card .breakdown-line > i {
+  color: #2563eb;
+  width: 1.2em;
+  text-align: center;
+}
+
+.tb2e-roll-card .breakdown-label {
+  flex: 1;
+}
+
+.tb2e-roll-card .breakdown-value {
+  font-weight: bold;
+}
+
+.tb2e-roll-card .breakdown-modifier > i {
+  color: var(--mod-color);
+}
+
+.tb2e-roll-card .breakdown-modifier .breakdown-label {
+  color: #64748b;
+}
+
+.tb2e-roll-card .breakdown-modifier .breakdown-value {
+  color: var(--mod-color);
+}
+
+.tb2e-roll-card .breakdown-total {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.85rem;
+  font-weight: bold;
+  color: #475569;
+  padding-top: 0.3rem;
+  margin-top: 0.2rem;
+  border-top: 1px solid #e2e8f0;
+}
+
+.tb2e-roll-card .roll-card-dice {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  padding: 0.5rem 0.75rem;
+  justify-content: center;
+}
+
+.tb2e-roll-card .die-result {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 4px;
+  font-weight: bold;
+  font-size: 0.85rem;
+  line-height: 1;
+}
+
+.tb2e-roll-card .die-success {
+  background: #2563eb;
+  color: white;
+  box-shadow: 0 0 6px rgba(37, 99, 235, 0.3);
+}
+
+.tb2e-roll-card .die-fail {
+  background: #e2e8f0;
+  color: #94a3b8;
+}
+
+.tb2e-roll-card .die-sun {
+  background: #ea580c;
+  color: white;
+  box-shadow: 0 0 6px rgba(234, 88, 12, 0.3);
+}
+
+.tb2e-roll-card .roll-card-tally {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.35rem 0.75rem;
+  font-size: 0.8rem;
+  color: #475569;
+  border-top: 1px solid #e2e8f0;
+}
+
+.tb2e-roll-card .roll-card-banner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  padding: 0.5rem;
+  font-family: "Modesto Condensed", "Signika", serif;
+  font-size: 1.05rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-weight: bold;
+}
+
+.tb2e-roll-card .banner-pass {
+  background: linear-gradient(135deg, #dbeafe, #bfdbfe);
+  color: #1d4ed8;
+  border-top: 2px solid #2563eb;
+}
+
+.tb2e-roll-card .banner-fail {
+  background: linear-gradient(135deg, #fef3c7, #fde68a);
+  color: #92400e;
+  border-top: 2px solid #d97706;
+}
+
+/* -------------------------------------------- */
+/*  Advance Button (Sheet)                      */
+/* -------------------------------------------- */
+
+.tb2e.sheet .btn-advance {
+  all: unset;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #f59e0b, #d97706);
+  color: white;
+  font-size: 0.7rem;
+  cursor: pointer;
+  box-shadow: 0 0 6px rgba(245, 158, 11, 0.4);
+  transition: transform 0.15s, box-shadow 0.15s;
+  animation: tb2e-advance-pulse 2s ease-in-out infinite;
+}
+
+.tb2e.sheet .btn-advance:hover {
+  transform: scale(1.15);
+  box-shadow: 0 0 10px rgba(245, 158, 11, 0.6);
+}
+
+.tb2e.sheet .btn-advance-spacer {
+  display: inline-block;
+  width: 22px;
+  height: 22px;
+}
+
+@keyframes tb2e-advance-pulse {
+  0%, 100% { box-shadow: 0 0 6px rgba(245, 158, 11, 0.4); }
+  50% { box-shadow: 0 0 12px rgba(245, 158, 11, 0.7); }
+}
+
+/* Adjust ability-row grid to 4 columns */
+.tb2e.sheet .ability-row {
+  grid-template-columns: 7rem 22px 3.5rem 1fr;
+}
+
+/* Adjust skill-row grid to 5 columns */
+.tb2e.sheet .skill-row {
+  grid-template-columns: 1fr 1.5rem 22px 3rem 9rem;
+}
+
+/* -------------------------------------------- */
+/*  Advancement Dialog                          */
+/* -------------------------------------------- */
+
+.tb2e.advancement-dialog .advancement-dialog-body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.5rem 0;
+}
+
+.tb2e.advancement-dialog .advancement-dialog-title {
+  font-family: "Modesto Condensed", "Signika", serif;
+  font-size: 1.3rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: #e2e8f0;
+  margin: 0;
+}
+
+.tb2e.advancement-dialog .advancement-dialog-prompt {
+  color: #94a3b8;
+  font-size: 0.9rem;
+  margin: 0;
+}
+
+.tb2e.advancement-dialog .advancement-rating-display,
+.tb2e-advancement-card .advancement-card-rating {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-size: 1.4rem;
+  font-weight: bold;
+}
+
+.tb2e.advancement-dialog .advancement-rating-display .fa-arrow-right,
+.tb2e-advancement-card .advancement-card-rating .fa-arrow-right {
+  color: #d97706;
+  font-size: 0.9rem;
+}
+
+.tb2e.advancement-dialog .advancement-rating.old,
+.tb2e-advancement-card .advancement-rating.old {
+  color: #94a3b8;
+}
+
+.tb2e.advancement-dialog .advancement-rating.new,
+.tb2e-advancement-card .advancement-rating.new {
+  color: #f59e0b;
+  text-shadow: 0 0 8px rgba(245, 158, 11, 0.4);
+}
+
+/* -------------------------------------------- */
+/*  Advancement Chat Card                       */
+/* -------------------------------------------- */
+
+.tb2e-advancement-card {
+  border: 1px solid #d97706;
+  border-radius: 6px;
+  overflow: hidden;
+  background: #fffbeb;
+  font-family: "Signika", sans-serif;
+}
+
+.tb2e-advancement-card .advancement-card-header {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 0.75rem;
+  background: #fef3c7;
+  border-bottom: 1px solid #fde68a;
+}
+
+.tb2e-advancement-card .advancement-card-portrait {
+  width: 32px;
+  height: 32px;
+  border-radius: 4px;
+  object-fit: cover;
+  border: 1px solid #d97706;
+}
+
+.tb2e-advancement-card .advancement-card-info {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.2;
+}
+
+.tb2e-advancement-card .advancement-card-name {
+  font-weight: bold;
+  font-size: 0.85rem;
+  color: #0f172a;
+}
+
+.tb2e-advancement-card .advancement-card-skill {
+  font-family: "Modesto Condensed", "Signika", serif;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: #d97706;
+}
+
+.tb2e-advancement-card .advancement-card-banner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  padding: 0.5rem;
+  font-family: "Modesto Condensed", "Signika", serif;
+  font-size: 1.05rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-weight: bold;
+  background: linear-gradient(135deg, #fef3c7, #fde68a);
+  color: #92400e;
+  border-top: 2px solid #d97706;
+}
+
+.tb2e-advancement-card .advancement-card-rating {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  padding: 0.6rem;
+  font-size: 1.4rem;
+  font-weight: bold;
+  background: #fffbeb;
+}
+
+.tb2e-advancement-card .advancement-card-rating .advancement-rating.old {
+  color: #94a3b8;
+}
+
+.tb2e-advancement-card .advancement-card-rating .advancement-rating.new {
+  color: #d97706;
+}
+
+/* -------------------------------------------- */
+/*  Utility                                     */
+/* -------------------------------------------- */
+
+.hidden {
+  display: none !important;
+}
+
+/* -------------------------------------------- */
+/*  Roll Dialog — Mode Toggle                   */
+/* -------------------------------------------- */
+
+.tb2e.roll-dialog .roll-dialog-mode-toggle {
+  all: unset;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.7rem;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: #93c5fd;
+  background: rgba(37, 99, 235, 0.25);
+  padding: 2px 8px;
+  border-radius: 3px;
+  cursor: pointer;
+  transition: background-color 0.15s, color 0.15s;
+}
+
+.tb2e.roll-dialog .roll-dialog-mode-toggle:hover:not(.locked) {
+  background: rgba(37, 99, 235, 0.4);
+  color: #bfdbfe;
+}
+
+.tb2e.roll-dialog .roll-dialog-mode-toggle.locked {
+  cursor: default;
+}
+
+.tb2e.roll-dialog .roll-dialog-mode-toggle .mode-caret {
+  font-size: 0.6rem;
+  opacity: 0.7;
+}
+
+/* -------------------------------------------- */
+/*  Roll Dialog — Challenge Selector            */
+/* -------------------------------------------- */
+
+.tb2e.roll-dialog .roll-dialog-challenge {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.tb2e.roll-dialog .roll-dialog-challenge label {
+  font-family: "Modesto Condensed", "Signika", serif;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: #94a3b8;
+}
+
+.tb2e.roll-dialog .roll-dialog-challenge select {
+  font-size: 0.9rem;
+  padding: 0.4rem 0.5rem;
+}
+
+/* -------------------------------------------- */
+/*  Chat — Pending Versus Banner                */
+/* -------------------------------------------- */
+
+.tb2e-roll-card .banner-pending {
+  background: linear-gradient(135deg, #f5f5f4, #e7e5e4);
+  color: #78716c;
+  border-top: 2px solid #a8a29e;
+  animation: tb2e-pending-pulse 2.5s ease-in-out infinite;
+}
+
+.tb2e-roll-card .banner-resolved {
+  background: linear-gradient(135deg, #ecfdf5, #d1fae5);
+  color: #065f46;
+  border-top: 2px solid #6ee7b7;
+}
+
+@keyframes tb2e-pending-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.7; }
+}
+
+/* -------------------------------------------- */
+/*  Chat — Versus Resolution Card               */
+/* -------------------------------------------- */
+
+.tb2e-versus-card {
+  border: 1px solid #e2e8f0;
+  border-radius: 6px;
+  overflow: hidden;
+  background: #f5f7fa;
+  font-family: "Signika", sans-serif;
+}
+
+.tb2e-versus-card .versus-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.4rem 0.75rem;
+  background: #ebeef3;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.tb2e-versus-card .versus-card-title {
+  font-family: "Modesto Condensed", "Signika", serif;
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #2563eb;
+  font-weight: bold;
+}
+
+.tb2e-versus-card .versus-combatants {
+  display: flex;
+  align-items: center;
+  padding: 0.75rem;
+  gap: 0.5rem;
+}
+
+.tb2e-versus-card .versus-combatant {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.25rem;
+  text-align: center;
+}
+
+.tb2e-versus-card .versus-portrait {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #cbd5e1;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.tb2e-versus-card .versus-winner .versus-portrait {
+  border-color: #2563eb;
+  box-shadow: 0 0 10px rgba(37, 99, 235, 0.4);
+}
+
+.tb2e-versus-card .versus-name {
+  font-weight: bold;
+  font-size: 0.85rem;
+  color: #0f172a;
+}
+
+.tb2e-versus-card .versus-skill {
+  font-family: "Modesto Condensed", "Signika", serif;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: #64748b;
+}
+
+.tb2e-versus-card .versus-successes {
+  font-size: 0.8rem;
+  font-weight: bold;
+  color: #475569;
+}
+
+.tb2e-versus-card .versus-divider {
+  font-family: "Modesto Condensed", "Signika", serif;
+  font-size: 1.1rem;
+  font-weight: bold;
+  color: #94a3b8;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  flex-shrink: 0;
+}
+
+.tb2e-versus-card .versus-banner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  padding: 0.5rem;
+  font-family: "Modesto Condensed", "Signika", serif;
+  font-size: 1.05rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-weight: bold;
+  background: linear-gradient(135deg, #dbeafe, #bfdbfe);
+  color: #1d4ed8;
+  border-top: 2px solid #2563eb;
+}
+
+.tb2e-versus-card .versus-winner-name {
+  color: #1e40af;
+}

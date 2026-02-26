@@ -1,0 +1,28 @@
+{{!--
+  Advancement bubbles for abilities and skills.
+  Expected context:
+    path   - data path prefix (e.g. "system.abilities.will" or "system.skills.fighter")
+    rating - current rating value
+    pass   - current pass count
+    fail   - current fail count
+    passNeeded - total pass bubbles needed for advancement
+    failNeeded - total fail bubbles needed for advancement
+--}}
+<div class="advancement-bubbles">
+  <div class="bubble-row pass-bubbles" title="{{localize 'TB2E.Fields.Pass'}}">
+    <span class="bubble-label">P</span>
+    {{#each passArray}}
+    <button type="button" class="bubble pass-bubble{{#if filled}} filled{{/if}}"
+            data-action="toggleBubble" data-path="{{../path}}.pass" data-index="{{@index}}">
+    </button>
+    {{/each}}
+  </div>
+  <div class="bubble-row fail-bubbles" title="{{localize 'TB2E.Fields.Fail'}}">
+    <span class="bubble-label">F</span>
+    {{#each failArray}}
+    <button type="button" class="bubble fail-bubble{{#if filled}} filled{{/if}}"
+            data-action="toggleBubble" data-path="{{../path}}.fail" data-index="{{@index}}">
+    </button>
+    {{/each}}
+  </div>
+</div>

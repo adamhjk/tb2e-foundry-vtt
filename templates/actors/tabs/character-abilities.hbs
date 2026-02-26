@@ -1,0 +1,71 @@
+<section class="tab scrollable{{#if tab.active}} active{{/if}}" data-group="{{tab.group}}" data-tab="{{tab.id}}">
+
+  {{!-- Raw Abilities --}}
+  <fieldset class="abilities-group">
+    <legend><i class="fa-solid fa-dice-d20"></i> {{localize "TB2E.Section.RawAbilities"}}</legend>
+    {{#each rawAbilities}}
+    <div class="ability-row rollable" data-action="rollTest" data-type="ability" data-key="{{key}}">
+      <span class="ability-name">{{label}}</span>
+      {{#if canAdvance}}
+      <button type="button" class="btn-advance" data-action="advance" data-type="ability" data-key="{{key}}">
+        <i class="fa-solid fa-arrow-up"></i>
+      </button>
+      {{else}}
+      <span class="btn-advance-spacer"></span>
+      {{/if}}
+      <input type="number" name="{{path}}.rating" value="{{rating}}" min="0" max="10" class="ability-rating">
+      {{> "systems/tb2e/templates/actors/parts/advancement-bubbles.hbs"
+          path=path rating=rating pass=pass fail=fail passArray=passArray failArray=failArray}}
+    </div>
+    {{/each}}
+
+    {{!-- Nature Descriptors --}}
+    <div class="nature-descriptors">
+      <label>{{localize "TB2E.Fields.NatureDescriptors"}}</label>
+      <input type="text" name="system.natureDescriptors" value="{{system.natureDescriptors}}"
+             placeholder="Sneaking, Riddling, Merrymaking...">
+    </div>
+  </fieldset>
+
+  {{!-- Town Abilities --}}
+  <fieldset class="abilities-group">
+    <legend><i class="fa-solid fa-city"></i> {{localize "TB2E.Section.TownAbilities"}}</legend>
+    {{#each townAbilities}}
+    <div class="ability-row rollable" data-action="rollTest" data-type="ability" data-key="{{key}}">
+      <span class="ability-name">{{label}}</span>
+      {{#if canAdvance}}
+      <button type="button" class="btn-advance" data-action="advance" data-type="ability" data-key="{{key}}">
+        <i class="fa-solid fa-arrow-up"></i>
+      </button>
+      {{else}}
+      <span class="btn-advance-spacer"></span>
+      {{/if}}
+      <input type="number" name="{{path}}.rating" value="{{rating}}" min="0" max="10" class="ability-rating">
+      {{> "systems/tb2e/templates/actors/parts/advancement-bubbles.hbs"
+          path=path rating=rating pass=pass fail=fail passArray=passArray failArray=failArray}}
+    </div>
+    {{/each}}
+
+    {{!-- Might (no advancement, not rollable) --}}
+    <div class="ability-row might-row">
+      <span class="ability-name">{{localize "TB2E.Ability.Might"}}</span>
+      <input type="number" name="system.might" value="{{system.might}}" min="0" max="10" class="ability-rating">
+    </div>
+  </fieldset>
+
+  {{!-- Checks --}}
+  <fieldset class="checks-group">
+    <legend><i class="fa-solid fa-check-double"></i> {{localize "TB2E.Fields.Checks"}}</legend>
+    <div class="checks-row">
+      <div class="field-pair">
+        <label>{{localize "TB2E.Fields.Earned"}}</label>
+        <input type="number" name="system.checks.earned" value="{{system.checks.earned}}" min="0">
+      </div>
+      <div class="field-pair">
+        <label>{{localize "TB2E.Fields.Remaining"}}</label>
+        <input type="number" name="system.checks.remaining" value="{{system.checks.remaining}}" min="0">
+      </div>
+    </div>
+  </fieldset>
+
+</section>
