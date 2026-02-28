@@ -1,7 +1,11 @@
 import CharacterData from "./character.mjs";
+import MonsterData from "./monster.mjs";
+import NPCData from "./npc.mjs";
 
-export { CharacterData };
+export { CharacterData, MonsterData, NPCData };
 
 export const config = {
-  character: CharacterData
+  character: CharacterData,
+  monster: MonsterData,
+  npc: NPCData
 };

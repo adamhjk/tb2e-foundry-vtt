@@ -8,6 +8,18 @@ import { getEligibleHelpers } from "./help.mjs";
 /* -------------------------------------------- */
 
 /**
+ * Build a subtitle string for chat cards based on actor type.
+ * For NPCs, combines stock + class into "NPC — Human Innkeeper".
+ * @param {Actor} actor
+ * @returns {string} Subtitle string, or empty string for non-NPC actors.
+ */
+function _buildActorSubtitle(actor) {
+  if ( actor.type !== "npc" ) return "";
+  const parts = [actor.system.stock, actor.system.class].filter(Boolean);
+  return parts.length ? `NPC \u2014 ${parts.join(" ")}` : "NPC";
+}
+
+/**
  * Resolve the label and dice pool for a roll.
  * @param {Actor} actor - The actor rolling.
  * @param {"ability"|"skill"} type - Whether this is an ability or skill roll.
@@ -17,8 +29,21 @@ import { getEligibleHelpers } from "./help.mjs";
 function _resolveRollData(actor, type, key) {
   const cfg = type === "ability" ? abilities[key] : skills[key];
   const label = game.i18n.localize(cfg.label);
-  const data = type === "ability" ? actor.system.abilities[key] : actor.system.skills[key];
-  return { label, dice: data.rating };
+
+  if ( type === "ability" ) {
+    const data = actor.system.abilities[key];
+    // NPC abilities are flat numbers; character abilities are {rating, pass, fail}.
+    const dice = typeof data === "number" ? data : data.rating;
+    return { label, dice };
+  }
+
+  // NPC skills are an array of {key, rating}; character skills are keyed objects.
+  const skillData = actor.system.skills;
+  if ( Array.isArray(skillData) ) {
+    const entry = skillData.find(s => s.key === key);
+    return { label, dice: entry?.rating ?? 0 };
+  }
+  return { label, dice: skillData[key].rating };
 }
 
 /**
@@ -71,6 +96,8 @@ export function gatherHelpModifiers(helpers) {
  * @param {boolean} options.pass - Whether the test was passed.
  */
 export async function _logAdvancement({ actor, type, key, baseDice, pass }) {
+  // Only characters track advancement.
+  if ( actor.type !== "character" ) return;
   const category = type === "ability" ? "abilities" : "skills";
   const result = pass ? "pass" : "fail";
   const path = `system.${category}.${key}.${result}`;
@@ -100,14 +127,21 @@ async function _showRollDialog({ label, dice, modifiers = [], actorId, dispositi
   let helperBonus = preSelectedCount;
   const openChallenges = disposition ? [] : PendingVersusRegistry.getOpenChallenges(actorId);
 
+  const pcHelpers = availableHelpers.filter(h => !h.isNPC);
+  const npcHelpers = availableHelpers.filter(h => h.isNPC);
+  const hasHelpers = pcHelpers.length > 0 || npcHelpers.length > 0;
+
   const content = await foundry.applications.handlebars.renderTemplate("systems/tb2e/templates/dice/roll-dialog.hbs", {
     label,
     dice,
     modifiers,
     total: dice + staticModBonus + preSelectedCount,
     disposition,
-    availableHelpers,
+    hasHelpers,
+    pcHelpers,
+    npcHelpers,
     helpLabel: game.i18n.localize("TB2E.Roll.Help"),
+    npcHelpLabel: game.i18n.localize("TB2E.Help.NPCSection"),
     obstacleLabel: game.i18n.localize("TB2E.Roll.Obstacle"),
     dicePoolLabel: game.i18n.localize("TB2E.Roll.DicePool"),
     independentLabel: game.i18n.localize("TB2E.Roll.Independent"),
@@ -357,6 +391,7 @@ async function _handleIndependentRoll({ actor, type, key, label, baseDice, poolS
   const chatContent = await foundry.applications.handlebars.renderTemplate("systems/tb2e/templates/chat/roll-result.hbs", {
     actorName: actor.name,
     actorImg: actor.img,
+    actorSubtitle: _buildActorSubtitle(actor),
     label,
     baseDice,
     poolSize,
@@ -418,6 +453,7 @@ async function _handleVersusRoll({ actor, type, key, label, baseDice, poolSize, 
     const chatContent = await foundry.applications.handlebars.renderTemplate("systems/tb2e/templates/chat/versus-pending.hbs", {
       actorName: actor.name,
       actorImg: actor.img,
+      actorSubtitle: _buildActorSubtitle(actor),
       label,
       baseDice,
       poolSize,
@@ -461,6 +497,7 @@ async function _handleVersusRoll({ actor, type, key, label, baseDice, poolSize, 
     const chatContent = await foundry.applications.handlebars.renderTemplate("systems/tb2e/templates/chat/versus-pending.hbs", {
       actorName: actor.name,
       actorImg: actor.img,
+      actorSubtitle: _buildActorSubtitle(actor),
       label,
       baseDice,
       poolSize,

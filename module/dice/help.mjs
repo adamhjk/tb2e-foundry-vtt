@@ -8,7 +8,39 @@ import { abilities, skills } from "../config.mjs";
  * @property {string} helpViaLabel - Localized label
  * @property {string} reason - Why they qualify (localization key)
  * @property {string[]} warnings - Optional warnings (spell time, etc.)
+ * @property {boolean} isNPC - Whether this helper is an NPC
  */
+
+/* -------------------------------------------- */
+/*  Data Access Helpers                         */
+/* -------------------------------------------- */
+
+/**
+ * Get an ability rating from an actor, handling both character (object) and NPC (flat number) data.
+ * @param {Actor} actor
+ * @param {string} key
+ * @returns {number}
+ */
+function _getAbilityRating(actor, key) {
+  const data = actor.system.abilities[key];
+  if ( typeof data === "number" ) return data;
+  return data?.rating ?? 0;
+}
+
+/**
+ * Get a skill rating from an actor, handling both character (keyed object) and NPC (array) data.
+ * @param {Actor} actor
+ * @param {string} key
+ * @returns {number}
+ */
+function _getSkillRating(actor, key) {
+  const skillData = actor.system.skills;
+  if ( Array.isArray(skillData) ) {
+    const entry = skillData.find(s => s.key === key);
+    return entry?.rating ?? 0;
+  }
+  return skillData[key]?.rating ?? 0;
+}
 
 /**
  * Check if an actor is blocked from helping anyone.
@@ -42,8 +74,21 @@ export function getEligibleHelpers({ actor, type, key, testContext = {}, candida
   if ( testContext.isRecovery ) return [];
   if ( testContext.isLifestyle ) return [];
 
-  // Build candidate list
-  const pool = candidates ?? game.actors.filter(a => a.type === "character" && a.id !== actor.id);
+  // Build candidate list — characters + NPCs with tokens in the current scene
+  let pool;
+  if ( candidates ) {
+    pool = candidates;
+  } else {
+    const sceneActorIds = new Set(
+      (canvas?.scene?.tokens ?? []).map(t => t.actorId).filter(Boolean)
+    );
+    pool = game.actors.filter(a => {
+      if ( a.id === actor.id ) return false;
+      if ( a.type === "character" ) return true;
+      if ( a.type === "npc" ) return sceneActorIds.has(a.id);
+      return false;
+    });
+  }
 
   const results = [];
 
@@ -65,7 +110,8 @@ export function getEligibleHelpers({ actor, type, key, testContext = {}, candida
       helpVia: match.helpVia,
       helpViaLabel: match.helpViaLabel,
       reason: match.reason,
-      warnings: match.warnings
+      warnings: match.warnings,
+      isNPC: candidate.type === "npc"
     });
   }
 
@@ -102,8 +148,7 @@ function _findBestHelpPath(candidate, type, key, roller, testContext) {
  */
 function _findAbilityHelpPath(candidate, key, warnings) {
   // Same ability at rating > 0
-  const abilityData = candidate.system.abilities[key];
-  if ( abilityData && abilityData.rating > 0 ) {
+  if ( _getAbilityRating(candidate, key) > 0 ) {
     const cfg = abilities[key];
     return {
       helpVia: key,
@@ -114,8 +159,7 @@ function _findAbilityHelpPath(candidate, key, warnings) {
   }
 
   // Nature with descriptor (always offered as option — GM verifies descriptor relevance)
-  const natureData = candidate.system.abilities.nature;
-  if ( natureData && natureData.rating > 0 ) {
+  if ( _getAbilityRating(candidate, "nature") > 0 ) {
     return {
       helpVia: "nature",
       helpViaLabel: game.i18n.localize(abilities.nature.label),
@@ -137,8 +181,7 @@ function _findSkillHelpPath(candidate, key, roller, warnings) {
   if ( !skillCfg ) return null;
 
   // 1. Same skill at rating > 0
-  const sameSkillData = candidate.system.skills[key];
-  if ( sameSkillData && sameSkillData.rating > 0 ) {
+  if ( _getSkillRating(candidate, key) > 0 ) {
     return {
       helpVia: key,
       helpViaLabel: game.i18n.localize(skillCfg.label),
@@ -150,8 +193,7 @@ function _findSkillHelpPath(candidate, key, roller, warnings) {
   // 2. Suggested help skill at rating > 0
   const helpSkills = skillCfg.help || [];
   for ( const helpKey of helpSkills ) {
-    const helpSkillData = candidate.system.skills[helpKey];
-    if ( helpSkillData && helpSkillData.rating > 0 ) {
+    if ( _getSkillRating(candidate, helpKey) > 0 ) {
       const helpCfg = skills[helpKey];
       return {
         helpVia: helpKey,
@@ -163,12 +205,11 @@ function _findSkillHelpPath(candidate, key, roller, warnings) {
   }
 
   // 3. Beginner's Luck help: if the roller is using BL (skill rating 0),
-  //    helpers can use the BL ability (Will or Health)
-  const rollerSkillData = roller.system.skills[key];
-  if ( !rollerSkillData || rollerSkillData.rating === 0 ) {
+  //    helpers can use the BL ability (Will or Health).
+  //    NPCs don't use BL, so skip this path if the roller is an NPC.
+  if ( roller.type === "character" && _getSkillRating(roller, key) === 0 ) {
     const blAbilityKey = skillCfg.bl === "H" ? "health" : "will";
-    const blAbilityData = candidate.system.abilities[blAbilityKey];
-    if ( blAbilityData && blAbilityData.rating > 0 ) {
+    if ( _getAbilityRating(candidate, blAbilityKey) > 0 ) {
       const blCfg = abilities[blAbilityKey];
       return {
         helpVia: blAbilityKey,
@@ -180,8 +221,7 @@ function _findSkillHelpPath(candidate, key, roller, warnings) {
   }
 
   // 4. Nature with descriptor (GM verifies relevance)
-  const natureData = candidate.system.abilities.nature;
-  if ( natureData && natureData.rating > 0 ) {
+  if ( _getAbilityRating(candidate, "nature") > 0 ) {
     return {
       helpVia: "nature",
       helpViaLabel: game.i18n.localize(abilities.nature.label),

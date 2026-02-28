@@ -1,0 +1,120 @@
+<section class="monster-body scrollable">
+
+  {{!-- Core Stats --}}
+  <fieldset>
+    <legend><i class="fa-solid fa-dragon"></i> {{localize "TB2E.Monster.CoreStats"}}</legend>
+    <div class="monster-stat-grid">
+      <div class="field-pair">
+        <label>{{localize "TB2E.Monster.Nature"}}</label>
+        <input type="number" name="system.nature" value="{{system.nature}}" min="0">
+      </div>
+      <div class="field-pair">
+        <label>{{localize "TB2E.Fields.Might"}}</label>
+        <input type="number" name="system.might" value="{{system.might}}" min="0" max="8">
+      </div>
+      <div class="field-pair">
+        <label>{{localize "TB2E.Monster.Precedence"}}</label>
+        <input type="text" name="system.precedence" value="{{system.precedence}}"
+               placeholder="{{localize 'TB2E.Monster.PrecedencePlaceholder'}}">
+      </div>
+      <div class="field-pair">
+        <label>{{localize "TB2E.Monster.Type"}}</label>
+        <input type="text" name="system.type" value="{{system.type}}"
+               placeholder="{{localize 'TB2E.Monster.TypePlaceholder'}}">
+      </div>
+    </div>
+    <div class="field-pair monster-nature-descriptors">
+      <label>{{localize "TB2E.Fields.NatureDescriptors"}}</label>
+      <input type="text" name="system.natureDescriptors" value="{{system.natureDescriptors}}"
+             placeholder="{{localize 'TB2E.Monster.NatureDescriptorsPlaceholder'}}">
+    </div>
+  </fieldset>
+
+  {{!-- Conflict Dispositions --}}
+  <fieldset>
+    <legend><i class="fa-solid fa-shield-halved"></i> {{localize "TB2E.Monster.Dispositions"}}</legend>
+    <p class="hint">{{localize "TB2E.Monster.DispositionsHint"}}</p>
+    <div class="dispositions-table">
+      {{#each dispositions}}
+      <div class="disposition-row tier-{{tier}}">
+        <input type="text" name="system.dispositions.{{idx}}.conflictType" value="{{conflictType}}"
+               placeholder="{{localize 'TB2E.Monster.ConflictType'}}" class="disposition-type">
+        <input type="number" name="system.dispositions.{{idx}}.hp" value="{{hp}}"
+               min="0" class="disposition-hp">
+      </div>
+      {{/each}}
+    </div>
+  </fieldset>
+
+  {{!-- Weapons --}}
+  <fieldset>
+    <legend><i class="fa-solid fa-sword"></i> {{localize "TB2E.Monster.Weapons"}}</legend>
+    <table class="weapons-table">
+      <thead>
+        <tr>
+          <th>{{localize "TB2E.Fields.Name"}}</th>
+          <th>{{localize "TB2E.Monster.ConflictShort"}}</th>
+          <th class="col-adfm">A</th>
+          <th class="col-adfm">D</th>
+          <th class="col-adfm">F</th>
+          <th class="col-adfm">M</th>
+          <th class="col-action"></th>
+        </tr>
+      </thead>
+      <tbody>
+        {{#each weapons}}
+        <tr>
+          <td><input type="text" name="system.weapons.{{idx}}.name" value="{{name}}"></td>
+          <td><input type="text" name="system.weapons.{{idx}}.conflictTypes" value="{{conflictTypes}}"
+                     placeholder="Kill, Cap"></td>
+          <td class="col-adfm"><input type="text" name="system.weapons.{{idx}}.attack" value="{{attack}}"
+                     placeholder="&mdash;"></td>
+          <td class="col-adfm"><input type="text" name="system.weapons.{{idx}}.defend" value="{{defend}}"
+                     placeholder="&mdash;"></td>
+          <td class="col-adfm"><input type="text" name="system.weapons.{{idx}}.feint" value="{{feint}}"
+                     placeholder="&mdash;"></td>
+          <td class="col-adfm"><input type="text" name="system.weapons.{{idx}}.maneuver" value="{{maneuver}}"
+                     placeholder="&mdash;"></td>
+          <td class="col-action">
+            <button type="button" class="btn-delete" data-action="deleteWeapon" data-index="{{idx}}"
+                    title="{{localize 'TB2E.Action.DeleteRow'}}">
+              <i class="fa-solid fa-trash"></i>
+            </button>
+          </td>
+        </tr>
+        {{/each}}
+      </tbody>
+    </table>
+    <button type="button" class="btn-add" data-action="addWeapon">
+      <i class="fa-solid fa-plus"></i> {{localize "TB2E.Monster.AddWeapon"}}
+    </button>
+  </fieldset>
+
+  {{!-- Instinct & Armor --}}
+  <fieldset>
+    <legend><i class="fa-solid fa-bolt"></i> {{localize "TB2E.Monster.InstinctArmor"}}</legend>
+    <div class="field-pair">
+      <label>{{localize "TB2E.Fields.Instinct"}}</label>
+      <input type="text" name="system.instinct" value="{{system.instinct}}"
+             placeholder="{{localize 'TB2E.Monster.InstinctPlaceholder'}}">
+    </div>
+    <div class="field-pair" style="margin-top: 0.5rem;">
+      <label>{{localize "TB2E.Monster.Armor"}}</label>
+      <input type="text" name="system.armor" value="{{system.armor}}"
+             placeholder="{{localize 'TB2E.Monster.ArmorPlaceholder'}}">
+    </div>
+  </fieldset>
+
+  {{!-- Special Rules --}}
+  <fieldset>
+    <legend><i class="fa-solid fa-scroll"></i> {{localize "TB2E.Monster.SpecialRules"}}</legend>
+    {{editor system.specialRules target="system.specialRules" button=true editable=true}}
+  </fieldset>
+
+  {{!-- Description --}}
+  <fieldset>
+    <legend><i class="fa-solid fa-book-open"></i> {{localize "TB2E.Monster.Description"}}</legend>
+    {{editor system.description target="system.description" button=true editable=true}}
+  </fieldset>
+
+</section>

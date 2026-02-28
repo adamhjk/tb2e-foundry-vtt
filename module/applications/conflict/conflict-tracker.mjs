@@ -640,6 +640,22 @@ export default class ConflictTracker extends CombatTracker {
   /* -------------------------------------------- */
 
   /**
+   * Resolve the group for an actor based on their stored team preference.
+   * @param {Combat} combat
+   * @param {Actor} actor
+   * @returns {string|null}
+   */
+  #resolveGroupForActor(combat, actor) {
+    const team = actor.system?.conflict?.team;
+    if ( !team ) return null;
+    const groups = Array.from(combat.groups);
+    if ( groups.length < 2 ) return null;
+    return team === "party" ? groups[0].id : groups[1].id;
+  }
+
+  /* -------------------------------------------- */
+
+  /**
    * Handle adding a combatant via the select dropdown.
    * @param {Event} event
    */
@@ -655,11 +671,13 @@ export default class ConflictTracker extends CombatTracker {
     const actor = game.actors.get(actorId);
     if ( !actor ) return;
 
+    const targetGroup = this.#resolveGroupForActor(combat, actor) ?? groupId;
+
     await combat.createEmbeddedDocuments("Combatant", [{
       actorId: actor.id,
       name: actor.name,
       img: actor.img,
-      group: groupId,
+      group: targetGroup,
       type: "conflict"
     }]);
 
@@ -697,11 +715,13 @@ export default class ConflictTracker extends CombatTracker {
       return;
     }
 
+    const targetGroup = this.#resolveGroupForActor(combat, actor) ?? groupId;
+
     await combat.createEmbeddedDocuments("Combatant", [{
       actorId: actor.id,
       name: actor.name,
       img: actor.img,
-      group: groupId,
+      group: targetGroup,
       type: "conflict"
     }]);
   }

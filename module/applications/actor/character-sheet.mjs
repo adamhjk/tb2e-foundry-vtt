@@ -17,7 +17,8 @@ export default class CharacterSheet extends HandlebarsApplicationMixin(ActorShee
       addRow: CharacterSheet.#onAddRow,
       deleteRow: CharacterSheet.#onDeleteRow,
       rollTest: CharacterSheet.#onRollTest,
-      advance: CharacterSheet.#onAdvance
+      advance: CharacterSheet.#onAdvance,
+      toggleTeam: CharacterSheet.#onToggleTeam
     },
     form: { submitOnChange: true },
     window: { resizable: true }
@@ -164,6 +165,14 @@ export default class CharacterSheet extends HandlebarsApplicationMixin(ActorShee
     context.personaLabel = game.i18n.localize("TB2E.Fields.Persona");
     context.fatePips = this.#buildPips(sys.fate.current, sys.fate.total);
     context.personaPips = this.#buildPips(sys.persona.current, sys.persona.total);
+
+    // Team toggle display.
+    const team = sys.conflict.team || "party";
+    context.teamClass = `team-${team}`;
+    context.teamIcon = team === "party" ? "fa-solid fa-users" : "fa-solid fa-dragon";
+    context.teamLabel = game.i18n.localize(
+      team === "party" ? "TB2E.Conflict.TeamParty" : "TB2E.Conflict.TeamGM"
+    );
 
     // Conflict disposition display.
     const disp = sys.conflict.hp;
@@ -531,5 +540,15 @@ export default class CharacterSheet extends HandlebarsApplicationMixin(ActorShee
       type: target.dataset.type,
       key: target.dataset.key
     });
+  }
+
+  /* -------------------------------------------- */
+
+  /**
+   * Toggle team assignment between "party" and "gm".
+   */
+  static #onToggleTeam(event, target) {
+    const current = this.document.system.conflict.team || "party";
+    this.document.update({ "system.conflict.team": current === "party" ? "gm" : "party" });
   }
 }

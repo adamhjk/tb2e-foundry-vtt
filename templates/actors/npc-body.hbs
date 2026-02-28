@@ -1,0 +1,162 @@
+<section class="npc-body scrollable">
+
+  {{!-- Identity --}}
+  <fieldset class="npc-identity">
+    <legend><i class="fa-solid fa-id-card"></i> {{localize "TB2E.NPC.Identity"}}</legend>
+    <div class="npc-identity-fields">
+      <label>{{localize "TB2E.Fields.Stock"}}
+        <input type="text" name="system.stock" value="{{system.stock}}" placeholder="Human, Elf, Dwarf...">
+      </label>
+      <label>{{localize "TB2E.Fields.Class"}}
+        <input type="text" name="system.class" value="{{system.class}}" placeholder="Innkeeper, Guard...">
+      </label>
+      <label class="npc-identity-goal">{{localize "TB2E.Fields.Goal"}}
+        <input type="text" name="system.goal" value="{{system.goal}}" placeholder="{{localize 'TB2E.Fields.GoalHint'}}">
+      </label>
+    </div>
+  </fieldset>
+
+  {{!-- Raw Abilities --}}
+  <fieldset>
+    <legend><i class="fa-solid fa-dice-d20"></i> {{localize "TB2E.NPC.RawAbilities"}}</legend>
+    <div class="npc-ability-grid">
+      {{#each rawAbilities}}
+      <div class="ability-row rollable" data-action="rollTest" data-type="ability" data-key="{{key}}">
+        <label class="ability-name">{{label}}</label>
+        <input type="number" name="system.abilities.{{key}}" value="{{value}}" min="0">
+      </div>
+      {{/each}}
+    </div>
+  </fieldset>
+
+  {{!-- Town Abilities --}}
+  <fieldset>
+    <legend><i class="fa-solid fa-city"></i> {{localize "TB2E.NPC.TownAbilities"}}</legend>
+    <div class="npc-ability-grid">
+      {{#each townAbilities}}
+      <div class="ability-row rollable" data-action="rollTest" data-type="ability" data-key="{{key}}">
+        <label class="ability-name">{{label}}</label>
+        <input type="number" name="system.abilities.{{key}}" value="{{value}}" min="0">
+      </div>
+      {{/each}}
+    </div>
+  </fieldset>
+
+  {{!-- Might --}}
+  <fieldset>
+    <legend><i class="fa-solid fa-fist-raised"></i> {{localize "TB2E.Fields.Might"}}</legend>
+    <div class="npc-ability-grid">
+      <div class="ability-row">
+        <label class="ability-name">{{localize "TB2E.Fields.Might"}}</label>
+        <input type="number" name="system.might" value="{{system.might}}" min="0">
+      </div>
+    </div>
+  </fieldset>
+
+  {{!-- Skills --}}
+  <fieldset>
+    <legend><i class="fa-solid fa-hammer"></i> {{localize "TB2E.NPC.Skills"}}</legend>
+    <div class="npc-skills-list">
+      {{#each skills}}
+      <div class="skill-row rollable" data-action="rollTest" data-type="skill" data-key="{{key}}">
+        <select name="system.skills.{{idx}}.key" class="skill-name">
+          <option value="">&mdash;</option>
+          {{#each skillOptions}}
+          <option value="{{key}}" {{#if selected}}selected{{/if}}>{{label}}</option>
+          {{/each}}
+        </select>
+        <input type="number" name="system.skills.{{idx}}.rating" value="{{rating}}" min="0" class="skill-rating">
+        <button type="button" class="btn-delete" data-action="deleteRow" data-array="skills" data-index="{{idx}}"
+                title="{{localize 'TB2E.Action.DeleteRow'}}">
+          <i class="fa-solid fa-trash"></i>
+        </button>
+      </div>
+      {{/each}}
+    </div>
+    <button type="button" class="btn-add" data-action="addRow" data-array="skills">
+      <i class="fa-solid fa-plus"></i> {{localize "TB2E.NPC.AddSkill"}}
+    </button>
+  </fieldset>
+
+  {{!-- Wises --}}
+  <fieldset>
+    <legend><i class="fa-solid fa-lightbulb"></i> {{localize "TB2E.NPC.Wises"}}</legend>
+    <div class="npc-wises-list">
+      {{#each wises}}
+      <div class="npc-wise-row">
+        <input type="text" name="system.wises.{{@index}}" value="{{this}}"
+               placeholder="{{localize 'TB2E.NPC.WisePlaceholder'}}">
+        <button type="button" class="btn-delete" data-action="deleteRow" data-array="wises" data-index="{{@index}}"
+                title="{{localize 'TB2E.Action.DeleteRow'}}">
+          <i class="fa-solid fa-trash"></i>
+        </button>
+      </div>
+      {{/each}}
+    </div>
+    <button type="button" class="btn-add" data-action="addRow" data-array="wises">
+      <i class="fa-solid fa-plus"></i> {{localize "TB2E.NPC.AddWise"}}
+    </button>
+  </fieldset>
+
+  {{!-- Traits --}}
+  <fieldset>
+    <legend><i class="fa-solid fa-star"></i> {{localize "TB2E.NPC.Traits"}}</legend>
+    <table class="npc-table">
+      <thead>
+        <tr>
+          <th>{{localize "TB2E.Fields.Name"}}</th>
+          <th class="col-rating">{{localize "TB2E.Fields.TraitLevel"}}</th>
+          <th class="col-action"></th>
+        </tr>
+      </thead>
+      <tbody>
+        {{#each traits}}
+        <tr>
+          <td><input type="text" name="system.traits.{{idx}}.name" value="{{name}}"></td>
+          <td class="col-rating">
+            <div class="trait-level-pips">
+              {{#each levels}}
+              <button type="button" class="trait-pip{{#if active}} active{{/if}}"
+                      data-action="setTraitLevel" data-index="{{../idx}}" data-level="{{value}}">
+                {{value}}
+              </button>
+              {{/each}}
+            </div>
+          </td>
+          <td class="col-action">
+            <button type="button" class="btn-delete" data-action="deleteRow" data-array="traits" data-index="{{idx}}"
+                    title="{{localize 'TB2E.Action.DeleteRow'}}">
+              <i class="fa-solid fa-trash"></i>
+            </button>
+          </td>
+        </tr>
+        {{/each}}
+      </tbody>
+    </table>
+    <button type="button" class="btn-add" data-action="addRow" data-array="traits">
+      <i class="fa-solid fa-plus"></i> {{localize "TB2E.NPC.AddTrait"}}
+    </button>
+  </fieldset>
+
+  {{!-- Conflict HP --}}
+  <fieldset>
+    <legend><i class="fa-solid fa-shield-halved"></i> {{localize "TB2E.Conflict.Title"}}</legend>
+    <div class="npc-ability-grid">
+      <div class="ability-row">
+        <label>{{localize "TB2E.Conflict.HP"}} ({{localize "TB2E.Fields.Current"}})</label>
+        <input type="number" name="system.conflict.hp.value" value="{{system.conflict.hp.value}}" min="0">
+      </div>
+      <div class="ability-row">
+        <label>{{localize "TB2E.Conflict.HP"}} (Max)</label>
+        <input type="number" name="system.conflict.hp.max" value="{{system.conflict.hp.max}}" min="0">
+      </div>
+    </div>
+  </fieldset>
+
+  {{!-- Description --}}
+  <fieldset>
+    <legend><i class="fa-solid fa-book-open"></i> {{localize "TB2E.NPC.Description"}}</legend>
+    {{editor system.description target="system.description" button=true editable=true}}
+  </fieldset>
+
+</section>

@@ -47,14 +47,15 @@
   </div>
   {{/if}}
 
-  {{#if availableHelpers.length}}
+  {{#if hasHelpers}}
   <div class="roll-dialog-helpers">
     <div class="helpers-heading">
       <i class="fa-solid fa-handshake-angle"></i>
       <span>{{helpLabel}}</span>
     </div>
+    {{#if pcHelpers.length}}
     <div class="helpers-list">
-      {{#each availableHelpers}}
+      {{#each pcHelpers}}
       <button type="button" class="helper-toggle" data-helper-id="{{id}}" data-help-via="{{helpVia}}">
         <span class="helper-name">{{name}}</span>
         <span class="helper-via">{{helpViaLabel}}</span>
@@ -65,6 +66,28 @@
       </button>
       {{/each}}
     </div>
+    {{/if}}
+    {{#if npcHelpers.length}}
+    <details class="helpers-npc-group">
+      <summary class="helpers-npc-heading">
+        <i class="fa-solid fa-users"></i>
+        <span>{{npcHelpLabel}}</span>
+        <span class="helpers-npc-count">({{npcHelpers.length}})</span>
+      </summary>
+      <div class="helpers-list">
+        {{#each npcHelpers}}
+        <button type="button" class="helper-toggle" data-helper-id="{{id}}" data-help-via="{{helpVia}}">
+          <span class="helper-name">{{name}}</span>
+          <span class="helper-via">{{helpViaLabel}}</span>
+          <span class="helper-dice">+1D</span>
+          {{#if warnings.length}}
+          <span class="helper-warning" title="{{#each warnings}}{{this}}{{#unless @last}}, {{/unless}}{{/each}}"><i class="fa-solid fa-triangle-exclamation"></i></span>
+          {{/if}}
+        </button>
+        {{/each}}
+      </div>
+    </details>
+    {{/if}}
   </div>
   {{/if}}
 

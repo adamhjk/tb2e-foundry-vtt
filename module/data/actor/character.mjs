@@ -163,7 +163,8 @@ export default class CharacterData extends foundry.abstract.TypeDataModel {
         hp: new fields.SchemaField({
           value: new fields.NumberField({ initial: 0, integer: true, min: 0 }),
           max: new fields.NumberField({ initial: 0, integer: true, min: 0 })
-        })
+        }),
+        team: new fields.StringField({ initial: "party", choices: ["party", "gm"] })
       }),
 
       // ---- Allies & Enemies ----

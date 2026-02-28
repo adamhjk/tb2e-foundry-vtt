@@ -1,4 +1,4 @@
-<header class="character-header">
+<header class="monster-header">
   <div class="portrait">
     <img src="{{actor.img}}" data-edit="img" alt="{{actor.name}}">
     <button type="button" class="team-switch {{teamClass}}"
@@ -19,24 +19,10 @@
            placeholder="{{localize 'TB2E.Fields.Name'}}" class="character-name">
     <div class="header-summary">
       <span class="summary-line">
-        {{#if system.stock}}{{system.stock}}{{/if}}
-        {{#if system.class}} {{system.class}}{{/if}}
-        {{#if system.level}} Lv.{{system.level}}{{/if}}
+        {{#if system.type}}{{system.type}}{{/if}}
+        {{#if system.precedence}} &mdash; {{localize "TB2E.Monster.Precedence"}}: {{system.precedence}}{{/if}}
       </span>
-      {{#if system.goal}}
-      <span class="header-goal" title="{{localize 'TB2E.Fields.Goal'}}">
-        <i class="fa-solid fa-bullseye"></i> {{system.goal}}
-      </span>
-      {{/if}}
     </div>
-  </div>
-  <div class="header-points">
-    {{> "systems/tb2e/templates/actors/parts/point-boxes.hbs" label=fateLabel path="system.fate"
-        current=system.fate.current total=system.fate.total spent=system.fate.spent
-        pips=fatePips icon="fa-solid fa-star"}}
-    {{> "systems/tb2e/templates/actors/parts/point-boxes.hbs" label=personaLabel path="system.persona"
-        current=system.persona.current total=system.persona.total spent=system.persona.spent
-        pips=personaPips icon="fa-solid fa-mask"}}
   </div>
   {{#if inConflict}}
   <div class="conflict-disposition">

@@ -24,6 +24,14 @@ Hooks.once("init", function() {
     character: {
       bar: ["conflict.hp"],
       value: []
+    },
+    monster: {
+      bar: ["conflict.hp"],
+      value: []
+    },
+    npc: {
+      bar: ["conflict.hp"],
+      value: []
     }
   };
 
@@ -37,6 +45,16 @@ Hooks.once("init", function() {
     types: ["character"],
     makeDefault: true,
     label: "TB2E.SheetCharacter"
+  });
+  DSC.registerSheet(Actor, "tb2e", applications.actor.MonsterSheet, {
+    types: ["monster"],
+    makeDefault: true,
+    label: "TB2E.SheetMonster"
+  });
+  DSC.registerSheet(Actor, "tb2e", applications.actor.NPCSheet, {
+    types: ["npc"],
+    makeDefault: true,
+    label: "TB2E.SheetNPC"
   });
 
   // Preload templates.

@@ -3,6 +3,9 @@
     <img class="roll-card-portrait" src="{{actorImg}}" alt="{{actorName}}">
     <div class="roll-card-info">
       <span class="roll-card-name">{{actorName}}</span>
+      {{#if actorSubtitle}}
+      <span class="roll-card-subtitle">{{actorSubtitle}}</span>
+      {{/if}}
       <span class="roll-card-test">{{versusLabel}} {{label}} {{testLabel}}</span>
     </div>
   </div>
