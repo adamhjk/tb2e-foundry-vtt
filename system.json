@@ -18,6 +18,10 @@
   "documentTypes": {
     "Actor": {
       "character": {}
+    },
+    "Combat": {
+      "conflict": {}
     }
-  }
+  },
+  "primaryTokenAttribute": "conflict.hp"
 }

@@ -1,10 +1,12 @@
 <div class="tb2e-roll-dialog-form">
   <div class="roll-dialog-header">
+    {{#unless disposition}}
     <button type="button" class="roll-dialog-badge roll-dialog-mode-toggle">
       <span class="mode-label">{{independentLabel}}</span>
       <i class="fa-solid fa-caret-down mode-caret"></i>
     </button>
     <input type="hidden" name="mode" value="independent">
+    {{/unless}}
     <h3 class="roll-dialog-title">{{label}}</h3>
   </div>
 
@@ -13,12 +15,15 @@
       <label for="poolSize">{{dicePoolLabel}}</label>
       <input type="number" name="poolSize" id="poolSize" value="{{dice}}" min="0" max="20" autofocus>
     </div>
+    {{#unless disposition}}
     <div class="roll-field roll-field-obstacle">
       <label for="obstacle">{{obstacleLabel}}</label>
       <input type="number" name="obstacle" id="obstacle" value="1" min="0" max="20">
     </div>
+    {{/unless}}
   </div>
 
+  {{#unless disposition}}
   <div class="roll-dialog-challenge hidden">
     <label>{{challengeLabel}}</label>
     <select name="challengeMessageId">
@@ -28,6 +33,7 @@
       {{/each}}
     </select>
   </div>
+  {{/unless}}
 
   {{#if modifiers.length}}
   <div class="roll-dialog-modifiers">
@@ -41,15 +47,38 @@
   </div>
   {{/if}}
 
+  {{#if availableHelpers.length}}
+  <div class="roll-dialog-helpers">
+    <div class="helpers-heading">
+      <i class="fa-solid fa-handshake-angle"></i>
+      <span>{{helpLabel}}</span>
+    </div>
+    <div class="helpers-list">
+      {{#each availableHelpers}}
+      <button type="button" class="helper-toggle" data-helper-id="{{id}}" data-help-via="{{helpVia}}">
+        <span class="helper-name">{{name}}</span>
+        <span class="helper-via">{{helpViaLabel}}</span>
+        <span class="helper-dice">+1D</span>
+        {{#if warnings.length}}
+        <span class="helper-warning" title="{{#each warnings}}{{this}}{{#unless @last}}, {{/unless}}{{/each}}"><i class="fa-solid fa-triangle-exclamation"></i></span>
+        {{/if}}
+      </button>
+      {{/each}}
+    </div>
+  </div>
+  {{/if}}
+
+  {{#unless disposition}}
   <div class="roll-dialog-options">
     <label class="roll-option">
       <input type="checkbox" name="logAdvancement" checked>
       <span>{{advancementLabel}}</span>
     </label>
   </div>
+  {{/unless}}
 
   <div class="roll-dialog-summary">
     <i class="fa-solid fa-dice"></i>
-    <span class="roll-dialog-summary-text">{{total}}D vs Ob 1</span>
+    <span class="roll-dialog-summary-text">{{#if disposition}}{{total}}D{{else}}{{total}}D vs Ob 1{{/if}}</span>
   </div>
 </div>

@@ -1,7 +1,7 @@
 <nav class="conditions-strip">
   {{#each conditions}}
   <button type="button" class="condition-btn{{#if active}} active{{/if}}"
-          data-action="toggleCondition" data-condition="{{key}}"
+          data-action="toggleCondition" data-condition="{{key}}" data-page="{{page}}"
           style="--cond-color: var({{color}})" title="{{label}}">
     <i class="{{icon}}"></i>
     <span class="condition-label">{{label}}</span>

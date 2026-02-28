@@ -85,7 +85,7 @@ export async function resolveVersus(opponentMessage) {
   const opponentActor = game.actors.get(vs.opponentActorId);
 
   // Render resolution card
-  const chatContent = await renderTemplate("systems/tb2e/templates/chat/versus-resolution.hbs", {
+  const chatContent = await foundry.applications.handlebars.renderTemplate("systems/tb2e/templates/chat/versus-resolution.hbs", {
     initiatorName: initiatorActor?.name ?? "Unknown",
     initiatorImg: initiatorActor?.img ?? "icons/svg/mystery-man.svg",
     initiatorSuccesses: initiatorVs.successes,

@@ -1,0 +1,55 @@
+{{!-- Conflict Tracker Footer --}}
+<div class="tb2e-conflict-footer">
+  {{#if isGM}}
+
+    {{#unless hasCombat}}
+    <div class="create-conflict-controls">
+      <select class="conflict-type-select">
+        {{#each conflictTypes}}
+        <option value="{{key}}">{{label}}</option>
+        {{/each}}
+      </select>
+      <button type="button" class="conflict-control" data-action="createConflict">
+        <i class="fa-solid fa-shield-halved"></i>
+        {{localize "TB2E.Conflict.CreateConflict"}}
+      </button>
+    </div>
+    {{/unless}}
+
+    {{#if isSetup}}
+    <button type="button" class="conflict-control" data-action="beginRolling"
+            {{#unless canBeginRolling}}disabled{{/unless}}>
+      <i class="fa-solid fa-dice"></i>
+      {{localize "TB2E.Conflict.BeginRolling"}}
+    </button>
+    {{/if}}
+
+  {{/if}}
+
+  {{#if isRolling}}
+  <div class="phase-indicator">
+    <i class="fa-solid fa-dice"></i>
+    {{localize "TB2E.Conflict.Phase.Rolling"}}
+  </div>
+  {{/if}}
+
+  {{#if isDistribution}}
+  <div class="phase-indicator">
+    <i class="fa-solid fa-scale-balanced"></i>
+    {{localize "TB2E.Conflict.Phase.Distribution"}}
+  </div>
+  {{/if}}
+
+  {{#if isActive}}
+    <button type="button" class="conflict-control" data-action="runConflict">
+      <i class="fa-solid fa-swords"></i>
+      {{localize "TB2E.Conflict.RunConflict"}}
+    </button>
+    {{#if isGM}}
+    <button type="button" class="conflict-control" data-action="endConflict">
+      <i class="fa-solid fa-flag-checkered"></i>
+      {{localize "TB2E.Conflict.EndConflict"}}
+    </button>
+    {{/if}}
+  {{/if}}
+</div>

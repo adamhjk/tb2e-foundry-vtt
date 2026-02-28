@@ -1,0 +1,20 @@
+{{!-- Conflict Tracker Header --}}
+<div class="tb2e-conflict-header">
+
+  {{!-- Encounter navigation (matches base CombatTracker pattern) --}}
+  {{#if hasCombat}}
+  <div class="encounter-controls">
+    {{#if isGM}}
+    <a class="encounter-context-menu combat-control" aria-label="{{localize 'COMBAT.Settings'}}">
+      <i class="fa-solid fa-ellipsis-vertical"></i>
+    </a>
+    {{/if}}
+
+    <div class="encounter-title">
+      <i class="fa-solid fa-shield-halved"></i>
+      <span>{{conflictTypeLabel}}</span>
+    </div>
+  </div>
+  {{/if}}
+
+</div>

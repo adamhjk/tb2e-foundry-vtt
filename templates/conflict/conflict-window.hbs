@@ -1,0 +1,205 @@
+{{!-- Conflict Resolution Window --}}
+{{#if hasConflict}}
+<div class="conflict-window-content">
+
+  {{!-- Header --}}
+  <div class="cw-header">
+    <span class="cw-title">{{conflictTypeLabel}} — {{localize "TB2E.Conflict.Round"}} {{roundNum}}</span>
+  </div>
+
+  {{!-- Two-column grid: Team A | Reveal | Team B --}}
+  <div class="cw-grid">
+
+    {{!-- Team columns --}}
+    {{#each teams}}
+    <div class="cw-team" data-group-id="{{this.id}}">
+
+      {{!-- Team header --}}
+      <div class="cw-team-header">
+        <span class="cw-team-name">{{this.name}}</span>
+        <span class="cw-team-disp">{{this.currentDisp}} / {{this.maxDisp}}</span>
+      </div>
+
+      {{!-- Order list (reorderable before lock) --}}
+      <div class="cw-order-list">
+        <div class="cw-order-label">{{localize "TB2E.Conflict.Order"}}</div>
+        <ol class="cw-order">
+          {{#each this.orderedCombatants}}
+          <li class="cw-order-item" data-combatant-id="{{this.id}}">
+            <img class="cw-order-img" src="{{this.img}}" alt="">
+            <span class="cw-order-name">{{this.name}}</span>
+            {{#if ../canInteract}}
+            {{#unless ../isLocked}}
+            <div class="cw-order-controls">
+              {{#if this.canMoveUp}}
+              <button type="button" class="cw-order-btn" data-action="moveUp" title="Move up">
+                <i class="fa-solid fa-chevron-up"></i>
+              </button>
+              {{/if}}
+              {{#if this.canMoveDown}}
+              <button type="button" class="cw-order-btn" data-action="moveDown" title="Move down">
+                <i class="fa-solid fa-chevron-down"></i>
+              </button>
+              {{/if}}
+            </div>
+            {{/unless}}
+            {{/if}}
+          </li>
+          {{/each}}
+        </ol>
+      </div>
+
+      {{!-- Volleys --}}
+      {{#each this.volleys}}
+      <div class="cw-volley" data-volley="{{this.index}}">
+        <div class="cw-volley-header">
+          <span class="cw-volley-badge">{{this.volleyNum}}</span>
+          <img class="cw-volley-actor-img" src="{{this.actingImg}}" alt="">
+          <span class="cw-volley-actor">{{this.actingName}}</span>
+        </div>
+
+        {{!-- Action selection area --}}
+        <div class="cw-actions">
+          {{#if this.isLocked}}
+            {{!-- Locked: show selected action (or hidden if opponent + not revealed) --}}
+            {{#if this.isRevealed}}
+              {{!-- Revealed: show the selected action card + Roll --}}
+              <div class="cw-volley-actions">
+                <div class="cw-card-row">
+                  <div class="cw-card just-revealed" data-action-key="{{this.selectedAction}}">
+                    <div class="cw-card-face">
+                      <span class="cw-card-pip top-left">{{this.selectedActionPip}}<i class="{{this.selectedActionIcon}}"></i></span>
+                      <span class="cw-card-pip bottom-right">{{this.selectedActionPip}}<i class="{{this.selectedActionIcon}}"></i></span>
+                      <i class="cw-card-icon {{this.selectedActionIcon}}"></i>
+                      <span class="cw-card-label">{{this.selectedActionLabel}}</span>
+                    </div>
+                  </div>
+                </div>
+                <div class="cw-volley-side">
+                  {{#if this.hasResult}}
+                    <span class="cw-result-badge"><i class="fa-solid fa-check"></i></span>
+                  {{else}}
+                    {{#if ../canInteract}}
+                    <button type="button" class="cw-roll-btn" data-action="rollVolley">
+                      <i class="fa-solid fa-dice"></i> {{localize "TB2E.Conflict.Roll"}}
+                    </button>
+                    {{/if}}
+                  {{/if}}
+                </div>
+              </div>
+            {{else}}
+              {{!-- Not revealed yet --}}
+              {{#if ../canInteract}}
+                {{!-- Own team: show selected action face-up, dimmed --}}
+                <div class="cw-card-row">
+                  <div class="cw-card own-locked" data-action-key="{{this.selectedAction}}">
+                    <div class="cw-card-face">
+                      <span class="cw-card-pip top-left">{{this.selectedActionPip}}<i class="{{this.selectedActionIcon}}"></i></span>
+                      <span class="cw-card-pip bottom-right">{{this.selectedActionPip}}<i class="{{this.selectedActionIcon}}"></i></span>
+                      <i class="cw-card-icon {{this.selectedActionIcon}}"></i>
+                      <span class="cw-card-label">{{this.selectedActionLabel}}</span>
+                    </div>
+                  </div>
+                </div>
+              {{else}}
+                {{!-- Opposing team: show face-down card --}}
+                <div class="cw-card-row">
+                  <div class="cw-card face-down">
+                    <div class="cw-card-back">
+                      <div class="cw-card-back-pattern"></div>
+                      <div class="cw-card-back-emblem"><i class="fa-solid fa-shield-halved"></i></div>
+                    </div>
+                  </div>
+                </div>
+              {{/if}}
+            {{/if}}
+          {{else}}
+            {{!-- Unlocked: show action cards (only if user can interact) --}}
+            {{#if ../canInteract}}
+              <div class="cw-card-row">
+                {{#each this.actionButtons}}
+                <div class="cw-card {{#if this.selected}}selected{{/if}}"
+                     data-action="setAction" data-action-key="{{this.key}}">
+                  <div class="cw-card-face">
+                    <span class="cw-card-pip top-left">{{this.pip}}<i class="{{this.icon}}"></i></span>
+                    <span class="cw-card-pip bottom-right">{{this.pip}}<i class="{{this.icon}}"></i></span>
+                    <i class="cw-card-icon {{this.icon}}"></i>
+                    <span class="cw-card-label">{{this.label}}</span>
+                  </div>
+                </div>
+                {{/each}}
+              </div>
+            {{else}}
+              <div class="cw-card-row">
+                <div class="cw-card face-down">
+                  <div class="cw-card-back">
+                    <div class="cw-card-back-pattern"></div>
+                    <div class="cw-card-back-emblem"><i class="fa-solid fa-shield-halved"></i></div>
+                  </div>
+                </div>
+              </div>
+            {{/if}}
+          {{/if}}
+        </div>
+      </div>
+      {{/each}}
+
+      {{!-- Lock button --}}
+      <div class="cw-team-footer">
+        {{#if this.isLocked}}
+          <div class="cw-locked-badge">
+            <i class="fa-solid fa-lock"></i> {{localize "TB2E.Conflict.ActionsLocked"}}
+          </div>
+        {{else if this.canLock}}
+          <button type="button" class="cw-lock-btn" data-action="lockActions">
+            <i class="fa-solid fa-lock"></i> {{localize "TB2E.Conflict.LockActions"}}
+          </button>
+        {{/if}}
+      </div>
+    </div>
+
+    {{!-- Reveal column (inserted after first team) --}}
+    {{#if @first}}
+    <div class="cw-reveal-column">
+      <div class="cw-reveal-spacer"></div>
+      <div class="cw-reveal-spacer"></div>
+      {{#each @root.teams.[0].volleys}}
+      <div class="cw-reveal-cell" data-volley="{{this.index}}">
+        {{#if this.isRevealed}}
+          <span class="cw-revealed-icon"><i class="fa-solid fa-eye"></i></span>
+        {{else if @root.allLocked}}
+          {{#if @root.isGM}}
+          <button type="button" class="cw-reveal-btn" data-action="revealVolley" data-volley="{{this.index}}" title="{{localize "TB2E.Conflict.Reveal"}}">
+            <i class="fa-solid fa-eye"></i>
+          </button>
+          {{else}}
+          <span class="cw-waiting-icon"><i class="fa-solid fa-eye-slash"></i></span>
+          {{/if}}
+        {{else}}
+          <span class="cw-waiting-icon"><i class="fa-solid fa-eye-slash"></i></span>
+        {{/if}}
+      </div>
+      {{/each}}
+      <div class="cw-reveal-spacer"></div>
+    </div>
+    {{/if}}
+    {{/each}}
+  </div>
+
+  {{!-- New Round button --}}
+  {{#if isGM}}
+  {{#if allRevealed}}
+  <div class="cw-footer">
+    <button type="button" class="cw-new-round-btn" data-action="newRound">
+      <i class="fa-solid fa-forward"></i> {{localize "TB2E.Conflict.NewRound"}}
+    </button>
+  </div>
+  {{/if}}
+  {{/if}}
+
+</div>
+{{else}}
+<div class="cw-empty">
+  <p>{{localize "TB2E.Conflict.NoConflict"}}</p>
+</div>
+{{/if}}

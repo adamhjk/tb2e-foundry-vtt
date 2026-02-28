@@ -3,6 +3,9 @@
     <img class="roll-card-portrait" src="{{actorImg}}" alt="{{actorName}}">
     <div class="roll-card-info">
       <span class="roll-card-name">{{actorName}}</span>
+      {{#if isDisposition}}
+      <span class="roll-card-context">{{conflictTypeLabel}} {{conflictTitle}} — {{groupName}}</span>
+      {{/if}}
       <span class="roll-card-test">{{testTypeLabel}} {{label}} {{testLabel}}</span>
     </div>
   </div>
@@ -21,7 +24,8 @@
     </div>
     {{/each}}
     <div class="breakdown-total">
-      <span>{{poolSize}}D vs Ob {{obstacle}}</span>
+      {{#if isDisposition}}<span>{{poolSize}}D</span>
+      {{else}}<span>{{poolSize}}D vs Ob {{obstacle}}</span>{{/if}}
     </div>
   </div>
 
@@ -38,10 +42,18 @@
 
   <div class="roll-card-tally">
     <span class="tally-successes">{{successesLabel}}: {{successes}}</span>
+    {{#if isDisposition}}
+    <span class="tally-ability">+ {{abilityLabel}}: {{abilityRating}}</span>
+    {{else}}
     <span class="tally-obstacle">{{obstacleLabel}}: {{obstacle}}</span>
+    {{/if}}
   </div>
 
-  {{#if pass}}
+  {{#if isDisposition}}
+  <div class="roll-card-banner banner-disposition">
+    <i class="fa-solid fa-shield"></i> {{dispositionLabel}}: {{disposition}}
+  </div>
+  {{else if pass}}
   <div class="roll-card-banner banner-pass">
     <i class="fa-solid fa-check"></i> {{passLabel}}
   </div>

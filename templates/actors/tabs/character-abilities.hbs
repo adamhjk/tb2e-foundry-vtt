@@ -4,7 +4,7 @@
   <fieldset class="abilities-group">
     <legend><i class="fa-solid fa-dice-d20"></i> {{localize "TB2E.Section.RawAbilities"}}</legend>
     {{#each rawAbilities}}
-    <div class="ability-row rollable" data-action="rollTest" data-type="ability" data-key="{{key}}">
+    <div class="ability-row rollable" data-action="rollTest" data-type="ability" data-key="{{key}}" data-page="{{page}}">
       <span class="ability-name">{{label}}</span>
       {{#if canAdvance}}
       <button type="button" class="btn-advance" data-action="advance" data-type="ability" data-key="{{key}}">
@@ -31,7 +31,7 @@
   <fieldset class="abilities-group">
     <legend><i class="fa-solid fa-city"></i> {{localize "TB2E.Section.TownAbilities"}}</legend>
     {{#each townAbilities}}
-    <div class="ability-row rollable" data-action="rollTest" data-type="ability" data-key="{{key}}">
+    <div class="ability-row rollable" data-action="rollTest" data-type="ability" data-key="{{key}}" data-page="{{page}}">
       <span class="ability-name">{{label}}</span>
       {{#if canAdvance}}
       <button type="button" class="btn-advance" data-action="advance" data-type="ability" data-key="{{key}}">

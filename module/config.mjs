@@ -7,14 +7,14 @@
  * @enum {object}
  */
 export const conditions = {
-  fresh:     { label: "TB2E.Condition.Fresh",     icon: "fa-solid fa-sun",          color: "--tb-cond-fresh" },
-  hungry:    { label: "TB2E.Condition.Hungry",    icon: "fa-solid fa-drumstick-bite", color: "--tb-cond-hungry" },
-  angry:     { label: "TB2E.Condition.Angry",     icon: "fa-solid fa-face-angry",   color: "--tb-cond-angry" },
-  afraid:    { label: "TB2E.Condition.Afraid",    icon: "fa-solid fa-ghost",        color: "--tb-cond-afraid" },
-  exhausted: { label: "TB2E.Condition.Exhausted", icon: "fa-solid fa-bed",          color: "--tb-cond-exhausted" },
-  injured:   { label: "TB2E.Condition.Injured",   icon: "fa-solid fa-heart-crack",  color: "--tb-cond-injured" },
-  sick:      { label: "TB2E.Condition.Sick",      icon: "fa-solid fa-biohazard",    color: "--tb-cond-sick" },
-  dead:      { label: "TB2E.Condition.Dead",      icon: "fa-solid fa-skull",        color: "--tb-cond-dead" }
+  fresh:     { label: "TB2E.Condition.Fresh",     icon: "fa-solid fa-sun",            color: "--tb-cond-fresh",     page: "SG p.46" },
+  hungry:    { label: "TB2E.Condition.Hungry",    icon: "fa-solid fa-drumstick-bite", color: "--tb-cond-hungry",    page: "SG p.47" },
+  angry:     { label: "TB2E.Condition.Angry",     icon: "fa-solid fa-face-angry",     color: "--tb-cond-angry",     page: "SG pp.47-48" },
+  afraid:    { label: "TB2E.Condition.Afraid",    icon: "fa-solid fa-ghost",          color: "--tb-cond-afraid",    page: "SG p.48" },
+  exhausted: { label: "TB2E.Condition.Exhausted", icon: "fa-solid fa-bed",            color: "--tb-cond-exhausted", page: "SG pp.48-49" },
+  injured:   { label: "TB2E.Condition.Injured",   icon: "fa-solid fa-heart-crack",    color: "--tb-cond-injured",   page: "SG pp.49-50" },
+  sick:      { label: "TB2E.Condition.Sick",      icon: "fa-solid fa-biohazard",      color: "--tb-cond-sick",      page: "SG pp.51-52" },
+  dead:      { label: "TB2E.Condition.Dead",      icon: "fa-solid fa-skull",          color: "--tb-cond-dead",      page: "SG p.52" }
 };
 
 /**
@@ -22,46 +22,56 @@ export const conditions = {
  * @enum {object}
  */
 export const abilities = {
-  will:       { label: "TB2E.Ability.Will",       group: "raw" },
-  health:     { label: "TB2E.Ability.Health",     group: "raw" },
-  nature:     { label: "TB2E.Ability.Nature",     group: "raw" },
-  resources:  { label: "TB2E.Ability.Resources",  group: "town" },
-  circles:    { label: "TB2E.Ability.Circles",    group: "town" },
-  precedence: { label: "TB2E.Ability.Precedence", group: "town" },
-  might:      { label: "TB2E.Ability.Might",      group: "special" }
+  will:       { label: "TB2E.Ability.Will",       group: "raw",     page: "DH p.58" },
+  health:     { label: "TB2E.Ability.Health",     group: "raw",     page: "DH p.59" },
+  nature:     { label: "TB2E.Ability.Nature",     group: "raw",     page: "DH p.65" },
+  resources:  { label: "TB2E.Ability.Resources",  group: "town",    page: "DH p.60" },
+  circles:    { label: "TB2E.Ability.Circles",    group: "town",    page: "DH p.61" },
+  precedence: { label: "TB2E.Ability.Precedence", group: "town",    page: "DH p.62" },
+  might:      { label: "TB2E.Ability.Might",      group: "special", page: "DH p.64" }
 };
 
 /**
- * All 25 skills with Beginner's Luck ability reference.
+ * All 34 skills with Beginner's Luck ability reference and suggested help skills.
  * bl: "W" = Will, "H" = Health
+ * help: array of skill keys that can provide help dice on tests of this skill
  * @enum {object}
  */
 export const skills = {
-  alchemist:    { label: "TB2E.Skill.Alchemist",    bl: "W" },
-  arcanist:     { label: "TB2E.Skill.Arcanist",     bl: "W" },
-  armorer:      { label: "TB2E.Skill.Armorer",       bl: "H" },
-  cartographer: { label: "TB2E.Skill.Cartographer", bl: "W" },
-  commander:    { label: "TB2E.Skill.Commander",    bl: "W" },
-  cook:         { label: "TB2E.Skill.Cook",         bl: "W" },
-  criminal:     { label: "TB2E.Skill.Criminal",     bl: "W" },
-  dungeoneer:   { label: "TB2E.Skill.Dungeoneer",   bl: "H" },
-  fighter:      { label: "TB2E.Skill.Fighter",      bl: "H" },
-  haggler:      { label: "TB2E.Skill.Haggler",      bl: "W" },
-  healer:       { label: "TB2E.Skill.Healer",       bl: "W" },
-  hunter:       { label: "TB2E.Skill.Hunter",       bl: "H" },
-  loremaster:   { label: "TB2E.Skill.Loremaster",   bl: "W" },
-  manipulator:  { label: "TB2E.Skill.Manipulator",  bl: "W" },
-  mentor:       { label: "TB2E.Skill.Mentor",       bl: "W" },
-  orator:       { label: "TB2E.Skill.Orator",       bl: "W" },
-  pathfinder:   { label: "TB2E.Skill.Pathfinder",   bl: "H" },
-  persuader:    { label: "TB2E.Skill.Persuader",    bl: "W" },
-  rider:        { label: "TB2E.Skill.Rider",        bl: "H" },
-  ritualist:    { label: "TB2E.Skill.Ritualist",    bl: "W" },
-  scavenger:    { label: "TB2E.Skill.Scavenger",    bl: "W" },
-  scholar:      { label: "TB2E.Skill.Scholar",      bl: "W" },
-  scout:        { label: "TB2E.Skill.Scout",        bl: "W" },
-  survivalist:  { label: "TB2E.Skill.Survivalist",  bl: "H" },
-  theologian:   { label: "TB2E.Skill.Theologian",   bl: "W" }
+  alchemist:    { label: "TB2E.Skill.Alchemist",    bl: "W", help: ["loremaster", "laborer"],     page: "DH p.160" },
+  arcanist:     { label: "TB2E.Skill.Arcanist",     bl: "W", help: ["loremaster"],                page: "DH p.161" },
+  armorer:      { label: "TB2E.Skill.Armorer",       bl: "H", help: ["smith", "laborer"],          page: "DH p.161" },
+  carpenter:    { label: "TB2E.Skill.Carpenter",    bl: "H", help: ["alchemist", "laborer"],      page: "DH p.161" },
+  cartographer: { label: "TB2E.Skill.Cartographer", bl: "W", help: ["scholar", "pathfinder"],     page: "DH p.162" },
+  commander:    { label: "TB2E.Skill.Commander",    bl: "W", help: ["steward", "orator"],         page: "DH p.162" },
+  cook:         { label: "TB2E.Skill.Cook",         bl: "W", help: ["alchemist", "laborer"],      page: "DH p.163" },
+  criminal:     { label: "TB2E.Skill.Criminal",     bl: "H", help: ["scout", "scholar"],          page: "DH p.163" },
+  dungeoneer:   { label: "TB2E.Skill.Dungeoneer",   bl: "H", help: ["sapper", "survivalist"],     page: "DH p.164" },
+  fighter:      { label: "TB2E.Skill.Fighter",      bl: "H", help: ["hunter"],                    page: "DH p.164" },
+  haggler:      { label: "TB2E.Skill.Haggler",      bl: "W", help: ["manipulator"],               page: "DH p.165" },
+  healer:       { label: "TB2E.Skill.Healer",       bl: "W", help: ["survivalist", "alchemist"],  page: "DH p.165" },
+  hunter:       { label: "TB2E.Skill.Hunter",       bl: "H", help: ["survivalist", "laborer"],    page: "DH p.166" },
+  laborer:      { label: "TB2E.Skill.Laborer",      bl: "H", help: ["peasant"],                   page: "DH pp.166-167" },
+  loremaster:   { label: "TB2E.Skill.Loremaster",   bl: "W", help: ["arcanist", "theologian"],    page: "DH p.167" },
+  manipulator:  { label: "TB2E.Skill.Manipulator",  bl: "W", help: ["haggler", "persuader"],      page: "DH p.167" },
+  mentor:       { label: "TB2E.Skill.Mentor",       bl: "W", help: ["persuader"],                 page: "DH p.168" },
+  orator:       { label: "TB2E.Skill.Orator",       bl: "W", help: ["manipulator"],               page: "DH p.168" },
+  pathfinder:   { label: "TB2E.Skill.Pathfinder",   bl: "H", help: ["scout", "cartographer"],     page: "DH p.168" },
+  peasant:      { label: "TB2E.Skill.Peasant",      bl: "H", help: ["laborer"],                   page: "DH p.169" },
+  persuader:    { label: "TB2E.Skill.Persuader",    bl: "W", help: ["manipulator"],               page: "DH p.169" },
+  rider:        { label: "TB2E.Skill.Rider",        bl: "H", help: ["peasant"],                   page: "DH p.170" },
+  ritualist:    { label: "TB2E.Skill.Ritualist",    bl: "W", help: ["theologian"],                page: "DH p.170" },
+  sailor:       { label: "TB2E.Skill.Sailor",       bl: "H", help: ["survivalist", "laborer"],    page: "DH p.171" },
+  sapper:       { label: "TB2E.Skill.Sapper",       bl: "H", help: ["alchemist", "laborer"],      page: "DH p.171" },
+  scavenger:    { label: "TB2E.Skill.Scavenger",    bl: "H", help: ["scout"],                     page: "DH p.172" },
+  scholar:      { label: "TB2E.Skill.Scholar",      bl: "W", help: ["loremaster", "steward"],     page: "DH pp.172-173" },
+  scout:        { label: "TB2E.Skill.Scout",        bl: "W", help: ["pathfinder", "hunter"],      page: "DH p.173" },
+  smith:        { label: "TB2E.Skill.Smith",        bl: "H", help: ["laborer"],                   page: "DH p.249" },
+  steward:      { label: "TB2E.Skill.Steward",      bl: "W", help: ["scholar", "theologian"],     page: "DH p.174" },
+  stonemason:   { label: "TB2E.Skill.Stonemason",   bl: "H", help: ["laborer"],                   page: "DH p.174" },
+  survivalist:  { label: "TB2E.Skill.Survivalist",  bl: "H", help: ["peasant"],                   page: "DH p.175" },
+  theologian:   { label: "TB2E.Skill.Theologian",   bl: "W", help: ["scholar", "ritualist"],      page: "DH p.176" },
+  weaver:       { label: "TB2E.Skill.Weaver",       bl: "W", help: ["laborer", "peasant"],        page: "DH p.176" }
 };
 
 /**
@@ -102,4 +112,34 @@ export const levelRequirements = {
   10: { fate: 36, persona: 36, benefit: "TB2E.LevelBenefit.10" }
 };
 
-export default { conditions, abilities, skills, advancementNeeded, packSlots, levelRequirements };
+/**
+ * Conflict type definitions.
+ * @enum {object}
+ */
+export const conflictTypes = {
+  kill:      { label: "TB2E.Conflict.Type.Kill",      dispositionSkills: ["fighter"],                dispositionAbility: "health" },
+  capture:   { label: "TB2E.Conflict.Type.Capture",   dispositionSkills: ["fighter", "hunter"],      dispositionAbility: "will" },
+  chase:     { label: "TB2E.Conflict.Type.Chase",     dispositionSkills: ["hunter", "pathfinder"],   dispositionAbility: "health" },
+  driveOff:  { label: "TB2E.Conflict.Type.DriveOff",  dispositionSkills: ["fighter"],                dispositionAbility: "health" },
+  flee:      { label: "TB2E.Conflict.Type.Flee",      dispositionSkills: ["scout", "dungeoneer"],    dispositionAbility: "health" },
+  convince:  { label: "TB2E.Conflict.Type.Convince",  dispositionSkills: ["manipulator", "persuader"], dispositionAbility: "will" },
+  trick:     { label: "TB2E.Conflict.Type.Trick",     dispositionSkills: ["criminal", "manipulator"], dispositionAbility: "will" },
+  negotiate: { label: "TB2E.Conflict.Type.Negotiate", dispositionSkills: ["haggler", "persuader"],   dispositionAbility: "will" },
+  abjure:    { label: "TB2E.Conflict.Type.Abjure",    dispositionSkills: ["ritualist", "theologian"], dispositionAbility: "will" },
+  riddle:    { label: "TB2E.Conflict.Type.Riddle",    dispositionSkills: ["loremaster", "scholar"],  dispositionAbility: "will" },
+  war:       { label: "TB2E.Conflict.Type.War",       dispositionSkills: ["commander"],              dispositionAbility: "will" },
+  journey:   { label: "TB2E.Conflict.Type.Journey",   dispositionSkills: ["pathfinder", "survivalist"], dispositionAbility: "health" }
+};
+
+/**
+ * Conflict action definitions.
+ * @enum {object}
+ */
+export const conflictActions = {
+  attack:   { label: "TB2E.Conflict.Action.Attack",   icon: "fa-solid fa-sword",         pip: "A" },
+  defend:   { label: "TB2E.Conflict.Action.Defend",   icon: "fa-solid fa-shield",        pip: "D" },
+  feint:    { label: "TB2E.Conflict.Action.Feint",    icon: "fa-solid fa-face-disguise", pip: "F" },
+  maneuver: { label: "TB2E.Conflict.Action.Maneuver", icon: "fa-solid fa-arrows-rotate", pip: "M" }
+};
+
+export default { conditions, abilities, skills, advancementNeeded, packSlots, levelRequirements, conflictTypes, conflictActions };

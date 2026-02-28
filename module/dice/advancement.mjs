@@ -21,7 +21,7 @@ export async function showAdvancementDialog({ actor, type, key }) {
   const currentRating = data.rating;
   const newRating = currentRating + 1;
 
-  const content = await renderTemplate("systems/tb2e/templates/dice/advancement-dialog.hbs", {
+  const content = await foundry.applications.handlebars.renderTemplate("systems/tb2e/templates/dice/advancement-dialog.hbs", {
     label,
     currentRating,
     newRating,
@@ -59,7 +59,7 @@ export async function showAdvancementDialog({ actor, type, key }) {
   });
 
   // Post celebration chat card
-  const chatContent = await renderTemplate("systems/tb2e/templates/chat/advancement-result.hbs", {
+  const chatContent = await foundry.applications.handlebars.renderTemplate("systems/tb2e/templates/chat/advancement-result.hbs", {
     actorName: actor.name,
     actorImg: actor.img,
     label,

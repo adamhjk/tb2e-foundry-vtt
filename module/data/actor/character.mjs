@@ -72,11 +72,12 @@ export default class CharacterData extends foundry.abstract.TypeDataModel {
       might: new fields.NumberField({ initial: 1, integer: true, min: 0, max: 10 }),
       natureDescriptors: new fields.StringField(),
 
-      // ---- Skills (25 fixed skills) ----
+      // ---- Skills (34 fixed skills) ----
       skills: new fields.SchemaField({
         alchemist: advancementField(),
         arcanist: advancementField(),
         armorer: advancementField(),
+        carpenter: advancementField(),
         cartographer: advancementField(),
         commander: advancementField(),
         cook: advancementField(),
@@ -86,19 +87,27 @@ export default class CharacterData extends foundry.abstract.TypeDataModel {
         haggler: advancementField(),
         healer: advancementField(),
         hunter: advancementField(),
+        laborer: advancementField(),
         loremaster: advancementField(),
         manipulator: advancementField(),
         mentor: advancementField(),
         orator: advancementField(),
         pathfinder: advancementField(),
+        peasant: advancementField(),
         persuader: advancementField(),
         rider: advancementField(),
         ritualist: advancementField(),
+        sailor: advancementField(),
+        sapper: advancementField(),
         scavenger: advancementField(),
         scholar: advancementField(),
         scout: advancementField(),
+        smith: advancementField(),
+        steward: advancementField(),
+        stonemason: advancementField(),
         survivalist: advancementField(),
-        theologian: advancementField()
+        theologian: advancementField(),
+        weaver: advancementField()
       }),
 
       // ---- Traits (4 slots) ----
@@ -147,6 +156,14 @@ export default class CharacterData extends foundry.abstract.TypeDataModel {
       urdr: new fields.SchemaField({
         burden: new fields.NumberField({ initial: 0, integer: true, min: 0 }),
         memoryPalace: new fields.HTMLField()
+      }),
+
+      // ---- Conflict ----
+      conflict: new fields.SchemaField({
+        hp: new fields.SchemaField({
+          value: new fields.NumberField({ initial: 0, integer: true, min: 0 }),
+          max: new fields.NumberField({ initial: 0, integer: true, min: 0 })
+        })
       }),
 
       // ---- Allies & Enemies ----

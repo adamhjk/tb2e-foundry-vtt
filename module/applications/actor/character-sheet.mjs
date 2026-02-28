@@ -31,6 +31,9 @@ export default class CharacterSheet extends HandlebarsApplicationMixin(ActorShee
     header: {
       template: "systems/tb2e/templates/actors/character-header.hbs"
     },
+    referenceBar: {
+      template: "systems/tb2e/templates/actors/character-reference-bar.hbs"
+    },
     conditions: {
       template: "systems/tb2e/templates/actors/character-conditions.hbs"
     },
@@ -120,6 +123,9 @@ export default class CharacterSheet extends HandlebarsApplicationMixin(ActorShee
       case "header":
         this.#prepareHeaderContext(partContext);
         break;
+      case "referenceBar":
+        partContext.placeholderText = game.i18n.localize("TB2E.Reference.Placeholder");
+        break;
       case "conditions":
         this.#prepareConditionsContext(partContext);
         break;
@@ -158,6 +164,20 @@ export default class CharacterSheet extends HandlebarsApplicationMixin(ActorShee
     context.personaLabel = game.i18n.localize("TB2E.Fields.Persona");
     context.fatePips = this.#buildPips(sys.fate.current, sys.fate.total);
     context.personaPips = this.#buildPips(sys.persona.current, sys.persona.total);
+
+    // Conflict disposition display.
+    const disp = sys.conflict.hp;
+    context.inConflict = disp.max > 0;
+    if ( context.inConflict ) {
+      // Derive the conflict label from the active combat.
+      const combat = game.combats?.find(c =>
+        c.isConflict && c.combatants.some(cb => cb.actorId === this.document.id)
+      );
+      const conflictType = combat?.system.conflictType || "capture";
+      const cfg = CONFIG.TB2E.conflictTypes[conflictType];
+      context.conflictLabel = game.i18n.localize(cfg?.label || "TB2E.Conflict.Title");
+      context.dispositionPercent = Math.round((disp.value / disp.max) * 100);
+    }
   }
 
   /* -------------------------------------------- */
@@ -169,7 +189,8 @@ export default class CharacterSheet extends HandlebarsApplicationMixin(ActorShee
       label: game.i18n.localize(cfg.label),
       icon: cfg.icon,
       color: cfg.color,
-      active: sys.conditions[key]
+      active: sys.conditions[key],
+      page: cfg.page
     }));
   }
 
@@ -193,7 +214,8 @@ export default class CharacterSheet extends HandlebarsApplicationMixin(ActorShee
         fail: data.fail,
         passArray: this.#buildBubbles(data.pass, adv.pass),
         failArray: this.#buildBubbles(data.fail, adv.fail),
-        canAdvance: data.pass >= adv.pass && data.fail >= adv.fail && adv.pass > 0
+        canAdvance: data.pass >= adv.pass && data.fail >= adv.fail && adv.pass > 0,
+        page: cfg.page
       };
       if ( cfg.group === "raw" ) context.rawAbilities.push(entry);
       else context.townAbilities.push(entry);
@@ -218,7 +240,8 @@ export default class CharacterSheet extends HandlebarsApplicationMixin(ActorShee
         fail: data.fail,
         passArray: this.#buildBubbles(data.pass, adv.pass),
         failArray: this.#buildBubbles(data.fail, adv.fail),
-        canAdvance: data.pass >= adv.pass && data.fail >= adv.fail && adv.pass > 0
+        canAdvance: data.pass >= adv.pass && data.fail >= adv.fail && adv.pass > 0,
+        page: cfg.page
       };
     });
   }
@@ -359,6 +382,29 @@ export default class CharacterSheet extends HandlebarsApplicationMixin(ActorShee
   #buildPips(current, total) {
     if ( total <= 0 ) return [];
     return Array.from({ length: total }, (_, i) => ({ filled: i < current }));
+  }
+
+  /* -------------------------------------------- */
+  /*  Render Hook                                 */
+  /* -------------------------------------------- */
+
+  _onRender(context, options) {
+    super._onRender(context, options);
+    const bar = this.element.querySelector(".reference-bar-text");
+    if ( !bar ) return;
+    const placeholder = bar.textContent;
+
+    this.element.querySelectorAll("[data-page]").forEach(el => {
+      el.addEventListener("mouseenter", () => {
+        const label = el.querySelector(".skill-name, .ability-name, .condition-label")?.textContent || "";
+        bar.textContent = `${label.trim()} \u2014 ${el.dataset.page}`;
+        bar.classList.remove("placeholder");
+      });
+      el.addEventListener("mouseleave", () => {
+        bar.textContent = placeholder;
+        bar.classList.add("placeholder");
+      });
+    });
   }
 
   /* -------------------------------------------- */
