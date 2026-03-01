@@ -145,6 +145,7 @@
   "TB2E.Inventory.Cache": "Cache",
 
   "TB2E.Action.AddRow": "Add",
+  "TB2E.Action.AddWise": "Add Wise",
   "TB2E.Action.DeleteRow": "Delete",
   "TB2E.Action.SpendFate": "Spend Fate",
   "TB2E.Action.SpendPersona": "Spend Persona",
@@ -180,6 +181,12 @@
   "TB2E.Roll.Test": "Test",
   "TB2E.Roll.Help": "Help",
   "TB2E.Roll.LogAdvancement": "Log Advancement",
+  "TB2E.Roll.PersonaAdvantage": "Persona Advantage",
+  "TB2E.Roll.ChannelNature": "Channel Nature",
+  "TB2E.Roll.ModifierLabel": "Label",
+  "TB2E.Roll.ManualModifier": "Modifier",
+  "TB2E.Roll.BLTest": "Beginner's Luck ({ability})",
+  "TB2E.Roll.AfraidBLWarning": "Afraid condition blocks Beginner's Luck! Use Nature instead.",
 
   "TB2E.Advance.DialogTitle": "{name} Advancement",
   "TB2E.Advance.Prompt": "{name} is ready to advance!",
@@ -319,5 +326,17 @@
   "TB2E.Monster.Armor": "Armor",
   "TB2E.Monster.ArmorPlaceholder": "Leather, plate, scales, etc.",
   "TB2E.Monster.SpecialRules": "Special Rules",
-  "TB2E.Monster.Description": "Description"
+  "TB2E.Monster.Description": "Description",
+
+  "TB2E.PostRoll.NoFate": "No fate points remaining.",
+  "TB2E.PostRoll.NoPersona": "No persona points remaining.",
+  "TB2E.PostRoll.LuckAlreadyUsed": "Fate: Luck has already been used on this roll.",
+  "TB2E.PostRoll.DeeperAlreadyUsed": "Deeper Understanding has already been used on this roll.",
+  "TB2E.PostRoll.OfCourseAlreadyUsed": "Of Course! has already been used on this roll.",
+  "TB2E.PostRoll.MustUseBeforeLuck": "Must be used before Fate: Luck.",
+  "TB2E.PostRoll.ResolveNatureTax": "Resolve the Nature tax prompt before finalizing.",
+  "TB2E.PostRoll.NatureTaxed": "Nature taxed by {amount} (now {rating}).",
+  "TB2E.PostRoll.NoFateHelper": "{name} has no fate points remaining.",
+  "TB2E.PostRoll.SynergyLogged": "Synergy: logged {result} for {name}'s {skill}.",
+  "TB2E.PostRoll.NotYourHelper": "Only {name}'s player can process synergy."
 }

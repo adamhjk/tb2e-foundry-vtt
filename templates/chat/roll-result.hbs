@@ -9,7 +9,12 @@
       {{#if isDisposition}}
       <span class="roll-card-context">{{conflictTypeLabel}} {{conflictTitle}} — {{groupName}}</span>
       {{/if}}
-      <span class="roll-card-test">{{testTypeLabel}} {{label}} {{testLabel}}</span>
+      <span class="roll-card-test">
+        {{testTypeLabel}} {{label}} {{testLabel}}
+        {{#if isBL}}
+        <span class="roll-card-bl-badge"><i class="fa-solid fa-graduation-cap"></i> BL</span>
+        {{/if}}
+      </span>
     </div>
   </div>
 
@@ -34,7 +39,7 @@
 
   <div class="roll-card-dice">
     {{#each diceResults}}
-    <span class="die-result {{#if isSun}}die-sun{{else if success}}die-success{{else}}die-fail{{/if}}">
+    <span class="die-result {{#if isSun}}die-sun{{else if success}}die-success{{else}}die-fail{{/if}}{{#if isRerolled}} die-rerolled{{/if}}{{#if isLuck}} die-luck{{/if}}{{#if isOfCourse}} die-of-course{{/if}}">
       {{#if isSun}}<i class="fa-solid fa-sun"></i>
       {{else if success}}<i class="fa-solid fa-shield-halved"></i>
       {{else}}<i class="fa-solid fa-dragon"></i>
@@ -51,6 +56,75 @@
     <span class="tally-obstacle">{{obstacleLabel}}: {{obstacle}}</span>
     {{/if}}
   </div>
+
+  {{! Post-roll success modifiers }}
+  {{#if postSuccessMods}}
+  <div class="roll-card-post-mods">
+    {{#each postSuccessMods}}
+    <div class="post-mod-line" style="--mod-color: var({{color}})">
+      <i class="{{icon}}"></i>
+      <span>{{label}}</span>
+      <span class="post-mod-value">{{display}}</span>
+    </div>
+    {{/each}}
+  </div>
+  {{/if}}
+
+  {{! Post-roll action buttons }}
+  {{#if hasPostActions}}
+  <div class="roll-card-actions" data-message-id="">
+    {{#unless deeperUsed}}
+      {{#unless luckUsed}}
+        {{#if hasFate}}{{#if wiseSelected}}{{#if hasWyrms}}
+        <button type="button" class="post-roll-btn deeper-btn" data-action="deeper-understanding">
+          <span class="post-roll-label"><i class="fa-solid fa-lightbulb"></i> Deeper Understanding (Fate 1)</span>
+          <span class="post-roll-summary">Reroll 1 Wyrm (SG p. 87)</span>
+        </button>
+        {{/if}}{{/if}}{{/if}}
+      {{/unless}}
+    {{/unless}}
+    {{#unless ofCourseUsed}}
+      {{#unless luckUsed}}
+        {{#if hasPersona}}{{#if wiseSelected}}{{#if hasWyrms}}
+        <button type="button" class="post-roll-btn of-course-btn" data-action="of-course">
+          <span class="post-roll-label"><i class="fa-solid fa-hat-wizard"></i> Ah, Of Course! (Persona 1)</span>
+          <span class="post-roll-summary">Roll {{wyrmCount}} new dice (SG p. 88)</span>
+        </button>
+        {{/if}}{{/if}}{{/if}}
+      {{/unless}}
+    {{/unless}}
+    {{#unless luckUsed}}
+      {{#if hasFate}}{{#if hasSuns}}
+      <button type="button" class="post-roll-btn fate-luck-btn" data-action="fate-luck">
+        <span class="post-roll-label"><i class="fa-solid fa-clover"></i> Fate: Luck (Fate 1)</span>
+        <span class="post-roll-summary">Explode {{sunCount}} Suns (SG p. 87)</span>
+      </button>
+      {{/if}}{{/if}}
+    {{/unless}}
+    {{#if showNatureTax}}
+    <div class="nature-tax-prompt">
+      <span>Within Nature descriptors?</span>
+      <button type="button" class="post-roll-btn nature-tax-btn" data-action="nature-yes">Yes</button>
+      <button type="button" class="post-roll-btn nature-tax-btn" data-action="nature-no">No</button>
+    </div>
+    {{/if}}
+    <button type="button" class="post-roll-btn finalize-btn" data-action="finalize">
+      <i class="fa-solid fa-check-double"></i> Finalize
+    </button>
+  </div>
+  {{/if}}
+
+  {{#if synergyHelpers.length}}
+  <div class="roll-card-helpers">
+    <div class="section-label"><i class="fa-solid fa-handshake-angle"></i> Helper Synergy</div>
+    {{#each synergyHelpers}}
+    <button type="button" class="post-roll-btn synergy-btn" data-action="synergy" data-helper-id="{{id}}">
+      <span class="post-roll-label"><i class="fa-solid fa-star"></i> {{name}}: Synergy (Fate 1)</span>
+      <span class="post-roll-summary">Log {{helpViaLabel}} advancement (SG p. 87)</span>
+    </button>
+    {{/each}}
+  </div>
+  {{/if}}
 
   {{#if isDisposition}}
   <div class="roll-card-banner banner-disposition">

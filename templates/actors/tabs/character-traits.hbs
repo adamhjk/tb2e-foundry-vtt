@@ -60,9 +60,19 @@
             <span title="{{localize 'TB2E.Fields.Persona'}}">Pe</span>
           </label>
         </div>
+        <button type="button" class="btn-icon" data-action="deleteRow"
+                data-array="wises" data-index="{{@index}}"
+                title="{{localize 'TB2E.Action.DeleteRow'}}">
+          <i class="fa-solid fa-trash"></i>
+        </button>
       </div>
       {{/each}}
     </div>
+    {{#if canAddWise}}
+    <button type="button" class="btn-add" data-action="addRow" data-array="wises">
+      <i class="fa-solid fa-plus"></i> {{localize "TB2E.Action.AddWise"}}
+    </button>
+    {{/if}}
   </fieldset>
 
 </section>

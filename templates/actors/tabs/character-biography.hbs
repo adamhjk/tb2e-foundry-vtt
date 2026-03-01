@@ -41,17 +41,17 @@
       <thead>
         <tr>
           <th>{{localize "TB2E.Fields.Level"}}</th>
-          <th>{{localize "TB2E.Fields.Fate"}}</th>
-          <th>{{localize "TB2E.Fields.Persona"}}</th>
+          <th><i class="fa-solid fa-star"></i> {{localize "TB2E.Fields.Fate"}} ({{../fateSpent}} {{localize "TB2E.Fields.Spent"}})</th>
+          <th><i class="fa-solid fa-mask"></i> {{localize "TB2E.Fields.Persona"}} ({{../personaSpent}} {{localize "TB2E.Fields.Spent"}})</th>
           <th>Benefit</th>
         </tr>
       </thead>
       <tbody>
         {{#each levelRequirements}}
-        <tr{{#if (eq level ../currentLevel)}} class="current-level"{{/if}}>
+        <tr class="{{#if (eq level ../currentLevel)}}current-level{{/if}}{{#if isNextTarget}} next-target{{/if}}">
           <td>{{level}}</td>
-          <td>{{fate}}</td>
-          <td>{{persona}}</td>
+          <td class="{{#if fateMet}}met{{/if}}">{{fate}}{{#if fateMet}} &#x2713;{{else if isNextTarget}} &#x2190;{{/if}}</td>
+          <td class="{{#if personaMet}}met{{/if}}">{{persona}}{{#if personaMet}} &#x2713;{{else if isNextTarget}} &#x2190;{{/if}}</td>
           <td>{{benefit}}</td>
         </tr>
         {{/each}}

@@ -75,6 +75,30 @@ When asked about Torchbearer rules, how a mechanic works, or when implementing a
 
 - `character` — `CharacterData` model, `CharacterSheet` (AppV2)
 
+## Mailbox Pattern (Cross-Permission Operations)
+
+Foundry VTT restricts document updates to owners. When a player needs to modify a document they don't own (e.g., a GM-owned chat message), use the **mailbox pattern**:
+
+1. **Player writes** to a `pending*` field on a document they own (actor flag, combatant system field, etc.)
+2. **GM detects** the write via a hook (`updateActor`, `updateCombatant`, etc.) and processes it
+3. **GM clears** the mailbox field after processing
+
+### Conventions
+
+- Name mailbox fields `pending<Action>` (e.g., `pendingSynergy`, `pendingDisposition`)
+- Always re-validate on the GM side — player-side checks are for UX only
+- Clear the mailbox after processing (`unsetFlag` or reset to empty)
+- Guard the hook with `if ( !game.user.isGM ) return;`
+
+### Existing Uses
+
+| Feature | Mailbox field | Document | Hook |
+|---------|--------------|----------|------|
+| Conflict disposition | `system.pendingDisposition` | Combatant | `updateCombatant` (in `TB2ECombat`) |
+| Conflict distribution | `system.pendingDistribution` | Combatant | `updateCombatant` (in `TB2ECombat`) |
+| Conflict actions | `system.pendingActions` | Combatant | `updateCombatant` (in `TB2ECombat`) |
+| Synergy | `flags.tb2e.pendingSynergy` | Actor | `updateActor` (in `tb2e.mjs`) |
+
 ## CSS Theme System
 
 The stylesheet (`tb2e.css`) uses a CSS custom property theme system compatible with Foundry VTT v13's built-in theme toggling. No JavaScript is needed — Foundry handles class toggling automatically.

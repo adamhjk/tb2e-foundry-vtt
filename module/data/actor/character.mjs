@@ -35,12 +35,10 @@ export default class CharacterData extends foundry.abstract.TypeDataModel {
       // ---- Fate & Persona ----
       fate: new fields.SchemaField({
         current: new fields.NumberField({ initial: 0, integer: true, min: 0 }),
-        total: new fields.NumberField({ initial: 0, integer: true, min: 0 }),
         spent: new fields.NumberField({ initial: 0, integer: true, min: 0 })
       }),
       persona: new fields.SchemaField({
         current: new fields.NumberField({ initial: 0, integer: true, min: 0 }),
-        total: new fields.NumberField({ initial: 0, integer: true, min: 0 }),
         spent: new fields.NumberField({ initial: 0, integer: true, min: 0 })
       }),
       checks: new fields.SchemaField({

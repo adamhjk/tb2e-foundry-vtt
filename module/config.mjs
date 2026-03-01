@@ -101,15 +101,15 @@ export const packSlots = {
  * @type {Object<number, {fate: number, persona: number, benefit: string}>}
  */
 export const levelRequirements = {
-  2:  { fate: 4,  persona: 4,  benefit: "TB2E.LevelBenefit.2" },
-  3:  { fate: 8,  persona: 8,  benefit: "TB2E.LevelBenefit.3" },
-  4:  { fate: 12, persona: 12, benefit: "TB2E.LevelBenefit.4" },
-  5:  { fate: 16, persona: 16, benefit: "TB2E.LevelBenefit.5" },
-  6:  { fate: 20, persona: 20, benefit: "TB2E.LevelBenefit.6" },
-  7:  { fate: 24, persona: 24, benefit: "TB2E.LevelBenefit.7" },
-  8:  { fate: 28, persona: 28, benefit: "TB2E.LevelBenefit.8" },
-  9:  { fate: 32, persona: 32, benefit: "TB2E.LevelBenefit.9" },
-  10: { fate: 36, persona: 36, benefit: "TB2E.LevelBenefit.10" }
+  2:  { fate: 3,  persona: 3,  benefit: "TB2E.LevelBenefit.2" },
+  3:  { fate: 7,  persona: 6,  benefit: "TB2E.LevelBenefit.3" },
+  4:  { fate: 14, persona: 12, benefit: "TB2E.LevelBenefit.4" },
+  5:  { fate: 22, persona: 20, benefit: "TB2E.LevelBenefit.5" },
+  6:  { fate: 31, persona: 30, benefit: "TB2E.LevelBenefit.6" },
+  7:  { fate: 41, persona: 42, benefit: "TB2E.LevelBenefit.7" },
+  8:  { fate: 52, persona: 56, benefit: "TB2E.LevelBenefit.8" },
+  9:  { fate: 64, persona: 72, benefit: "TB2E.LevelBenefit.9" },
+  10: { fate: 78, persona: 98, benefit: "TB2E.LevelBenefit.10" }
 };
 
 /**

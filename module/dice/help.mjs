@@ -5,10 +5,12 @@ import { abilities, skills } from "../config.mjs";
  * @property {string} id - Actor ID
  * @property {string} name - Actor name
  * @property {string} helpVia - Skill/ability key they help with
+ * @property {string} helpViaType - "ability" or "skill"
  * @property {string} helpViaLabel - Localized label
  * @property {string} reason - Why they qualify (localization key)
  * @property {string[]} warnings - Optional warnings (spell time, etc.)
  * @property {boolean} isNPC - Whether this helper is an NPC
+ * @property {boolean} hasFate - Whether helper is a character with fate > 0
  */
 
 /* -------------------------------------------- */
@@ -108,10 +110,12 @@ export function getEligibleHelpers({ actor, type, key, testContext = {}, candida
       id: candidate.id,
       name: candidate.name,
       helpVia: match.helpVia,
+      helpViaType: match.helpViaType,
       helpViaLabel: match.helpViaLabel,
       reason: match.reason,
       warnings: match.warnings,
-      isNPC: candidate.type === "npc"
+      isNPC: candidate.type === "npc",
+      hasFate: candidate.type === "character" && candidate.system.fate.current > 0
     });
   }
 
@@ -126,7 +130,7 @@ export function getEligibleHelpers({ actor, type, key, testContext = {}, candida
  * @param {string} key - The ability/skill key being tested.
  * @param {Actor} roller - The actor making the test.
  * @param {object} testContext - Test context flags.
- * @returns {{ helpVia: string, helpViaLabel: string, reason: string, warnings: string[] }|null}
+ * @returns {{ helpVia: string, helpViaType: string, helpViaLabel: string, reason: string, warnings: string[] }|null}
  * @private
  */
 function _findBestHelpPath(candidate, type, key, roller, testContext) {
@@ -152,6 +156,7 @@ function _findAbilityHelpPath(candidate, key, warnings) {
     const cfg = abilities[key];
     return {
       helpVia: key,
+      helpViaType: "ability",
       helpViaLabel: game.i18n.localize(cfg.label),
       reason: "TB2E.Help.SameAbility",
       warnings
@@ -162,6 +167,7 @@ function _findAbilityHelpPath(candidate, key, warnings) {
   if ( _getAbilityRating(candidate, "nature") > 0 ) {
     return {
       helpVia: "nature",
+      helpViaType: "ability",
       helpViaLabel: game.i18n.localize(abilities.nature.label),
       reason: "TB2E.Help.NatureDescriptor",
       warnings
@@ -184,6 +190,7 @@ function _findSkillHelpPath(candidate, key, roller, warnings) {
   if ( _getSkillRating(candidate, key) > 0 ) {
     return {
       helpVia: key,
+      helpViaType: "skill",
       helpViaLabel: game.i18n.localize(skillCfg.label),
       reason: "TB2E.Help.SameSkill",
       warnings
@@ -197,6 +204,7 @@ function _findSkillHelpPath(candidate, key, roller, warnings) {
       const helpCfg = skills[helpKey];
       return {
         helpVia: helpKey,
+        helpViaType: "skill",
         helpViaLabel: game.i18n.localize(helpCfg.label),
         reason: "TB2E.Help.SuggestedHelp",
         warnings
@@ -213,6 +221,7 @@ function _findSkillHelpPath(candidate, key, roller, warnings) {
       const blCfg = abilities[blAbilityKey];
       return {
         helpVia: blAbilityKey,
+        helpViaType: "ability",
         helpViaLabel: game.i18n.localize(blCfg.label),
         reason: "TB2E.Help.BLAbility",
         warnings
@@ -224,6 +233,7 @@ function _findSkillHelpPath(candidate, key, roller, warnings) {
   if ( _getAbilityRating(candidate, "nature") > 0 ) {
     return {
       helpVia: "nature",
+      helpViaType: "ability",
       helpViaLabel: game.i18n.localize(abilities.nature.label),
       reason: "TB2E.Help.NatureDescriptor",
       warnings

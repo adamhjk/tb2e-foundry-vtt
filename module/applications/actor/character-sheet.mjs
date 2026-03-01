@@ -14,7 +14,6 @@ export default class CharacterSheet extends HandlebarsApplicationMixin(ActorShee
     actions: {
       toggleCondition: CharacterSheet.#onToggleCondition,
       toggleBubble: CharacterSheet.#onToggleBubble,
-      togglePoint: CharacterSheet.#onTogglePoint,
       setTraitLevel: CharacterSheet.#onSetTraitLevel,
       addRow: CharacterSheet.#onAddRow,
       deleteRow: CharacterSheet.#onDeleteRow,
@@ -208,8 +207,6 @@ export default class CharacterSheet extends HandlebarsApplicationMixin(ActorShee
     const sys = this.document.system;
     context.fateLabel = game.i18n.localize("TB2E.Fields.Fate");
     context.personaLabel = game.i18n.localize("TB2E.Fields.Persona");
-    context.fatePips = this.#buildPips(sys.fate.current, sys.fate.total);
-    context.personaPips = this.#buildPips(sys.persona.current, sys.persona.total);
 
     // Team toggle display.
     const team = sys.conflict.team || "party";
@@ -310,6 +307,7 @@ export default class CharacterSheet extends HandlebarsApplicationMixin(ActorShee
       levels: [1, 2, 3].map(l => ({ value: l, active: l === t.level }))
     }));
     context.wises = sys.wises;
+    context.canAddWise = (sys.wises || []).length < 4;
   }
 
   /* -------------------------------------------- */
@@ -356,12 +354,33 @@ export default class CharacterSheet extends HandlebarsApplicationMixin(ActorShee
     const sys = this.document.system;
     context.allies = sys.allies;
     context.currentLevel = sys.level;
-    context.levelRequirements = Object.entries(levelRequirements).map(([lvl, req]) => ({
-      level: Number(lvl),
-      fate: req.fate,
-      persona: req.persona,
-      benefit: game.i18n.localize(req.benefit)
-    }));
+    context.fateSpent = sys.fate.spent;
+    context.personaSpent = sys.persona.spent;
+
+    // Find the next target level (first level whose requirements aren't both met).
+    let nextTarget = null;
+    for ( const [lvl, req] of Object.entries(levelRequirements) ) {
+      if ( sys.fate.spent < req.fate || sys.persona.spent < req.persona ) {
+        nextTarget = Number(lvl);
+        break;
+      }
+    }
+
+    context.levelRequirements = Object.entries(levelRequirements).map(([lvl, req]) => {
+      const level = Number(lvl);
+      const fateMet = sys.fate.spent >= req.fate;
+      const personaMet = sys.persona.spent >= req.persona;
+      return {
+        level,
+        fate: req.fate,
+        persona: req.persona,
+        benefit: game.i18n.localize(req.benefit),
+        fateMet,
+        personaMet,
+        bothMet: fateMet && personaMet,
+        isNextTarget: level === nextTarget
+      };
+    });
   }
 
   /* -------------------------------------------- */
@@ -525,17 +544,6 @@ export default class CharacterSheet extends HandlebarsApplicationMixin(ActorShee
     return Array.from({ length: total }, (_, i) => ({ filled: i < current }));
   }
 
-  /**
-   * Build an array of {filled} objects for point pip rendering.
-   * @param {number} current - Current available points.
-   * @param {number} total - Max points.
-   * @returns {{filled: boolean}[]}
-   */
-  #buildPips(current, total) {
-    if ( total <= 0 ) return [];
-    return Array.from({ length: total }, (_, i) => ({ filled: i < current }));
-  }
-
   /* -------------------------------------------- */
   /*  Render Hook                                 */
   /* -------------------------------------------- */
@@ -549,7 +557,7 @@ export default class CharacterSheet extends HandlebarsApplicationMixin(ActorShee
       const placeholder = bar.textContent;
       this.element.querySelectorAll("[data-page]").forEach(el => {
         el.addEventListener("mouseenter", () => {
-          const label = el.querySelector(".skill-name, .ability-name, .condition-label")?.textContent || "";
+          const label = el.querySelector(".skill-name, .ability-name, .condition-label, .point-label")?.textContent || "";
           bar.textContent = `${label.trim()} \u2014 ${el.dataset.page}`;
           bar.classList.remove("placeholder");
         });
@@ -631,19 +639,6 @@ export default class CharacterSheet extends HandlebarsApplicationMixin(ActorShee
   /* -------------------------------------------- */
 
   /**
-   * Toggle a point pip (fate/persona). Same logic as bubbles.
-   */
-  static #onTogglePoint(event, target) {
-    const path = target.dataset.path;
-    const index = Number(target.dataset.index);
-    const current = foundry.utils.getProperty(this.document, path);
-    const newVal = (current === index + 1) ? index : index + 1;
-    this.document.update({ [path]: newVal });
-  }
-
-  /* -------------------------------------------- */
-
-  /**
    * Set trait level (1/2/3).
    */
   static #onSetTraitLevel(event, target) {
@@ -660,6 +655,7 @@ export default class CharacterSheet extends HandlebarsApplicationMixin(ActorShee
   static #onAddRow(event, target) {
     const arrayName = target.dataset.array;
     const current = foundry.utils.deepClone(this.document.system[arrayName] || []);
+    if ( arrayName === "wises" && current.length >= 4 ) return;
     current.push({});
     this.document.update({ [`system.${arrayName}`]: current });
   }
