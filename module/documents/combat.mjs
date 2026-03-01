@@ -1,5 +1,3 @@
-import { isBlockedFromHelping } from "../dice/help.mjs";
-
 export default class TB2ECombat extends Combat {
 
   /**
@@ -98,71 +96,24 @@ export default class TB2ECombat extends Combat {
     const gd = this.system.groupDispositions || {};
     const captainId = gd[groupId]?.captainId;
     if ( !captainId ) return;
-
     const captain = this.combatants.get(captainId);
     if ( !captain ) return;
-
-    // Reset all helpers in this group when skill changes.
-    const members = this.combatants.filter(c => c._source.group === groupId);
-    const resets = members
-      .filter(c => c.id !== captainId && c.system.isHelping)
-      .map(c => ({ _id: c.id, "system.isHelping": false }));
-
-    const updates = [{ _id: captainId, "system.chosenSkill": skillKey }, ...resets];
-    return this.updateEmbeddedDocuments("Combatant", updates);
-  }
-
-  /**
-   * Toggle a combatant's helper status for the disposition roll.
-   * Validates the combatant is eligible before toggling.
-   * @param {string} groupId       The CombatantGroup ID.
-   * @param {string} combatantId   The Combatant ID to toggle.
-   * @returns {Promise<Combatant>}
-   */
-  async toggleHelper(groupId, combatantId) {
-    const gd = this.system.groupDispositions || {};
-    const groupData = gd[groupId];
-    if ( groupData?.rolled != null ) return;
-
-    // Must not be the captain.
-    if ( groupData?.captainId === combatantId ) return;
-
-    // Must be in the group.
-    const combatant = this.combatants.get(combatantId);
-    if ( !combatant || combatant._source.group !== groupId ) return;
-
-    // Captain must have chosen a skill.
-    const captain = groupData?.captainId ? this.combatants.get(groupData.captainId) : null;
-    const chosenSkill = captain?.system.chosenSkill;
-    if ( !chosenSkill ) return;
-
-    // Must not be blocked by conditions (dead, afraid).
-    const actor = game.actors.get(combatant.actorId);
-    if ( !actor ) return;
-    const { blocked } = isBlockedFromHelping(actor);
-    if ( blocked ) return;
-
-    // Must have the chosen skill at rating > 0.
-    if ( (actor.system.skills[chosenSkill]?.rating || 0) <= 0 ) return;
-
-    return combatant.update({ "system.isHelping": !combatant.system.isHelping });
+    return captain.update({ "system.chosenSkill": skillKey });
   }
 
   /**
    * Request storing a disposition roll result. If the current user is GM, stores directly.
-   * Otherwise, relays the request to the GM via socket.
+   * Otherwise, writes to captain's combatant mailbox for GM processing.
    * @param {string} groupId    The CombatantGroup ID.
    * @param {object} result     The roll result data.
    * @returns {Promise<TB2ECombat|void>}
    */
   async requestStoreDispositionRoll(groupId, result) {
     if ( game.user.isGM ) return this.storeDispositionRoll(groupId, result);
-    game.socket.emit("system.tb2e", {
-      action: "storeDispositionRoll",
-      combatId: this.id,
-      groupId,
-      result
-    });
+    // Mailbox: write to captain's combatant — GM processes via _onUpdateDescendantDocuments.
+    const captainId = this.system.groupDispositions?.[groupId]?.captainId;
+    const captain = captainId ? this.combatants.get(captainId) : null;
+    if ( captain ) await captain.update({ "system.pendingDisposition": result });
   }
 
   /**
@@ -191,11 +142,18 @@ export default class TB2ECombat extends Combat {
 
   /**
    * Distribute disposition points to individual actors in a group.
+   * Transitions to weapons phase when all groups are distributed.
    * @param {string} groupId                       The CombatantGroup ID.
    * @param {Object<string, number>} distribution  Map of combatant ID to disposition value.
    * @returns {Promise<TB2ECombat>}
    */
   async distributeDisposition(groupId, distribution) {
+    if ( !game.user.isGM ) {
+      const captainId = this.system.groupDispositions?.[groupId]?.captainId;
+      const captain = captainId ? this.combatants.get(captainId) : null;
+      if ( captain ) await captain.update({ "system.pendingDistribution": { groupId, distribution } });
+      return;
+    }
     const updates = [];
     for ( const [combatantId, value] of Object.entries(distribution) ) {
       const combatant = this.combatants.get(combatantId);
@@ -218,9 +176,38 @@ export default class TB2ECombat extends Combat {
     const allDistributed = groups.every(g => gd[g.id]?.distributed);
 
     const updateData = { "system.groupDispositions": gd };
-    if ( allDistributed ) updateData["system.phase"] = "active";
+    if ( allDistributed ) updateData["system.phase"] = "weapons";
 
     return this.update(updateData);
+  }
+
+  /* -------------------------------------------- */
+  /*  Weapon Management                            */
+  /* -------------------------------------------- */
+
+  /**
+   * Set the weapon for a combatant (persists to both combatant and actor).
+   * @param {string} combatantId   The Combatant ID.
+   * @param {string} weaponName    The weapon name (free text).
+   * @returns {Promise<void>}
+   */
+  async setWeapon(combatantId, weaponName) {
+    const combatant = this.combatants.get(combatantId);
+    if ( !combatant ) return;
+    await combatant.update({ "system.weapon": weaponName });
+    if ( combatant.actorId ) {
+      const actor = game.actors.get(combatant.actorId);
+      if ( actor ) await actor.update({ "system.conflict.weapon": weaponName });
+    }
+  }
+
+  /**
+   * Transition from weapons to scripting phase.
+   * Validates all non-knocked-out combatants have weapons set.
+   * @returns {Promise<TB2ECombat>}
+   */
+  async beginScripting() {
+    return this.update({ "system.phase": "scripting" });
   }
 
   /* -------------------------------------------- */
@@ -228,75 +215,20 @@ export default class TB2ECombat extends Combat {
   /* -------------------------------------------- */
 
   /**
-   * Start a new conflict round.
-   * Increments currentRound and initializes round data with default team orders.
+   * Set actions for all 3 volleys at once (captain assigns combatants + actions).
+   * @param {string} groupId   The CombatantGroup ID.
+   * @param {Array<{action: string, combatantId: string}>} actions  Array of 3 action assignments.
    * @returns {Promise<TB2ECombat>}
    */
-  async startConflictRound() {
-    const nextRound = (this.system.currentRound || 0) + 1;
-    const rounds = foundry.utils.deepClone(this.system.rounds || {});
-
-    const orders = {};
-    const actions = {};
-    const locked = {};
-    for ( const group of this.groups ) {
-      const members = this.combatants.filter(c => c._source.group === group.id);
-      orders[group.id] = members.map(c => c.id);
-      actions[group.id] = [null, null, null];
-      locked[group.id] = false;
+  async setActions(groupId, actions) {
+    if ( !game.user.isGM ) {
+      // Mailbox: write to captain's combatant — GM processes via _onUpdateDescendantDocuments.
+      const captainId = this.system.groupDispositions?.[groupId]?.captainId;
+      const captain = captainId ? this.combatants.get(captainId) : null;
+      if ( captain ) await captain.update({ "system.pendingActions": actions });
+      return;
     }
-
-    rounds[nextRound] = {
-      orders,
-      actions,
-      locked,
-      revealed: [false, false, false],
-      results: [null, null, null]
-    };
-
-    return this.update({
-      "system.currentRound": nextRound,
-      "system.rounds": rounds
-    });
-  }
-
-  /**
-   * Set the execution order for a team in the current round.
-   * @param {string} groupId                The CombatantGroup ID.
-   * @param {string[]} orderedCombatantIds  Ordered array of combatant IDs.
-   * @returns {Promise<TB2ECombat>}
-   */
-  async setTeamOrder(groupId, orderedCombatantIds) {
-    const roundNum = this.system.currentRound;
-    if ( !roundNum ) return;
-    const rounds = foundry.utils.deepClone(this.system.rounds || {});
-    const round = rounds[roundNum];
-    if ( !round || round.locked[groupId] ) return;
-
-    round.orders[groupId] = orderedCombatantIds;
-    return this.update({ "system.rounds": rounds });
-  }
-
-  /**
-   * Set the action for a specific volley slot.
-   * @param {string} groupId      The CombatantGroup ID.
-   * @param {number} volleyIndex  The volley index (0-2).
-   * @param {string} actionKey    One of attack/defend/feint/maneuver.
-   * @returns {Promise<TB2ECombat>}
-   */
-  async setAction(groupId, volleyIndex, actionKey) {
-    const roundNum = this.system.currentRound;
-    if ( !roundNum ) return;
-    const rounds = foundry.utils.deepClone(this.system.rounds || {});
-    const round = rounds[roundNum];
-    if ( !round || round.locked[groupId] ) return;
-
-    // Validate action key.
-    if ( !CONFIG.TB2E.conflictActions[actionKey] ) return;
-    if ( volleyIndex < 0 || volleyIndex > 2 ) return;
-
-    round.actions[groupId][volleyIndex] = actionKey;
-    return this.update({ "system.rounds": rounds });
+    this.#applyActions(groupId, actions);
   }
 
   /**
@@ -306,6 +238,116 @@ export default class TB2ECombat extends Combat {
    * @returns {Promise<TB2ECombat>}
    */
   async lockActions(groupId) {
+    if ( !game.user.isGM ) {
+      // Mailbox: write to captain's combatant — GM processes via _onUpdateDescendantDocuments.
+      const captainId = this.system.groupDispositions?.[groupId]?.captainId;
+      const captain = captainId ? this.combatants.get(captainId) : null;
+      if ( captain ) await captain.update({ "system.pendingActionsLocked": true });
+      return;
+    }
+    this.#applyLockActions(groupId);
+  }
+
+  /* -------------------------------------------- */
+  /*  Mailbox Processing (GM only)                */
+  /* -------------------------------------------- */
+
+  /** @override */
+  _onUpdateDescendantDocuments(parent, collection, documents, changes, options, userId) {
+    super._onUpdateDescendantDocuments(parent, collection, documents, changes, options, userId);
+    if ( !game.user.isGM || collection !== "combatants" ) return;
+
+    for ( const change of changes ) {
+      const system = change.system;
+      if ( !system ) continue;
+      const combatant = this.combatants.get(change._id);
+      if ( !combatant ) continue;
+      const groupId = combatant._source.group;
+
+      if ( "pendingDisposition" in system && system.pendingDisposition?.rolled != null ) {
+        this.#processDispositionResult(groupId, system.pendingDisposition, change._id);
+      }
+      if ( "pendingDistribution" in system && system.pendingDistribution?.groupId ) {
+        const { groupId: distGroupId, distribution } = system.pendingDistribution;
+        this.#processDistribution(distGroupId, distribution, change._id);
+      }
+      if ( "pendingActions" in system && system.pendingActions?.length ) {
+        this.#applyActions(groupId, system.pendingActions, change._id);
+      }
+      if ( "pendingActionsLocked" in system && system.pendingActionsLocked ) {
+        this.#applyLockActions(groupId, change._id);
+      }
+    }
+
+    // Auto-transition: weapons → scripting when all combatants have declared weapons.
+    if ( this.system.phase === "weapons" && changes.some(c => "weapon" in (c.system ?? {})) ) {
+      const allArmed = this.combatants.every(c => c.system.knockedOut || c.system.weapon);
+      if ( allArmed ) this.startConflictRound();
+    }
+  }
+
+  /**
+   * GM processes a pending disposition roll from a captain's combatant.
+   * Clears the mailbox field after processing.
+   * @param {string} groupId       The CombatantGroup ID.
+   * @param {object} result        The disposition roll result.
+   * @param {string} combatantId   The combatant that wrote the mailbox.
+   */
+  async #processDispositionResult(groupId, result, combatantId) {
+    await this.storeDispositionRoll(groupId, result);
+    // Clear the mailbox.
+    const combatant = this.combatants.get(combatantId);
+    if ( combatant ) await combatant.update({ "system.pendingDisposition": {} });
+  }
+
+  /**
+   * GM processes a pending disposition distribution from a captain's combatant.
+   * Clears the mailbox field after processing.
+   * @param {string} groupId                       The CombatantGroup ID.
+   * @param {Object<string, number>} distribution  Map of combatant ID to disposition value.
+   * @param {string} combatantId                   The combatant that wrote the mailbox.
+   */
+  async #processDistribution(groupId, distribution, combatantId) {
+    await this.distributeDisposition(groupId, distribution);
+    // Clear the mailbox.
+    const combatant = this.combatants.get(combatantId);
+    if ( combatant ) await combatant.update({ "system.pendingDistribution": {} });
+  }
+
+  /**
+   * Apply scripted actions to Combat.system.rounds (GM-side logic).
+   * @param {string} groupId        The CombatantGroup ID.
+   * @param {Array<{action: string, combatantId: string}>} actions
+   * @param {string} [mailboxId]    Combatant ID to clear mailbox on after processing.
+   */
+  async #applyActions(groupId, actions, mailboxId) {
+    const roundNum = this.system.currentRound;
+    if ( !roundNum ) return;
+    const rounds = foundry.utils.deepClone(this.system.rounds || {});
+    const round = rounds[roundNum];
+    if ( !round || round.locked?.[groupId] ) return;
+
+    // Validate non-null entries.
+    for ( const entry of actions ) {
+      if ( entry && entry.action && !CONFIG.TB2E.conflictActions[entry.action] ) return;
+    }
+
+    round.actions[groupId] = actions;
+    await this.update({ "system.rounds": rounds });
+
+    // Clear the mailbox.
+    if ( mailboxId ) {
+      const combatant = this.combatants.get(mailboxId);
+      if ( combatant ) await combatant.update({ "system.pendingActions": [] });
+    }
+  }
+
+  /**
+   * Lock a team's scripted actions for the current round (GM-side logic).
+   * @param {string} groupId     The CombatantGroup ID.
+   * @param {string} [mailboxId] Combatant ID to clear mailbox on after processing.
+   */
+  async #applyLockActions(groupId, mailboxId) {
     const roundNum = this.system.currentRound;
     if ( !roundNum ) return;
     const rounds = foundry.utils.deepClone(this.system.rounds || {});
@@ -314,13 +356,18 @@ export default class TB2ECombat extends Combat {
 
     // Validate all 3 slots are filled.
     const teamActions = round.actions[groupId];
-    if ( !teamActions || teamActions.some(a => !a) ) {
-      ui.notifications.warn(game.i18n.localize("TB2E.Conflict.SelectAction"));
+    if ( !teamActions || teamActions.length < 3 || teamActions.some(a => !a?.action || !a?.combatantId) ) {
       return;
     }
 
     round.locked[groupId] = true;
-    return this.update({ "system.rounds": rounds });
+    await this.update({ "system.rounds": rounds });
+
+    // Clear the mailbox.
+    if ( mailboxId ) {
+      const combatant = this.combatants.get(mailboxId);
+      if ( combatant ) await combatant.update({ "system.pendingActionsLocked": false });
+    }
   }
 
   /**
@@ -344,17 +391,17 @@ export default class TB2ECombat extends Combat {
     }
 
     if ( volleyIndex < 0 || volleyIndex > 2 ) return;
-    round.revealed[volleyIndex] = true;
+    round.volleys[volleyIndex].revealed = true;
     return this.update({ "system.rounds": rounds });
   }
 
   /**
-   * Store roll result for a volley after rolling.
+   * Store roll result for a volley after resolution.
    * @param {number} volleyIndex  The volley index (0-2).
    * @param {object} result       The roll result data.
    * @returns {Promise<TB2ECombat>}
    */
-  async storeVolleyResult(volleyIndex, result) {
+  async resolveVolley(volleyIndex, result) {
     const roundNum = this.system.currentRound;
     if ( !roundNum ) return;
     const rounds = foundry.utils.deepClone(this.system.rounds || {});
@@ -362,26 +409,163 @@ export default class TB2ECombat extends Combat {
     if ( !round ) return;
 
     if ( volleyIndex < 0 || volleyIndex > 2 ) return;
-    round.results[volleyIndex] = result;
+    round.volleys[volleyIndex].result = result;
     return this.update({ "system.rounds": rounds });
   }
 
   /**
-   * Calculate which combatant acts for a given team, round, and volley.
-   * Cycles through the ordered list across rounds.
-   * @param {string} groupId      The CombatantGroup ID.
-   * @param {number} roundNum     The round number (1-based).
+   * Get the interaction type for a volley based on both teams' actions.
    * @param {number} volleyIndex  The volley index (0-2).
-   * @returns {string|null}       The acting combatant ID, or null.
+   * @returns {string|null}       "independent", "versus", or "none", or null if not available.
    */
-  getActingCombatant(groupId, roundNum, volleyIndex) {
-    const rounds = this.system.rounds || {};
-    const round = rounds[roundNum];
+  getVolleyInteraction(volleyIndex) {
+    const roundNum = this.system.currentRound;
+    if ( !roundNum ) return null;
+    const round = this.system.rounds?.[roundNum];
     if ( !round ) return null;
-    const order = round.orders[groupId];
-    if ( !order?.length ) return null;
-    const globalIndex = ((roundNum - 1) * 3) + volleyIndex;
-    return order[globalIndex % order.length];
+
+    const groups = Array.from(this.groups);
+    if ( groups.length < 2 ) return null;
+
+    const action0 = round.actions[groups[0].id]?.[volleyIndex]?.action;
+    const action1 = round.actions[groups[1].id]?.[volleyIndex]?.action;
+    if ( !action0 || !action1 ) return null;
+
+    return CONFIG.TB2E.conflictInteractions[`${action0}:${action1}`] ?? null;
+  }
+
+  /**
+   * Advance to the next round after all 3 volleys are resolved.
+   * Returns to the weapons phase for a new round.
+   * @returns {Promise<TB2ECombat>}
+   */
+  async advanceRound() {
+    const nextRound = (this.system.currentRound || 0) + 1;
+    const rounds = foundry.utils.deepClone(this.system.rounds || {});
+
+    const actions = {};
+    const locked = {};
+    for ( const group of this.groups ) {
+      actions[group.id] = [null, null, null];
+      locked[group.id] = false;
+    }
+
+    rounds[nextRound] = {
+      actions,
+      locked,
+      volleys: [
+        { revealed: false, result: null },
+        { revealed: false, result: null },
+        { revealed: false, result: null }
+      ],
+      effects: {
+        impede: {},
+        position: {}
+      }
+    };
+
+    // Carry over maneuver effects from the previous round's last volley results.
+    const prevRound = this.system.rounds?.[this.system.currentRound];
+    if ( prevRound ) {
+      for ( const group of this.groups ) {
+        // Accumulate impede/position effects that carry into the next round.
+        rounds[nextRound].effects.impede[group.id] = prevRound.effects?.impede?.[group.id] || 0;
+        rounds[nextRound].effects.position[group.id] = prevRound.effects?.position?.[group.id] || 0;
+      }
+    }
+
+    return this.update({
+      "system.currentRound": nextRound,
+      "system.rounds": rounds,
+      "system.phase": "weapons"
+    });
+  }
+
+  /**
+   * Start the first conflict round (called when entering scripting for the first time).
+   * @returns {Promise<TB2ECombat>}
+   */
+  async startConflictRound() {
+    const nextRound = (this.system.currentRound || 0) + 1;
+    const rounds = foundry.utils.deepClone(this.system.rounds || {});
+
+    const actions = {};
+    const locked = {};
+    for ( const group of this.groups ) {
+      actions[group.id] = [null, null, null];
+      locked[group.id] = false;
+    }
+
+    rounds[nextRound] = {
+      actions,
+      locked,
+      volleys: [
+        { revealed: false, result: null },
+        { revealed: false, result: null },
+        { revealed: false, result: null }
+      ],
+      effects: {
+        impede: {},
+        position: {}
+      }
+    };
+
+    return this.update({
+      "system.currentRound": nextRound,
+      "system.rounds": rounds,
+      "system.phase": "scripting"
+    });
+  }
+
+  /**
+   * Calculate the compromise level for the winner.
+   * @param {string} winnerGroupId  The winning CombatantGroup ID.
+   * @returns {{ level: string, remaining: number, starting: number, percent: number }}
+   */
+  calculateCompromise(winnerGroupId) {
+    const members = this.combatants.filter(c => c._source.group === winnerGroupId);
+    let remaining = 0;
+    let starting = 0;
+    for ( const c of members ) {
+      const actor = game.actors.get(c.actorId);
+      if ( !actor ) continue;
+      remaining += actor.system.conflict.hp.value;
+      starting += actor.system.conflict.hp.max;
+    }
+    if ( starting === 0 ) return { level: "major", remaining: 0, starting: 0, percent: 0 };
+
+    const percent = remaining / starting;
+    let level;
+    if ( percent > 0.5 ) level = "minor";
+    else if ( percent > 0.25 ) level = "half";
+    else level = "major";
+
+    return { level, remaining, starting, percent };
+  }
+
+  /**
+   * Check if the conflict should end (one side at 0 disposition).
+   * @returns {{ ended: boolean, winnerGroupId: string|null, loserGroupId: string|null, tie: boolean }}
+   */
+  checkConflictEnd() {
+    const groups = Array.from(this.groups);
+    const groupDisps = groups.map(g => {
+      const members = this.combatants.filter(c => c._source.group === g.id);
+      let total = 0;
+      for ( const c of members ) {
+        const actor = game.actors.get(c.actorId);
+        total += actor?.system.conflict?.hp?.value || 0;
+      }
+      return { groupId: g.id, total };
+    });
+
+    const atZero = groupDisps.filter(g => g.total <= 0);
+    if ( atZero.length === 0 ) return { ended: false, winnerGroupId: null, loserGroupId: null, tie: false };
+    if ( atZero.length >= 2 ) return { ended: true, winnerGroupId: null, loserGroupId: null, tie: true };
+
+    const loser = atZero[0];
+    const winner = groupDisps.find(g => g.groupId !== loser.groupId);
+    return { ended: true, winnerGroupId: winner?.groupId || null, loserGroupId: loser.groupId, tie: false };
   }
 
   /**
@@ -395,7 +579,8 @@ export default class TB2ECombat extends Combat {
       updates.push({
         _id: combatant.actorId,
         "system.conflict.hp.value": 0,
-        "system.conflict.hp.max": 0
+        "system.conflict.hp.max": 0,
+        "system.conflict.weapon": ""
       });
     }
     if ( updates.length ) await Actor.updateDocuments(updates);

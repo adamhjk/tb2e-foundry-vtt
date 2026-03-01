@@ -113,22 +113,156 @@ export const levelRequirements = {
 };
 
 /**
- * Conflict type definitions.
+ * Conflict type definitions with per-action skill/ability mappings.
+ * dispositionSkills: skills the captain can choose for the disposition roll.
+ * dispositionAbility: ability added to the disposition total.
+ * actions: per-action test type and skill/ability keys for this conflict type.
  * @enum {object}
  */
 export const conflictTypes = {
-  kill:      { label: "TB2E.Conflict.Type.Kill",      dispositionSkills: ["fighter"],                dispositionAbility: "health" },
-  capture:   { label: "TB2E.Conflict.Type.Capture",   dispositionSkills: ["fighter", "hunter"],      dispositionAbility: "will" },
-  chase:     { label: "TB2E.Conflict.Type.Chase",     dispositionSkills: ["hunter", "pathfinder"],   dispositionAbility: "health" },
-  driveOff:  { label: "TB2E.Conflict.Type.DriveOff",  dispositionSkills: ["fighter"],                dispositionAbility: "health" },
-  flee:      { label: "TB2E.Conflict.Type.Flee",      dispositionSkills: ["scout", "dungeoneer"],    dispositionAbility: "health" },
-  convince:  { label: "TB2E.Conflict.Type.Convince",  dispositionSkills: ["manipulator", "persuader"], dispositionAbility: "will" },
-  trick:     { label: "TB2E.Conflict.Type.Trick",     dispositionSkills: ["criminal", "manipulator"], dispositionAbility: "will" },
-  negotiate: { label: "TB2E.Conflict.Type.Negotiate", dispositionSkills: ["haggler", "persuader"],   dispositionAbility: "will" },
-  abjure:    { label: "TB2E.Conflict.Type.Abjure",    dispositionSkills: ["ritualist", "theologian"], dispositionAbility: "will" },
-  riddle:    { label: "TB2E.Conflict.Type.Riddle",    dispositionSkills: ["loremaster", "scholar"],  dispositionAbility: "will" },
-  war:       { label: "TB2E.Conflict.Type.War",       dispositionSkills: ["commander"],              dispositionAbility: "will" },
-  journey:   { label: "TB2E.Conflict.Type.Journey",   dispositionSkills: ["pathfinder", "survivalist"], dispositionAbility: "health" }
+  kill: {
+    label: "TB2E.Conflict.Type.Kill",
+    dispositionSkills: ["fighter"],
+    dispositionAbility: "health",
+    actions: {
+      attack:   { type: "skill",   keys: ["fighter"] },
+      defend:   { type: "ability", keys: ["health"] },
+      feint:    { type: "skill",   keys: ["fighter"] },
+      maneuver: { type: "ability", keys: ["health"] }
+    }
+  },
+  capture: {
+    label: "TB2E.Conflict.Type.Capture",
+    dispositionSkills: ["fighter", "hunter"],
+    dispositionAbility: "will",
+    actions: {
+      attack:   { type: "skill", keys: ["fighter"] },
+      defend:   { type: "skill", keys: ["hunter"] },
+      feint:    { type: "skill", keys: ["hunter"] },
+      maneuver: { type: "skill", keys: ["fighter"] }
+    }
+  },
+  chase: {
+    label: "TB2E.Conflict.Type.Chase",
+    dispositionSkills: ["hunter", "pathfinder"],
+    dispositionAbility: "health",
+    actions: {
+      attack:   { type: "skill",   keys: ["hunter", "pathfinder"] },
+      defend:   { type: "ability", keys: ["health"] },
+      feint:    { type: "skill",   keys: ["hunter", "pathfinder"] },
+      maneuver: { type: "ability", keys: ["health"] }
+    }
+  },
+  driveOff: {
+    label: "TB2E.Conflict.Type.DriveOff",
+    dispositionSkills: ["fighter"],
+    dispositionAbility: "health",
+    actions: {
+      attack:   { type: "skill",   keys: ["fighter"] },
+      defend:   { type: "ability", keys: ["health"] },
+      feint:    { type: "skill",   keys: ["fighter"] },
+      maneuver: { type: "ability", keys: ["health"] }
+    }
+  },
+  flee: {
+    label: "TB2E.Conflict.Type.Flee",
+    dispositionSkills: ["scout", "rider"],
+    dispositionAbility: "health",
+    actions: {
+      attack:   { type: "skill",   keys: ["scout", "rider"] },
+      defend:   { type: "ability", keys: ["health"] },
+      feint:    { type: "skill",   keys: ["scout", "rider"] },
+      maneuver: { type: "ability", keys: ["health"] }
+    }
+  },
+  convince: {
+    label: "TB2E.Conflict.Type.Convince",
+    dispositionSkills: ["persuader"],
+    dispositionAbility: "will",
+    actions: {
+      attack:   { type: "skill",   keys: ["persuader"] },
+      defend:   { type: "ability", keys: ["will"] },
+      feint:    { type: "skill",   keys: ["persuader"] },
+      maneuver: { type: "ability", keys: ["will"] }
+    }
+  },
+  convinceCrowd: {
+    label: "TB2E.Conflict.Type.ConvinceCrowd",
+    dispositionSkills: ["orator"],
+    dispositionAbility: "will",
+    actions: {
+      attack:   { type: "skill",   keys: ["orator"] },
+      defend:   { type: "ability", keys: ["will"] },
+      feint:    { type: "skill",   keys: ["orator"] },
+      maneuver: { type: "ability", keys: ["will"] }
+    }
+  },
+  trick: {
+    label: "TB2E.Conflict.Type.Trick",
+    dispositionSkills: ["manipulator"],
+    dispositionAbility: "will",
+    actions: {
+      attack:   { type: "skill",   keys: ["manipulator"] },
+      defend:   { type: "ability", keys: ["will"] },
+      feint:    { type: "skill",   keys: ["manipulator"] },
+      maneuver: { type: "ability", keys: ["will"] }
+    }
+  },
+  negotiate: {
+    label: "TB2E.Conflict.Type.Negotiate",
+    dispositionSkills: ["haggler", "persuader"],
+    dispositionAbility: "will",
+    actions: {
+      attack:   { type: "skill",   keys: ["haggler", "persuader"] },
+      defend:   { type: "ability", keys: ["will"] },
+      feint:    { type: "skill",   keys: ["haggler", "persuader"] },
+      maneuver: { type: "ability", keys: ["will"] }
+    }
+  },
+  abjure: {
+    label: "TB2E.Conflict.Type.Abjure",
+    dispositionSkills: ["ritualist", "theologian"],
+    dispositionAbility: "will",
+    actions: {
+      attack:   { type: "skill",   keys: ["ritualist", "theologian"] },
+      defend:   { type: "ability", keys: ["will"] },
+      feint:    { type: "skill",   keys: ["ritualist", "theologian"] },
+      maneuver: { type: "ability", keys: ["will"] }
+    }
+  },
+  riddle: {
+    label: "TB2E.Conflict.Type.Riddle",
+    dispositionSkills: ["loremaster", "scholar"],
+    dispositionAbility: "will",
+    actions: {
+      attack:   { type: "skill",   keys: ["loremaster", "scholar"] },
+      defend:   { type: "ability", keys: ["will"] },
+      feint:    { type: "skill",   keys: ["loremaster", "scholar"] },
+      maneuver: { type: "ability", keys: ["will"] }
+    }
+  },
+  war: {
+    label: "TB2E.Conflict.Type.War",
+    dispositionSkills: ["commander"],
+    dispositionAbility: "will",
+    actions: {
+      attack:   { type: "skill",   keys: ["commander"] },
+      defend:   { type: "ability", keys: ["will"] },
+      feint:    { type: "skill",   keys: ["commander"] },
+      maneuver: { type: "ability", keys: ["will"] }
+    }
+  },
+  journey: {
+    label: "TB2E.Conflict.Type.Journey",
+    dispositionSkills: ["pathfinder", "survivalist"],
+    dispositionAbility: "health",
+    actions: {
+      attack:   { type: "skill",   keys: ["pathfinder", "survivalist"] },
+      defend:   { type: "ability", keys: ["health"] },
+      feint:    { type: "skill",   keys: ["pathfinder", "survivalist"] },
+      maneuver: { type: "ability", keys: ["health"] }
+    }
+  }
 };
 
 /**
@@ -142,4 +276,56 @@ export const conflictActions = {
   maneuver: { label: "TB2E.Conflict.Action.Maneuver", icon: "fa-solid fa-arrows-rotate", pip: "M" }
 };
 
-export default { conditions, abilities, skills, advancementNeeded, packSlots, levelRequirements, conflictTypes, conflictActions };
+/**
+ * Conflict action interaction matrix.
+ * Keys are "yourAction:opponentAction" → interaction type.
+ * - "independent": both test independently (attacker at Ob 0, defender at Ob 3)
+ * - "versus": both test versus each other
+ * - "none": the first actor doesn't test at all
+ * @enum {string}
+ */
+export const conflictInteractions = {
+  "attack:attack":     "independent",
+  "attack:defend":     "versus",
+  "attack:feint":      "independent",
+  "attack:maneuver":   "versus",
+  "defend:attack":     "versus",
+  "defend:defend":     "independent",
+  "defend:feint":      "none",
+  "defend:maneuver":   "versus",
+  "feint:attack":      "none",
+  "feint:defend":      "independent",
+  "feint:feint":       "versus",
+  "feint:maneuver":    "independent",
+  "maneuver:attack":   "versus",
+  "maneuver:defend":   "versus",
+  "maneuver:feint":    "independent",
+  "maneuver:maneuver": "independent"
+};
+
+/**
+ * Independent obstacles per action when testing independently.
+ * @enum {number}
+ */
+export const conflictObstacles = {
+  attack: 0,
+  defend: 3,
+  feint: 0,
+  maneuver: 0
+};
+
+/**
+ * Maneuver effects by margin of success cost.
+ * @enum {object}
+ */
+export const maneuverEffects = {
+  1: { key: "impede",   label: "TB2E.Conflict.Maneuver.Impede",   description: "-1D opponent's next action" },
+  2: { key: "position", label: "TB2E.Conflict.Maneuver.Position", description: "+2D your team's next action" },
+  3: { key: "disarm",   label: "TB2E.Conflict.Maneuver.Disarm",   description: "Remove opponent weapon/trait" },
+  4: { key: "rearm",    label: "TB2E.Conflict.Maneuver.Rearm",    description: "Equip weapon mid-round" }
+};
+
+export default {
+  conditions, abilities, skills, advancementNeeded, packSlots, levelRequirements,
+  conflictTypes, conflictActions, conflictInteractions, conflictObstacles, maneuverEffects
+};

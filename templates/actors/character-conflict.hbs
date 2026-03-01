@@ -1,0 +1,117 @@
+{{!-- Character Conflict Panel — shown when character is in an active conflict --}}
+<section class="character-conflict-panel {{#unless conflict.active}}hidden{{/unless}}">
+{{#if conflict.active}}
+
+  {{!-- Header bar with conflict type + HP --}}
+  <div class="conflict-panel-header">
+    <span class="conflict-panel-title">
+      <i class="fa-solid fa-shield-halved"></i>
+      {{conflict.typeLabel}}
+    </span>
+    <span class="conflict-panel-hp">
+      {{localize "TB2E.Conflict.HP"}}: {{conflict.hp.value}}/{{conflict.hp.max}}
+    </span>
+    <div class="conflict-panel-hp-bar">
+      <div class="conflict-panel-hp-fill" style="width: {{conflict.hpPercent}}%"></div>
+    </div>
+  </div>
+
+  {{!-- Captain status --}}
+  {{#if conflict.isCaptain}}
+  <div class="conflict-panel-role">
+    <span class="conflict-role-badge captain">
+      <i class="fa-solid fa-star"></i> {{localize "TB2E.Conflict.Captain"}}
+    </span>
+  </div>
+  {{/if}}
+
+  {{!-- Phase-specific controls --}}
+
+  {{!-- ROLLING PHASE: Captain rolls disposition --}}
+  {{#if conflict.isRolling}}
+    {{#if conflict.isCaptain}}
+      {{#unless conflict.hasRolled}}
+      <div class="conflict-panel-section">
+        <div class="conflict-section-label">{{localize "TB2E.Conflict.DispositionRoll"}}</div>
+        {{#if conflict.needsSkillChoice}}
+        <div class="conflict-skill-picker">
+          {{#each conflict.skillOptions}}
+          <button type="button" class="conflict-skill-btn" data-action="conflictChooseSkill" data-skill="{{this.key}}">
+            {{this.label}} ({{this.rating}})
+          </button>
+          {{/each}}
+        </div>
+        {{else}}
+        <div class="conflict-roll-area">
+          <span class="conflict-roll-info">
+            {{conflict.chosenSkillLabel}} ({{conflict.rollPool}}) + {{conflict.abilityLabel}} ({{conflict.abilityRating}})
+          </span>
+          <button type="button" class="conflict-roll-btn" data-action="conflictRollDisposition">
+            <i class="fa-solid fa-dice"></i> {{localize "TB2E.Conflict.Roll"}}
+          </button>
+        </div>
+        {{/if}}
+      </div>
+      {{/unless}}
+    {{/if}}
+  {{/if}}
+
+  {{!-- DISTRIBUTION PHASE: Captain distributes HP --}}
+  {{#if conflict.isDistribution}}
+    {{#if conflict.isCaptain}}
+      {{#unless conflict.hasDistributed}}
+      <div class="conflict-panel-section">
+        <div class="conflict-section-label">{{localize "TB2E.Conflict.DistributeDisposition"}}</div>
+        <div class="conflict-distribution" data-total="{{conflict.dispositionTotal}}">
+          <div class="conflict-dist-summary">
+            <span>{{localize "TB2E.Conflict.Total"}}: <strong>{{conflict.dispositionTotal}}</strong></span>
+            <span>{{localize "TB2E.Conflict.Remaining"}}: <strong class="conflict-dist-remaining">0</strong></span>
+          </div>
+          <ul class="conflict-dist-list">
+            {{#each conflict.distributionRows}}
+            <li class="conflict-dist-row">
+              <span class="conflict-dist-name">
+                {{#if this.isCaptain}}<i class="fa-solid fa-star"></i>{{/if}}
+                {{this.name}}
+              </span>
+              <input type="number" name="disp-{{this.id}}" value="{{this.suggested}}"
+                     min="0" max="{{../conflict.dispositionTotal}}" step="1"
+                     class="conflict-dist-value">
+            </li>
+            {{/each}}
+          </ul>
+          <button type="button" class="conflict-control-btn" data-action="conflictDistribute">
+            <i class="fa-solid fa-check"></i> {{localize "TB2E.Conflict.Distribute"}}
+          </button>
+        </div>
+      </div>
+      {{/unless}}
+    {{/if}}
+  {{/if}}
+
+  {{!-- WEAPONS PHASE: Declare weapon --}}
+  {{#if conflict.isWeapons}}
+  <div class="conflict-panel-section">
+    <div class="conflict-section-label">{{localize "TB2E.Conflict.Weapon"}}</div>
+    <div class="conflict-weapon-area">
+      <input type="text" class="conflict-weapon-input" value="{{conflict.weapon}}"
+             placeholder="{{localize 'TB2E.Conflict.WeaponPlaceholder'}}"
+             data-action="conflictSetWeapon">
+      <button type="button" class="conflict-control-btn" data-action="conflictDeclareWeapon">
+        <i class="fa-solid fa-check"></i> {{localize "TB2E.Conflict.Declare"}}
+      </button>
+    </div>
+  </div>
+  {{/if}}
+
+  {{!-- SCRIPTING/ACTIVE PHASE: Show weapon + status --}}
+  {{#if conflict.isScriptingOrActive}}
+    {{#if conflict.weapon}}
+    <div class="conflict-panel-weapon-display">
+      <i class="fa-solid fa-sword"></i> {{conflict.weapon}}
+    </div>
+    {{/if}}
+  {{/if}}
+
+{{/if}}
+</section>

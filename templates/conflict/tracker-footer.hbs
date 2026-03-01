@@ -24,6 +24,13 @@
     </button>
     {{/if}}
 
+    {{#if isWeapons}}
+    <button type="button" class="conflict-control" data-action="beginScripting">
+      <i class="fa-solid fa-scroll"></i>
+      {{localize "TB2E.Conflict.BeginScripting"}}
+    </button>
+    {{/if}}
+
   {{/if}}
 
   {{#if isRolling}}
@@ -40,10 +47,17 @@
   </div>
   {{/if}}
 
-  {{#if isActive}}
-    <button type="button" class="conflict-control" data-action="runConflict">
+  {{#if isWeapons}}
+  <div class="phase-indicator">
+    <i class="fa-solid fa-sword"></i>
+    {{localize "TB2E.Conflict.Phase.Weapons"}}
+  </div>
+  {{/if}}
+
+  {{#if isScriptingOrActive}}
+    <button type="button" class="conflict-control" data-action="openConflictWindow">
       <i class="fa-solid fa-swords"></i>
-      {{localize "TB2E.Conflict.RunConflict"}}
+      {{localize "TB2E.Conflict.OpenConflictWindow"}}
     </button>
     {{#if isGM}}
     <button type="button" class="conflict-control" data-action="endConflict">

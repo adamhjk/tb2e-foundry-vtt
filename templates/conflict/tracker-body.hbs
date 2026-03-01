@@ -1,4 +1,4 @@
-{{!-- Conflict Tracker Body --}}
+{{!-- Conflict Tracker Body — Status Dashboard --}}
 <div class="tb2e-conflict-body">
 
   {{#if hasCombat}}
@@ -9,7 +9,7 @@
         <span class="group-name">{{group.name}}</span>
         {{#if group.hasDisposition}}
         <span class="group-disposition">
-          {{localize "TB2E.Conflict.Disposition"}}: {{group.currentDisposition}}/{{group.maxDisposition}}
+          {{group.currentDisposition}}/{{group.maxDisposition}}
         </span>
         {{else if group.hasRolled}}
         <span class="group-disposition">
@@ -59,57 +59,25 @@
               {{#if c.isCaptain}}<span class="captain-badge">{{localize "TB2E.Conflict.Captain"}}</span>{{/if}}
               {{c.name}}
             </span>
-            {{#if c.canHelp}}
-            <button type="button" class="help-toggle {{#if c.isHelping}}active{{/if}}"
-                    data-action="toggleHelper"
-                    title="{{localize 'TB2E.Conflict.ToggleHelp'}}"
-                    {{#unless c.canToggle}}disabled{{/unless}}>
-              <i class="fa-solid fa-handshake-angle"></i>
-              <span class="help-label">+1D</span>
-            </button>
-            {{/if}}
           </div>
         </li>
         {{/each}}
       </ol>
-
       {{#if group.hasRolled}}
       <div class="tracker-roll-card">
         {{{group.cardHtml}}}
       </div>
       {{else}}
-        {{#if group.canInteract}}
-          {{#if group.chosenSkill}}
-          {{!-- Skill chosen, show roll button --}}
-          <div class="roll-controls">
-            <button type="button" class="roll-button" data-action="rollGroupDisposition">
-              <i class="fa-solid fa-dice"></i>
-              {{localize "TB2E.Conflict.Roll"}}
-            </button>
-          </div>
-          {{else}}
-          {{!-- Show skill picker --}}
-          <div class="skill-picker">
-            {{#each group.skillOptions as |opt|}}
-            <button type="button" class="skill-option" data-action="chooseSkill" data-skill="{{opt.key}}">
-              {{opt.label}} ({{opt.rating}})
-            </button>
-            {{/each}}
-          </div>
-          {{/if}}
-        {{else}}
-        <div class="waiting-indicator">
-          <i class="fa-solid fa-hourglass-half"></i>
-          {{localize "TB2E.Conflict.Phase.Rolling"}}
-        </div>
-        {{/if}}
+      <div class="waiting-indicator">
+        <i class="fa-solid fa-hourglass-half"></i>
+        {{localize "TB2E.Conflict.Phase.Rolling"}}
+      </div>
       {{/if}}
       {{/if}}
 
       {{!-- ===== DISTRIBUTION PHASE ===== --}}
       {{#if ../isDistribution}}
         {{#if group.distributed}}
-        {{!-- Already distributed — show combatants with HP --}}
         <ol class="group-combatants">
           {{#each group.combatants as |c|}}
           <li class="combatant {{#if c.isCaptain}}is-captain{{/if}}" data-combatant-id="{{c.id}}">
@@ -127,46 +95,29 @@
           {{/each}}
         </ol>
         {{else}}
-        {{!-- Show distribution inputs --}}
-        <div class="group-distribution" data-total="{{group.rolled}}">
-          <div class="distribution-summary">
-            <span>{{localize "TB2E.Conflict.Total"}}: <strong>{{group.rolled}}</strong></span>
-            <span>{{localize "TB2E.Conflict.Remaining"}}: <strong class="remaining-value">0</strong></span>
-          </div>
-          <ul class="distribution-list">
-            {{#each group.distributionRows as |row|}}
-            <li class="distribution-row" data-combatant-id="{{row.id}}">
-              <span class="distribution-name">
-                {{#if row.isCaptain}}<i class="fa-solid fa-star captain-icon"></i>{{/if}}
-                {{row.name}}
-              </span>
-              <input type="number" name="disp-{{row.id}}" value="{{row.suggested}}"
-                     min="0" max="{{group.rolled}}" step="1"
-                     class="disposition-value" {{#unless group.canInteract}}disabled{{/unless}}>
-            </li>
-            {{/each}}
-          </ul>
-          {{#if group.canInteract}}
-          <button type="button" class="conflict-control distribute-button" data-action="distributeDisposition">
-            <i class="fa-solid fa-check"></i>
-            {{localize "TB2E.Conflict.Distribute"}}
-          </button>
-          {{/if}}
+        <div class="waiting-indicator">
+          <i class="fa-solid fa-scale-balanced"></i>
+          {{localize "TB2E.Conflict.Phase.Distribution"}}
         </div>
         {{/if}}
       {{/if}}
 
-      {{!-- ===== ACTIVE PHASE ===== --}}
-      {{#if ../isActive}}
+      {{!-- ===== WEAPONS / SCRIPTING / ACTIVE PHASES ===== --}}
+      {{#if ../isWeaponsOrLater}}
       <ol class="group-combatants">
         {{#each group.combatants as |c|}}
-        <li class="combatant {{#if c.isCaptain}}is-captain{{/if}}" data-combatant-id="{{c.id}}">
+        <li class="combatant {{#if c.isCaptain}}is-captain{{/if}} {{#if c.knockedOut}}knocked-out{{/if}}" data-combatant-id="{{c.id}}">
           <div class="combatant-info">
             <img class="combatant-img" src="{{c.img}}" alt="{{c.name}}">
             <span class="combatant-name">
               {{#if c.isCaptain}}<i class="fa-solid fa-star captain-icon"></i>{{/if}}
               {{c.name}}
             </span>
+            {{#if c.weapon}}
+            <span class="combatant-weapon" title="{{c.weapon}}">
+              <i class="fa-solid fa-sword"></i>
+            </span>
+            {{/if}}
             {{#if c.hasHP}}
             <span class="combatant-disposition">{{c.hp.value}}/{{c.hp.max}}</span>
             {{/if}}

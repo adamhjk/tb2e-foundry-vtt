@@ -123,8 +123,7 @@ export async function _logAdvancement({ actor, type, key, baseDice, pass }) {
 async function _showRollDialog({ label, dice, modifiers = [], actorId, disposition = false,
   availableHelpers = [] }) {
   const staticModBonus = modifiers.reduce((sum, m) => sum + m.value, 0);
-  const preSelectedCount = availableHelpers.filter(h => h.preSelected).length;
-  let helperBonus = preSelectedCount;
+  let helperBonus = 0;
   const openChallenges = disposition ? [] : PendingVersusRegistry.getOpenChallenges(actorId);
 
   const pcHelpers = availableHelpers.filter(h => !h.isNPC);
@@ -135,7 +134,7 @@ async function _showRollDialog({ label, dice, modifiers = [], actorId, dispositi
     label,
     dice,
     modifiers,
-    total: dice + staticModBonus + preSelectedCount,
+    total: dice + staticModBonus,
     disposition,
     hasHelpers,
     pcHelpers,
@@ -174,14 +173,6 @@ async function _showRollDialog({ label, dice, modifiers = [], actorId, dispositi
           updateSummary();
         });
       }
-
-      // Pre-select helpers that were already active on the combat chart
-      for ( const btn of helperButtons ) {
-        const helperId = btn.dataset.helperId;
-        const helperData = availableHelpers.find(h => h.id === helperId);
-        if ( helperData?.preSelected ) btn.classList.add("active");
-      }
-      helperBonus = form.querySelectorAll(".helper-toggle.active").length;
 
       // Summary update function — defined per-mode below, called by helpers too
       let updateSummary;
@@ -296,7 +287,7 @@ async function _showRollDialog({ label, dice, modifiers = [], actorId, dispositi
  * @param {Actor} options.actor - The captain's actor.
  * @param {string} options.skillKey - The chosen disposition skill key.
  * @param {string} options.abilityKey - The disposition ability key.
- * @param {{ id: string, name: string, preSelected: boolean }[]} [options.availableHelpers=[]] - Helpers who can contribute.
+ * @param {{ id: string, name: string }[]} [options.availableHelpers=[]] - Helpers who can contribute.
  * @returns {Promise<{ baseDice: number, poolSize: number, selectedHelpers: object[] }|null>} Null if cancelled.
  */
 export async function rollDisposition({ actor, skillKey, abilityKey, availableHelpers = [] }) {

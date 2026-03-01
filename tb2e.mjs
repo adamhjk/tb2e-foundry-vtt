@@ -69,22 +69,42 @@ Hooks.once("init", function() {
   console.log("Torchbearer 2E | System initialized.");
 });
 
-// Rebuild versus registry after world data is ready and register socket listener.
+// Rebuild versus registry after world data is ready.
 Hooks.once("ready", () => {
   PendingVersusRegistry.rebuild();
-
-  // Socket relay: GM processes disposition roll storage requests from players.
-  game.socket.on("system.tb2e", async (data) => {
-    if ( !game.user.isGM ) return;
-    if ( data.action === "storeDispositionRoll" ) {
-      const combat = game.combats.get(data.combatId);
-      if ( combat ) await combat.storeDispositionRoll(data.groupId, data.result);
-    }
-  });
 });
 
 // Auto-resolve versus tests when opponent's roll message is created (GM-only).
 Hooks.on("createChatMessage", (message) => {
   if ( !game.user.isGM ) return;
   resolveVersus(message);
+});
+
+// Auto-assign combatants to the correct team group when added to a conflict.
+Hooks.on("preCreateCombatant", (combatant, data, options, userId) => {
+  const combat = combatant.parent;
+  if ( !combat?.isConflict ) return;
+
+  // If a group is already set, keep it.
+  if ( data.group ) return;
+
+  // Resolve team from actor disposition or token disposition.
+  const actor = game.actors.get(data.actorId);
+  let team = actor?.system?.conflict?.team;
+
+  // Fallback: derive from token disposition.
+  if ( !team && data.tokenId ) {
+    const token = canvas.tokens?.get(data.tokenId);
+    if ( token ) {
+      team = token.document.disposition === CONST.TOKEN_DISPOSITIONS.FRIENDLY ? "party" : "gm";
+    }
+  }
+
+  if ( !team ) team = "gm";
+
+  // Map team to group ID: first group = party, second group = gm.
+  const groups = Array.from(combat.groups);
+  if ( groups.length < 2 ) return;
+  const targetGroupId = team === "party" ? groups[0].id : groups[1].id;
+  combatant.updateSource({ group: targetGroupId });
 });

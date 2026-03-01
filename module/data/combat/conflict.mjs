@@ -6,7 +6,7 @@ export default class ConflictData extends foundry.abstract.TypeDataModel {
       conflictType: new fields.StringField({ initial: "capture" }),
       phase: new fields.StringField({
         initial: "setup",
-        choices: ["setup", "rolling", "distribution", "active"]
+        choices: ["setup", "rolling", "distribution", "weapons", "scripting", "active"]
       }),
       groupDispositions: new fields.ObjectField(),
       currentRound: new fields.NumberField({ initial: 0, integer: true, min: 0 }),

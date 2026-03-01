@@ -1,5 +1,7 @@
 import { advancementNeeded, conditions, abilities, skills, packSlots, levelRequirements } from "../../config.mjs";
 import { rollTest, showAdvancementDialog } from "../../dice/_module.mjs";
+import { rollDisposition, evaluateRoll, gatherHelpModifiers } from "../../dice/tb2e-roll.mjs";
+import { getEligibleHelpers } from "../../dice/help.mjs";
 
 const { HandlebarsApplicationMixin } = foundry.applications.api;
 const { ActorSheetV2 } = foundry.applications.sheets;
@@ -18,13 +20,50 @@ export default class CharacterSheet extends HandlebarsApplicationMixin(ActorShee
       deleteRow: CharacterSheet.#onDeleteRow,
       rollTest: CharacterSheet.#onRollTest,
       advance: CharacterSheet.#onAdvance,
-      toggleTeam: CharacterSheet.#onToggleTeam
+      toggleTeam: CharacterSheet.#onToggleTeam,
+      conflictChooseSkill: CharacterSheet.#onConflictChooseSkill,
+      conflictRollDisposition: CharacterSheet.#onConflictRollDisposition,
+      conflictDistribute: CharacterSheet.#onConflictDistribute,
+      conflictDeclareWeapon: CharacterSheet.#onConflictDeclareWeapon
     },
     form: { submitOnChange: true },
     window: { resizable: true }
   };
 
   /* -------------------------------------------- */
+  /** @type {number|null} */
+  #updateCombatHookId = null;
+
+  /** @type {number|null} */
+  #updateCombatantHookId = null;
+
+  /** @override */
+  async _onFirstRender(context, options) {
+    await super._onFirstRender(context, options);
+    // Re-render conflict part when combat state or combatant data changes.
+    this.#updateCombatHookId = Hooks.on("updateCombat", () => {
+      this.render({ parts: ["conflict"] });
+    });
+    this.#updateCombatantHookId = Hooks.on("updateCombatant", (combatant) => {
+      if ( combatant.actorId === this.document.id || combatant.parent?.combatants.some(c => c.actorId === this.document.id) ) {
+        this.render({ parts: ["conflict"] });
+      }
+    });
+  }
+
+  /** @override */
+  async _onClose(options) {
+    if ( this.#updateCombatHookId != null ) {
+      Hooks.off("updateCombat", this.#updateCombatHookId);
+      this.#updateCombatHookId = null;
+    }
+    if ( this.#updateCombatantHookId != null ) {
+      Hooks.off("updateCombatant", this.#updateCombatantHookId);
+      this.#updateCombatantHookId = null;
+    }
+    await super._onClose(options);
+  }
+
   /*  Parts & Tabs                                */
   /* -------------------------------------------- */
 
@@ -37,6 +76,9 @@ export default class CharacterSheet extends HandlebarsApplicationMixin(ActorShee
     },
     conditions: {
       template: "systems/tb2e/templates/actors/character-conditions.hbs"
+    },
+    conflict: {
+      template: "systems/tb2e/templates/actors/character-conflict.hbs"
     },
     tabs: {
       template: "templates/generic/tab-navigation.hbs"
@@ -129,6 +171,9 @@ export default class CharacterSheet extends HandlebarsApplicationMixin(ActorShee
         break;
       case "conditions":
         this.#prepareConditionsContext(partContext);
+        break;
+      case "conflict":
+        this.#prepareConflictContext(partContext);
         break;
       case "identity":
         partContext.whoYouAreFields = this._prepareWhoYouAreFields();
@@ -368,6 +413,104 @@ export default class CharacterSheet extends HandlebarsApplicationMixin(ActorShee
   }
 
   /* -------------------------------------------- */
+  /*  Conflict Panel Context                      */
+  /* -------------------------------------------- */
+
+  /**
+   * Prepare the conflict panel context for the character sheet.
+   * Only populates when this character is part of an active conflict.
+   * @param {object} context
+   */
+  #prepareConflictContext(context) {
+    const actor = this.document;
+    const combat = game.combats?.find(c =>
+      c.isConflict && c.combatants.some(cb => cb.actorId === actor.id)
+    );
+
+    if ( !combat ) {
+      context.conflict = { active: false };
+      return;
+    }
+
+    const combatant = combat.combatants.find(c => c.actorId === actor.id);
+    if ( !combatant ) {
+      context.conflict = { active: false };
+      return;
+    }
+
+    const groupId = combatant._source.group;
+    const gd = combat.system.groupDispositions || {};
+    const groupData = gd[groupId] || {};
+    const phase = combat.system.phase;
+    const conflictCfg = CONFIG.TB2E.conflictTypes[combat.system.conflictType];
+    const isCaptain = groupData.captainId === combatant.id;
+    const disp = actor.system.conflict.hp;
+
+    const conflictData = {
+      active: true,
+      combatId: combat.id,
+      groupId,
+      combatantId: combatant.id,
+      typeLabel: game.i18n.localize(conflictCfg?.label ?? "TB2E.Conflict.Title"),
+      phase,
+      isCaptain,
+      hp: disp,
+      hpPercent: disp.max > 0 ? Math.round((disp.value / disp.max) * 100) : 0,
+      weapon: combatant.system.weapon || actor.system.conflict.weapon || "",
+      isRolling: phase === "rolling",
+      isDistribution: phase === "distribution",
+      isWeapons: phase === "weapons",
+      isScriptingOrActive: phase === "scripting" || phase === "active",
+      hasRolled: groupData.rolled != null,
+      hasDistributed: !!groupData.distributed
+    };
+
+    // Rolling phase data.
+    if ( phase === "rolling" && isCaptain && !groupData.rolled ) {
+      const captain = combat.combatants.get(groupData.captainId);
+      const chosenSkill = captain?.system.chosenSkill || null;
+      conflictData.needsSkillChoice = !chosenSkill && (conflictCfg?.dispositionSkills?.length > 1);
+
+      if ( conflictData.needsSkillChoice ) {
+        conflictData.skillOptions = (conflictCfg.dispositionSkills || []).map(k => ({
+          key: k,
+          label: game.i18n.localize(CONFIG.TB2E.skills[k]?.label || k),
+          rating: actor.system.skills[k]?.rating || 0
+        }));
+      } else {
+        const skill = chosenSkill || conflictCfg?.dispositionSkills?.[0];
+        conflictData.chosenSkillLabel = skill ? game.i18n.localize(CONFIG.TB2E.skills[skill]?.label || skill) : "";
+        conflictData.rollPool = actor.system.skills[skill]?.rating || 0;
+        conflictData.abilityLabel = game.i18n.localize(
+          CONFIG.TB2E.abilities[conflictCfg.dispositionAbility]?.label || conflictCfg.dispositionAbility
+        );
+        conflictData.abilityRating = actor.system.abilities[conflictCfg.dispositionAbility]?.rating || 0;
+      }
+    }
+
+    // Distribution phase data.
+    if ( phase === "distribution" && isCaptain && !groupData.distributed && groupData.rolled != null ) {
+      const total = groupData.rolled;
+      const members = combat.combatants.filter(c => c._source.group === groupId);
+      const base = Math.floor(total / (members.length || 1));
+      let remainder = total - (base * (members.length || 1));
+      conflictData.dispositionTotal = total;
+      conflictData.distributionRows = members.map(c => {
+        const suggested = base + (remainder > 0 ? 1 : 0);
+        if ( remainder > 0 ) remainder--;
+        return {
+          id: c.id,
+          name: c.name,
+          isCaptain: groupData.captainId === c.id,
+          suggested
+        };
+      });
+    }
+
+    context.conflict = conflictData;
+  }
+
+  /* -------------------------------------------- */
   /*  Utility Helpers                             */
   /* -------------------------------------------- */
 
@@ -399,21 +542,42 @@ export default class CharacterSheet extends HandlebarsApplicationMixin(ActorShee
 
   _onRender(context, options) {
     super._onRender(context, options);
-    const bar = this.element.querySelector(".reference-bar-text");
-    if ( !bar ) return;
-    const placeholder = bar.textContent;
 
-    this.element.querySelectorAll("[data-page]").forEach(el => {
-      el.addEventListener("mouseenter", () => {
-        const label = el.querySelector(".skill-name, .ability-name, .condition-label")?.textContent || "";
-        bar.textContent = `${label.trim()} \u2014 ${el.dataset.page}`;
-        bar.classList.remove("placeholder");
+    // Reference bar hover behavior.
+    const bar = this.element.querySelector(".reference-bar-text");
+    if ( bar ) {
+      const placeholder = bar.textContent;
+      this.element.querySelectorAll("[data-page]").forEach(el => {
+        el.addEventListener("mouseenter", () => {
+          const label = el.querySelector(".skill-name, .ability-name, .condition-label")?.textContent || "";
+          bar.textContent = `${label.trim()} \u2014 ${el.dataset.page}`;
+          bar.classList.remove("placeholder");
+        });
+        el.addEventListener("mouseleave", () => {
+          bar.textContent = placeholder;
+          bar.classList.add("placeholder");
+        });
       });
-      el.addEventListener("mouseleave", () => {
-        bar.textContent = placeholder;
-        bar.classList.add("placeholder");
-      });
-    });
+    }
+
+    // Conflict distribution live validation.
+    const distSection = this.element.querySelector(".conflict-distribution");
+    if ( distSection ) {
+      const inputs = distSection.querySelectorAll(".conflict-dist-value");
+      const remainingEl = distSection.querySelector(".conflict-dist-remaining");
+      const total = parseInt(distSection.dataset.total) || 0;
+      function updateRemaining() {
+        let sum = 0;
+        for ( const input of inputs ) sum += parseInt(input.value) || 0;
+        const remaining = total - sum;
+        remainingEl.textContent = remaining;
+        remainingEl.classList.toggle("invalid", remaining !== 0);
+      }
+      for ( const input of inputs ) {
+        input.addEventListener("change", updateRemaining);
+        input.addEventListener("input", updateRemaining);
+      }
+    }
   }
 
   /* -------------------------------------------- */
@@ -550,5 +714,162 @@ export default class CharacterSheet extends HandlebarsApplicationMixin(ActorShee
   static #onToggleTeam(event, target) {
     const current = this.document.system.conflict.team || "party";
     this.document.update({ "system.conflict.team": current === "party" ? "gm" : "party" });
+  }
+
+  /* -------------------------------------------- */
+  /*  Conflict Action Handlers                    */
+  /* -------------------------------------------- */
+
+  /**
+   * Find the active conflict containing this actor.
+   * @returns {{ combat: Combat, combatant: Combatant, groupId: string }|null}
+   */
+  #findConflict() {
+    const actor = this.document;
+    const combat = game.combats?.find(c =>
+      c.isConflict && c.combatants.some(cb => cb.actorId === actor.id)
+    );
+    if ( !combat ) return null;
+    const combatant = combat.combatants.find(c => c.actorId === actor.id);
+    if ( !combatant ) return null;
+    return { combat, combatant, groupId: combatant._source.group };
+  }
+
+  /**
+   * Choose a disposition skill (captain only, rolling phase).
+   */
+  static async #onConflictChooseSkill(event, target) {
+    const info = this.#findConflict();
+    if ( !info ) return;
+    const skillKey = target.dataset.skill;
+    if ( skillKey ) await info.combat.chooseSkill(info.groupId, skillKey);
+  }
+
+  /**
+   * Roll disposition from the character sheet (captain only).
+   */
+  static async #onConflictRollDisposition(event, target) {
+    const info = this.#findConflict();
+    if ( !info ) return;
+    const { combat, combatant, groupId } = info;
+
+    const gd = combat.system.groupDispositions?.[groupId];
+    if ( !gd?.captainId || gd.captainId !== combatant.id ) return;
+
+    const captain = combat.combatants.get(gd.captainId);
+    const chosenSkill = captain?.system.chosenSkill;
+    if ( !chosenSkill ) return;
+
+    const conflictCfg = CONFIG.TB2E.conflictTypes[combat.system.conflictType];
+    const actor = this.document;
+
+    // Build available helpers.
+    const members = combat.combatants.filter(c => c._source.group === groupId);
+    const memberActors = members
+      .filter(c => c.id !== gd.captainId)
+      .map(c => game.actors.get(c.actorId))
+      .filter(Boolean);
+    const eligible = getEligibleHelpers({
+      actor,
+      type: "skill",
+      key: chosenSkill,
+      testContext: { isConflict: true },
+      candidates: memberActors
+    });
+    const availableHelpers = eligible.map(h => {
+      const cbt = members.find(c => c.actorId === h.id);
+      return {
+        id: cbt?.id ?? h.id,
+        name: h.name,
+        helpVia: h.helpVia,
+        helpViaLabel: h.helpViaLabel,
+        warnings: h.warnings
+      };
+    });
+
+    const result = await rollDisposition({
+      actor,
+      skillKey: chosenSkill,
+      abilityKey: conflictCfg.dispositionAbility,
+      availableHelpers
+    });
+    if ( !result ) return;
+
+    // Roll the dice.
+    const { roll, successes, diceResults } = await evaluateRoll(result.poolSize);
+    const disposition = successes + result.abilityRating;
+
+    // Build modifiers for card display.
+    const helpMods = gatherHelpModifiers(result.selectedHelpers || []);
+    const allModifiers = [...result.modifiers, ...helpMods];
+
+    // Render roll card.
+    const group = combat.groups.get(groupId);
+    const cardHtml = await foundry.applications.handlebars.renderTemplate(
+      "systems/tb2e/templates/chat/roll-result.hbs", {
+        actorName: actor.name, actorImg: actor.img,
+        label: result.label, baseDice: result.baseDice, poolSize: result.poolSize,
+        successes, modifiers: allModifiers, diceResults,
+        isDisposition: true, disposition,
+        abilityLabel: result.abilityLabel, abilityRating: result.abilityRating,
+        conflictTypeLabel: game.i18n.localize(conflictCfg.label),
+        conflictTitle: game.i18n.localize("TB2E.Conflict.Title"),
+        groupName: group?.name ?? "",
+        successesLabel: game.i18n.localize("TB2E.Roll.Successes"),
+        testLabel: game.i18n.localize("TB2E.Roll.Test"),
+        testTypeLabel: game.i18n.localize("TB2E.Conflict.Disposition"),
+        dispositionLabel: game.i18n.localize("TB2E.Conflict.Disposition")
+      }
+    );
+
+    await ChatMessage.create({
+      speaker: ChatMessage.getSpeaker({ actor }),
+      content: cardHtml, rolls: [roll],
+      type: CONST.CHAT_MESSAGE_STYLES.OTHER
+    });
+
+    await combat.requestStoreDispositionRoll(groupId, { rolled: disposition, diceResults, cardHtml });
+  }
+
+  /**
+   * Distribute disposition from the character sheet (captain only).
+   */
+  static async #onConflictDistribute(event, target) {
+    const info = this.#findConflict();
+    if ( !info ) return;
+    const { combat, groupId } = info;
+
+    const gd = combat.system.groupDispositions?.[groupId];
+    if ( !gd?.rolled ) return;
+    const total = gd.rolled;
+
+    // Read distribution from inputs.
+    const section = target.closest(".conflict-distribution");
+    const distribution = {};
+    const inputs = section.querySelectorAll(".conflict-dist-value");
+    for ( const input of inputs ) {
+      distribution[input.name.replace("disp-", "")] = parseInt(input.value) || 0;
+    }
+
+    const sum = Object.values(distribution).reduce((a, b) => a + b, 0);
+    if ( sum !== total ) {
+      ui.notifications.warn(game.i18n.format("TB2E.Conflict.DistributionMismatch", { total, sum }));
+      return;
+    }
+
+    await combat.distributeDisposition(groupId, distribution);
+  }
+
+  /**
+   * Declare weapon from the character sheet (weapons phase).
+   */
+  static async #onConflictDeclareWeapon(event, target) {
+    const info = this.#findConflict();
+    if ( !info ) return;
+
+    const section = target.closest(".conflict-weapon-area");
+    const input = section?.querySelector(".conflict-weapon-input");
+    const weaponName = input?.value?.trim() || "";
+    await info.combat.setWeapon(info.combatant.id, weaponName);
   }
 }

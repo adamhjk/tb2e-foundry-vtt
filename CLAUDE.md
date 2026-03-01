@@ -74,3 +74,48 @@ When asked about Torchbearer rules, how a mechanic works, or when implementing a
 ## Actor Types
 
 - `character` — `CharacterData` model, `CharacterSheet` (AppV2)
+
+## CSS Theme System
+
+The stylesheet (`tb2e.css`) uses a CSS custom property theme system compatible with Foundry VTT v13's built-in theme toggling. No JavaScript is needed — Foundry handles class toggling automatically.
+
+### Token Organization
+
+1. **`:root`** — Theme-invariant tokens (fonts, radii, condition colors, conflict action colors)
+2. **Fallback block** — Light theme values on element selectors (`.tb2e.sheet`, `.tb2e-roll-card`, etc.) as defaults
+3. **`body.theme-light/dark :is(...)`** — Body-level application theme (specificity 0,2,1)
+4. **`.themed.theme-light/dark.tb2e` / `.themed.theme-light/dark :is(...)`** — Scoped interface theme (specificity 0,3,0, wins over body-level)
+
+### Token Naming Convention
+
+`--tb-{category}-{variant}`
+
+| Category | Examples |
+|----------|---------|
+| `bg-*` | `--tb-bg-mid`, `--tb-bg-raised`, `--tb-bg-white` |
+| `text-*` | `--tb-text-body`, `--tb-text-dim`, `--tb-text-faint` |
+| `blue-*` | `--tb-blue`, `--tb-blue-bright`, `--tb-blue-dim` |
+| `border-*` | `--tb-border`, `--tb-border-light` |
+| `frost-*` | `--tb-frost`, `--tb-frost-bright` |
+| `green-*` | `--tb-green`, `--tb-green-subtle` |
+| `amber-*` | `--tb-amber`, `--tb-amber-glow` |
+| `red-*` | `--tb-red`, `--tb-red-dim` |
+| `banner-*` | `--tb-banner-pass-from`, `--tb-banner-fail-text` |
+| `steel-*` | `--tb-steel`, `--tb-steel-bright` |
+
+### Rules
+
+- **Never use hardcoded hex colors** in component rules. Use `var(--tb-*)` tokens.
+- **New themed colors** must be added to all 4 selector blocks (fallback, body-light, body-dark, scoped-light, scoped-dark).
+- **Chat card classes** (`.tb2e-roll-card`, `.tb2e-advancement-card`, `.tb2e-versus-card`, `.tb2e-conflict-header/body/footer`, `.conflict-window-content`, `.character-conflict-panel`) must be listed explicitly in theme selectors since they're not inside `.tb2e`.
+- Theme-invariant values (condition colors, action hues, fonts, radii) go in `:root` only.
+
+### Example
+
+```css
+/* Correct */
+.my-element { color: var(--tb-text-body); background: var(--tb-bg-raised); }
+
+/* Wrong — hardcoded color won't adapt to dark theme */
+.my-element { color: #1e293b; background: #f5f7fa; }
+```
