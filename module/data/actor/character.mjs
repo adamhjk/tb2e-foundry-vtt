@@ -116,14 +116,6 @@ export default class CharacterData extends foundry.abstract.TypeDataModel {
         weaver: advancementField()
       }),
 
-      // ---- Traits (4 slots) ----
-      traits: new fields.ArrayField(new fields.SchemaField({
-        name: new fields.StringField(),
-        level: new fields.NumberField({ initial: 1, integer: true, min: 1, max: 3 }),
-        beneficial: new fields.NumberField({ initial: 0, integer: true, min: 0 }),
-        checks: new fields.NumberField({ initial: 0, integer: true, min: 0 })
-      })),
-
       // ---- Wises (4 slots) ----
       wises: new fields.ArrayField(new fields.SchemaField({
         name: new fields.StringField(),

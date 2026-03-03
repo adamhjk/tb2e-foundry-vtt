@@ -31,12 +31,6 @@ export default class NPCData extends foundry.abstract.TypeDataModel {
       // ---- Wises ----
       wises: new fields.ArrayField(new fields.StringField()),
 
-      // ---- Traits ----
-      traits: new fields.ArrayField(new fields.SchemaField({
-        name: new fields.StringField(),
-        level: new fields.NumberField({ initial: 1, integer: true, min: 1, max: 3 })
-      })),
-
       // ---- Conditions (no Fresh for NPCs) ----
       conditions: new fields.SchemaField({
         hungry: new fields.BooleanField({ initial: false }),

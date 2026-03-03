@@ -1,0 +1,103 @@
+<div class="tb2e-chat-card">
+  <div class="card-header card-header--centered">
+    <span class="card-label">{{versusTestLabel}}</span>
+  </div>
+
+  <div class="versus-combatants">
+    <div class="versus-combatant">
+      <img class="versus-portrait" src="{{initiatorImg}}" alt="{{initiatorName}}">
+      <span class="versus-name">{{initiatorName}}</span>
+      <span class="versus-skill">{{initiatorLabel}}</span>
+      <span class="versus-successes">{{initiatorSuccesses}} {{successesLabel}}</span>
+    </div>
+
+    <div class="versus-divider">VS</div>
+
+    <div class="versus-combatant">
+      <img class="versus-portrait" src="{{opponentImg}}" alt="{{opponentName}}">
+      <span class="versus-name">{{opponentName}}</span>
+      <span class="versus-skill">{{opponentLabel}}</span>
+      <span class="versus-successes">{{opponentSuccesses}} {{successesLabel}}</span>
+    </div>
+  </div>
+
+  <div class="card-banner banner-amber">
+    <i class="fa-solid fa-equals"></i>
+    <span>{{tiedLabel}}</span>
+  </div>
+
+  <div class="card-reference"><i class="fa-solid fa-book"></i> DH p. 80, SG p. 33</div>
+
+  <div class="tied-actions">
+    <div class="tied-section-label">{{level3BreakTieLabel}}</div>
+    {{#unless initiatorTraitUsed}}
+    <div class="tied-action-group" data-actor-id="{{initiatorActorId}}">
+      <span class="tied-action-label">{{initiatorName}}</span>
+      {{#each initiatorLevel3Traits}}
+      <button type="button" class="card-btn card-btn--blue" data-action="level3-break-tie"
+        data-actor-id="{{../initiatorActorId}}" data-trait-id="{{id}}">
+        <i class="fa-solid fa-fingerprint"></i> {{name}} (L3) — Win
+      </button>
+      {{else}}
+      <span class="tied-no-traits">{{../noLevel3Label}}</span>
+      {{/each}}
+    </div>
+    {{else}}
+    <div class="tied-action-group" data-actor-id="{{initiatorActorId}}">
+      <span class="tied-action-label">{{initiatorName}}</span>
+      <span class="tied-no-traits">{{traitAlreadyUsedLabel}}</span>
+    </div>
+    {{/unless}}
+    {{#unless opponentTraitUsed}}
+    <div class="tied-action-group" data-actor-id="{{opponentActorId}}">
+      <span class="tied-action-label">{{opponentName}}</span>
+      {{#each opponentLevel3Traits}}
+      <button type="button" class="card-btn card-btn--blue" data-action="level3-break-tie"
+        data-actor-id="{{../opponentActorId}}" data-trait-id="{{id}}">
+        <i class="fa-solid fa-fingerprint"></i> {{name}} (L3) — Win
+      </button>
+      {{else}}
+      <span class="tied-no-traits">{{../noLevel3Label}}</span>
+      {{/each}}
+    </div>
+    {{else}}
+    <div class="tied-action-group" data-actor-id="{{opponentActorId}}">
+      <span class="tied-action-label">{{opponentName}}</span>
+      <span class="tied-no-traits">{{traitAlreadyUsedLabel}}</span>
+    </div>
+    {{/unless}}
+
+    <div class="tied-section-label">{{traitAgainstLabel}}</div>
+    <div class="tied-action-group" data-actor-id="{{initiatorActorId}}">
+      <span class="tied-action-label">{{initiatorName}}</span>
+      {{#if initiatorTraitUsed}}
+      <span class="tied-no-traits">{{traitAlreadyUsedLabel}}</span>
+      {{else}}
+      {{#each initiatorTraits}}
+      <button type="button" class="card-btn card-btn--amber" data-action="trait-break-tie" data-actor-id="{{../initiatorActorId}}" data-trait-id="{{id}}">
+        <i class="fa-solid fa-fingerprint"></i> {{name}} (L{{level}})
+      </button>
+      {{else}}
+        <span class="tied-no-traits">{{noEligibleLabel}}</span>
+      {{/each}}
+      {{/if}}
+    </div>
+    <div class="tied-action-group" data-actor-id="{{opponentActorId}}">
+      <span class="tied-action-label">{{opponentName}}</span>
+      {{#if opponentTraitUsed}}
+      <span class="tied-no-traits">{{traitAlreadyUsedLabel}}</span>
+      {{else}}
+      {{#each opponentTraits}}
+      <button type="button" class="card-btn card-btn--amber" data-action="trait-break-tie" data-actor-id="{{../opponentActorId}}" data-trait-id="{{id}}">
+        <i class="fa-solid fa-fingerprint"></i> {{name}} (L{{level}})
+      </button>
+      {{else}}
+        <span class="tied-no-traits">{{noEligibleLabel}}</span>
+      {{/each}}
+      {{/if}}
+    </div>
+    <div class="tied-action-shared tiebreaker-instruction">
+      <i class="fa-solid fa-circle-info"></i> {{tiebreakerInstruction}}
+    </div>
+  </div>
+</div>

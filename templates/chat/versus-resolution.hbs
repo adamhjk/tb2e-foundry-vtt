@@ -1,6 +1,6 @@
-<div class="tb2e-versus-card">
-  <div class="versus-card-header">
-    <span class="versus-card-title">{{versusTestLabel}}</span>
+<div class="tb2e-chat-card">
+  <div class="card-header card-header--centered">
+    <span class="card-label">{{versusTestLabel}}</span>
   </div>
 
   <div class="versus-combatants">
@@ -21,7 +21,13 @@
     </div>
   </div>
 
-  <div class="versus-banner">
+  {{#if tiebrokenBy}}
+  <div class="card-body">
+    <p class="versus-tiebroken">{{tiebrokenBy}}</p>
+  </div>
+  {{/if}}
+
+  <div class="card-banner banner-pass">
     {{#if initiatorWins}}
     <span class="versus-winner-name">{{initiatorName}}</span>
     {{else}}

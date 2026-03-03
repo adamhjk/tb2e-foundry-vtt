@@ -2,36 +2,50 @@
 
   {{!-- Traits --}}
   <fieldset class="traits-section">
-    <legend><i class="fa-solid fa-star"></i> {{localize "TB2E.Section.Traits"}}</legend>
+    <legend><i class="fa-solid fa-fingerprint"></i> {{localize "TB2E.Section.Traits"}}</legend>
     <div class="traits-list">
       {{#each traits}}
-      <div class="trait-row">
-        <input type="text" name="system.traits.{{idx}}.name" value="{{name}}" placeholder="Trait name"
-               class="trait-name">
-        <div class="trait-level">
-          <label>Lv</label>
+      <div class="trait-row" data-item-id="{{itemId}}">
+        <input type="text" value="{{name}}" placeholder="Trait name"
+               class="trait-name trait-name-input">
+        <button type="button" class="trait-class-toggle{{#if isClass}} active{{/if}}"
+                data-action="toggleClassTrait" data-item-id="{{itemId}}"
+                title="Class trait" data-page="DH p.81">
+          <span class="ref-label">Class Trait</span>
+          <i class="fa-solid fa-shield"></i>
+        </button>
+        <div class="trait-level" data-page="DH p.79">
+          <span class="ref-label">Level</span><label>Lv</label>
           {{#each levels}}
           <button type="button" class="level-pip{{#if active}} active{{/if}}"
-                  data-action="setTraitLevel" data-index="{{../idx}}" data-level="{{value}}">
+                  data-action="setTraitLevel" data-item-id="{{../itemId}}" data-level="{{value}}">
             {{value}}
           </button>
           {{/each}}
         </div>
         <div class="trait-counters">
-          <div class="trait-counter">
-            <label title="{{localize 'TB2E.Fields.Beneficial'}}"><i class="fa-solid fa-plus"></i></label>
-            <input type="number" name="system.traits.{{idx}}.beneficial" value="{{beneficial}}" min="0"
-                   class="trait-count">
+          <div class="trait-counter" data-page="DH p.79">
+            <label><span class="ref-label">Beneficial</span><i class="fa-solid fa-plus"></i></label>
+            <input type="number" value="{{beneficial}}" min="0"
+                   class="trait-count trait-beneficial-input">
           </div>
-          <div class="trait-counter">
-            <label title="{{localize 'TB2E.Fields.Checks'}}"><i class="fa-solid fa-check"></i></label>
-            <input type="number" name="system.traits.{{idx}}.checks" value="{{checks}}" min="0"
-                   class="trait-count">
+          <div class="trait-counter" data-page="DH pp.80-81">
+            <label><span class="ref-label">Checks</span><i class="fa-solid fa-check"></i></label>
+            <input type="number" value="{{checks}}" min="0"
+                   class="trait-count trait-checks-input">
           </div>
         </div>
+        <button type="button" class="btn-icon" data-action="deleteTrait"
+                data-item-id="{{itemId}}"
+                title="{{localize 'TB2E.Action.DeleteRow'}}">
+          <i class="fa-solid fa-trash"></i>
+        </button>
       </div>
       {{/each}}
     </div>
+    <button type="button" class="btn-add" data-action="addTrait">
+      <i class="fa-solid fa-plus"></i> {{localize "TB2E.Trait.AddTrait"}}
+    </button>
   </fieldset>
 
   {{!-- Wises --}}

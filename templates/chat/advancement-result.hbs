@@ -1,18 +1,19 @@
-<div class="tb2e-advancement-card">
-  <div class="advancement-card-header">
-    <img class="advancement-card-portrait" src="{{actorImg}}" alt="{{actorName}}">
-    <div class="advancement-card-info">
-      <span class="advancement-card-name">{{actorName}}</span>
-      <span class="advancement-card-skill">{{label}}</span>
+<div class="tb2e-chat-card card-accent--amber">
+  <div class="card-header">
+    <img class="card-portrait" src="{{actorImg}}" alt="{{actorName}}">
+    <div class="card-info">
+      <span class="card-name">{{actorName}}</span>
+      <span class="card-label">{{label}}</span>
     </div>
   </div>
-  <div class="advancement-card-banner">
-    <i class="fa-solid fa-arrow-up"></i>
-    <span>{{advancedLabel}}</span>
-  </div>
-  <div class="advancement-card-rating">
+  <div class="card-body advancement-card-rating">
     <span class="advancement-rating old">{{currentRating}}</span>
     <i class="fa-solid fa-arrow-right"></i>
     <span class="advancement-rating new">{{newRating}}</span>
+  </div>
+  <div class="card-reference"><i class="fa-solid fa-book"></i> DH p. 107</div>
+  <div class="card-banner banner-amber">
+    <i class="fa-solid fa-arrow-up"></i>
+    <span>{{advancedLabel}}</span>
   </div>
 </div>

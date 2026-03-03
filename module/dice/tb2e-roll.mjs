@@ -206,17 +206,19 @@ export async function _logAdvancement({ actor, type, key, baseDice, pass }) {
  * @returns {object[]}
  */
 function _buildTraitData(actor, isAngry) {
-  return (actor.system.traits || []).map((t, i) => {
-    const maxBeneficial = t.level >= 3 ? 0 : t.level;
+  return (actor.itemTypes.trait || []).map(item => {
+    const t = item.system;
+    const maxBeneficial = t.maxBeneficial;
     const benefitDisabled = isAngry || (t.level < 3 && t.beneficial <= 0);
     return {
-      index: i,
-      name: t.name,
+      itemId: item.id,
+      name: item.name,
       level: t.level,
       beneficial: t.beneficial,
       maxBeneficial,
       isL3: t.level >= 3,
       benefitDisabled,
+      againstDisabled: t.usedAgainst,
       checks: t.checks
     };
   }).filter(t => t.name);
@@ -309,7 +311,7 @@ async function _showRollDialog({
   /* ------ Dialog State ------ */
   // Mutable state objects — mutated in place so the roll callback always sees current values
   let helperBonus = 0;
-  const traitState = { index: -1, mode: "none" };
+  const traitState = { itemId: null, mode: "none", againstType: null };
   const personaState = { advantage: 0, channelNature: false };
   const natureState = { withinNature: false };
 
@@ -368,25 +370,36 @@ async function _showRollDialog({
         }
 
         // Trait modifier
-        if ( traitState.index >= 0 && traitState.mode !== "none" ) {
-          const t = traitData[traitState.index];
-          if ( traitState.mode === "benefit" ) {
-            if ( t.isL3 ) {
-              all.push(createModifier({
-                label: `${t.name} (L3)`, type: "success", value: 1, source: "trait",
-                icon: "fa-solid fa-fingerprint", color: "--tb-cond-fresh", timing: "post"
-              }));
-            } else {
-              all.push(createModifier({
-                label: `${t.name} (L${t.level})`, type: "dice", value: 1, source: "trait",
-                icon: "fa-solid fa-fingerprint", color: "--tb-cond-fresh", timing: "pre"
-              }));
+        if ( traitState.itemId && traitState.mode !== "none" ) {
+          const t = traitData.find(td => td.itemId === traitState.itemId);
+          if ( t ) {
+            if ( traitState.mode === "benefit" ) {
+              if ( t.isL3 ) {
+                all.push(createModifier({
+                  label: `${t.name} (L3)`, type: "success", value: 1, source: "trait",
+                  icon: "fa-solid fa-fingerprint", color: "--tb-cond-fresh", timing: "post"
+                }));
+              } else {
+                all.push(createModifier({
+                  label: `${t.name} (L${t.level})`, type: "dice", value: 1, source: "trait",
+                  icon: "fa-solid fa-fingerprint", color: "--tb-cond-fresh", timing: "pre"
+                }));
+              }
+            } else if ( traitState.mode === "against" ) {
+              if ( traitState.againstType === "opponent-bonus" ) {
+                // +2D to opponent — no modifier on YOUR roll; stored in flags
+                all.push(createModifier({
+                  label: `${t.name} (against: +2D opp)`, type: "dice", value: 0, source: "trait",
+                  icon: "fa-solid fa-fingerprint", color: "--tb-cond-angry", timing: "pre"
+                }));
+              } else {
+                // Default: -1D penalty
+                all.push(createModifier({
+                  label: `${t.name} (against)`, type: "dice", value: -1, source: "trait",
+                  icon: "fa-solid fa-fingerprint", color: "--tb-cond-angry", timing: "pre"
+                }));
+              }
             }
-          } else if ( traitState.mode === "against" ) {
-            all.push(createModifier({
-              label: `${t.name} (against)`, type: "dice", value: -1, source: "trait",
-              icon: "fa-solid fa-fingerprint", color: "--tb-cond-angry", timing: "pre"
-            }));
           }
         }
 
@@ -449,23 +462,32 @@ async function _showRollDialog({
       if ( hasTraits ) {
         const traitRows = form.querySelectorAll(".trait-row");
         for ( const row of traitRows ) {
-          const idx = Number(row.dataset.traitIndex);
+          const itemId = row.dataset.traitId;
           for ( const btn of row.querySelectorAll(".trait-btn") ) {
             btn.addEventListener("click", () => {
               const mode = btn.dataset.mode;
+              const againstType = btn.dataset.againstType || null;
               // Toggle off if same button clicked
-              if ( traitState.index === idx && traitState.mode === mode ) {
-                traitState.index = -1;
+              if ( traitState.itemId === itemId && traitState.mode === mode
+                && traitState.againstType === againstType ) {
+                traitState.itemId = null;
                 traitState.mode = "none";
+                traitState.againstType = null;
               } else {
-                traitState.index = idx;
+                traitState.itemId = itemId;
                 traitState.mode = mode;
+                traitState.againstType = againstType;
               }
               // Update active states on all trait buttons
               for ( const r of traitRows ) {
-                const rIdx = Number(r.dataset.traitIndex);
+                const rId = r.dataset.traitId;
                 for ( const b of r.querySelectorAll(".trait-btn") ) {
-                  b.classList.toggle("active", rIdx === traitState.index && b.dataset.mode === traitState.mode);
+                  const bAgainstType = b.dataset.againstType || null;
+                  b.classList.toggle("active",
+                    rId === traitState.itemId
+                    && b.dataset.mode === traitState.mode
+                    && bAgainstType === traitState.againstType
+                  );
                 }
               }
               renderModifierList();
@@ -626,12 +648,44 @@ async function _showRollDialog({
             obstacleField.classList.remove("hidden");
             challengeField.classList.add("hidden");
           }
+          // Show/hide +2D opponent buttons based on versus mode
+          for ( const btn of form.querySelectorAll(".trait-btn-versus") ) {
+            btn.classList.toggle("hidden", newMode !== "versus");
+          }
+          // Clear trait against selection if switching away from versus and opponent-bonus was selected
+          if ( newMode !== "versus" && traitState.againstType === "opponent-bonus" ) {
+            traitState.itemId = null;
+            traitState.mode = "none";
+            traitState.againstType = null;
+            for ( const b of form.querySelectorAll(".trait-btn") ) b.classList.remove("active");
+            renderModifierList();
+          }
           updateSummary();
         });
 
         form.elements.poolSize.addEventListener("input", updateSummary);
         form.elements.obstacle.addEventListener("input", updateSummary);
-        challengeSelect.addEventListener("change", updateSummary);
+        challengeSelect.addEventListener("change", () => {
+          // Check if selected challenge has a trait opponent bonus for us
+          const selectedMsgId = challengeSelect.value;
+          // Remove any existing opponent-bonus context modifier
+          const existingIdx = contextModifiers.findIndex(m => m.source === "trait-opponent");
+          if ( existingIdx >= 0 ) contextModifiers.splice(existingIdx, 1);
+
+          if ( selectedMsgId ) {
+            const initMsg = game.messages.get(selectedMsgId);
+            const bonus = initMsg?.getFlag("tb2e", "traitOpponentBonus");
+            if ( bonus?.value ) {
+              contextModifiers.push(createModifier({
+                label: `${bonus.traitName} (opponent's trait)`,
+                type: "dice", value: bonus.value, source: "trait-opponent",
+                icon: "fa-solid fa-fingerprint", color: "--tb-cond-angry", timing: "pre"
+              }));
+            }
+          }
+          renderModifierList();
+          updateSummary();
+        });
       }
 
       // Expose state to the roll button callback via dialog element
@@ -680,7 +734,7 @@ async function _showRollDialog({
           const wiseIndex = wiseSelect ? Number(wiseSelect.value) : -1;
 
           // Trait state from closure
-          const traitInfo = dialog.element.__tb2eTraitState ?? { index: -1, mode: "none" };
+          const traitInfo = dialog.element.__tb2eTraitState ?? { itemId: null, mode: "none", againstType: null };
           const personaInfo = dialog.element.__tb2ePersonaState ?? { advantage: 0, channelNature: false };
           const natureInfo = dialog.element.__tb2eNatureState ?? { withinNature: false };
 
@@ -869,7 +923,7 @@ export async function rollTest({ actor, type, key, testContext = {} }) {
     await _handleVersusRoll({
       actor, type, key, label, baseDice: config.baseDice, poolSize, successes,
       roll, diceResults, modifiers: allModifiers, logAdvancement: config.logAdvancement,
-      config, rollFlags
+      config, rollFlags, postSuccessMods
     });
   } else {
     await _handleIndependentRoll({
@@ -904,20 +958,20 @@ async function _applyPreRollActorChanges({ actor, config, allModifiers }) {
 
   // Trait use tracking
   const ts = config.traitState;
-  if ( ts && ts.index >= 0 && ts.mode !== "none" ) {
-    const traits = foundry.utils.deepClone(actor.system.traits);
-    const trait = traits[ts.index];
-    if ( trait ) {
-      if ( ts.mode === "benefit" && trait.level < 3 ) {
-        trait.beneficial = Math.max(0, trait.beneficial - 1);
+  if ( ts && ts.itemId && ts.mode !== "none" ) {
+    const traitItem = actor.items.get(ts.itemId);
+    if ( traitItem ) {
+      if ( ts.mode === "benefit" && traitItem.system.level < 3 ) {
+        await traitItem.update({ "system.beneficial": Math.max(0, traitItem.system.beneficial - 1) });
       } else if ( ts.mode === "against" ) {
-        // Earn checks: -1D = 1 check, +2D opponent / break tie = 2 checks
-        const checksEarned = 1;
-        trait.checks += checksEarned;
+        const checksEarned = ts.againstType === "opponent-bonus" ? 2 : 1;
+        await traitItem.update({
+          "system.checks": traitItem.system.checks + checksEarned,
+          "system.usedAgainst": true
+        });
         updates["system.checks.earned"] = actor.system.checks.earned + checksEarned;
         updates["system.checks.remaining"] = actor.system.checks.remaining + checksEarned;
       }
-      updates["system.traits"] = traits;
     }
   }
 
@@ -949,10 +1003,19 @@ function _buildRollFlags({ actor, type, key, label, baseDice, poolSize, successe
       isBL: !!blInfo,
       blAbilityKey: blInfo?.blAbilityKey ?? null
     },
-    trait: config.traitState?.index >= 0 ? {
-      name: actor.system.traits?.[config.traitState.index]?.name,
-      mode: config.traitState.mode,
-      level: actor.system.traits?.[config.traitState.index]?.level
+    trait: config.traitState?.itemId ? (() => {
+      const item = actor.items.get(config.traitState.itemId);
+      return item ? {
+        name: item.name,
+        mode: config.traitState.mode,
+        level: item.system.level,
+        itemId: config.traitState.itemId,
+        againstType: config.traitState.againstType
+      } : null;
+    })() : null,
+    traitOpponentBonus: (config.traitState?.mode === "against" && config.traitState?.againstType === "opponent-bonus") ? {
+      value: 2,
+      traitName: actor.items.get(config.traitState.itemId)?.name ?? ""
     } : null,
     wise: wiseInfo,
     channelNature: config.personaState?.channelNature ?? false,
@@ -1006,7 +1069,7 @@ async function _handleIndependentRoll({ actor, type, key, label, baseDice, poolS
       obstacle,
       successes: finalSuccesses,
       pass,
-      modifiers,
+      modifiers: modifiers.filter(m => m.timing === "pre"),
       diceResults,
       postSuccessMods: postSuccessMods.length ? postSuccessMods : null,
       isBL: !!rollFlags.roll.isBL,
@@ -1024,6 +1087,7 @@ async function _handleIndependentRoll({ actor, type, key, label, baseDice, poolS
       showDirectNatureTax: rollFlags.directNatureTest && !rollFlags.withinNature,
       directNatureWithin: rollFlags.directNatureTest && rollFlags.withinNature,
       synergyHelpers: _buildSynergyHelpers(config.selectedHelpers),
+      margin: pass ? (finalSuccesses - obstacle) : (obstacle - finalSuccesses),
       passLabel: game.i18n.localize("TB2E.Roll.Pass"),
       failLabel: game.i18n.localize("TB2E.Roll.Fail"),
       successesLabel: game.i18n.localize("TB2E.Roll.Successes"),
@@ -1100,7 +1164,11 @@ export function _buildSynergyHelpers(helpers, helperSynergy = {}) {
 /* -------------------------------------------- */
 
 async function _handleVersusRoll({ actor, type, key, label, baseDice, poolSize, successes,
-  roll, diceResults, modifiers, logAdvancement, config, rollFlags }) {
+  roll, diceResults, modifiers, logAdvancement, config, rollFlags, postSuccessMods }) {
+
+  // Apply post-success modifiers (+1s from L3 traits, -1s from traits against, etc.)
+  const successBonus = postSuccessMods.reduce((s, m) => s + m.value, 0);
+  const adjustedSuccesses = Math.max(successes + successBonus, 0);
 
   const isOpponent = !!config.challengeMessageId;
 
@@ -1121,7 +1189,9 @@ async function _handleVersusRoll({ actor, type, key, label, baseDice, poolSize, 
         actorName: actor.name,
         actorImg: actor.img,
         actorSubtitle: _buildActorSubtitle(actor),
-        label, baseDice, poolSize, successes, modifiers, diceResults,
+        label, baseDice, poolSize, successes: adjustedSuccesses,
+        modifiers: modifiers.filter(m => m.timing === "pre"), diceResults,
+        postSuccessMods: postSuccessMods.length ? postSuccessMods : null,
         versusLabel: game.i18n.localize("TB2E.Roll.Versus"),
         testLabel: game.i18n.localize("TB2E.Roll.Test"),
         successesLabel: game.i18n.localize("TB2E.Roll.Successes"),
@@ -1142,7 +1212,7 @@ async function _handleVersusRoll({ actor, type, key, label, baseDice, poolSize, 
             initiatorMessageId: initiatorMessage.id,
             initiatorActorId: initiatorVs.initiatorActorId,
             opponentActorId: actor.id,
-            successes, rollType: type, rollKey: key, label, baseDice,
+            successes: adjustedSuccesses, rollType: type, rollKey: key, label, baseDice,
             logAdvancement, resolved: false
           },
           helpers: (config.selectedHelpers || []).map(h => ({
@@ -1157,7 +1227,9 @@ async function _handleVersusRoll({ actor, type, key, label, baseDice, poolSize, 
         actorName: actor.name,
         actorImg: actor.img,
         actorSubtitle: _buildActorSubtitle(actor),
-        label, baseDice, poolSize, successes, modifiers, diceResults,
+        label, baseDice, poolSize, successes: adjustedSuccesses,
+        modifiers: modifiers.filter(m => m.timing === "pre"), diceResults,
+        postSuccessMods: postSuccessMods.length ? postSuccessMods : null,
         versusLabel: game.i18n.localize("TB2E.Roll.Versus"),
         testLabel: game.i18n.localize("TB2E.Roll.Test"),
         successesLabel: game.i18n.localize("TB2E.Roll.Successes"),
@@ -1176,7 +1248,7 @@ async function _handleVersusRoll({ actor, type, key, label, baseDice, poolSize, 
           versus: {
             type: "initiator",
             initiatorActorId: actor.id,
-            successes, rollType: type, rollKey: key, label, baseDice,
+            successes: adjustedSuccesses, rollType: type, rollKey: key, label, baseDice,
             logAdvancement, resolved: false
           },
           helpers: (config.selectedHelpers || []).map(h => ({

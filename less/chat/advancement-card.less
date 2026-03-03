@@ -2,68 +2,7 @@
 /*  Advancement Chat Card                       */
 /* -------------------------------------------- */
 
-.tb2e-advancement-card {
-  border: 1px solid var(--tb-amber-bright);
-  border-radius: 6px;
-  overflow: hidden;
-  background: var(--tb-amber-bg);
-  font-family: var(--tb-font-body);
-}
-
-.tb2e-advancement-card .advancement-card-header {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  padding: 0.5rem 0.75rem;
-  background: var(--tb-amber-glow);
-  border-bottom: 1px solid var(--tb-amber-glow-bright);
-}
-
-.tb2e-advancement-card .advancement-card-portrait {
-  width: 32px;
-  height: 32px;
-  border-radius: 4px;
-  object-fit: cover;
-  border: 1px solid var(--tb-amber-bright);
-}
-
-.tb2e-advancement-card .advancement-card-info {
-  display: flex;
-  flex-direction: column;
-  line-height: 1.2;
-}
-
-.tb2e-advancement-card .advancement-card-name {
-  font-weight: bold;
-  font-size: 0.85rem;
-  color: var(--tb-text-bright);
-}
-
-.tb2e-advancement-card .advancement-card-skill {
-  font-family: var(--tb-font-heading);
-  font-size: 0.8rem;
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
-  color: var(--tb-amber-bright);
-}
-
-.tb2e-advancement-card .advancement-card-banner {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.4rem;
-  padding: 0.5rem;
-  font-family: var(--tb-font-heading);
-  font-size: 1.05rem;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  font-weight: bold;
-  background: linear-gradient(135deg, var(--tb-amber-glow), var(--tb-amber-glow-bright));
-  color: var(--tb-amber-dim);
-  border-top: 2px solid var(--tb-amber-bright);
-}
-
-.tb2e-advancement-card .advancement-card-rating {
+.tb2e-chat-card .advancement-card-rating {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -71,13 +10,12 @@
   padding: 0.6rem;
   font-size: 1.4rem;
   font-weight: bold;
-  background: var(--tb-amber-bg);
 }
 
-.tb2e-advancement-card .advancement-card-rating .advancement-rating.old {
+.tb2e-chat-card .advancement-rating.old {
   color: var(--tb-text-faint);
 }
 
-.tb2e-advancement-card .advancement-card-rating .advancement-rating.new {
+.tb2e-chat-card .advancement-rating.new {
   color: var(--tb-amber-bright);
 }

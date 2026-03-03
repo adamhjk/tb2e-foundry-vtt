@@ -1,63 +1,17 @@
 /* -------------------------------------------- */
-/*  Chat — Pending Versus Banner                */
+/*  Chat — Versus Card                          */
 /* -------------------------------------------- */
 
-.tb2e-roll-card .banner-pending {
-  background: linear-gradient(135deg, var(--tb-banner-pending-from), var(--tb-banner-pending-to));
-  color: var(--tb-banner-pending-text);
-  border-top: 2px solid var(--tb-banner-pending-border);
-  animation: tb2e-pending-pulse 2.5s ease-in-out infinite;
-}
+/* Combatant layout */
 
-.tb2e-roll-card .banner-resolved {
-  background: linear-gradient(135deg, var(--tb-banner-resolved-from), var(--tb-banner-resolved-to));
-  color: var(--tb-banner-resolved-text);
-  border-top: 2px solid var(--tb-banner-resolved-border);
-}
-
-@keyframes tb2e-pending-pulse {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.7; }
-}
-
-/* -------------------------------------------- */
-/*  Chat — Versus Resolution Card               */
-/* -------------------------------------------- */
-
-.tb2e-versus-card {
-  border: 1px solid var(--tb-border);
-  border-radius: 6px;
-  overflow: hidden;
-  background: var(--tb-bg-raised);
-  font-family: var(--tb-font-body);
-}
-
-.tb2e-versus-card .versus-card-header {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0.4rem 0.75rem;
-  background: var(--tb-bg-mid);
-  border-bottom: 1px solid var(--tb-border);
-}
-
-.tb2e-versus-card .versus-card-title {
-  font-family: var(--tb-font-heading);
-  font-size: 0.9rem;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  color: var(--tb-blue);
-  font-weight: bold;
-}
-
-.tb2e-versus-card .versus-combatants {
+.tb2e-chat-card .versus-combatants {
   display: flex;
   align-items: center;
   padding: 0.75rem;
   gap: 0.5rem;
 }
 
-.tb2e-versus-card .versus-combatant {
+.tb2e-chat-card .versus-combatant {
   flex: 1;
   display: flex;
   flex-direction: column;
@@ -66,7 +20,7 @@
   text-align: center;
 }
 
-.tb2e-versus-card .versus-portrait {
+.tb2e-chat-card .versus-portrait {
   width: 48px;
   height: 48px;
   border-radius: 50%;
@@ -75,18 +29,18 @@
   transition: border-color 0.2s, box-shadow 0.2s;
 }
 
-.tb2e-versus-card .versus-winner .versus-portrait {
+.tb2e-chat-card .versus-winner .versus-portrait {
   border-color: var(--tb-blue);
   box-shadow: 0 0 10px var(--tb-blue-glow-strong);
 }
 
-.tb2e-versus-card .versus-name {
+.tb2e-chat-card .versus-name {
   font-weight: bold;
   font-size: 0.85rem;
   color: var(--tb-text-bright);
 }
 
-.tb2e-versus-card .versus-skill {
+.tb2e-chat-card .versus-skill {
   font-family: var(--tb-font-heading);
   font-size: 0.75rem;
   text-transform: uppercase;
@@ -94,13 +48,13 @@
   color: var(--tb-text-dim);
 }
 
-.tb2e-versus-card .versus-successes {
+.tb2e-chat-card .versus-successes {
   font-size: 0.8rem;
   font-weight: bold;
   color: var(--tb-steel);
 }
 
-.tb2e-versus-card .versus-divider {
+.tb2e-chat-card .versus-divider {
   font-family: var(--tb-font-heading);
   font-size: 1.1rem;
   font-weight: bold;
@@ -110,22 +64,61 @@
   flex-shrink: 0;
 }
 
-.tb2e-versus-card .versus-banner {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.4rem;
-  padding: 0.5rem;
-  font-family: var(--tb-font-heading);
-  font-size: 1.05rem;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  font-weight: bold;
-  background: linear-gradient(135deg, var(--tb-banner-pass-from), var(--tb-banner-pass-to));
-  color: var(--tb-banner-pass-text);
-  border-top: 2px solid var(--tb-banner-pass-border);
+.tb2e-chat-card .versus-winner-name {
+  color: var(--tb-blue-dim);
 }
 
-.tb2e-versus-card .versus-winner-name {
-  color: var(--tb-blue-dim);
+/* Tied card actions */
+
+.tb2e-chat-card .tied-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 0.75rem;
+}
+
+.tb2e-chat-card .tied-section-label {
+  font-size: 0.8rem;
+  font-style: italic;
+  color: var(--tb-text-dim);
+}
+
+.tb2e-chat-card .tied-action-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.tb2e-chat-card .tied-action-label {
+  font-weight: bold;
+  font-size: 0.8rem;
+  color: var(--tb-text-body);
+  min-width: 5rem;
+}
+
+.tb2e-chat-card .tied-no-traits {
+  font-size: 0.8rem;
+  color: var(--tb-text-faint);
+  font-style: italic;
+}
+
+.tb2e-chat-card .tied-action-shared {
+  border-top: 1px solid var(--tb-border-light);
+  padding-top: 0.5rem;
+  text-align: center;
+}
+
+.tb2e-chat-card .tiebreaker-instruction {
+  font-size: 0.8rem;
+  color: var(--tb-text-dim);
+  font-style: italic;
+  i { margin-right: 0.3em; color: var(--tb-blue-dim); }
+}
+
+.tb2e-chat-card .versus-tiebroken {
+  font-size: 0.85rem;
+  color: var(--tb-text-dim);
+  font-style: italic;
+  text-align: center;
+  padding: 0.25rem 0.5rem;
 }

@@ -111,20 +111,20 @@
       </thead>
       <tbody>
         {{#each traits}}
-        <tr>
-          <td><input type="text" name="system.traits.{{idx}}.name" value="{{name}}"></td>
+        <tr data-item-id="{{itemId}}">
+          <td><input type="text" value="{{name}}" class="npc-trait-name-input"></td>
           <td class="col-rating">
             <div class="trait-level-pips">
               {{#each levels}}
               <button type="button" class="trait-pip{{#if active}} active{{/if}}"
-                      data-action="setTraitLevel" data-index="{{../idx}}" data-level="{{value}}">
+                      data-action="setTraitLevel" data-item-id="{{../itemId}}" data-level="{{value}}">
                 {{value}}
               </button>
               {{/each}}
             </div>
           </td>
           <td class="col-action">
-            <button type="button" class="btn-delete" data-action="deleteRow" data-array="traits" data-index="{{idx}}"
+            <button type="button" class="btn-delete" data-action="deleteTrait" data-item-id="{{itemId}}"
                     title="{{localize 'TB2E.Action.DeleteRow'}}">
               <i class="fa-solid fa-trash"></i>
             </button>
@@ -133,7 +133,7 @@
         {{/each}}
       </tbody>
     </table>
-    <button type="button" class="btn-add" data-action="addRow" data-array="traits">
+    <button type="button" class="btn-add" data-action="addTrait">
       <i class="fa-solid fa-plus"></i> {{localize "TB2E.NPC.AddTrait"}}
     </button>
   </fieldset>

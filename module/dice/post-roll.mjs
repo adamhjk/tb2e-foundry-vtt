@@ -17,7 +17,7 @@ export function activatePostRollListeners(message, html) {
 
   const resolved = message.getFlag("tb2e", "resolved");
 
-  const actionBtns = html.querySelectorAll(".post-roll-btn");
+  const actionBtns = html.querySelectorAll(".card-btn[data-action]");
   for ( const btn of actionBtns ) {
     btn.addEventListener("click", async (event) => {
       event.preventDefault();
@@ -480,15 +480,14 @@ async function _handleFinalize(message) {
  * @param {Actor} actor
  */
 async function _postNatureCrisis(actor) {
-  const traits = actor.system.traits || [];
-  const classTrait = actor.system.class || "";
+  const traits = actor.itemTypes.trait || [];
 
   // Build list of non-class traits for the picker
-  const eligibleTraits = traits.map((t, i) => ({
-    index: i,
-    name: t.name,
-    level: t.level,
-    isClass: t.name?.toLowerCase() === classTrait.toLowerCase()
+  const eligibleTraits = traits.map(item => ({
+    itemId: item.id,
+    name: item.name,
+    level: item.system.level,
+    isClass: item.system.isClass
   })).filter(t => t.name && !t.isClass);
 
   const cardContent = await foundry.applications.handlebars.renderTemplate(
@@ -533,27 +532,26 @@ export function activateNatureCrisisListeners(message, html) {
     const actor = game.actors.get(actorId);
     if ( !actor || !actor.isOwner ) return;
 
-    const card = confirmBtn.closest(".tb2e-nature-crisis");
+    const card = confirmBtn.closest("[data-actor-id]");
     const traitSelect = card.querySelector(".crisis-trait-select");
     const newNameInput = card.querySelector(".crisis-new-name");
 
-    const traitIndex = traitSelect ? Number(traitSelect.value) : -1;
+    const traitItemId = traitSelect ? traitSelect.value : "";
     const newName = newNameInput?.value?.trim() || "";
 
-    if ( traitIndex < 0 || !newName ) {
+    if ( !traitItemId || !newName ) {
       ui.notifications.warn(game.i18n.localize("TB2E.Nature.SelectTrait"));
       return;
     }
 
-    // Apply crisis: replace trait, reduce max, restore current, clear advancement
-    const traits = foundry.utils.deepClone(actor.system.traits);
-    if ( traits[traitIndex] ) {
-      traits[traitIndex].name = newName;
+    // Apply crisis: replace trait name, reduce max, restore current, clear advancement
+    const traitItem = actor.items.get(traitItemId);
+    if ( traitItem ) {
+      await traitItem.update({ name: newName });
     }
 
     const newMax = Math.max(0, actor.system.abilities.nature.max - 1);
     await actor.update({
-      "system.traits": traits,
       "system.abilities.nature.max": newMax,
       "system.abilities.nature.rating": newMax,
       "system.abilities.nature.pass": 0,
@@ -581,7 +579,7 @@ export function activateNatureCrisisListeners(message, html) {
         crisisTitle: game.i18n.format("TB2E.Nature.Crisis", { name: actor.name }),
         crisisText: game.i18n.localize("TB2E.Nature.CrisisText"),
         resolved: true,
-        replacedTrait: traits[traitIndex]?.name,
+        replacedTrait: newName,
         newMax,
         isRetired: newMax === 0,
         retirementText: newMax === 0 ? game.i18n.format("TB2E.Nature.Retirement", { name: actor.name }) : ""
@@ -641,7 +639,7 @@ async function _reRenderChatCard(message) {
       obstacle,
       successes: finalSuccesses,
       pass,
-      modifiers: rollData.modifiers || [],
+      modifiers: (rollData.modifiers || []).filter(m => m.timing === "pre"),
       diceResults,
       postSuccessMods: (tbFlags.postSuccessMods || []).length ? tbFlags.postSuccessMods : null,
       isBL: rollData.isBL,
@@ -661,6 +659,7 @@ async function _reRenderChatCard(message) {
       showDirectNatureTax: tbFlags.directNatureTest && !tbFlags.withinNature && !tbFlags.directNatureTaxApplied,
       directNatureWithin: tbFlags.directNatureTest && tbFlags.withinNature,
       synergyHelpers: _buildSynergyHelpers(tbFlags.helpers, tbFlags.helperSynergy || {}),
+      margin: pass ? (finalSuccesses - obstacle) : (obstacle - finalSuccesses),
       passLabel: game.i18n.localize("TB2E.Roll.Pass"),
       failLabel: game.i18n.localize("TB2E.Roll.Fail"),
       successesLabel: game.i18n.localize("TB2E.Roll.Successes"),

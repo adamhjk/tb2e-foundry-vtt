@@ -1,15 +1,15 @@
-<div class="tb2e-roll-card">
-  <div class="roll-card-header">
-    <img class="roll-card-portrait" src="{{actorImg}}" alt="{{actorName}}">
-    <div class="roll-card-info">
-      <span class="roll-card-name">{{actorName}}</span>
+<div class="tb2e-chat-card">
+  <div class="card-header">
+    <img class="card-portrait" src="{{actorImg}}" alt="{{actorName}}">
+    <div class="card-info">
+      <span class="card-name">{{actorName}}</span>
       {{#if actorSubtitle}}
-      <span class="roll-card-subtitle">{{actorSubtitle}}</span>
+      <span class="card-subtitle">{{actorSubtitle}}</span>
       {{/if}}
       {{#if isDisposition}}
-      <span class="roll-card-context">{{conflictTypeLabel}} {{conflictTitle}} — {{groupName}}</span>
+      <span class="card-context">{{conflictTypeLabel}} {{conflictTitle}} — {{groupName}}</span>
       {{/if}}
-      <span class="roll-card-test">
+      <span class="card-label">
         {{testTypeLabel}} {{label}} {{testLabel}}
         {{#if isBL}}
         <span class="roll-card-bl-badge"><i class="fa-solid fa-graduation-cap"></i> BL</span>
@@ -48,15 +48,6 @@
     {{/each}}
   </div>
 
-  <div class="roll-card-tally">
-    <span class="tally-successes">{{successesLabel}}: {{successes}}</span>
-    {{#if isDisposition}}
-    <span class="tally-ability">+ {{abilityLabel}}: {{abilityRating}}</span>
-    {{else}}
-    <span class="tally-obstacle">{{obstacleLabel}}: {{obstacle}}</span>
-    {{/if}}
-  </div>
-
   {{! Post-roll success modifiers }}
   {{#if postSuccessMods}}
   <div class="roll-card-post-mods">
@@ -70,13 +61,22 @@
   </div>
   {{/if}}
 
+  <div class="roll-card-tally">
+    <span class="tally-successes">{{successesLabel}}: {{successes}}</span>
+    {{#if isDisposition}}
+    <span class="tally-ability">+ {{abilityLabel}}: {{abilityRating}}</span>
+    {{else}}
+    <span class="tally-obstacle">{{obstacleLabel}}: {{obstacle}}</span>
+    {{/if}}
+  </div>
+
   {{! Post-roll action buttons }}
   {{#if hasPostActions}}
-  <div class="roll-card-actions" data-message-id="">
+  <div class="card-actions" data-message-id="">
     {{#unless deeperUsed}}
       {{#unless luckUsed}}
         {{#if hasFate}}{{#if wiseSelected}}{{#if hasWyrms}}
-        <button type="button" class="post-roll-btn deeper-btn" data-action="deeper-understanding">
+        <button type="button" class="card-btn card-btn--amber" data-action="deeper-understanding">
           <span class="post-roll-label"><i class="fa-solid fa-lightbulb"></i> Deeper Understanding (Fate 1)</span>
           <span class="post-roll-summary">Reroll 1 Wyrm (SG p. 87)</span>
         </button>
@@ -86,7 +86,7 @@
     {{#unless ofCourseUsed}}
       {{#unless luckUsed}}
         {{#if hasPersona}}{{#if wiseSelected}}{{#if hasWyrms}}
-        <button type="button" class="post-roll-btn of-course-btn" data-action="of-course">
+        <button type="button" class="card-btn card-btn--blue" data-action="of-course">
           <span class="post-roll-label"><i class="fa-solid fa-hat-wizard"></i> Ah, Of Course! (Persona 1)</span>
           <span class="post-roll-summary">Roll {{wyrmCount}} new dice (SG p. 88)</span>
         </button>
@@ -95,7 +95,7 @@
     {{/unless}}
     {{#unless luckUsed}}
       {{#if hasFate}}{{#if hasSuns}}
-      <button type="button" class="post-roll-btn fate-luck-btn" data-action="fate-luck">
+      <button type="button" class="card-btn card-btn--amber" data-action="fate-luck">
         <span class="post-roll-label"><i class="fa-solid fa-clover"></i> Fate: Luck (Fate 1)</span>
         <span class="post-roll-summary">Explode {{sunCount}} Suns (SG p. 87)</span>
       </button>
@@ -104,8 +104,8 @@
     {{#if showNatureTax}}
     <div class="nature-tax-prompt">
       <span>Within Nature descriptors?</span>
-      <button type="button" class="post-roll-btn nature-tax-btn" data-action="nature-yes">Yes</button>
-      <button type="button" class="post-roll-btn nature-tax-btn" data-action="nature-no">No</button>
+      <button type="button" class="card-btn nature-tax-btn" data-action="nature-yes">Yes</button>
+      <button type="button" class="card-btn nature-tax-btn" data-action="nature-no">No</button>
     </div>
     {{/if}}
     {{#if showDirectNatureTax}}
@@ -118,7 +118,7 @@
       <i class="fa-solid fa-paw"></i> {{localize "TB2E.Nature.ActingWithin"}} — no tax
     </div>
     {{/if}}
-    <button type="button" class="post-roll-btn finalize-btn" data-action="finalize">
+    <button type="button" class="card-btn card-btn--green" data-action="finalize">
       <i class="fa-solid fa-check-double"></i> Finalize
     </button>
   </div>
@@ -128,7 +128,7 @@
   <div class="roll-card-helpers">
     <div class="section-label"><i class="fa-solid fa-handshake-angle"></i> Helper Synergy</div>
     {{#each synergyHelpers}}
-    <button type="button" class="post-roll-btn synergy-btn" data-action="synergy" data-helper-id="{{id}}">
+    <button type="button" class="card-btn card-btn--amber" data-action="synergy" data-helper-id="{{id}}">
       <span class="post-roll-label"><i class="fa-solid fa-star"></i> {{name}}: Synergy (Fate 1)</span>
       <span class="post-roll-summary">Log {{helpViaLabel}} advancement (SG p. 87)</span>
     </button>
@@ -137,16 +137,16 @@
   {{/if}}
 
   {{#if isDisposition}}
-  <div class="roll-card-banner banner-disposition">
+  <div class="card-banner banner-disposition">
     <i class="fa-solid fa-shield"></i> {{dispositionLabel}}: {{disposition}}
   </div>
   {{else if pass}}
-  <div class="roll-card-banner banner-pass">
-    <i class="fa-solid fa-check"></i> {{passLabel}}
+  <div class="card-banner banner-pass">
+    <i class="fa-solid fa-check"></i> {{passLabel}} <span class="banner-margin">(MoS {{margin}})</span>
   </div>
   {{else}}
-  <div class="roll-card-banner banner-fail">
-    <i class="fa-solid fa-xmark"></i> {{failLabel}}
+  <div class="card-banner banner-fail">
+    <i class="fa-solid fa-xmark"></i> {{failLabel}} <span class="banner-margin">(MoF {{margin}})</span>
   </div>
   {{/if}}
 </div>

@@ -144,6 +144,32 @@
   letter-spacing: 0.04em;
 }
 
+/* Session Reset Button */
+.tb2e.sheet .session-reset-btn {
+  all: unset;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3em;
+  font-family: var(--tb-font-heading);
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--tb-text-faint);
+  cursor: pointer;
+  padding: 0.15rem 0.4rem;
+  border-radius: var(--tb-radius-sm, 3px);
+  transition: color 0.2s, background-color 0.2s;
+}
+
+.tb2e.sheet .session-reset-btn:hover {
+  color: var(--tb-text-body);
+  background: var(--tb-frost);
+}
+
+.tb2e.sheet .session-reset-btn:active {
+  color: var(--tb-blue);
+}
+
 /* -------------------------------------------- */
 /*  Torchbearer Logo                            */
 /* -------------------------------------------- */

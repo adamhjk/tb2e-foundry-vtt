@@ -353,6 +353,24 @@
   "TB2E.Nature.AddDescriptor": "Add descriptor",
   "TB2E.Nature.DescriptorPlaceholder": "Enter descriptor",
 
+  "TB2E.Trait.AddTrait": "Add Trait",
+  "TB2E.Trait.SelectTrait": "Select a trait",
+  "TB2E.Trait.BreakTie": "Break Tie (lose, earn 2 checks)",
+  "TB2E.Trait.AgainstBreakTieSection": "Break ties against yourself with traits",
+  "TB2E.Trait.BrokeTie": "{name} broke the tie using {trait} (earned 2 checks)",
+  "TB2E.Trait.NoEligibleAgainst": "No eligible traits (all already used against this session).",
+  "TB2E.Trait.AgainstPenalty": "Suffer -1D (earn 1 check)",
+  "TB2E.Trait.AgainstOpponent": "Give opponent +2D (earn 2 checks)",
+  "TB2E.Trait.AgainstBreakTie": "Break tie in opponent's favor (earn 2 checks)",
+  "TB2E.Trait.AlreadyUsedAgainst": "Already used this trait against yourself this session.",
+  "TB2E.Trait.Level3BreakTieSection": "Break tie in your favor with a Level 3 trait",
+  "TB2E.Trait.WonTie": "{name} won the tie using {trait}",
+  "TB2E.Trait.NoLevel3": "No Level 3 traits.",
+  "TB2E.Trait.AlreadyUsedOnRoll": "A trait was already used on this roll.",
+
+  "TB2E.Roll.Tied": "Tied!",
+  "TB2E.Roll.TiebreakerInstruction": "Roll a versus {ability} test to break the tie. No help allowed.",
+
   "TB2E.PostRoll.NoFate": "No fate points remaining.",
   "TB2E.PostRoll.NoPersona": "No persona points remaining.",
   "TB2E.PostRoll.LuckAlreadyUsed": "Fate: Luck has already been used on this roll.",
@@ -364,5 +382,10 @@
   "TB2E.PostRoll.NatureTaxDirect": "Nature taxed by {amount} (now {rating}/{max}).",
   "TB2E.PostRoll.NoFateHelper": "{name} has no fate points remaining.",
   "TB2E.PostRoll.SynergyLogged": "Synergy: logged {result} for {name}'s {skill}.",
-  "TB2E.PostRoll.NotYourHelper": "Only {name}'s player can process synergy."
+  "TB2E.PostRoll.NotYourHelper": "Only {name}'s player can process synergy.",
+
+  "TB2E.Session.Reset": "New Session",
+  "TB2E.Session.ResetTooltip": "Reset trait uses for a new session",
+  "TB2E.Session.ResetConfirm": "Reset all trait uses for a new session? This restores beneficial uses and clears used-against flags.",
+  "TB2E.Session.ResetDone": "Trait uses reset for new session."
 }

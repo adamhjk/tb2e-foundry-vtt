@@ -1,12 +1,12 @@
-<div class="tb2e-roll-card">
-  <div class="roll-card-header">
-    <img class="roll-card-portrait" src="{{actorImg}}" alt="{{actorName}}">
-    <div class="roll-card-info">
-      <span class="roll-card-name">{{actorName}}</span>
+<div class="tb2e-chat-card">
+  <div class="card-header">
+    <img class="card-portrait" src="{{actorImg}}" alt="{{actorName}}">
+    <div class="card-info">
+      <span class="card-name">{{actorName}}</span>
       {{#if actorSubtitle}}
-      <span class="roll-card-subtitle">{{actorSubtitle}}</span>
+      <span class="card-subtitle">{{actorSubtitle}}</span>
       {{/if}}
-      <span class="roll-card-test">{{versusLabel}} {{label}} {{testLabel}}</span>
+      <span class="card-label">{{versusLabel}} {{label}} {{testLabel}}</span>
     </div>
   </div>
 
@@ -39,11 +39,23 @@
     {{/each}}
   </div>
 
+  {{#if postSuccessMods}}
+  <div class="roll-card-post-mods">
+    {{#each postSuccessMods}}
+    <div class="post-mod-line" style="--mod-color: var({{color}})">
+      <i class="{{icon}}"></i>
+      <span>{{label}}</span>
+      <span class="post-mod-value">{{display}}</span>
+    </div>
+    {{/each}}
+  </div>
+  {{/if}}
+
   <div class="roll-card-tally">
     <span class="tally-successes">{{successesLabel}}: {{successes}}</span>
   </div>
 
-  <div class="roll-card-banner banner-pending">
+  <div class="card-banner banner-pending">
     <i class="fa-solid fa-hourglass-half"></i> {{pendingLabel}}
   </div>
 </div>

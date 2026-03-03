@@ -2,6 +2,7 @@ import { advancementNeeded, conditions, abilities, skills, packSlots, levelRequi
 import { rollTest, showAdvancementDialog } from "../../dice/_module.mjs";
 import { rollDisposition, evaluateRoll, gatherHelpModifiers } from "../../dice/tb2e-roll.mjs";
 import { getEligibleHelpers } from "../../dice/help.mjs";
+import { resetTraitsForSession } from "../../session.mjs";
 
 const { HandlebarsApplicationMixin } = foundry.applications.api;
 const { ActorSheetV2 } = foundry.applications.sheets;
@@ -15,6 +16,8 @@ export default class CharacterSheet extends HandlebarsApplicationMixin(ActorShee
       toggleCondition: CharacterSheet.#onToggleCondition,
       toggleBubble: CharacterSheet.#onToggleBubble,
       setTraitLevel: CharacterSheet.#onSetTraitLevel,
+      addTrait: CharacterSheet.#onAddTrait,
+      deleteTrait: CharacterSheet.#onDeleteTrait,
       addRow: CharacterSheet.#onAddRow,
       deleteRow: CharacterSheet.#onDeleteRow,
       rollTest: CharacterSheet.#onRollTest,
@@ -27,7 +30,9 @@ export default class CharacterSheet extends HandlebarsApplicationMixin(ActorShee
       conserveNature: CharacterSheet.#onConserveNature,
       recoverNature: CharacterSheet.#onRecoverNature,
       addDescriptor: CharacterSheet.#onAddDescriptor,
-      removeDescriptor: CharacterSheet.#onRemoveDescriptor
+      removeDescriptor: CharacterSheet.#onRemoveDescriptor,
+      toggleClassTrait: CharacterSheet.#onToggleClassTrait,
+      resetSession: CharacterSheet.#onResetSession
     },
     form: { submitOnChange: true },
     window: { resizable: true }
@@ -122,7 +127,7 @@ export default class CharacterSheet extends HandlebarsApplicationMixin(ActorShee
         { id: "identity",  icon: "fa-solid fa-scroll",      label: "TB2E.Tab.identity" },
         { id: "abilities", icon: "fa-solid fa-dice-d20",    label: "TB2E.Tab.abilities" },
         { id: "skills",    icon: "fa-solid fa-hammer",      label: "TB2E.Tab.skills" },
-        { id: "traits",    icon: "fa-solid fa-star",        label: "TB2E.Tab.traits" },
+        { id: "traits",    icon: "fa-solid fa-fingerprint",  label: "TB2E.Tab.traits" },
         { id: "inventory", icon: "fa-solid fa-bag-shopping", label: "TB2E.Tab.inventory" },
         { id: "magic",     icon: "fa-solid fa-hat-wizard",  label: "TB2E.Tab.magic" },
         { id: "biography", icon: "fa-solid fa-book-open",   label: "TB2E.Tab.biography" }
@@ -319,10 +324,16 @@ export default class CharacterSheet extends HandlebarsApplicationMixin(ActorShee
 
   #prepareTraitsContext(context) {
     const sys = this.document.system;
-    context.traits = sys.traits.map((t, i) => ({
-      ...t,
-      idx: i,
-      levels: [1, 2, 3].map(l => ({ value: l, active: l === t.level }))
+    context.traits = (this.document.itemTypes.trait || []).map(item => ({
+      itemId: item.id,
+      name: item.name,
+      level: item.system.level,
+      isClass: item.system.isClass,
+      beneficial: item.system.beneficial,
+      maxBeneficial: item.system.maxBeneficial,
+      usedAgainst: item.system.usedAgainst,
+      checks: item.system.checks,
+      levels: [1, 2, 3].map(l => ({ value: l, active: l === item.system.level }))
     }));
     context.wises = sys.wises;
     context.canAddWise = (sys.wises || []).length < 4;
@@ -575,7 +586,7 @@ export default class CharacterSheet extends HandlebarsApplicationMixin(ActorShee
       const placeholder = bar.textContent;
       this.element.querySelectorAll("[data-page]").forEach(el => {
         el.addEventListener("mouseenter", () => {
-          const label = el.querySelector(".skill-name, .ability-name, .condition-label, .point-label")?.textContent
+          const label = el.querySelector(".skill-name, .ability-name, .condition-label, .point-label, .ref-label")?.textContent
             || el.textContent || "";
           bar.textContent = `${label.trim()} \u2014 ${el.dataset.page}`;
           bar.classList.remove("placeholder");
@@ -584,6 +595,29 @@ export default class CharacterSheet extends HandlebarsApplicationMixin(ActorShee
           bar.textContent = placeholder;
           bar.classList.add("placeholder");
         });
+      });
+    }
+
+    // Trait name, beneficial, and checks input change handlers (Item updates).
+    for ( const input of this.element.querySelectorAll(".trait-name-input") ) {
+      input.addEventListener("change", () => {
+        const itemId = input.closest("[data-item-id]")?.dataset.itemId;
+        const item = this.document.items.get(itemId);
+        if ( item ) item.update({ name: input.value });
+      });
+    }
+    for ( const input of this.element.querySelectorAll(".trait-beneficial-input") ) {
+      input.addEventListener("change", () => {
+        const itemId = input.closest("[data-item-id]")?.dataset.itemId;
+        const item = this.document.items.get(itemId);
+        if ( item ) item.update({ "system.beneficial": Number(input.value) || 0 });
+      });
+    }
+    for ( const input of this.element.querySelectorAll(".trait-checks-input") ) {
+      input.addEventListener("change", () => {
+        const itemId = input.closest("[data-item-id]")?.dataset.itemId;
+        const item = this.document.items.get(itemId);
+        if ( item ) item.update({ "system.checks": Number(input.value) || 0 });
       });
     }
 
@@ -673,9 +707,35 @@ export default class CharacterSheet extends HandlebarsApplicationMixin(ActorShee
    * Set trait level (1/2/3).
    */
   static #onSetTraitLevel(event, target) {
-    const index = Number(target.dataset.index);
+    const itemId = target.dataset.itemId;
     const level = Number(target.dataset.level);
-    this.document.update({ [`system.traits.${index}.level`]: level });
+    const item = this.document.items.get(itemId);
+    if ( item ) item.update({ "system.level": level });
+  }
+
+  /**
+   * Toggle the isClass flag on a trait Item.
+   */
+  static #onToggleClassTrait(event, target) {
+    const itemId = target.dataset.itemId;
+    const item = this.document.items.get(itemId);
+    if ( item ) item.update({ "system.isClass": !item.system.isClass });
+  }
+
+  /**
+   * Add a new trait Item to the character.
+   */
+  static async #onAddTrait(event, target) {
+    await Item.create({ name: "New Trait", type: "trait" }, { parent: this.document });
+  }
+
+  /**
+   * Delete a trait Item from the character.
+   */
+  static async #onDeleteTrait(event, target) {
+    const itemId = target.dataset.itemId;
+    const item = this.document.items.get(itemId);
+    if ( item ) await item.delete();
   }
 
   /* -------------------------------------------- */
@@ -949,6 +1009,24 @@ export default class CharacterSheet extends HandlebarsApplicationMixin(ActorShee
     const descriptors = [...(this.document.system.natureDescriptors || []), value];
     input.value = "";
     this.document.update({ "system.natureDescriptors": descriptors });
+  }
+
+  /* -------------------------------------------- */
+  /*  Session Reset                                */
+  /* -------------------------------------------- */
+
+  /**
+   * Reset trait uses for a new session after confirmation.
+   */
+  static async #onResetSession(event, target) {
+    const confirmed = await foundry.applications.api.DialogV2.confirm({
+      window: { title: game.i18n.localize("TB2E.Session.Reset") },
+      content: `<p>${game.i18n.localize("TB2E.Session.ResetConfirm")}</p>`,
+      yes: { default: true }
+    });
+    if ( !confirmed ) return;
+    await resetTraitsForSession(this.document);
+    ui.notifications.info(game.i18n.localize("TB2E.Session.ResetDone"));
   }
 
   /**

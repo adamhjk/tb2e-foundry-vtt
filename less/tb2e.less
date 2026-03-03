@@ -15,9 +15,7 @@
 /* -------------------------------------------- */
 
 .tb2e.sheet,
-.tb2e-roll-card,
-.tb2e-advancement-card,
-.tb2e-versus-card,
+.tb2e-chat-card,
 .tb2e-conflict-header,
 .tb2e-conflict-body,
 .tb2e-conflict-footer,
@@ -31,18 +29,16 @@
 /* -------------------------------------------- */
 
 body.theme-light :is(
-  .tb2e, .tb2e-roll-card, .tb2e-advancement-card,
-  .tb2e-versus-card, .tb2e-conflict-header, .tb2e-conflict-body,
+  .tb2e, .tb2e-chat-card, .tb2e-conflict-header, .tb2e-conflict-body,
   .tb2e-conflict-footer, .conflict-window-content,
-  .character-conflict-panel, .tb2e-nature-crisis) {
+  .character-conflict-panel) {
   .mixin-theme-light();
 }
 
 body.theme-dark :is(
-  .tb2e, .tb2e-roll-card, .tb2e-advancement-card,
-  .tb2e-versus-card, .tb2e-conflict-header, .tb2e-conflict-body,
+  .tb2e, .tb2e-chat-card, .tb2e-conflict-header, .tb2e-conflict-body,
   .tb2e-conflict-footer, .conflict-window-content,
-  .character-conflict-panel, .tb2e-nature-crisis) {
+  .character-conflict-panel) {
   .mixin-theme-dark();
 }
 
@@ -52,19 +48,17 @@ body.theme-dark :is(
 
 .themed.theme-light.tb2e,
 .themed.theme-light :is(
-  .tb2e-roll-card, .tb2e-advancement-card,
-  .tb2e-versus-card, .tb2e-conflict-header, .tb2e-conflict-body,
+  .tb2e-chat-card, .tb2e-conflict-header, .tb2e-conflict-body,
   .tb2e-conflict-footer, .conflict-window-content,
-  .character-conflict-panel, .tb2e-nature-crisis) {
+  .character-conflict-panel) {
   .mixin-theme-light();
 }
 
 .themed.theme-dark.tb2e,
 .themed.theme-dark :is(
-  .tb2e-roll-card, .tb2e-advancement-card,
-  .tb2e-versus-card, .tb2e-conflict-header, .tb2e-conflict-body,
+  .tb2e-chat-card, .tb2e-conflict-header, .tb2e-conflict-body,
   .tb2e-conflict-footer, .conflict-window-content,
-  .character-conflict-panel, .tb2e-nature-crisis) {
+  .character-conflict-panel) {
   .mixin-theme-dark();
 }
 
@@ -89,6 +83,7 @@ body.theme-dark :is(
 @import "dice/advancement-dialog.less";
 
 // Chat cards
+@import "chat/base-card.less";
 @import "chat/roll-card.less";
 @import "chat/advancement-card.less";
 @import "chat/versus-card.less";

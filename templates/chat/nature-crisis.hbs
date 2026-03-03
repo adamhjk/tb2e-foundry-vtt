@@ -1,40 +1,53 @@
-<div class="tb2e-nature-crisis" data-actor-id="{{actorId}}">
-  <div class="crisis-header">
-    <img src="{{actorImg}}" class="crisis-portrait" width="36" height="36">
-    <h3 class="crisis-title">{{crisisTitle}}</h3>
+<div class="tb2e-chat-card card-accent--amber" data-actor-id="{{actorId}}">
+  <div class="card-header">
+    <img class="card-portrait" src="{{actorImg}}" width="32" height="32">
+    <div class="card-info">
+      <span class="card-name">{{actorName}}</span>
+      <span class="card-label">{{crisisTitle}}</span>
+    </div>
   </div>
 
   {{#if resolved}}
-  <div class="crisis-resolved">
+  <div class="card-body crisis-resolved">
     <p class="crisis-text">Trait replaced with <strong>{{replacedTrait}}</strong>. Nature max is now {{newMax}}.</p>
     {{#if isRetired}}
     <p class="crisis-retirement">{{retirementText}}</p>
     {{/if}}
   </div>
-  {{else}}
-  <p class="crisis-text">{{crisisText}}</p>
-
-  {{#if hasTraits}}
-  <div class="crisis-form">
-    <div class="crisis-field">
-      <label>{{selectTraitLabel}}</label>
-      <select class="crisis-trait-select">
-        <option value="-1">—</option>
-        {{#each eligibleTraits}}
-        <option value="{{index}}">{{name}} (L{{level}})</option>
-        {{/each}}
-      </select>
-    </div>
-    <div class="crisis-field">
-      <label>{{newTraitLabel}}</label>
-      <input type="text" class="crisis-new-name" placeholder="Pariah, Odd, Faded...">
-    </div>
-    <button type="button" class="nature-crisis-confirm">
-      <i class="fa-solid fa-check"></i> {{confirmLabel}}
-    </button>
+  <div class="card-reference"><i class="fa-solid fa-book"></i> DH p. 68</div>
+  <div class="card-banner banner-amber">
+    {{#if isRetired}}
+    <i class="fa-solid fa-skull"></i> <span>Retired</span>
+    {{else}}
+    <i class="fa-solid fa-check"></i> <span>Resolved</span>
+    {{/if}}
   </div>
   {{else}}
-  <p class="crisis-no-traits">No eligible traits to replace.</p>
-  {{/if}}
+  <div class="card-body">
+    <p class="crisis-text">{{crisisText}}</p>
+
+    {{#if hasTraits}}
+    <div class="crisis-form">
+      <div class="crisis-field">
+        <label>{{selectTraitLabel}}</label>
+        <select class="crisis-trait-select">
+          <option value="">—</option>
+          {{#each eligibleTraits}}
+          <option value="{{itemId}}">{{name}} (L{{level}})</option>
+          {{/each}}
+        </select>
+      </div>
+      <div class="crisis-field">
+        <label>{{newTraitLabel}}</label>
+        <input type="text" class="crisis-new-name" placeholder="Pariah, Odd, Faded...">
+      </div>
+      <button type="button" class="card-btn card-btn--amber nature-crisis-confirm">
+        <i class="fa-solid fa-check"></i> {{confirmLabel}}
+      </button>
+    </div>
+    {{else}}
+    <p class="crisis-no-traits">No eligible traits to replace.</p>
+    {{/if}}
+  </div>
   {{/if}}
 </div>

@@ -393,7 +393,8 @@
 }
 
 .tb2e.roll-dialog .trait-row {
-  display: flex;
+  display: grid;
+  grid-template-columns: 1fr auto auto auto;
   align-items: center;
   gap: 0.4rem;
   padding: 0.2rem 0.4rem;
@@ -402,7 +403,6 @@
 }
 
 .tb2e.roll-dialog .trait-name {
-  flex: 1;
   font-size: 0.85rem;
   color: var(--tb-text-body);
 }
@@ -455,6 +455,12 @@
 .tb2e.roll-dialog .trait-btn:disabled {
   opacity: 0.35;
   cursor: not-allowed;
+}
+
+.tb2e.roll-dialog .trait-btn[data-against-type="opponent-bonus"].active {
+  border-color: var(--tb-red);
+  background: rgba(220, 38, 38, 0.1);
+  color: var(--tb-red);
 }
 
 .tb2e.roll-dialog .trait-uses {

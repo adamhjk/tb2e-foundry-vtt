@@ -3,7 +3,7 @@ import * as dataModels from "./module/data/_module.mjs";
 import * as documents from "./module/documents/_module.mjs";
 import * as applications from "./module/applications/_module.mjs";
 import * as dice from "./module/dice/_module.mjs";
-import { PendingVersusRegistry, resolveVersus } from "./module/dice/versus.mjs";
+import { PendingVersusRegistry, resolveVersus, handleTraitBreakTie, handleLevel3TraitBreakTie } from "./module/dice/versus.mjs";
 import { activatePostRollListeners, activateNatureCrisisListeners, processSynergyMailbox } from "./module/dice/post-roll.mjs";
 
 Hooks.once("init", function() {
@@ -17,6 +17,7 @@ Hooks.once("init", function() {
 
   // Assign data models.
   CONFIG.Actor.dataModels = dataModels.actor.config;
+  CONFIG.Item.dataModels = dataModels.item.config;
   CONFIG.Combat.dataModels = dataModels.combat.config;
   CONFIG.Combatant.dataModels = dataModels.combat.combatantConfig;
 
@@ -64,8 +65,10 @@ Hooks.once("init", function() {
     "systems/tb2e/templates/chat/roll-result.hbs",
     "systems/tb2e/templates/chat/versus-pending.hbs",
     "systems/tb2e/templates/chat/versus-resolution.hbs",
+    "systems/tb2e/templates/chat/advancement-result.hbs",
     "systems/tb2e/templates/conflict/conflict-window.hbs",
-    "systems/tb2e/templates/chat/nature-crisis.hbs"
+    "systems/tb2e/templates/chat/nature-crisis.hbs",
+    "systems/tb2e/templates/chat/versus-tied.hbs"
   ]);
 
   console.log("Torchbearer 2E | System initialized.");
@@ -86,6 +89,23 @@ Hooks.on("createChatMessage", (message) => {
 Hooks.on("renderChatMessageHTML", (message, html) => {
   activatePostRollListeners(message, html);
   activateNatureCrisisListeners(message, html);
+
+  // Versus tied card actions
+  const vs = message.getFlag("tb2e", "versus");
+  if ( vs?.type === "tied" && !message.getFlag("tb2e", "tiedResolved") ) {
+    for ( const btn of html.querySelectorAll("[data-action='trait-break-tie']") ) {
+      btn.addEventListener("click", (event) => {
+        event.preventDefault();
+        handleTraitBreakTie(message, btn.dataset.actorId, btn.dataset.traitId);
+      });
+    }
+    for ( const btn of html.querySelectorAll("[data-action='level3-break-tie']") ) {
+      btn.addEventListener("click", (event) => {
+        event.preventDefault();
+        handleLevel3TraitBreakTie(message, btn.dataset.actorId, btn.dataset.traitId);
+      });
+    }
+  }
 });
 
 // Process synergy mailbox: player writes pendingSynergy flag, GM picks it up here.

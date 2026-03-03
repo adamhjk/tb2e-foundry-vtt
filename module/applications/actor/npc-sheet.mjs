@@ -15,7 +15,9 @@ export default class NPCSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
       addRow: NPCSheet.#onAddRow,
       deleteRow: NPCSheet.#onDeleteRow,
       rollTest: NPCSheet.#onRollTest,
-      setTraitLevel: NPCSheet.#onSetTraitLevel
+      setTraitLevel: NPCSheet.#onSetTraitLevel,
+      addTrait: NPCSheet.#onAddTrait,
+      deleteTrait: NPCSheet.#onDeleteTrait
     },
     form: { submitOnChange: true },
     window: { resizable: true }
@@ -156,12 +158,30 @@ export default class NPCSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
     // Wises
     context.wises = sys.wises;
 
-    // Traits with level pips
-    context.traits = sys.traits.map((t, i) => ({
-      ...t,
-      idx: i,
-      levels: [1, 2, 3].map(l => ({ value: l, active: l === t.level }))
+    // Traits with level pips (Item-based)
+    context.traits = (this.document.itemTypes.trait || []).map(item => ({
+      itemId: item.id,
+      name: item.name,
+      level: item.system.level,
+      levels: [1, 2, 3].map(l => ({ value: l, active: l === item.system.level }))
     }));
+  }
+
+  /* -------------------------------------------- */
+  /*  Render Hook                                 */
+  /* -------------------------------------------- */
+
+  _onRender(context, options) {
+    super._onRender(context, options);
+
+    // NPC trait name input change handlers (Item updates).
+    for ( const input of this.element.querySelectorAll(".npc-trait-name-input") ) {
+      input.addEventListener("change", () => {
+        const itemId = input.closest("[data-item-id]")?.dataset.itemId;
+        const item = this.document.items.get(itemId);
+        if ( item ) item.update({ name: input.value });
+      });
+    }
   }
 
   /* -------------------------------------------- */
@@ -207,9 +227,22 @@ export default class NPCSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
   /* -------------------------------------------- */
 
   static #onSetTraitLevel(event, target) {
-    const index = Number(target.dataset.index);
+    const itemId = target.dataset.itemId;
     const level = Number(target.dataset.level);
-    this.document.update({ [`system.traits.${index}.level`]: level });
+    const item = this.document.items.get(itemId);
+    if ( item ) item.update({ "system.level": level });
+  }
+
+  /* -------------------------------------------- */
+
+  static async #onAddTrait(event, target) {
+    await Item.create({ name: "New Trait", type: "trait" }, { parent: this.document });
+  }
+
+  static async #onDeleteTrait(event, target) {
+    const itemId = target.dataset.itemId;
+    const item = this.document.items.get(itemId);
+    if ( item ) await item.delete();
   }
 
   /* -------------------------------------------- */

@@ -66,6 +66,28 @@
   color: var(--tb-bg-white);
 }
 
+.tb2e.sheet .trait-class-toggle {
+  color: var(--tb-text-faint);
+  font-size: 0.7rem;
+  flex-shrink: 0;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 2px;
+  opacity: 0.35;
+  transition: opacity 0.15s, color 0.15s;
+}
+
+.tb2e.sheet .trait-class-toggle:hover {
+  opacity: 0.7;
+  color: var(--tb-amber);
+}
+
+.tb2e.sheet .trait-class-toggle.active {
+  color: var(--tb-amber);
+  opacity: 1;
+}
+
 .tb2e.sheet .trait-counters {
   display: flex;
   gap: 0.5rem;

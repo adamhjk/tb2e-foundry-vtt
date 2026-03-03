@@ -1,0 +1,240 @@
+/* ============================================ */
+/*  Chat Card — Shared Base Layout             */
+/* ============================================ */
+
+/* Shell */
+.tb2e-chat-card {
+  border: 1px solid var(--tb-border);
+  border-radius: 6px;
+  overflow: hidden;
+  background: var(--tb-bg-raised);
+  font-family: var(--tb-font-body);
+}
+
+/* -------------------------------------------- */
+/*  Header                                      */
+/* -------------------------------------------- */
+
+.tb2e-chat-card .card-header {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 0.75rem;
+  background: var(--tb-bg-mid);
+  border-bottom: 1px solid var(--tb-border);
+}
+
+.tb2e-chat-card .card-header--centered {
+  justify-content: center;
+}
+
+.tb2e-chat-card .card-portrait {
+  width: 32px;
+  height: 32px;
+  border-radius: 4px;
+  object-fit: cover;
+  border: 1px solid var(--tb-border-light);
+}
+
+.tb2e-chat-card .card-info {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.2;
+}
+
+.tb2e-chat-card .card-name {
+  font-weight: bold;
+  font-size: 0.85rem;
+  color: var(--tb-text-bright);
+}
+
+.tb2e-chat-card .card-subtitle {
+  font-size: 0.75rem;
+  color: var(--tb-text-faint);
+  font-style: italic;
+}
+
+.tb2e-chat-card .card-context {
+  font-size: 0.8rem;
+  color: var(--tb-text-dim);
+  font-style: italic;
+}
+
+.tb2e-chat-card .card-label {
+  font-family: var(--tb-font-heading);
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--tb-blue);
+}
+
+/* -------------------------------------------- */
+/*  Body                                        */
+/* -------------------------------------------- */
+
+.tb2e-chat-card .card-body {
+  padding: 0.5rem 0.75rem;
+}
+
+/* -------------------------------------------- */
+/*  Actions                                     */
+/* -------------------------------------------- */
+
+.tb2e-chat-card .card-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  padding: 0.5rem 0.75rem;
+  border-top: 1px solid var(--tb-border);
+  background: var(--tb-bg-surface);
+}
+
+.tb2e-chat-card .card-btn {
+  all: unset;
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.15rem;
+  padding: 0.35rem 0.75rem;
+  border: 1px solid var(--tb-overlay-border);
+  border-radius: 4px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--tb-text-body);
+  background: var(--tb-bg-raised);
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.tb2e-chat-card .card-btn:hover {
+  border-color: var(--tb-blue);
+  color: var(--tb-blue);
+  background: var(--tb-blue-glow);
+}
+
+.tb2e-chat-card .card-btn--amber {
+  color: var(--tb-amber-dim);
+  border-color: var(--tb-amber);
+}
+
+.tb2e-chat-card .card-btn--amber:hover {
+  background: var(--tb-amber-glow);
+  color: var(--tb-amber-bright);
+}
+
+.tb2e-chat-card .card-btn--green {
+  color: var(--tb-green-bright);
+  border-color: var(--tb-green);
+}
+
+.tb2e-chat-card .card-btn--green:hover {
+  background: var(--tb-green-subtle);
+  color: var(--tb-green-bright);
+}
+
+.tb2e-chat-card .card-btn--blue {
+  color: var(--tb-blue-dim);
+  border-color: var(--tb-blue);
+}
+
+.tb2e-chat-card .card-btn--blue:hover {
+  background: var(--tb-blue-glow);
+  color: var(--tb-blue-bright);
+}
+
+/* -------------------------------------------- */
+/*  Reference                                   */
+/* -------------------------------------------- */
+
+.tb2e-chat-card .card-reference {
+  padding: 0.25rem 0.75rem;
+  font-size: 0.7rem;
+  color: var(--tb-text-faint);
+  text-align: right;
+}
+
+.tb2e-chat-card .card-reference i {
+  margin-right: 0.2em;
+}
+
+/* -------------------------------------------- */
+/*  Banner                                      */
+/* -------------------------------------------- */
+
+.tb2e-chat-card .card-banner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  padding: 0.5rem;
+  font-family: var(--tb-font-heading);
+  font-size: 1.05rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-weight: bold;
+}
+
+.tb2e-chat-card .banner-pass {
+  background: linear-gradient(135deg, var(--tb-banner-pass-from), var(--tb-banner-pass-to));
+  color: var(--tb-banner-pass-text);
+  border-top: 2px solid var(--tb-banner-pass-border);
+}
+
+.tb2e-chat-card .banner-fail {
+  background: linear-gradient(135deg, var(--tb-banner-fail-from), var(--tb-banner-fail-to));
+  color: var(--tb-banner-fail-text);
+  border-top: 2px solid var(--tb-banner-fail-border);
+}
+
+.tb2e-chat-card .banner-disposition {
+  background: linear-gradient(135deg, var(--tb-banner-disposition-from), var(--tb-banner-disposition-to));
+  color: var(--tb-banner-disposition-text);
+  border-top: 2px solid var(--tb-banner-disposition-border);
+}
+
+.tb2e-chat-card .banner-pending {
+  background: linear-gradient(135deg, var(--tb-banner-pending-from), var(--tb-banner-pending-to));
+  color: var(--tb-banner-pending-text);
+  border-top: 2px solid var(--tb-banner-pending-border);
+  animation: tb2e-pending-pulse 2.5s ease-in-out infinite;
+}
+
+.tb2e-chat-card .banner-resolved {
+  background: linear-gradient(135deg, var(--tb-banner-resolved-from), var(--tb-banner-resolved-to));
+  color: var(--tb-banner-resolved-text);
+  border-top: 2px solid var(--tb-banner-resolved-border);
+}
+
+.tb2e-chat-card .banner-amber {
+  background: linear-gradient(135deg, var(--tb-amber-glow), var(--tb-amber-glow-bright));
+  color: var(--tb-amber-dim);
+  border-top: 2px solid var(--tb-amber-bright);
+}
+
+@keyframes tb2e-pending-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.7; }
+}
+
+/* -------------------------------------------- */
+/*  Accent Modifier — Amber                     */
+/* -------------------------------------------- */
+
+.tb2e-chat-card.card-accent--amber {
+  border-color: var(--tb-amber-bright);
+  background: linear-gradient(var(--tb-amber-bg), var(--tb-amber-bg)), var(--tb-bg-raised);
+}
+
+.tb2e-chat-card.card-accent--amber .card-header {
+  background: linear-gradient(var(--tb-amber-glow), var(--tb-amber-glow)), var(--tb-bg-mid);
+  border-bottom-color: var(--tb-amber-glow-bright);
+}
+
+.tb2e-chat-card.card-accent--amber .card-portrait {
+  border-color: var(--tb-amber-bright);
+}
+
+.tb2e-chat-card.card-accent--amber .card-label {
+  color: var(--tb-amber-bright);
+}

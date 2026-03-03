@@ -52,21 +52,21 @@
     </div>
     <div class="traits-list">
       {{#each traits}}
-      <div class="trait-row" data-trait-index="{{index}}">
+      <div class="trait-row" data-trait-id="{{itemId}}">
         <span class="trait-name">{{name}}</span>
         <span class="trait-level">L{{level}}</span>
         <div class="trait-mode">
-          <button type="button" class="trait-btn" data-mode="none" title="No trait">&mdash;</button>
           <button type="button" class="trait-btn" data-mode="benefit" {{#if benefitDisabled}}disabled{{/if}} title="{{#if isL3}}+1s on pass{{else}}+1D benefit{{/if}}">
             {{#if isL3}}+1s{{else}}+1D{{/if}}
           </button>
-          <button type="button" class="trait-btn" data-mode="against" title="-1D against (earn check)">
+          <button type="button" class="trait-btn" data-mode="against" data-against-type="penalty" {{#if againstDisabled}}disabled{{/if}} title="-1D against (earn 1 check)">
             &minus;1D
           </button>
+          <button type="button" class="trait-btn trait-btn-versus hidden" data-mode="against" data-against-type="opponent-bonus" {{#if againstDisabled}}disabled{{/if}} title="+2D to opponent (earn 2 checks)">
+            +2D opp
+          </button>
         </div>
-        {{#unless isL3}}
-        <span class="trait-uses">{{beneficial}}/{{maxBeneficial}}</span>
-        {{/unless}}
+        <span class="trait-uses">{{#unless isL3}}{{beneficial}}/{{maxBeneficial}}{{/unless}}</span>
       </div>
       {{/each}}
     </div>

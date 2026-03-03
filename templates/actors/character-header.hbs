@@ -35,6 +35,10 @@
         current=system.fate.current spent=system.fate.spent icon="fa-solid fa-star" page="SG pp.83-88"}}
     {{> "systems/tb2e/templates/actors/parts/point-boxes.hbs" label=personaLabel path="system.persona"
         current=system.persona.current spent=system.persona.spent icon="fa-solid fa-mask" page="SG pp.85-89"}}
+    <button type="button" class="session-reset-btn" data-action="resetSession"
+            title="{{localize 'TB2E.Session.ResetTooltip'}}">
+      <i class="fa-solid fa-rotate"></i> {{localize "TB2E.Session.Reset"}}
+    </button>
   </div>
   {{#if inConflict}}
   <div class="conflict-disposition">
