@@ -4,5 +4,13 @@
   "type": "module",
   "description": "Torchbearer 2nd Edition system for Foundry VTT",
   "license": "UNLICENSED",
-  "private": true
+  "private": true,
+  "scripts": {
+    "build:css": "lessc less/tb2e.less tb2e.css --source-map",
+    "watch:css": "less-watch-compiler less/ ./ tb2e.less --source-map"
+  },
+  "devDependencies": {
+    "less": "^4.5.1",
+    "less-watch-compiler": "^1.17.5"
+  }
 }

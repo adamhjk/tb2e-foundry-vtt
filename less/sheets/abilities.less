@@ -1,0 +1,252 @@
+/* -------------------------------------------- */
+/*  Advancement Bubbles                         */
+/* -------------------------------------------- */
+
+.tb2e.sheet .advancement-bubbles {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+
+.tb2e.sheet .bubble-row {
+  display: flex;
+  align-items: center;
+  gap: 1px;
+}
+
+.tb2e.sheet .bubble-label {
+  font-family: var(--tb-font-heading);
+  font-size: 0.6rem;
+  text-transform: uppercase;
+  color: var(--tb-text-faint);
+  width: 0.8em;
+  text-align: center;
+}
+
+.tb2e.sheet .bubble {
+  all: unset;
+  width: 10px;
+  height: 10px;
+  min-width: 10px;
+  min-height: 10px;
+  max-width: 10px;
+  max-height: 10px;
+  border-radius: 50%;
+  border: 1.5px solid var(--tb-border-light);
+  background: transparent;
+  cursor: pointer;
+  box-sizing: content-box;
+  display: inline-block;
+  transition: background-color 0.15s, border-color 0.15s, box-shadow 0.15s;
+}
+
+.tb2e.sheet .bubble:hover {
+  border-color: var(--tb-text-dim);
+}
+
+.tb2e.sheet .pass-bubble.filled {
+  background: var(--tb-pass-color);
+  border-color: var(--tb-pass-color);
+  box-shadow: 0 0 4px var(--tb-blue-glow-strong);
+}
+
+.tb2e.sheet .fail-bubble.filled {
+  background: var(--tb-fail-color);
+  border-color: var(--tb-fail-color);
+  box-shadow: 0 0 4px rgba(234, 88, 12, 0.3);  /* fail-color glow — invariant */
+}
+
+/* -------------------------------------------- */
+/*  Abilities Tab                               */
+/* -------------------------------------------- */
+
+.tb2e.sheet .abilities-group {
+  margin-bottom: 1rem;
+}
+
+.tb2e.sheet .ability-row {
+  display: grid;
+  /* name | rating input | bubbles */
+  grid-template-columns: 7rem 3.5rem 1fr;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.4rem 0;
+  border-bottom: 1px solid var(--tb-border);
+}
+
+.tb2e.sheet .ability-row:last-child {
+  border-bottom: none;
+}
+
+.tb2e.sheet .ability-name {
+  font-family: var(--tb-font-heading);
+  font-size: 0.95rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--tb-text-body);
+}
+
+.tb2e.sheet .ability-rating {
+  width: 3.5rem;
+  text-align: center;
+  font-weight: bold;
+}
+
+
+
+.tb2e.sheet .nature-ability-row .nature-rating-group {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.15rem;
+}
+
+.tb2e.sheet .nature-ability-row .nature-separator {
+  font-size: 0.85rem;
+  color: var(--tb-text-faint);
+  font-weight: bold;
+}
+
+.tb2e.sheet .nature-ability-row .nature-current {
+  width: 2.4rem;
+}
+
+.tb2e.sheet .nature-ability-row .nature-max {
+  width: 2.4rem;
+  color: var(--tb-text-dim);
+}
+
+.tb2e.sheet .nature-ability-row.nature-taxed .nature-current {
+  color: var(--tb-amber);
+  font-weight: bold;
+}
+
+.tb2e.sheet .nature-actions {
+  display: flex;
+  gap: 0.4rem;
+}
+
+.tb2e.sheet .nature-action-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  background: none;
+  border: 1px solid var(--tb-border-light);
+  border-radius: var(--tb-radius);
+  color: var(--tb-text-dim);
+  cursor: pointer;
+  padding: 0.2rem 0.5rem;
+  font-size: 0.7rem;
+  font-family: var(--tb-font-body);
+  line-height: 1;
+  transition: color 0.15s, border-color 0.15s, background 0.15s;
+}
+
+.tb2e.sheet .nature-action-btn.recover:hover:not(:disabled) {
+  color: var(--tb-green);
+  border-color: var(--tb-green);
+  background: var(--tb-green-subtle);
+}
+
+.tb2e.sheet .nature-action-btn.conserve:hover:not(:disabled) {
+  color: var(--tb-amber);
+  border-color: var(--tb-amber);
+  background: var(--tb-amber-glow);
+}
+
+.tb2e.sheet .nature-action-btn:disabled {
+  opacity: 0.35;
+  cursor: default;
+}
+
+/* Nature descriptors — chip editor */
+.tb2e.sheet .nature-descriptors {
+  margin-top: 0.4rem;
+  padding-top: 0.4rem;
+  padding-left: 0.3rem;
+  border-top: 1px solid var(--tb-border);
+}
+
+.tb2e.sheet .descriptor-label {
+  display: block;
+  font-size: 0.7rem;
+  font-variant: small-caps;
+  letter-spacing: 0.04em;
+  color: var(--tb-text-faint);
+  margin-bottom: 0.25rem;
+}
+
+.tb2e.sheet .descriptor-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.3rem;
+  align-items: center;
+}
+
+.tb2e.sheet .descriptor-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  background: var(--tb-bg-raised);
+  border: 1px solid var(--tb-border-light);
+  border-radius: 999px;
+  padding: 0.15rem 0.5rem;
+  font-size: 0.75rem;
+  color: var(--tb-text-body);
+  font-family: var(--tb-font-body);
+}
+
+.tb2e.sheet .descriptor-remove {
+  background: none;
+  border: none;
+  color: var(--tb-text-faint);
+  cursor: pointer;
+  padding: 0;
+  font-size: 0.6rem;
+  line-height: 1;
+}
+
+.tb2e.sheet .descriptor-remove:hover {
+  color: var(--tb-red);
+}
+
+.tb2e.sheet .descriptor-add {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.2rem;
+}
+
+.tb2e.sheet .descriptor-input {
+  width: 8rem;
+  font-size: 0.75rem;
+  padding: 0.1rem 0.35rem;
+  border: 1px solid var(--tb-border-light);
+  border-radius: var(--tb-radius);
+  background: var(--tb-bg-white);
+  color: var(--tb-text-body);
+}
+
+.tb2e.sheet .descriptor-add-btn {
+  background: none;
+  border: 1px solid var(--tb-border-light);
+  border-radius: var(--tb-radius);
+  color: var(--tb-text-dim);
+  cursor: pointer;
+  padding: 0.1rem 0.3rem;
+  font-size: 0.65rem;
+  line-height: 1;
+}
+
+.tb2e.sheet .descriptor-add-btn:hover {
+  color: var(--tb-green);
+  border-color: var(--tb-green);
+}
+
+.tb2e.sheet .might-row .ability-name {
+  color: var(--tb-blue-dim);
+}
+
+/* Checks */
+.tb2e.sheet .checks-group .checks-row {
+  display: flex;
+  gap: 1.5rem;
+}

@@ -1,0 +1,226 @@
+/* ============================================ */
+/*  Monster Sheet                               */
+/* ============================================ */
+
+/* Monster Header */
+
+.tb2e.sheet.monster .monster-header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.75rem 1rem;
+  background: var(--tb-bg-raised);
+  border-bottom: 2px solid var(--tb-steel);
+  position: relative;
+  flex-shrink: 0;
+}
+
+.tb2e.sheet.monster .monster-header::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at 30% 50%, rgba(71, 85, 105, 0.08) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.tb2e.sheet.monster .monster-header .portrait img {
+  border-color: var(--tb-steel);
+}
+
+.tb2e.sheet.monster .monster-header .portrait img:hover {
+  border-color: var(--tb-steel-bright);
+}
+
+.tb2e.sheet.monster .monster-header .conflict-disposition {
+  grid-column: 1 / -1;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.35rem 0.5rem;
+  background: rgba(71, 85, 105, 0.06);
+  border-radius: var(--tb-radius);
+  font-size: 0.85rem;
+  flex: 0 0 100%;
+  margin-top: 0.5rem;
+}
+
+.tb2e.sheet.monster .monster-header .conflict-label {
+  white-space: nowrap;
+  color: var(--tb-steel-bright);
+  font-family: var(--tb-font-heading);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-size: 0.8rem;
+}
+
+.tb2e.sheet.monster .monster-header .conflict-label i {
+  color: var(--tb-steel);
+  margin-right: 0.3rem;
+}
+
+.tb2e.sheet.monster .monster-header .conflict-disposition .disposition-bar {
+  flex: 1;
+  height: 8px;
+  background: var(--tb-border);
+  border-radius: 4px;
+}
+
+.tb2e.sheet.monster .monster-header .conflict-disposition .disposition-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--tb-steel), var(--tb-steel-dim));
+  border-radius: 4px;
+  transition: width 0.3s;
+}
+
+/* Monster Body */
+
+.tb2e.sheet.monster .monster-body {
+  padding: 1rem;
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+}
+
+/* Core Stats Grid */
+
+.tb2e.sheet.monster .monster-stat-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.5rem 1rem;
+}
+
+.tb2e.sheet.monster .monster-nature-descriptors {
+  margin-top: 0.5rem;
+}
+
+.tb2e.sheet.monster .monster-nature-descriptors input {
+  max-width: none;
+  width: 100%;
+}
+
+/* Dispositions Table */
+
+.tb2e.sheet.monster .dispositions-table {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.tb2e.sheet.monster .disposition-row {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  padding: 0.35rem 0.5rem;
+  border-left: 4px solid var(--tb-border);
+  border-radius: var(--tb-radius);
+  background: var(--tb-bg-surface);
+}
+
+.tb2e.sheet.monster .disposition-row.tier-strength {
+  border-left-color: var(--tb-blue);
+}
+
+.tb2e.sheet.monster .disposition-row.tier-competency {
+  border-left-color: var(--tb-steel);
+}
+
+.tb2e.sheet.monster .disposition-row.tier-weakness {
+  border-left-color: var(--tb-amber-bright);
+}
+
+.tb2e.sheet.monster .disposition-type {
+  flex: 1;
+}
+
+.tb2e.sheet.monster .disposition-hp {
+  width: 4rem;
+  text-align: center;
+}
+
+.tb2e.sheet.monster .hint {
+  font-size: 0.8rem;
+  color: var(--tb-text-faint);
+  font-style: italic;
+  margin: 0 0 0.5rem;
+}
+
+/* Weapons Table */
+
+.tb2e.sheet.monster .weapons-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.85rem;
+}
+
+.tb2e.sheet.monster .weapons-table th {
+  font-family: var(--tb-font-heading);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  font-size: 0.75rem;
+  color: var(--tb-text-dim);
+  padding: 0.3rem 0.25rem;
+  text-align: left;
+  border-bottom: 1px solid var(--tb-border);
+}
+
+.tb2e.sheet.monster .weapons-table td {
+  padding: 0.25rem 0.25rem;
+}
+
+.tb2e.sheet.monster .weapons-table input {
+  width: 100%;
+  font-size: 0.85rem;
+  padding: 0.25rem 0.35rem;
+}
+
+.tb2e.sheet.monster .weapons-table .col-adfm {
+  width: 3.5rem;
+  text-align: center;
+}
+
+.tb2e.sheet.monster .weapons-table .col-adfm input {
+  text-align: center;
+  max-width: none;
+}
+
+.tb2e.sheet.monster .weapons-table .col-action {
+  width: 2rem;
+  text-align: center;
+}
+
+.tb2e.sheet.monster .btn-delete {
+  all: unset;
+  cursor: pointer;
+  color: var(--tb-text-faint);
+  font-size: 0.75rem;
+  padding: 0.2rem;
+  border-radius: var(--tb-radius);
+  transition: color 0.2s;
+}
+
+.tb2e.sheet.monster .btn-delete:hover {
+  color: var(--tb-cond-angry);
+}
+
+.tb2e.sheet.monster .btn-add {
+  all: unset;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-family: var(--tb-font-heading);
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--tb-text-dim);
+  padding: 0.35rem 0.6rem;
+  margin-top: 0.5rem;
+  border: 1px dashed var(--tb-border);
+  border-radius: var(--tb-radius);
+  transition: color 0.2s, border-color 0.2s;
+}
+
+.tb2e.sheet.monster .btn-add:hover {
+  color: var(--tb-blue);
+  border-color: var(--tb-blue);
+}

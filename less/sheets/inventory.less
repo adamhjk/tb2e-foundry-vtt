@@ -1,0 +1,83 @@
+/*  Inventory Tab                               */
+/* -------------------------------------------- */
+
+.tb2e.sheet .inventory-config {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  margin-bottom: 1rem;
+  padding: 0.75rem 1rem;
+  background: var(--tb-bg-raised);
+  border: 1px solid var(--tb-border);
+  border-radius: var(--tb-radius-lg);
+}
+
+.tb2e.sheet .checkbox-field {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.9rem;
+  cursor: pointer;
+}
+
+.tb2e.sheet .checkbox-field input[type="checkbox"] {
+  accent-color: var(--tb-blue);
+}
+
+.tb2e.sheet .inventory-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+.tb2e.sheet .inventory-slot-group {
+  background: var(--tb-bg-raised);
+  border: 1px solid var(--tb-border);
+  border-radius: var(--tb-radius-lg);
+  padding: 0.5rem 0.75rem;
+}
+
+.tb2e.sheet .slot-heading {
+  font-family: var(--tb-font-heading);
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--tb-blue-dim);
+  margin: 0 0 0.35rem;
+}
+
+.tb2e.sheet .slot-count {
+  color: var(--tb-text-faint);
+  font-size: 0.8em;
+}
+
+.tb2e.sheet .slot-list {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.tb2e.sheet .inventory-slot {
+  padding: 0.3rem 0.5rem;
+  border-radius: var(--tb-radius);
+  background: var(--tb-bg-surface);
+  border: 1px solid var(--tb-border);
+  min-height: 1.8rem;
+  display: flex;
+  align-items: center;
+}
+
+.tb2e.sheet .inventory-slot.empty {
+  border-style: dashed;
+  background: var(--tb-bg-mid);
+}
+
+.tb2e.sheet .slot-empty {
+  color: var(--tb-text-faint);
+  font-size: 0.85rem;
+}
+
+.tb2e.sheet .slot-item {
+  color: var(--tb-text-body);
+  font-size: 0.85rem;
+}

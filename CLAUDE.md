@@ -17,7 +17,9 @@ This is a game system for the Foundry Virtual Tabletop for Torchbearer 2nd Editi
 |---------|------|
 | Entry point | `tb2e.mjs` |
 | System manifest | `system.json` |
-| Stylesheet | `tb2e.css` |
+| Compiled stylesheet | `tb2e.css` (generated — do not edit directly) |
+| LESS source | `less/` (edit styles here) |
+| LESS entry point | `less/tb2e.less` |
 | Data models | `module/data/` |
 | Document classes | `module/documents/` |
 | Sheet applications | `module/applications/` |
@@ -99,16 +101,69 @@ Foundry VTT restricts document updates to owners. When a player needs to modify 
 | Conflict actions | `system.pendingActions` | Combatant | `updateCombatant` (in `TB2ECombat`) |
 | Synergy | `flags.tb2e.pendingSynergy` | Actor | `updateActor` (in `tb2e.mjs`) |
 
-## CSS Theme System
+## Styles (LESS → CSS)
 
-The stylesheet (`tb2e.css`) uses a CSS custom property theme system compatible with Foundry VTT v13's built-in theme toggling. No JavaScript is needed — Foundry handles class toggling automatically.
+Styles are authored in LESS and compiled to `tb2e.css`. **Never edit `tb2e.css` directly** — it is a generated file. Edit the `.less` sources under `less/` and rebuild.
 
-### Token Organization
+### Build Commands
 
-1. **`:root`** — Theme-invariant tokens (fonts, radii, condition colors, conflict action colors)
-2. **Fallback block** — Light theme values on element selectors (`.tb2e.sheet`, `.tb2e-roll-card`, etc.) as defaults
-3. **`body.theme-light/dark :is(...)`** — Body-level application theme (specificity 0,2,1)
-4. **`.themed.theme-light/dark.tb2e` / `.themed.theme-light/dark :is(...)`** — Scoped interface theme (specificity 0,3,0, wins over body-level)
+```sh
+npm run build:css    # One-shot compile: less/tb2e.less → tb2e.css (+ source map)
+npm run watch:css    # Watch mode: recompiles on any .less file change
+```
+
+**Always run `npm run build:css` after editing any `.less` file.** Foundry loads `tb2e.css` directly — it does not process LESS at runtime. If you forget to rebuild, your changes won't appear.
+
+### LESS Directory Structure
+
+```
+less/
+├── tb2e.less                     # Entry point (@imports + theme application blocks)
+├── variables/
+│   ├── base.less                 # :root invariant tokens (fonts, radii, condition colors)
+│   ├── light.less                # .mixin-theme-light() — light theme token values
+│   └── dark.less                 # .mixin-theme-dark() — dark theme token values
+├── elements.less                 # Fieldsets, form inputs, textareas, conviction
+├── sheets/                       # Character sheet partials
+│   ├── shell.less                # .tb2e.sheet base
+│   ├── header.less               # Header, logo, name, conditions strip
+│   ├── reference-bar.less        # Reference bar
+│   ├── tabs.less                 # Tab navigation + tab content
+│   ├── abilities.less            # Abilities tab + advancement bubbles + nature
+│   ├── skills.less               # Skills tab
+│   ├── traits-wises.less         # Traits & Wises tab
+│   ├── inventory.less            # Inventory tab
+│   ├── magic.less                # Magic tab
+│   ├── biography.less            # Biography tab
+│   ├── rollable.less             # Rollable rows + advance button
+│   ├── monster.less              # Monster sheet
+│   └── npc.less                  # NPC sheet
+├── dice/                         # Dialog partials
+│   ├── roll-dialog.less          # Roll dialog
+│   └── advancement-dialog.less   # Advancement dialog
+├── chat/                         # Chat card partials
+│   ├── roll-card.less            # Roll result card
+│   ├── advancement-card.less     # Advancement chat card
+│   ├── versus-card.less          # Versus pending/resolution cards
+│   └── nature-crisis.less        # Nature crisis card
+└── conflict/                     # Conflict system partials
+    ├── tracker.less              # Conflict tracker (header/body/footer)
+    ├── inline-rolling.less       # Inline rolling phase
+    ├── distribution.less         # Distribution phase
+    ├── cards.less                # Playing cards (face/back/animations)
+    ├── window.less               # Conflict resolution window + volleys
+    └── character-panel.less      # Character sheet conflict panel
+```
+
+### Theme System
+
+Uses a CSS custom property system compatible with Foundry VTT v13's built-in theme toggling. No JavaScript needed.
+
+Light/dark tokens are defined as LESS mixins (`.mixin-theme-light()` / `.mixin-theme-dark()` in `variables/light.less` and `variables/dark.less`). These are applied in `tb2e.less` across 4 selector blocks:
+
+1. **Fallback block** — Light defaults on element selectors (`.tb2e.sheet`, `.tb2e-roll-card`, etc.)
+2. **`body.theme-light/dark :is(...)`** — Body-level application theme
+3. **`.themed.theme-light/dark.tb2e` / `.themed.theme-light/dark :is(...)`** — Scoped interface theme (highest specificity)
 
 ### Token Naming Convention
 
@@ -129,15 +184,16 @@ The stylesheet (`tb2e.css`) uses a CSS custom property theme system compatible w
 
 ### Rules
 
+- **Never edit `tb2e.css` directly.** Edit `.less` files and run `npm run build:css`.
 - **Never use hardcoded hex colors** in component rules. Use `var(--tb-*)` tokens.
-- **New themed colors** must be added to all 4 selector blocks (fallback, body-light, body-dark, scoped-light, scoped-dark).
-- **Chat card classes** (`.tb2e-roll-card`, `.tb2e-advancement-card`, `.tb2e-versus-card`, `.tb2e-conflict-header/body/footer`, `.conflict-window-content`, `.character-conflict-panel`) must be listed explicitly in theme selectors since they're not inside `.tb2e`.
-- Theme-invariant values (condition colors, action hues, fonts, radii) go in `:root` only.
+- **New themed colors** must be added to both `variables/light.less` and `variables/dark.less` mixins.
+- **New chat card classes** outside `.tb2e` must be added to the theme selector lists in `tb2e.less`.
+- Theme-invariant values (condition colors, action hues, fonts, radii) go in `variables/base.less` (`:root`) only.
 
 ### Example
 
-```css
-/* Correct */
+```less
+/* Correct — in the appropriate .less partial */
 .my-element { color: var(--tb-text-body); background: var(--tb-bg-raised); }
 
 /* Wrong — hardcoded color won't adapt to dark theme */

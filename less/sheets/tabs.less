@@ -1,0 +1,70 @@
+/* -------------------------------------------- */
+/*  Tab Navigation                              */
+/* -------------------------------------------- */
+
+.tb2e.sheet .sheet-tabs.tabs {
+  display: flex;
+  gap: 0;
+  background: var(--tb-bg-raised);
+  border-bottom: 1px solid var(--tb-border);
+  padding: 0 1rem;
+  margin: 0;
+  flex-shrink: 0;
+}
+
+.tb2e.sheet .sheet-tabs.tabs a {
+  font-family: var(--tb-font-heading);
+  font-size: 0.95rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--tb-text-dim);
+  padding: 0.6rem 1rem;
+  border-bottom: 2px solid transparent;
+  transition: color 0.2s, border-color 0.2s;
+  text-decoration: none;
+  position: relative;
+}
+
+.tb2e.sheet .sheet-tabs.tabs a:hover {
+  color: var(--tb-text-body);
+}
+
+.tb2e.sheet .sheet-tabs.tabs a.active {
+  color: var(--tb-blue);
+  border-bottom-color: var(--tb-blue);
+}
+
+.tb2e.sheet .sheet-tabs.tabs a.active::after {
+  content: "";
+  position: absolute;
+  bottom: -1px;
+  left: 0;
+  right: 0;
+  height: 6px;
+  background: linear-gradient(to top, var(--tb-blue-glow-strong), transparent);
+  pointer-events: none;
+}
+
+.tb2e.sheet .sheet-tabs.tabs a i {
+  margin-right: 0.4em;
+  font-size: 0.85em;
+}
+
+/* -------------------------------------------- */
+/*  Tab Content                                 */
+/* -------------------------------------------- */
+
+.tb2e.sheet .tab {
+  display: none;
+  padding: 1rem;
+}
+
+.tb2e.sheet .tab.active {
+  display: block;
+}
+
+.tb2e.sheet .tab.scrollable {
+  overflow-y: auto;
+  flex: 1;
+  min-height: 0;
+}

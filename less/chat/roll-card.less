@@ -1,0 +1,419 @@
+/* -------------------------------------------- */
+/*  Chat Roll Card                              */
+/* -------------------------------------------- */
+
+.tb2e-roll-card {
+  border: 1px solid var(--tb-border);
+  border-radius: 6px;
+  overflow: hidden;
+  background: var(--tb-bg-raised);
+  font-family: var(--tb-font-body);
+}
+
+.tb2e-roll-card .roll-card-header {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 0.75rem;
+  background: var(--tb-bg-mid);
+  border-bottom: 1px solid var(--tb-border);
+}
+
+.tb2e-roll-card .roll-card-portrait {
+  width: 32px;
+  height: 32px;
+  border-radius: 4px;
+  object-fit: cover;
+  border: 1px solid var(--tb-border-light);
+}
+
+.tb2e-roll-card .roll-card-info {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.2;
+}
+
+.tb2e-roll-card .roll-card-name {
+  font-weight: bold;
+  font-size: 0.85rem;
+  color: var(--tb-text-bright);
+}
+
+.tb2e-roll-card .roll-card-context {
+  font-size: 0.8rem;
+  color: var(--tb-text-dim);
+  font-style: italic;
+}
+
+.tb2e-roll-card .roll-card-subtitle {
+  font-size: 0.75rem;
+  color: var(--tb-text-faint);
+  font-style: italic;
+}
+
+.tb2e-roll-card .roll-card-test {
+  font-family: var(--tb-font-heading);
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--tb-blue);
+}
+
+.tb2e-roll-card .roll-card-breakdown {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  padding: 0.4rem 0.75rem;
+  border-bottom: 1px solid var(--tb-border);
+}
+
+.tb2e-roll-card .breakdown-line {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.8rem;
+  color: var(--tb-steel);
+}
+
+.tb2e-roll-card .breakdown-line > i {
+  color: var(--tb-blue);
+  width: 1.2em;
+  text-align: center;
+}
+
+.tb2e-roll-card .breakdown-label {
+  flex: 1;
+}
+
+.tb2e-roll-card .breakdown-value {
+  font-weight: bold;
+}
+
+.tb2e-roll-card .breakdown-modifier > i {
+  color: var(--mod-color);
+}
+
+.tb2e-roll-card .breakdown-modifier .breakdown-label {
+  color: var(--tb-text-dim);
+}
+
+.tb2e-roll-card .breakdown-modifier .breakdown-value {
+  color: var(--mod-color);
+}
+
+.tb2e-roll-card .breakdown-total {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.85rem;
+  font-weight: bold;
+  color: var(--tb-steel);
+  padding-top: 0.3rem;
+  margin-top: 0.2rem;
+  border-top: 1px solid var(--tb-border);
+}
+
+.tb2e-roll-card .roll-card-dice {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  padding: 0.5rem 0.75rem;
+  justify-content: center;
+}
+
+.tb2e-roll-card .die-result {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 4px;
+  font-weight: bold;
+  font-size: 0.85rem;
+  line-height: 1;
+}
+
+.tb2e-roll-card .die-success {
+  background: var(--tb-blue);
+  color: var(--tb-bg-white);
+  box-shadow: 0 0 6px var(--tb-blue-glow-strong);
+}
+
+.tb2e-roll-card .die-fail {
+  background: var(--tb-border);
+  color: var(--tb-text-faint);
+}
+
+.tb2e-roll-card .die-sun {
+  background: var(--tb-fail-color);
+  color: var(--tb-bg-white);
+  box-shadow: 0 0 6px rgba(234, 88, 12, 0.3);
+}
+
+.tb2e-roll-card .roll-card-tally {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.35rem 0.75rem;
+  font-size: 0.8rem;
+  color: var(--tb-steel);
+  border-top: 1px solid var(--tb-border);
+}
+
+.tb2e-roll-card .roll-card-banner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  padding: 0.5rem;
+  font-family: var(--tb-font-heading);
+  font-size: 1.05rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-weight: bold;
+}
+
+.tb2e-roll-card .banner-pass {
+  background: linear-gradient(135deg, var(--tb-banner-pass-from), var(--tb-banner-pass-to));
+  color: var(--tb-banner-pass-text);
+  border-top: 2px solid var(--tb-banner-pass-border);
+}
+
+.tb2e-roll-card .banner-fail {
+  background: linear-gradient(135deg, var(--tb-banner-fail-from), var(--tb-banner-fail-to));
+  color: var(--tb-banner-fail-text);
+  border-top: 2px solid var(--tb-banner-fail-border);
+}
+
+.tb2e-roll-card .banner-disposition {
+  background: linear-gradient(135deg, var(--tb-banner-disposition-from), var(--tb-banner-disposition-to));
+  color: var(--tb-banner-disposition-text);
+  border-top: 2px solid var(--tb-banner-disposition-border);
+}
+
+.tb2e-roll-card .tally-ability {
+  color: var(--tb-blue);
+  font-weight: bold;
+}
+
+/* -------------------------------------------- */
+/*  Chat Roll Card — BL Badge                   */
+/* -------------------------------------------- */
+
+.tb2e-roll-card .roll-card-bl-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.2rem;
+  font-size: 0.65rem;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--tb-amber-dim);
+  background: var(--tb-amber-glow);
+  padding: 1px 5px;
+  border-radius: 3px;
+  margin-left: 0.25rem;
+}
+
+.tb2e-roll-card .roll-card-bl-badge i {
+  font-size: 0.55rem;
+}
+
+/* -------------------------------------------- */
+/*  Chat Roll Card — Post-Roll Success Mods     */
+/* -------------------------------------------- */
+
+.tb2e-roll-card .roll-card-post-mods {
+  padding: 0.25rem 0.75rem;
+  border-top: 1px dashed var(--tb-border);
+}
+
+.tb2e-roll-card .post-mod-line {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.8rem;
+  color: var(--tb-text-dim);
+}
+
+.tb2e-roll-card .post-mod-line i {
+  color: var(--mod-color, var(--tb-text-faint));
+  font-size: 0.75rem;
+}
+
+.tb2e-roll-card .post-mod-value {
+  font-weight: bold;
+  margin-left: auto;
+  color: var(--mod-color, var(--tb-text-dim));
+}
+
+/* -------------------------------------------- */
+/*  Chat Roll Card — Post-Roll Action Buttons   */
+/* -------------------------------------------- */
+
+.tb2e-roll-card .roll-card-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  padding: 0.5rem 0.75rem;
+  border-top: 1px solid var(--tb-border);
+  background: var(--tb-bg-surface);
+}
+
+.tb2e-roll-card .post-roll-btn {
+  all: unset;
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.15rem;
+  padding: 0.35rem 0.75rem;
+  border: 1px solid var(--tb-overlay-border);
+  border-radius: 4px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--tb-text-body);
+  background: var(--tb-bg-raised);
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.tb2e-roll-card .post-roll-label {
+  display: flex;
+  align-items: center;
+  gap: 0.4em;
+}
+
+.tb2e-roll-card .post-roll-summary {
+  font-size: 0.75rem;
+  color: var(--tb-text-dim);
+  font-weight: 400;
+}
+
+.tb2e-roll-card .post-roll-btn:hover {
+  border-color: var(--tb-blue);
+  color: var(--tb-blue);
+  background: var(--tb-blue-glow);
+}
+
+.tb2e-roll-card .fate-luck-btn {
+  color: var(--tb-amber-dim);
+  border-color: var(--tb-amber);
+}
+
+.tb2e-roll-card .fate-luck-btn:hover {
+  background: var(--tb-amber-glow);
+  color: var(--tb-amber-bright);
+}
+
+.tb2e-roll-card .deeper-btn {
+  color: var(--tb-amber-dim);
+  border-color: var(--tb-amber);
+}
+
+.tb2e-roll-card .deeper-btn:hover {
+  background: var(--tb-amber-glow);
+  color: var(--tb-amber-bright);
+}
+
+.tb2e-roll-card .of-course-btn {
+  color: var(--tb-blue-dim);
+  border-color: var(--tb-blue);
+}
+
+.tb2e-roll-card .of-course-btn:hover {
+  background: var(--tb-blue-glow);
+  color: var(--tb-blue-bright);
+}
+
+.tb2e-roll-card .finalize-btn {
+  color: var(--tb-green-bright);
+  border-color: var(--tb-green);
+}
+
+.tb2e-roll-card .finalize-btn:hover {
+  background: var(--tb-green-subtle);
+  color: var(--tb-green-bright);
+}
+
+.tb2e-roll-card .nature-tax-prompt {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.8rem;
+  color: var(--tb-text-body);
+}
+
+.tb2e-roll-card .nature-tax-btn {
+  padding: 0.2rem 0.5rem;
+  font-size: 0.75rem;
+}
+
+.tb2e-roll-card .nature-tax-notice {
+  font-size: 0.75rem;
+  padding: 0.25rem 0.5rem;
+  border-radius: var(--tb-radius);
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+
+.tb2e-roll-card .nature-tax-notice.outside {
+  background: var(--tb-amber-glow);
+  color: var(--tb-amber);
+  border: 1px solid var(--tb-amber);
+}
+
+.tb2e-roll-card .nature-tax-notice.within {
+  background: var(--tb-green-subtle);
+  color: var(--tb-green);
+  border: 1px solid var(--tb-green);
+}
+
+/* Synergy section on chat card */
+.tb2e-roll-card .roll-card-helpers {
+  padding: 0.4rem 0.75rem;
+  border-top: 1px solid var(--tb-border-light);
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+.tb2e-roll-card .roll-card-helpers .section-label {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--tb-text-dim);
+}
+.tb2e-roll-card .synergy-btn {
+  color: var(--tb-amber-dim);
+  border-color: var(--tb-amber);
+}
+.tb2e-roll-card .synergy-btn:hover {
+  background: var(--tb-amber-glow);
+  color: var(--tb-amber-bright);
+}
+
+/* Die results — rerolled and luck markers */
+
+.tb2e-roll-card .die-result.die-rerolled {
+  position: relative;
+}
+
+.tb2e-roll-card .die-result.die-rerolled::after {
+  content: "";
+  position: absolute;
+  bottom: -2px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: var(--tb-amber);
+}
+
+.tb2e-roll-card .die-result.die-luck {
+  border-style: dashed;
+}
+
+.tb2e-roll-card .die-result.die-of-course {
+  border-style: dashed;
+  border-color: var(--tb-amber);
+}

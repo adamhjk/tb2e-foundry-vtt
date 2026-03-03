@@ -1,0 +1,258 @@
+/* -------------------------------------------- */
+/*  Character Header                            */
+/* -------------------------------------------- */
+
+.tb2e.sheet .character-header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.75rem 1rem;
+  background: var(--tb-bg-raised);
+  border-bottom: 2px solid var(--tb-blue-dim);
+  position: relative;
+  flex-shrink: 0;
+}
+
+.tb2e.sheet .character-header::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at 30% 50%, var(--tb-blue-glow) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.tb2e.sheet .portrait {
+  flex: 0 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  z-index: 1;
+}
+
+.tb2e.sheet .portrait img {
+  width: 80px;
+  height: 80px;
+  object-fit: cover;
+  border: 2px solid var(--tb-blue-dim);
+  border-radius: var(--tb-radius);
+  cursor: pointer;
+  display: block;
+  transition: border-color 0.2s;
+}
+
+.tb2e.sheet .portrait img:hover {
+  border-color: var(--tb-blue);
+}
+
+.tb2e.sheet .header-fields {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  position: relative;
+  z-index: 1;
+  min-width: 0;
+}
+
+.tb2e.sheet .header-top-row {
+  display: flex;
+  align-items: baseline;
+  gap: 1rem;
+}
+
+.tb2e.sheet .header-summary {
+  display: flex;
+  align-items: baseline;
+  gap: 1rem;
+  font-size: 0.85rem;
+  color: var(--tb-text-dim);
+}
+
+.tb2e.sheet .summary-line {
+  font-family: var(--tb-font-heading);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.tb2e.sheet .header-goal {
+  font-style: italic;
+  color: var(--tb-text-dim);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 300px;
+}
+
+.tb2e.sheet .header-goal i {
+  color: var(--tb-blue);
+  margin-right: 0.25em;
+}
+
+/* Header Points */
+.tb2e.sheet .header-points {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  flex: 0 0 auto;
+  position: relative;
+  z-index: 1;
+}
+
+.tb2e.sheet .point-boxes {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.tb2e.sheet .point-label {
+  font-family: var(--tb-font-heading);
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--tb-text-dim);
+  min-width: 4.5rem;
+}
+
+.tb2e.sheet .point-label i {
+  color: var(--tb-blue);
+  margin-right: 0.2em;
+}
+
+.tb2e.sheet .point-current-input,
+.tb2e.sheet .point-spent-input {
+  width: 2.5rem;
+  padding: 0 0.2rem;
+  font-size: 0.75rem;
+  text-align: center;
+  border: 1px solid var(--tb-border-light);
+  border-radius: var(--tb-radius-sm, 3px);
+  background: var(--tb-bg-mid);
+  color: var(--tb-text-body);
+}
+
+.tb2e.sheet .point-current-input:focus,
+.tb2e.sheet .point-spent-input:focus {
+  border-color: var(--tb-blue);
+  outline: none;
+}
+
+.tb2e.sheet .point-spent-label {
+  font-size: 0.7rem;
+  color: var(--tb-text-faint);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+/* -------------------------------------------- */
+/*  Torchbearer Logo                            */
+/* -------------------------------------------- */
+
+.tb2e.sheet .torchbearer-logo {
+  height: 1.75rem;
+  width: auto;
+  object-fit: contain;
+  margin: 0;
+  transition: filter 0.3s;
+}
+
+body.theme-dark .tb2e.sheet .torchbearer-logo,
+.themed.theme-dark.tb2e.sheet .torchbearer-logo {
+  filter:
+    brightness(1.25)
+    drop-shadow(0 0 3px rgba(245, 158, 11, 0.5))
+    drop-shadow(0 0 8px rgba(245, 158, 11, 0.25));
+}
+
+/* -------------------------------------------- */
+/*  Character Name Input                        */
+/* -------------------------------------------- */
+
+.tb2e.sheet .character-name {
+  font-family: var(--tb-font-heading);
+  font-size: 1.35rem;
+  color: var(--tb-text-bright);
+  background: transparent;
+  border: 1px solid transparent;
+  border-bottom-color: var(--tb-border);
+  border-radius: 0;
+  padding: 0.15rem 0.25rem;
+  transition: border-color 0.2s, background-color 0.2s;
+}
+
+.tb2e.sheet .character-name:hover {
+  border-bottom-color: var(--tb-border-light);
+}
+
+.tb2e.sheet .character-name:focus {
+  background: var(--tb-frost);
+  border-color: var(--tb-blue);
+  outline: none;
+  box-shadow: 0 0 0 1px var(--tb-blue-glow);
+}
+
+.tb2e.sheet .character-name::placeholder {
+  color: var(--tb-text-faint);
+  font-style: italic;
+}
+
+/* -------------------------------------------- */
+/*  Conditions Strip                            */
+/* -------------------------------------------- */
+
+.tb2e.sheet .conditions-strip {
+  display: flex;
+  gap: 0;
+  background: var(--tb-bg-darkest);
+  border-bottom: 1px solid var(--tb-border);
+  padding: 0;
+  justify-content: stretch;
+  flex-shrink: 0;
+}
+
+.tb2e.sheet .conditions-strip > .condition-btn {
+  all: unset;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  padding: 10px 4px 8px;
+  background: transparent;
+  border-bottom: 3px solid transparent;
+  cursor: pointer;
+  color: var(--tb-text-faint);
+  font-size: 0.7rem;
+  text-align: center;
+  box-sizing: border-box;
+  transition: color 0.2s, border-color 0.2s, background-color 0.2s, box-shadow 0.2s;
+}
+
+.tb2e.sheet .conditions-strip > .condition-btn > i {
+  font-size: 1rem;
+  line-height: 1;
+  transition: color 0.2s;
+}
+
+.tb2e.sheet .conditions-strip > .condition-btn:hover {
+  color: var(--tb-text-dim);
+  background: var(--tb-bg-mid);
+}
+
+.tb2e.sheet .conditions-strip > .condition-btn.active {
+  color: var(--cond-color);
+  border-bottom-color: var(--cond-color);
+  background: color-mix(in srgb, var(--cond-color) 8%, transparent);
+  box-shadow: inset 0 -8px 12px -8px color-mix(in srgb, var(--cond-color) 20%, transparent);
+}
+
+.tb2e.sheet .conditions-strip > .condition-btn.active > i {
+  color: var(--cond-color);
+}
+
+.tb2e.sheet .condition-label {
+  font-family: var(--tb-font-heading);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  line-height: 1;
+}

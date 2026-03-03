@@ -1,0 +1,129 @@
+/*  Traits & Wises Tab                          */
+/* -------------------------------------------- */
+
+.tb2e.sheet .traits-list,
+.tb2e.sheet .wises-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.tb2e.sheet .trait-row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.35rem 0;
+  border-bottom: 1px solid var(--tb-border);
+}
+
+.tb2e.sheet .trait-row:last-child {
+  border-bottom: none;
+}
+
+.tb2e.sheet .trait-name {
+  flex: 1;
+  min-width: 0;
+}
+
+.tb2e.sheet .trait-level {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}
+
+.tb2e.sheet .trait-level label {
+  font-family: var(--tb-font-heading);
+  font-size: 0.75rem;
+  color: var(--tb-text-faint);
+  margin-right: 2px;
+}
+
+.tb2e.sheet .level-pip {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  border: 2px solid var(--tb-border-light);
+  background: transparent;
+  cursor: pointer;
+  font-size: 0.7rem;
+  font-weight: bold;
+  color: var(--tb-text-faint);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  transition: all 0.15s;
+}
+
+.tb2e.sheet .level-pip:hover {
+  border-color: var(--tb-blue);
+  color: var(--tb-blue);
+}
+
+.tb2e.sheet .level-pip.active {
+  background: var(--tb-blue);
+  border-color: var(--tb-blue);
+  color: var(--tb-bg-white);
+}
+
+.tb2e.sheet .trait-counters {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.tb2e.sheet .trait-counter {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+}
+
+.tb2e.sheet .trait-counter label {
+  color: var(--tb-text-faint);
+  font-size: 0.8rem;
+}
+
+.tb2e.sheet .trait-count {
+  width: 2.5rem;
+  text-align: center;
+}
+
+/* Wises */
+.tb2e.sheet .wise-row {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.35rem 0;
+  border-bottom: 1px solid var(--tb-border);
+}
+
+.tb2e.sheet .wise-row:last-child {
+  border-bottom: none;
+}
+
+.tb2e.sheet .wise-name {
+  flex: 1;
+  min-width: 0;
+}
+
+.tb2e.sheet .wise-checks {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.tb2e.sheet .wise-check {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  cursor: pointer;
+}
+
+.tb2e.sheet .wise-check span {
+  font-family: var(--tb-font-heading);
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  color: var(--tb-text-faint);
+}
+
+.tb2e.sheet .wise-check input[type="checkbox"] {
+  accent-color: var(--tb-blue);
+}

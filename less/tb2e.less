@@ -1,0 +1,107 @@
+/* ============================================ */
+/*  Torchbearer 2E — Foundry VTT System Sheet   */
+/*  Nordic frost aesthetic — white & blue        */
+/* ============================================ */
+
+@import (css) url("https://fonts.googleapis.com/css2?family=MedievalSharp&display=swap");
+
+// Variables & themes
+@import "variables/base.less";
+@import "variables/light.less";
+@import "variables/dark.less";
+
+/* -------------------------------------------- */
+/*  Theme Tokens — Light (fallback)             */
+/* -------------------------------------------- */
+
+.tb2e.sheet,
+.tb2e-roll-card,
+.tb2e-advancement-card,
+.tb2e-versus-card,
+.tb2e-conflict-header,
+.tb2e-conflict-body,
+.tb2e-conflict-footer,
+.conflict-window-content,
+.character-conflict-panel {
+  .mixin-theme-light();
+}
+
+/* -------------------------------------------- */
+/*  Theme Tokens — Body-level Application Theme */
+/* -------------------------------------------- */
+
+body.theme-light :is(
+  .tb2e, .tb2e-roll-card, .tb2e-advancement-card,
+  .tb2e-versus-card, .tb2e-conflict-header, .tb2e-conflict-body,
+  .tb2e-conflict-footer, .conflict-window-content,
+  .character-conflict-panel, .tb2e-nature-crisis) {
+  .mixin-theme-light();
+}
+
+body.theme-dark :is(
+  .tb2e, .tb2e-roll-card, .tb2e-advancement-card,
+  .tb2e-versus-card, .tb2e-conflict-header, .tb2e-conflict-body,
+  .tb2e-conflict-footer, .conflict-window-content,
+  .character-conflict-panel, .tb2e-nature-crisis) {
+  .mixin-theme-dark();
+}
+
+/* -------------------------------------------- */
+/*  Theme Tokens — Scoped Interface Theme       */
+/* -------------------------------------------- */
+
+.themed.theme-light.tb2e,
+.themed.theme-light :is(
+  .tb2e-roll-card, .tb2e-advancement-card,
+  .tb2e-versus-card, .tb2e-conflict-header, .tb2e-conflict-body,
+  .tb2e-conflict-footer, .conflict-window-content,
+  .character-conflict-panel, .tb2e-nature-crisis) {
+  .mixin-theme-light();
+}
+
+.themed.theme-dark.tb2e,
+.themed.theme-dark :is(
+  .tb2e-roll-card, .tb2e-advancement-card,
+  .tb2e-versus-card, .tb2e-conflict-header, .tb2e-conflict-body,
+  .tb2e-conflict-footer, .conflict-window-content,
+  .character-conflict-panel, .tb2e-nature-crisis) {
+  .mixin-theme-dark();
+}
+
+// Elements
+@import "elements.less";
+
+// Character sheet
+@import "sheets/shell.less";
+@import "sheets/header.less";
+@import "sheets/reference-bar.less";
+@import "sheets/tabs.less";
+@import "sheets/abilities.less";
+@import "sheets/skills.less";
+@import "sheets/traits-wises.less";
+@import "sheets/inventory.less";
+@import "sheets/magic.less";
+@import "sheets/biography.less";
+@import "sheets/rollable.less";
+
+// Dice dialogs
+@import "dice/roll-dialog.less";
+@import "dice/advancement-dialog.less";
+
+// Chat cards
+@import "chat/roll-card.less";
+@import "chat/advancement-card.less";
+@import "chat/versus-card.less";
+@import "chat/nature-crisis.less";
+
+// Conflict system
+@import "conflict/tracker.less";
+@import "conflict/inline-rolling.less";
+@import "conflict/distribution.less";
+@import "conflict/cards.less";
+@import "conflict/window.less";
+@import "conflict/character-panel.less";
+
+// Alternate actor sheets
+@import "sheets/monster.less";
+@import "sheets/npc.less";

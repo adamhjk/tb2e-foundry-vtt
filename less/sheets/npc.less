@@ -1,0 +1,267 @@
+/* ============================================ */
+/*  NPC Sheet                                   */
+/* ============================================ */
+
+/* NPC Header */
+
+.tb2e.sheet.npc .npc-header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.75rem 1rem;
+  background: var(--tb-bg-raised);
+  border-bottom: 2px solid var(--tb-steel);
+  position: relative;
+  flex-shrink: 0;
+}
+
+.tb2e.sheet.npc .npc-header::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at 30% 50%, rgba(71, 85, 105, 0.08) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.tb2e.sheet.npc .npc-header .portrait img {
+  border-color: var(--tb-steel);
+}
+
+.tb2e.sheet.npc .npc-header .portrait img:hover {
+  border-color: var(--tb-steel-bright);
+}
+
+.tb2e.sheet.npc .npc-header .conflict-disposition {
+  grid-column: 1 / -1;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.35rem 0.5rem;
+  background: rgba(71, 85, 105, 0.06);
+  border-radius: var(--tb-radius);
+  font-size: 0.85rem;
+  flex: 0 0 100%;
+  margin-top: 0.5rem;
+}
+
+.tb2e.sheet.npc .npc-header .conflict-label {
+  white-space: nowrap;
+  color: var(--tb-steel-bright);
+  font-family: var(--tb-font-heading);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-size: 0.8rem;
+}
+
+.tb2e.sheet.npc .npc-header .conflict-label i {
+  color: var(--tb-steel);
+  margin-right: 0.3rem;
+}
+
+.tb2e.sheet.npc .npc-header .conflict-disposition .disposition-bar {
+  flex: 1;
+  height: 8px;
+  background: var(--tb-border);
+  border-radius: 4px;
+}
+
+.tb2e.sheet.npc .npc-header .conflict-disposition .disposition-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--tb-steel), var(--tb-steel-dim));
+  border-radius: 4px;
+  transition: width 0.3s;
+}
+
+/* NPC Body */
+
+.tb2e.sheet.npc .npc-body {
+  padding: 1rem;
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+}
+
+/* NPC Identity Fields */
+
+.tb2e.sheet.npc .npc-identity-fields {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.4rem 1rem;
+}
+
+.tb2e.sheet.npc .npc-identity-fields label {
+  font-family: var(--tb-font-heading);
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--tb-text-dim);
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+
+.tb2e.sheet.npc .npc-identity-goal {
+  grid-column: 1 / -1;
+}
+
+/* NPC Ability Grid — 2-column layout for ability-row */
+
+.tb2e.sheet.npc .npc-ability-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.25rem 1rem;
+}
+
+/* NPC ability-row override: name + rating only (no advancement bubbles) */
+.tb2e.sheet.npc .ability-row {
+  grid-template-columns: 7rem 3.5rem;
+}
+
+/* NPC skill-row override: dropdown + rating + delete */
+.tb2e.sheet.npc .skill-row {
+  grid-template-columns: 1fr 3rem 2rem;
+}
+
+.tb2e.sheet.npc .npc-skills-list {
+  display: flex;
+  flex-direction: column;
+}
+
+/* NPC Tables (traits) */
+
+.tb2e.sheet.npc .npc-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.85rem;
+}
+
+.tb2e.sheet.npc .npc-table th {
+  font-family: var(--tb-font-heading);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  font-size: 0.75rem;
+  color: var(--tb-text-dim);
+  padding: 0.3rem 0.25rem;
+  text-align: left;
+  border-bottom: 1px solid var(--tb-border);
+}
+
+.tb2e.sheet.npc .npc-table td {
+  padding: 0.25rem 0.25rem;
+}
+
+.tb2e.sheet.npc .npc-table input,
+.tb2e.sheet.npc .npc-table select {
+  width: 100%;
+  font-size: 0.85rem;
+  padding: 0.25rem 0.35rem;
+}
+
+.tb2e.sheet.npc .npc-table .col-rating {
+  width: 4rem;
+  text-align: center;
+}
+
+.tb2e.sheet.npc .npc-table .col-rating input {
+  text-align: center;
+  max-width: none;
+}
+
+.tb2e.sheet.npc .npc-table .col-action {
+  width: 2rem;
+  text-align: center;
+}
+
+/* NPC Wises */
+
+.tb2e.sheet.npc .npc-wises-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.tb2e.sheet.npc .npc-wise-row {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.tb2e.sheet.npc .npc-wise-row input {
+  flex: 1;
+  font-size: 0.85rem;
+  padding: 0.25rem 0.35rem;
+}
+
+/* NPC Trait Level Pips */
+
+.tb2e.sheet.npc .trait-level-pips {
+  display: flex;
+  gap: 0.15rem;
+  justify-content: center;
+}
+
+.tb2e.sheet.npc .trait-pip {
+  all: unset;
+  cursor: pointer;
+  width: 1.4rem;
+  height: 1.4rem;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.7rem;
+  font-weight: bold;
+  color: var(--tb-text-faint);
+  border: 1px solid var(--tb-border);
+  transition: all 0.15s;
+}
+
+.tb2e.sheet.npc .trait-pip:hover {
+  border-color: var(--tb-blue);
+  color: var(--tb-blue);
+}
+
+.tb2e.sheet.npc .trait-pip.active {
+  background: var(--tb-blue);
+  border-color: var(--tb-blue);
+  color: var(--tb-bg-white);
+}
+
+/* NPC Buttons (reuse monster patterns) */
+
+.tb2e.sheet.npc .btn-delete {
+  all: unset;
+  cursor: pointer;
+  color: var(--tb-text-faint);
+  font-size: 0.75rem;
+  padding: 0.2rem;
+  border-radius: var(--tb-radius);
+  transition: color 0.2s;
+}
+
+.tb2e.sheet.npc .btn-delete:hover {
+  color: var(--tb-cond-angry);
+}
+
+.tb2e.sheet.npc .btn-add {
+  all: unset;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-family: var(--tb-font-heading);
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--tb-text-dim);
+  padding: 0.35rem 0.6rem;
+  margin-top: 0.5rem;
+  border: 1px dashed var(--tb-border);
+  border-radius: var(--tb-radius);
+  transition: color 0.2s, border-color 0.2s;
+}
+
+.tb2e.sheet.npc .btn-add:hover {
+  color: var(--tb-blue);
+  border-color: var(--tb-blue);
+}

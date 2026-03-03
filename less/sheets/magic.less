@@ -1,0 +1,89 @@
+/*  Magic Tab                                   */
+/* -------------------------------------------- */
+
+.tb2e.sheet .spells-table,
+.tb2e.sheet .relics-table,
+.tb2e.sheet .allies-table,
+.tb2e.sheet .level-req-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.85rem;
+}
+
+.tb2e.sheet .spells-table th,
+.tb2e.sheet .relics-table th,
+.tb2e.sheet .allies-table th,
+.tb2e.sheet .level-req-table th {
+  font-family: var(--tb-font-heading);
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--tb-text-dim);
+  padding: 0.3rem 0.4rem;
+  border-bottom: 2px solid var(--tb-border);
+  text-align: left;
+}
+
+.tb2e.sheet .spells-table td,
+.tb2e.sheet .relics-table td,
+.tb2e.sheet .allies-table td,
+.tb2e.sheet .level-req-table td {
+  padding: 0.25rem 0.4rem;
+  border-bottom: 1px solid var(--tb-border);
+  vertical-align: middle;
+}
+
+.tb2e.sheet .spells-table input[type="text"],
+.tb2e.sheet .relics-table input[type="text"],
+.tb2e.sheet .allies-table input[type="text"] {
+  width: 100%;
+  padding: 0.2rem 0.3rem;
+  font-size: 0.85rem;
+}
+
+.tb2e.sheet .spells-table input[type="checkbox"],
+.tb2e.sheet .relics-table input[type="checkbox"] {
+  accent-color: var(--tb-blue);
+}
+
+.tb2e.sheet .input-sm {
+  max-width: 3.5rem;
+  text-align: center;
+}
+
+/* Add/Delete buttons */
+.tb2e.sheet .btn-add {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  margin-top: 0.5rem;
+  padding: 0.35rem 0.75rem;
+  font-family: var(--tb-font-heading);
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--tb-blue);
+  background: var(--tb-frost);
+  border: 1px solid var(--tb-blue-glow-strong);
+  border-radius: var(--tb-radius);
+  cursor: pointer;
+  transition: background-color 0.15s;
+}
+
+.tb2e.sheet .btn-add:hover {
+  background: var(--tb-frost-bright);
+}
+
+.tb2e.sheet .btn-icon {
+  background: none;
+  border: none;
+  color: var(--tb-text-faint);
+  cursor: pointer;
+  padding: 0.2rem;
+  font-size: 0.8rem;
+  transition: color 0.15s;
+}
+
+.tb2e.sheet .btn-icon:hover {
+  color: var(--tb-cond-angry);
+}

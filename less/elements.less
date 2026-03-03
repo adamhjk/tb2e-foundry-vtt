@@ -1,0 +1,151 @@
+/* -------------------------------------------- */
+/*  Fieldsets                                   */
+/* -------------------------------------------- */
+
+.tb2e.sheet fieldset {
+  background: var(--tb-bg-raised);
+  border: 1px solid var(--tb-border);
+  border-radius: var(--tb-radius-lg);
+  padding: 0.75rem 1rem 1rem;
+  margin: 0 0 1rem;
+}
+
+.tb2e.sheet fieldset legend {
+  font-family: var(--tb-font-heading);
+  font-size: 1.05rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--tb-blue-dim);
+  padding: 0 0.5rem;
+}
+
+.tb2e.sheet fieldset legend i {
+  color: var(--tb-blue);
+  margin-right: 0.3em;
+  font-size: 0.9em;
+}
+
+/* -------------------------------------------- */
+/*  Who You Are — Field Grid                    */
+/* -------------------------------------------- */
+
+.tb2e.sheet .field-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.5rem 1rem;
+}
+
+.tb2e.sheet .field-pair {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.tb2e.sheet .field-pair label {
+  font-family: var(--tb-font-heading);
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--tb-text-dim);
+}
+
+/* -------------------------------------------- */
+/*  Inputs & Textareas                          */
+/* -------------------------------------------- */
+
+.tb2e.sheet input[type="text"],
+.tb2e.sheet input[type="number"] {
+  font-family: var(--tb-font-body);
+  font-size: 0.9rem;
+  color: var(--tb-text-bright);
+  background: var(--tb-bg-surface);
+  border: 1px solid var(--tb-border);
+  border-radius: var(--tb-radius);
+  padding: 0.35rem 0.5rem;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.tb2e.sheet input[type="text"]:hover,
+.tb2e.sheet input[type="number"]:hover {
+  border-color: var(--tb-border-light);
+}
+
+.tb2e.sheet input[type="text"]:focus,
+.tb2e.sheet input[type="number"]:focus {
+  border-color: var(--tb-blue);
+  outline: none;
+  box-shadow: 0 0 0 2px var(--tb-blue-glow);
+}
+
+.tb2e.sheet textarea {
+  font-family: var(--tb-font-body);
+  font-size: 0.9rem;
+  color: var(--tb-text-bright);
+  background: var(--tb-bg-surface);
+  border: 1px solid var(--tb-border);
+  border-radius: var(--tb-radius);
+  padding: 0.4rem 0.5rem;
+  resize: vertical;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  width: 100%;
+}
+
+.tb2e.sheet textarea:hover {
+  border-color: var(--tb-border-light);
+}
+
+.tb2e.sheet textarea:focus {
+  border-color: var(--tb-blue);
+  outline: none;
+  box-shadow: 0 0 0 2px var(--tb-blue-glow);
+}
+
+.tb2e.sheet input[type="number"] {
+  max-width: 5rem;
+}
+
+.tb2e.sheet select {
+  font-family: var(--tb-font-body);
+  font-size: 0.9rem;
+  color: var(--tb-text-bright);
+  background: var(--tb-bg-surface);
+  border: 1px solid var(--tb-border);
+  border-radius: var(--tb-radius);
+  padding: 0.35rem 0.5rem;
+}
+
+.tb2e.sheet select:focus {
+  border-color: var(--tb-blue);
+  outline: none;
+  box-shadow: 0 0 0 2px var(--tb-blue-glow);
+}
+
+/* -------------------------------------------- */
+/*  What You Fight For — Conviction Fields      */
+/* -------------------------------------------- */
+
+.tb2e.sheet .conviction-field {
+  margin-bottom: 0.75rem;
+}
+
+.tb2e.sheet .conviction-field:last-child {
+  margin-bottom: 0;
+}
+
+.tb2e.sheet .conviction-field label {
+  font-family: var(--tb-font-heading);
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--tb-text-body);
+  display: block;
+  margin-bottom: 0.2rem;
+}
+
+.tb2e.sheet .conviction-field .hint {
+  font-size: 0.8rem;
+  font-style: italic;
+  color: var(--tb-text-faint);
+  margin: 0.25rem 0 0;
+  line-height: 1.3;
+}

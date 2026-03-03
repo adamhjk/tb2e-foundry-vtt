@@ -1,0 +1,55 @@
+/*  Skills Tab                                  */
+/* -------------------------------------------- */
+
+.tb2e.sheet .skills-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0 1.5rem;
+}
+
+.tb2e.sheet .skill-row {
+  display: grid;
+  /* name | BL badge | rating input | bubbles */
+  grid-template-columns: 1fr 1.5rem 3rem 9rem;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.3rem 0.25rem;
+  border-bottom: 1px solid var(--tb-border);
+  border-radius: var(--tb-radius);
+}
+
+.tb2e.sheet .skill-row:hover {
+  background: var(--tb-frost);
+}
+
+.tb2e.sheet .skill-row.has-rating .skill-name {
+  color: var(--tb-text-bright);
+  font-weight: bold;
+}
+
+.tb2e.sheet .skill-name {
+  font-family: var(--tb-font-heading);
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--tb-text-dim);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.tb2e.sheet .skill-bl {
+  font-size: 0.7rem;
+  font-weight: bold;
+  color: var(--tb-text-faint);
+  padding: 1px 4px;
+  border: 1px solid var(--tb-border);
+  border-radius: 2px;
+  line-height: 1;
+}
+
+.tb2e.sheet .skill-rating {
+  width: 3rem;
+  text-align: center;
+  font-weight: bold;
+}

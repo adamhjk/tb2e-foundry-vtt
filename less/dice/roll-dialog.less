@@ -1,0 +1,768 @@
+/* -------------------------------------------- */
+/*  Roll Dialog                                 */
+/* -------------------------------------------- */
+
+.tb2e.roll-dialog .tb2e-roll-dialog-form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  padding: 0.5rem 0;
+}
+
+.tb2e.roll-dialog .roll-dialog-header {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.tb2e.roll-dialog .roll-dialog-badge {
+  font-size: 0.7rem;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--tb-frost-deep);
+  background: var(--tb-blue-glow-strong);
+  padding: 2px 8px;
+  border-radius: 3px;
+}
+
+.tb2e.roll-dialog .roll-dialog-title {
+  font-family: var(--tb-font-heading);
+  font-size: 1.2rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--tb-text-body);
+  margin: 0;
+}
+
+.tb2e.roll-dialog .roll-dialog-fields {
+  display: flex;
+  gap: 1rem;
+}
+
+.tb2e.roll-dialog .roll-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  flex: 1;
+}
+
+.tb2e.roll-dialog .roll-field label {
+  font-family: var(--tb-font-heading);
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--tb-text-faint);
+}
+
+.tb2e.roll-dialog .roll-field input {
+  text-align: center;
+  font-size: 1.1rem;
+  font-weight: bold;
+  padding: 0.4rem 0.5rem;
+}
+
+.tb2e.roll-dialog .roll-dialog-modifiers {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.tb2e.roll-dialog .roll-modifier {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.25rem 0.5rem;
+  border-radius: 3px;
+  background: var(--tb-overlay-white);
+}
+
+.tb2e.roll-dialog .roll-modifier i {
+  color: var(--mod-color);
+  font-size: 0.85rem;
+  width: 1.2em;
+  text-align: center;
+}
+
+.tb2e.roll-dialog .roll-modifier .mod-label {
+  flex: 1;
+  color: var(--tb-text-faint);
+  font-size: 0.85rem;
+}
+
+.tb2e.roll-dialog .roll-modifier .mod-value {
+  color: var(--mod-color);
+  font-weight: bold;
+  font-size: 0.85rem;
+}
+
+.tb2e.roll-dialog .roll-dialog-helpers {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.tb2e.roll-dialog .helpers-heading {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-family: var(--tb-font-heading);
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--tb-text-faint);
+}
+
+.tb2e.roll-dialog .helpers-heading i {
+  color: var(--tb-green);
+  font-size: 0.75rem;
+}
+
+.tb2e.roll-dialog .helpers-list {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.3rem;
+}
+
+/* NPC helpers — collapsible section */
+
+.tb2e.roll-dialog .helpers-npc-group {
+  margin-top: 0.25rem;
+}
+
+.tb2e.roll-dialog .helpers-npc-heading {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-family: var(--tb-font-heading);
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--tb-text-faint);
+  cursor: pointer;
+  list-style: none;
+  padding: 0.15rem 0;
+}
+
+.tb2e.roll-dialog .helpers-npc-heading::-webkit-details-marker {
+  display: none;
+}
+
+.tb2e.roll-dialog .helpers-npc-heading i {
+  color: var(--tb-text-dim);
+  font-size: 0.7rem;
+}
+
+.tb2e.roll-dialog .helpers-npc-heading::before {
+  content: "\f0da"; /* fa-caret-right */
+  font-family: "Font Awesome 6 Free";
+  font-weight: 900;
+  font-size: 0.65rem;
+  color: var(--tb-text-dim);
+  transition: transform 0.15s;
+}
+
+.tb2e.roll-dialog .helpers-npc-group[open] > .helpers-npc-heading::before {
+  transform: rotate(90deg);
+}
+
+.tb2e.roll-dialog .helpers-npc-count {
+  font-size: 0.7rem;
+  color: var(--tb-text-dim);
+}
+
+.tb2e.roll-dialog .helpers-npc-group .helpers-list {
+  margin-top: 0.25rem;
+}
+
+.tb2e.roll-dialog .helper-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0.2rem 0.5rem;
+  border: 1px solid var(--tb-overlay-border);
+  border-radius: 4px;
+  background: var(--tb-overlay-white);
+  color: var(--tb-text-faint);
+  font-size: 0.8rem;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.tb2e.roll-dialog .helper-toggle:hover {
+  border-color: var(--tb-green);
+  color: var(--tb-green-text);
+}
+
+.tb2e.roll-dialog .helper-toggle.active {
+  border-color: var(--tb-green);
+  background: var(--tb-green-subtle);
+  color: var(--tb-green-text);
+}
+
+.tb2e.roll-dialog .helper-toggle .helper-dice {
+  font-weight: 700;
+  color: var(--tb-green);
+  opacity: 0.4;
+  transition: opacity 0.15s;
+}
+
+.tb2e.roll-dialog .helper-toggle.active .helper-dice {
+  opacity: 1;
+}
+
+.tb2e.roll-dialog .helper-toggle .helper-via {
+  font-size: 0.7rem;
+  color: var(--tb-text-faint);
+  font-style: italic;
+}
+
+.tb2e.roll-dialog .helper-toggle .helper-warning {
+  color: var(--tb-amber);
+  font-size: 0.7rem;
+}
+
+.tb2e.roll-dialog .helper-row {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+.tb2e.roll-dialog .helper-row .helper-toggle {
+  flex: 1;
+}
+.tb2e.roll-dialog .helper-synergy-btn {
+  all: unset;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.6rem;
+  height: 1.6rem;
+  border: 1px solid var(--tb-overlay-border);
+  border-radius: 4px;
+  background: var(--tb-overlay-white);
+  color: var(--tb-text-faint);
+  font-size: 0.7rem;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.tb2e.roll-dialog .helper-synergy-btn:hover {
+  border-color: var(--tb-amber);
+  color: var(--tb-amber);
+}
+.tb2e.roll-dialog .helper-row.synergy-active .helper-synergy-btn {
+  border-color: var(--tb-amber);
+  background: var(--tb-amber-glow);
+  color: var(--tb-amber);
+}
+
+.tb2e.roll-dialog .roll-dialog-options {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.tb2e.roll-dialog .roll-option {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.85rem;
+  color: var(--tb-text-faint);
+  cursor: pointer;
+}
+
+.tb2e.roll-dialog .roll-option input[type="checkbox"] {
+  accent-color: var(--tb-blue-bright);
+}
+
+.tb2e.roll-dialog .roll-dialog-summary {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  justify-content: center;
+  color: var(--tb-text-faint);
+  font-size: 0.85rem;
+  padding-top: 0.25rem;
+  border-top: 1px solid var(--tb-overlay-border-dim);
+}
+
+.tb2e.roll-dialog .roll-dialog-summary i {
+  color: var(--tb-blue-bright);
+}
+
+/* -------------------------------------------- */
+/*  Roll Dialog — BL Badge                      */
+/* -------------------------------------------- */
+
+.tb2e.roll-dialog .bl-badge {
+  background: var(--tb-amber-glow);
+  color: var(--tb-amber-dim);
+  cursor: default;
+}
+
+.tb2e.roll-dialog .bl-badge i {
+  font-size: 0.6rem;
+}
+
+/* -------------------------------------------- */
+/*  Roll Dialog — Trait Selector                */
+/* -------------------------------------------- */
+
+/* Roll Dialog — Nature Descriptors Section */
+.tb2e.roll-dialog .roll-dialog-nature {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.tb2e.roll-dialog .nature-descriptor-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem;
+  padding-left: 0.3rem;
+}
+
+.tb2e.roll-dialog .nature-ref-chip {
+  display: inline-block;
+  background: var(--tb-bg-raised);
+  border: 1px solid var(--tb-border-light);
+  border-radius: 999px;
+  padding: 0.1rem 0.45rem;
+  font-size: 0.7rem;
+  color: var(--tb-text-body);
+}
+
+.tb2e.roll-dialog .nature-ref-chip.small {
+  font-size: 0.65rem;
+  padding: 0.05rem 0.35rem;
+  opacity: 0.85;
+}
+
+.tb2e.roll-dialog .nature-within-toggle {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.85rem;
+  cursor: pointer;
+  padding-left: 0.3rem;
+}
+
+.tb2e.roll-dialog .nature-within-toggle input[type="checkbox"] {
+  accent-color: var(--tb-green);
+}
+
+.tb2e.roll-dialog .nature-within-label {
+  font-weight: bold;
+  transition: color 0.15s;
+}
+
+.tb2e.roll-dialog .nature-within-label.outside {
+  color: var(--tb-amber);
+}
+
+.tb2e.roll-dialog .nature-within-label.within {
+  color: var(--tb-green);
+}
+
+/* -------------------------------------------- */
+
+.tb2e.roll-dialog .roll-dialog-traits {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.tb2e.roll-dialog .section-heading {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-family: var(--tb-font-heading);
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--tb-text-faint);
+}
+
+.tb2e.roll-dialog .section-heading i {
+  font-size: 0.75rem;
+}
+
+.tb2e.roll-dialog .traits-list {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.tb2e.roll-dialog .trait-row {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.2rem 0.4rem;
+  border-radius: 3px;
+  background: var(--tb-overlay-white);
+}
+
+.tb2e.roll-dialog .trait-name {
+  flex: 1;
+  font-size: 0.85rem;
+  color: var(--tb-text-body);
+}
+
+.tb2e.roll-dialog .trait-level {
+  font-size: 0.7rem;
+  font-weight: bold;
+  color: var(--tb-text-dim);
+  text-transform: uppercase;
+}
+
+.tb2e.roll-dialog .trait-mode {
+  display: flex;
+  gap: 2px;
+}
+
+.tb2e.roll-dialog .trait-btn {
+  all: unset;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 2rem;
+  padding: 0.15rem 0.35rem;
+  border: 1px solid var(--tb-overlay-border);
+  border-radius: 3px;
+  font-size: 0.7rem;
+  font-weight: bold;
+  color: var(--tb-text-faint);
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.tb2e.roll-dialog .trait-btn:hover:not(:disabled) {
+  border-color: var(--tb-blue);
+  color: var(--tb-blue);
+}
+
+.tb2e.roll-dialog .trait-btn.active {
+  border-color: var(--tb-green);
+  background: var(--tb-green-subtle);
+  color: var(--tb-green-bright);
+}
+
+.tb2e.roll-dialog .trait-btn[data-mode="against"].active {
+  border-color: var(--tb-red);
+  background: rgba(220, 38, 38, 0.1);
+  color: var(--tb-red);
+}
+
+.tb2e.roll-dialog .trait-btn:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+.tb2e.roll-dialog .trait-uses {
+  font-size: 0.7rem;
+  color: var(--tb-text-dim);
+  min-width: 1.5rem;
+  text-align: center;
+}
+
+/* -------------------------------------------- */
+/*  Roll Dialog — Persona Controls              */
+/* -------------------------------------------- */
+
+.tb2e.roll-dialog .roll-dialog-persona {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.tb2e.roll-dialog .persona-controls {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.tb2e.roll-dialog .persona-advantage {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.tb2e.roll-dialog .persona-advantage-label {
+  font-size: 0.85rem;
+  color: var(--tb-text-body);
+}
+
+.tb2e.roll-dialog .stepper {
+  display: inline-flex;
+  align-items: center;
+  gap: 0;
+  border: 1px solid var(--tb-overlay-border);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.tb2e.roll-dialog .stepper-btn {
+  all: unset;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.5rem;
+  height: 1.5rem;
+  font-size: 0.85rem;
+  font-weight: bold;
+  color: var(--tb-text-dim);
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.tb2e.roll-dialog .stepper-btn:hover {
+  background: var(--tb-blue-glow);
+  color: var(--tb-blue);
+}
+
+.tb2e.roll-dialog .stepper-value {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 1.5rem;
+  height: 1.5rem;
+  font-size: 0.85rem;
+  font-weight: bold;
+  color: var(--tb-amber);
+  background: var(--tb-overlay-white);
+}
+
+.tb2e.roll-dialog .persona-hint {
+  font-size: 0.75rem;
+  color: var(--tb-text-faint);
+  font-style: italic;
+}
+
+.tb2e.roll-dialog .persona-channel {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.85rem;
+  color: var(--tb-text-body);
+  cursor: pointer;
+}
+
+.tb2e.roll-dialog .persona-channel input[type="checkbox"] {
+  accent-color: var(--tb-blue-bright);
+}
+
+.tb2e.roll-dialog .channel-nature-descriptors {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.2rem;
+  margin-left: 1.5rem;
+  margin-top: 0.15rem;
+}
+
+.tb2e.roll-dialog .persona-total {
+  font-size: 0.8rem;
+  color: var(--tb-text-dim);
+}
+
+.tb2e.roll-dialog .persona-total-value {
+  color: var(--tb-amber);
+}
+
+/* -------------------------------------------- */
+/*  Roll Dialog — Wise Selector                 */
+/* -------------------------------------------- */
+
+.tb2e.roll-dialog .roll-dialog-wises {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.tb2e.roll-dialog .roll-dialog-wises select {
+  font-size: 0.9rem;
+  padding: 0.3rem 0.5rem;
+}
+
+/* -------------------------------------------- */
+/*  Roll Dialog — Manual Modifier Input         */
+/* -------------------------------------------- */
+
+.tb2e.roll-dialog .roll-dialog-manual {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.tb2e.roll-dialog .add-modifier-btn {
+  all: unset;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-size: 0.8rem;
+  color: var(--tb-text-faint);
+  cursor: pointer;
+  padding: 0.2rem 0;
+  transition: color 0.15s;
+}
+
+.tb2e.roll-dialog .add-modifier-btn:hover {
+  color: var(--tb-blue);
+}
+
+.tb2e.roll-dialog .add-modifier-btn i {
+  font-size: 0.7rem;
+}
+
+.tb2e.roll-dialog .manual-modifier-input {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0.25rem 0;
+}
+
+.tb2e.roll-dialog .manual-modifier-input .manual-label {
+  flex: 1;
+  font-size: 0.85rem;
+  padding: 0.2rem 0.4rem;
+  min-width: 0;
+}
+
+.tb2e.roll-dialog .manual-modifier-input .manual-type {
+  width: 3rem;
+  font-size: 0.8rem;
+  padding: 0.2rem;
+}
+
+.tb2e.roll-dialog .manual-modifier-input .manual-value {
+  width: 3rem;
+  font-size: 0.85rem;
+  text-align: center;
+  padding: 0.2rem;
+}
+
+.tb2e.roll-dialog .manual-modifier-input button {
+  all: unset;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.3rem;
+  height: 1.3rem;
+  border-radius: 3px;
+  cursor: pointer;
+  font-size: 0.7rem;
+  transition: all 0.15s;
+}
+
+.tb2e.roll-dialog .manual-confirm {
+  color: var(--tb-green);
+}
+
+.tb2e.roll-dialog .manual-confirm:hover {
+  background: var(--tb-green-subtle);
+}
+
+.tb2e.roll-dialog .manual-cancel {
+  color: var(--tb-text-faint);
+}
+
+.tb2e.roll-dialog .manual-cancel:hover {
+  color: var(--tb-red);
+}
+
+/* -------------------------------------------- */
+/*  Roll Dialog — Modifier Remove Button        */
+/* -------------------------------------------- */
+
+.tb2e.roll-dialog .mod-remove {
+  all: unset;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1rem;
+  height: 1rem;
+  border-radius: 2px;
+  cursor: pointer;
+  font-size: 0.6rem;
+  color: var(--tb-text-faint);
+  transition: all 0.15s;
+}
+
+.tb2e.roll-dialog .mod-remove:hover {
+  color: var(--tb-red);
+  background: rgba(220, 38, 38, 0.1);
+}
+
+/* -------------------------------------------- */
+/*  Roll Dialog — Afraid Helpers Disabled       */
+/* -------------------------------------------- */
+
+.tb2e.roll-dialog .helpers-disabled {
+  font-size: 0.7rem;
+  color: var(--tb-cond-afraid);
+  font-style: italic;
+}
+
+/* -------------------------------------------- */
+/*  Utility                                     */
+/* -------------------------------------------- */
+
+.hidden {
+  display: none !important;
+}
+
+/* -------------------------------------------- */
+/*  Roll Dialog — Mode Toggle                   */
+/* -------------------------------------------- */
+
+.tb2e.roll-dialog .roll-dialog-mode-toggle {
+  all: unset;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.7rem;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--tb-frost-deep);
+  background: var(--tb-blue-glow-strong);
+  padding: 2px 8px;
+  border-radius: 3px;
+  cursor: pointer;
+  transition: background-color 0.15s, color 0.15s;
+}
+
+.tb2e.roll-dialog .roll-dialog-mode-toggle:hover:not(.locked) {
+  background: rgba(37, 99, 235, 0.4);
+  color: var(--tb-frost-bright);
+}
+
+.tb2e.roll-dialog .roll-dialog-mode-toggle.locked {
+  cursor: default;
+}
+
+.tb2e.roll-dialog .roll-dialog-mode-toggle .mode-caret {
+  font-size: 0.6rem;
+  opacity: 0.7;
+}
+
+/* -------------------------------------------- */
+/*  Roll Dialog — Challenge Selector            */
+/* -------------------------------------------- */
+
+.tb2e.roll-dialog .roll-dialog-challenge {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.tb2e.roll-dialog .roll-dialog-challenge label {
+  font-family: var(--tb-font-heading);
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--tb-text-faint);
+}
+
+.tb2e.roll-dialog .roll-dialog-challenge select {
+  font-size: 0.9rem;
+  padding: 0.4rem 0.5rem;
+}

@@ -1,0 +1,157 @@
+/* ============================================ */
+/*  Inline Rolling Phase                        */
+/* ============================================ */
+
+.skill-picker {
+  display: flex;
+  gap: 0.3rem;
+  padding: 0.4rem 0.6rem;
+  border-top: 1px solid var(--tb-bg-mid);
+}
+
+.skill-option {
+  flex: 1;
+  padding: 0.3rem 0.5rem;
+  border: 1px solid var(--tb-border-light);
+  border-radius: 4px;
+  background: var(--tb-bg-white);
+  color: var(--tb-steel-bright);
+  font-size: 0.75rem;
+  cursor: pointer;
+  transition: background 0.15s, border-color 0.15s;
+}
+
+.skill-option:hover {
+  background: var(--tb-frost);
+  border-color: var(--tb-blue);
+}
+
+.roll-controls {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.4rem 0.6rem;
+  border-top: 1px solid var(--tb-bg-mid);
+}
+
+/* Captain badge — small gold pill */
+.captain-badge {
+  display: inline-block;
+  padding: 0.05rem 0.35rem;
+  border-radius: 8px;
+  background: var(--tb-amber-glow);
+  color: var(--tb-amber-dim);
+  font-size: 0.6rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  line-height: 1.3;
+  vertical-align: middle;
+  margin-right: 0.2rem;
+}
+
+/* Help toggle — compact button */
+.help-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.2rem;
+  margin-left: auto;
+  padding: 0.15rem 0.4rem;
+  border: 1px solid var(--tb-neutral-border);
+  border-radius: 4px;
+  background: var(--tb-neutral-bg);
+  color: var(--tb-neutral-text);
+  font-size: 0.65rem;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.help-toggle:hover:not(:disabled) {
+  border-color: var(--tb-green);
+  color: var(--tb-green-bright);
+}
+
+.help-toggle.active {
+  border-color: var(--tb-green);
+  background: var(--tb-green-subtle);
+  color: var(--tb-green-bright);
+}
+
+.help-toggle:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.help-toggle .help-label {
+  font-weight: 600;
+}
+
+.roll-button {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0.3rem 0.7rem;
+  border: none;
+  border-radius: 4px;
+  background: linear-gradient(135deg, var(--tb-blue), var(--tb-blue-dim));
+  color: var(--tb-bg-white);
+  font-size: 0.75rem;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.roll-button:hover {
+  background: linear-gradient(135deg, var(--tb-blue-bright), var(--tb-blue));
+}
+
+.dice-results {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.4rem 0.6rem;
+  border-top: 1px solid var(--tb-bg-mid);
+}
+
+.die-face {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  border-radius: 3px;
+  font-size: 0.75rem;
+  font-weight: bold;
+}
+
+.die-face.success {
+  background: var(--tb-frost);
+  color: var(--tb-blue-dim);
+  border: 1px solid var(--tb-frost-deep);
+}
+
+.die-face.fail {
+  background: var(--tb-bg-surface);
+  color: var(--tb-text-faint);
+  border: 1px solid var(--tb-border);
+}
+
+.dice-total {
+  font-size: 0.8rem;
+  font-weight: bold;
+  color: var(--tb-blue);
+  margin-left: 0.25rem;
+}
+
+.waiting-indicator {
+  padding: 0.4rem 0.6rem;
+  border-top: 1px solid var(--tb-bg-mid);
+  font-size: 0.75rem;
+  color: var(--tb-text-faint);
+  font-style: italic;
+  text-align: center;
+}
+
+.group-combatants.compact .combatant {
+  padding: 0.2rem 0.6rem;
+}

@@ -2,23 +2,18 @@
 /*  Torchbearer 2E — Foundry VTT System Sheet   */
 /*  Nordic frost aesthetic — white & blue        */
 /* ============================================ */
-
 @import url("https://fonts.googleapis.com/css2?family=MedievalSharp&display=swap");
-
 /* -------------------------------------------- */
 /*  Design Tokens — Theme-Invariant             */
 /* -------------------------------------------- */
-
 :root {
   /* Fonts */
   --tb-font-logo: "MedievalSharp", "Modesto Condensed", serif;
   --tb-font-heading: "Modesto Condensed", "Signika", serif;
   --tb-font-body: "Signika", sans-serif;
-
   /* Radius */
   --tb-radius: 4px;
   --tb-radius-lg: 6px;
-
   /* Condition colors */
   --tb-cond-fresh: #22c55e;
   --tb-cond-hungry: #ca8a04;
@@ -28,11 +23,9 @@
   --tb-cond-injured: #991b1b;
   --tb-cond-sick: #6b7280;
   --tb-cond-dead: #111827;
-
   /* Advancement bubbles */
   --tb-pass-color: #2563eb;
   --tb-fail-color: #ea580c;
-
   /* Conflict action accent colors */
   --tb-attack-hue: #be123c;
   --tb-attack-light: #fecdd3;
@@ -46,7 +39,6 @@
   --tb-maneuver-hue: #15803d;
   --tb-maneuver-light: #bbf7d0;
   --tb-maneuver-bg: #f0fdf4;
-
   /* Interaction badges */
   --tb-interaction-independent: #ca8a04;
   --tb-interaction-independent-bg: #fefce8;
@@ -55,11 +47,15 @@
   --tb-interaction-none: #6b7280;
   --tb-interaction-none-bg: #f3f4f6;
 }
-
+/* -------------------------------------------- */
+/*  Theme Tokens — Light                        */
+/* -------------------------------------------- */
+/* -------------------------------------------- */
+/*  Theme Tokens — Dark                         */
+/* -------------------------------------------- */
 /* -------------------------------------------- */
 /*  Theme Tokens — Light (fallback)             */
 /* -------------------------------------------- */
-
 .tb2e.sheet,
 .tb2e-roll-card,
 .tb2e-advancement-card,
@@ -76,40 +72,33 @@
   --tb-bg-surface: #f0f2f6;
   --tb-bg-raised: #f5f7fa;
   --tb-bg-white: #ffffff;
-
   /* Text — slate tones */
   --tb-text-bright: #0f172a;
   --tb-text-body: #1e293b;
   --tb-text-dim: #64748b;
   --tb-text-faint: #94a3b8;
-
   /* Accent — fjord blue */
   --tb-blue: #2563eb;
   --tb-blue-bright: #3b82f6;
   --tb-blue-dim: #1d4ed8;
   --tb-blue-glow: rgba(37, 99, 235, 0.12);
   --tb-blue-glow-strong: rgba(37, 99, 235, 0.25);
-
   /* Steel — for headings, accents */
   --tb-steel: #475569;
   --tb-steel-bright: #334155;
   --tb-steel-dim: #64748b;
-
   /* Frost — for subtle highlights */
   --tb-frost: #dbeafe;
   --tb-frost-bright: #bfdbfe;
   --tb-frost-deep: #93c5fd;
-
   /* Borders */
   --tb-border: #e2e8f0;
   --tb-border-light: #cbd5e1;
-
   /* Green — helper/success */
   --tb-green: #22c55e;
   --tb-green-bright: #16a34a;
   --tb-green-subtle: #dcfce7;
   --tb-green-text: #86efac;
-
   /* Amber — advancement/captain */
   --tb-amber: #f59e0b;
   --tb-amber-bright: #d97706;
@@ -117,136 +106,141 @@
   --tb-amber-glow: #fef3c7;
   --tb-amber-glow-bright: #fde68a;
   --tb-amber-bg: #fffbeb;
-
   /* Red — danger/error */
   --tb-red: #dc2626;
   --tb-red-dim: #b91c1c;
   --tb-red-bright: #ef4444;
-
   /* Banner — pass */
   --tb-banner-pass-from: #dbeafe;
   --tb-banner-pass-to: #bfdbfe;
   --tb-banner-pass-text: #1d4ed8;
   --tb-banner-pass-border: #2563eb;
-
   /* Banner — fail */
   --tb-banner-fail-from: #fef3c7;
   --tb-banner-fail-to: #fde68a;
   --tb-banner-fail-text: #92400e;
   --tb-banner-fail-border: #d97706;
-
   /* Banner — disposition/resolved */
   --tb-banner-disposition-from: #d1fae5;
   --tb-banner-disposition-to: #a7f3d0;
   --tb-banner-disposition-text: #065f46;
   --tb-banner-disposition-border: #10b981;
-
   /* Banner — pending */
   --tb-banner-pending-from: #f5f5f4;
   --tb-banner-pending-to: #e7e5e4;
   --tb-banner-pending-text: #78716c;
   --tb-banner-pending-border: #a8a29e;
-
   /* Banner — resolved */
   --tb-banner-resolved-from: #ecfdf5;
   --tb-banner-resolved-to: #d1fae5;
   --tb-banner-resolved-text: #065f46;
   --tb-banner-resolved-border: #6ee7b7;
-
   /* Misc neutral (help toggle, etc.) */
   --tb-neutral-border: #d1d5db;
   --tb-neutral-bg: #f3f4f6;
   --tb-neutral-text: #6b7280;
-
   /* Overlay tints */
   --tb-overlay-white: rgba(255, 255, 255, 0.05);
   --tb-overlay-white-mid: rgba(255, 255, 255, 0.3);
   --tb-overlay-border: rgba(148, 163, 184, 0.3);
   --tb-overlay-border-dim: rgba(148, 163, 184, 0.2);
-
   /* Card back */
   --tb-card-back-from: #4a7cc9;
   --tb-card-back-to: #2d5fa6;
   --tb-card-back-border: #93c5fd;
 }
-
 /* -------------------------------------------- */
 /*  Theme Tokens — Body-level Application Theme */
 /* -------------------------------------------- */
-
 body.theme-light :is(
   .tb2e, .tb2e-roll-card, .tb2e-advancement-card,
   .tb2e-versus-card, .tb2e-conflict-header, .tb2e-conflict-body,
   .tb2e-conflict-footer, .conflict-window-content,
   .character-conflict-panel, .tb2e-nature-crisis) {
+  /* Surfaces — snow and ice */
   --tb-bg-darkest: #dfe4eb;
   --tb-bg-dark: #e6eaf0;
   --tb-bg-mid: #ebeef3;
   --tb-bg-surface: #f0f2f6;
   --tb-bg-raised: #f5f7fa;
   --tb-bg-white: #ffffff;
+  /* Text — slate tones */
   --tb-text-bright: #0f172a;
   --tb-text-body: #1e293b;
   --tb-text-dim: #64748b;
   --tb-text-faint: #94a3b8;
+  /* Accent — fjord blue */
   --tb-blue: #2563eb;
   --tb-blue-bright: #3b82f6;
   --tb-blue-dim: #1d4ed8;
   --tb-blue-glow: rgba(37, 99, 235, 0.12);
   --tb-blue-glow-strong: rgba(37, 99, 235, 0.25);
+  /* Steel — for headings, accents */
   --tb-steel: #475569;
   --tb-steel-bright: #334155;
   --tb-steel-dim: #64748b;
+  /* Frost — for subtle highlights */
   --tb-frost: #dbeafe;
   --tb-frost-bright: #bfdbfe;
   --tb-frost-deep: #93c5fd;
+  /* Borders */
   --tb-border: #e2e8f0;
   --tb-border-light: #cbd5e1;
+  /* Green — helper/success */
   --tb-green: #22c55e;
   --tb-green-bright: #16a34a;
   --tb-green-subtle: #dcfce7;
   --tb-green-text: #86efac;
+  /* Amber — advancement/captain */
   --tb-amber: #f59e0b;
   --tb-amber-bright: #d97706;
   --tb-amber-dim: #92400e;
   --tb-amber-glow: #fef3c7;
   --tb-amber-glow-bright: #fde68a;
   --tb-amber-bg: #fffbeb;
+  /* Red — danger/error */
   --tb-red: #dc2626;
   --tb-red-dim: #b91c1c;
   --tb-red-bright: #ef4444;
+  /* Banner — pass */
   --tb-banner-pass-from: #dbeafe;
   --tb-banner-pass-to: #bfdbfe;
   --tb-banner-pass-text: #1d4ed8;
   --tb-banner-pass-border: #2563eb;
+  /* Banner — fail */
   --tb-banner-fail-from: #fef3c7;
   --tb-banner-fail-to: #fde68a;
   --tb-banner-fail-text: #92400e;
   --tb-banner-fail-border: #d97706;
+  /* Banner — disposition/resolved */
   --tb-banner-disposition-from: #d1fae5;
   --tb-banner-disposition-to: #a7f3d0;
   --tb-banner-disposition-text: #065f46;
   --tb-banner-disposition-border: #10b981;
+  /* Banner — pending */
   --tb-banner-pending-from: #f5f5f4;
   --tb-banner-pending-to: #e7e5e4;
   --tb-banner-pending-text: #78716c;
   --tb-banner-pending-border: #a8a29e;
+  /* Banner — resolved */
   --tb-banner-resolved-from: #ecfdf5;
   --tb-banner-resolved-to: #d1fae5;
   --tb-banner-resolved-text: #065f46;
   --tb-banner-resolved-border: #6ee7b7;
+  /* Misc neutral (help toggle, etc.) */
   --tb-neutral-border: #d1d5db;
   --tb-neutral-bg: #f3f4f6;
   --tb-neutral-text: #6b7280;
+  /* Overlay tints */
   --tb-overlay-white: rgba(255, 255, 255, 0.05);
   --tb-overlay-white-mid: rgba(255, 255, 255, 0.3);
   --tb-overlay-border: rgba(148, 163, 184, 0.3);
   --tb-overlay-border-dim: rgba(148, 163, 184, 0.2);
+  /* Card back */
   --tb-card-back-from: #4a7cc9;
   --tb-card-back-to: #2d5fa6;
   --tb-card-back-border: #93c5fd;
 }
-
 body.theme-dark :is(
   .tb2e, .tb2e-roll-card, .tb2e-advancement-card,
   .tb2e-versus-card, .tb2e-conflict-header, .tb2e-conflict-body,
@@ -266,7 +260,7 @@ body.theme-dark :is(
   --tb-blue-bright: #93c5fd;
   --tb-blue-dim: #60a5fa;
   --tb-blue-glow: rgba(96, 165, 250, 0.18);
-  --tb-blue-glow-strong: rgba(96, 165, 250, 0.30);
+  --tb-blue-glow-strong: rgba(96, 165, 250, 0.3);
   --tb-steel: #94a3b8;
   --tb-steel-bright: #cbd5e1;
   --tb-steel-dim: #94a3b8;
@@ -319,85 +313,99 @@ body.theme-dark :is(
   --tb-card-back-to: #172554;
   --tb-card-back-border: #60a5fa;
 }
-
 /* -------------------------------------------- */
 /*  Theme Tokens — Scoped Interface Theme       */
 /* -------------------------------------------- */
-
 .themed.theme-light.tb2e,
 .themed.theme-light :is(
   .tb2e-roll-card, .tb2e-advancement-card,
   .tb2e-versus-card, .tb2e-conflict-header, .tb2e-conflict-body,
   .tb2e-conflict-footer, .conflict-window-content,
   .character-conflict-panel, .tb2e-nature-crisis) {
+  /* Surfaces — snow and ice */
   --tb-bg-darkest: #dfe4eb;
   --tb-bg-dark: #e6eaf0;
   --tb-bg-mid: #ebeef3;
   --tb-bg-surface: #f0f2f6;
   --tb-bg-raised: #f5f7fa;
   --tb-bg-white: #ffffff;
+  /* Text — slate tones */
   --tb-text-bright: #0f172a;
   --tb-text-body: #1e293b;
   --tb-text-dim: #64748b;
   --tb-text-faint: #94a3b8;
+  /* Accent — fjord blue */
   --tb-blue: #2563eb;
   --tb-blue-bright: #3b82f6;
   --tb-blue-dim: #1d4ed8;
   --tb-blue-glow: rgba(37, 99, 235, 0.12);
   --tb-blue-glow-strong: rgba(37, 99, 235, 0.25);
+  /* Steel — for headings, accents */
   --tb-steel: #475569;
   --tb-steel-bright: #334155;
   --tb-steel-dim: #64748b;
+  /* Frost — for subtle highlights */
   --tb-frost: #dbeafe;
   --tb-frost-bright: #bfdbfe;
   --tb-frost-deep: #93c5fd;
+  /* Borders */
   --tb-border: #e2e8f0;
   --tb-border-light: #cbd5e1;
+  /* Green — helper/success */
   --tb-green: #22c55e;
   --tb-green-bright: #16a34a;
   --tb-green-subtle: #dcfce7;
   --tb-green-text: #86efac;
+  /* Amber — advancement/captain */
   --tb-amber: #f59e0b;
   --tb-amber-bright: #d97706;
   --tb-amber-dim: #92400e;
   --tb-amber-glow: #fef3c7;
   --tb-amber-glow-bright: #fde68a;
   --tb-amber-bg: #fffbeb;
+  /* Red — danger/error */
   --tb-red: #dc2626;
   --tb-red-dim: #b91c1c;
   --tb-red-bright: #ef4444;
+  /* Banner — pass */
   --tb-banner-pass-from: #dbeafe;
   --tb-banner-pass-to: #bfdbfe;
   --tb-banner-pass-text: #1d4ed8;
   --tb-banner-pass-border: #2563eb;
+  /* Banner — fail */
   --tb-banner-fail-from: #fef3c7;
   --tb-banner-fail-to: #fde68a;
   --tb-banner-fail-text: #92400e;
   --tb-banner-fail-border: #d97706;
+  /* Banner — disposition/resolved */
   --tb-banner-disposition-from: #d1fae5;
   --tb-banner-disposition-to: #a7f3d0;
   --tb-banner-disposition-text: #065f46;
   --tb-banner-disposition-border: #10b981;
+  /* Banner — pending */
   --tb-banner-pending-from: #f5f5f4;
   --tb-banner-pending-to: #e7e5e4;
   --tb-banner-pending-text: #78716c;
   --tb-banner-pending-border: #a8a29e;
+  /* Banner — resolved */
   --tb-banner-resolved-from: #ecfdf5;
   --tb-banner-resolved-to: #d1fae5;
   --tb-banner-resolved-text: #065f46;
   --tb-banner-resolved-border: #6ee7b7;
+  /* Misc neutral (help toggle, etc.) */
   --tb-neutral-border: #d1d5db;
   --tb-neutral-bg: #f3f4f6;
   --tb-neutral-text: #6b7280;
+  /* Overlay tints */
   --tb-overlay-white: rgba(255, 255, 255, 0.05);
   --tb-overlay-white-mid: rgba(255, 255, 255, 0.3);
   --tb-overlay-border: rgba(148, 163, 184, 0.3);
   --tb-overlay-border-dim: rgba(148, 163, 184, 0.2);
+  /* Card back */
   --tb-card-back-from: #4a7cc9;
   --tb-card-back-to: #2d5fa6;
   --tb-card-back-border: #93c5fd;
 }
-
 .themed.theme-dark.tb2e,
 .themed.theme-dark :is(
   .tb2e-roll-card, .tb2e-advancement-card,
@@ -418,7 +426,7 @@ body.theme-dark :is(
   --tb-blue-bright: #93c5fd;
   --tb-blue-dim: #60a5fa;
   --tb-blue-glow: rgba(96, 165, 250, 0.18);
-  --tb-blue-glow-strong: rgba(96, 165, 250, 0.30);
+  --tb-blue-glow-strong: rgba(96, 165, 250, 0.3);
   --tb-steel: #94a3b8;
   --tb-steel-bright: #cbd5e1;
   --tb-steel-dim: #94a3b8;
@@ -437,9 +445,9 @@ body.theme-dark :is(
   --tb-amber-glow: rgba(245, 158, 11, 0.2);
   --tb-amber-glow-bright: rgba(245, 158, 11, 0.3);
   --tb-amber-bg: rgba(245, 158, 11, 0.1);
-  --tb-red: #dc2626;
-  --tb-red-dim: #b91c1c;
-  --tb-red-bright: #ef4444;
+  --tb-red: #ef4444;
+  --tb-red-dim: #dc2626;
+  --tb-red-bright: #f87171;
   --tb-banner-pass-from: rgba(96, 165, 250, 0.2);
   --tb-banner-pass-to: rgba(96, 165, 250, 0.12);
   --tb-banner-pass-text: #93c5fd;
@@ -471,11 +479,138 @@ body.theme-dark :is(
   --tb-card-back-to: #172554;
   --tb-card-back-border: #60a5fa;
 }
-
+/* -------------------------------------------- */
+/*  Fieldsets                                   */
+/* -------------------------------------------- */
+.tb2e.sheet fieldset {
+  background: var(--tb-bg-raised);
+  border: 1px solid var(--tb-border);
+  border-radius: var(--tb-radius-lg);
+  padding: 0.75rem 1rem 1rem;
+  margin: 0 0 1rem;
+}
+.tb2e.sheet fieldset legend {
+  font-family: var(--tb-font-heading);
+  font-size: 1.05rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--tb-blue-dim);
+  padding: 0 0.5rem;
+}
+.tb2e.sheet fieldset legend i {
+  color: var(--tb-blue);
+  margin-right: 0.3em;
+  font-size: 0.9em;
+}
+/* -------------------------------------------- */
+/*  Who You Are — Field Grid                    */
+/* -------------------------------------------- */
+.tb2e.sheet .field-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.5rem 1rem;
+}
+.tb2e.sheet .field-pair {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+.tb2e.sheet .field-pair label {
+  font-family: var(--tb-font-heading);
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--tb-text-dim);
+}
+/* -------------------------------------------- */
+/*  Inputs & Textareas                          */
+/* -------------------------------------------- */
+.tb2e.sheet input[type="text"],
+.tb2e.sheet input[type="number"] {
+  font-family: var(--tb-font-body);
+  font-size: 0.9rem;
+  color: var(--tb-text-bright);
+  background: var(--tb-bg-surface);
+  border: 1px solid var(--tb-border);
+  border-radius: var(--tb-radius);
+  padding: 0.35rem 0.5rem;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+.tb2e.sheet input[type="text"]:hover,
+.tb2e.sheet input[type="number"]:hover {
+  border-color: var(--tb-border-light);
+}
+.tb2e.sheet input[type="text"]:focus,
+.tb2e.sheet input[type="number"]:focus {
+  border-color: var(--tb-blue);
+  outline: none;
+  box-shadow: 0 0 0 2px var(--tb-blue-glow);
+}
+.tb2e.sheet textarea {
+  font-family: var(--tb-font-body);
+  font-size: 0.9rem;
+  color: var(--tb-text-bright);
+  background: var(--tb-bg-surface);
+  border: 1px solid var(--tb-border);
+  border-radius: var(--tb-radius);
+  padding: 0.4rem 0.5rem;
+  resize: vertical;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  width: 100%;
+}
+.tb2e.sheet textarea:hover {
+  border-color: var(--tb-border-light);
+}
+.tb2e.sheet textarea:focus {
+  border-color: var(--tb-blue);
+  outline: none;
+  box-shadow: 0 0 0 2px var(--tb-blue-glow);
+}
+.tb2e.sheet input[type="number"] {
+  max-width: 5rem;
+}
+.tb2e.sheet select {
+  font-family: var(--tb-font-body);
+  font-size: 0.9rem;
+  color: var(--tb-text-bright);
+  background: var(--tb-bg-surface);
+  border: 1px solid var(--tb-border);
+  border-radius: var(--tb-radius);
+  padding: 0.35rem 0.5rem;
+}
+.tb2e.sheet select:focus {
+  border-color: var(--tb-blue);
+  outline: none;
+  box-shadow: 0 0 0 2px var(--tb-blue-glow);
+}
+/* -------------------------------------------- */
+/*  What You Fight For — Conviction Fields      */
+/* -------------------------------------------- */
+.tb2e.sheet .conviction-field {
+  margin-bottom: 0.75rem;
+}
+.tb2e.sheet .conviction-field:last-child {
+  margin-bottom: 0;
+}
+.tb2e.sheet .conviction-field label {
+  font-family: var(--tb-font-heading);
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--tb-text-body);
+  display: block;
+  margin-bottom: 0.2rem;
+}
+.tb2e.sheet .conviction-field .hint {
+  font-size: 0.8rem;
+  font-style: italic;
+  color: var(--tb-text-faint);
+  margin: 0.25rem 0 0;
+  line-height: 1.3;
+}
 /* -------------------------------------------- */
 /*  Sheet Shell                                 */
 /* -------------------------------------------- */
-
 .tb2e.sheet {
   background: var(--tb-bg-mid);
   color: var(--tb-text-body);
@@ -483,7 +618,6 @@ body.theme-dark :is(
   min-width: 500px;
   min-height: 400px;
 }
-
 .tb2e.sheet .window-content {
   background: var(--tb-bg-mid);
   padding: 0;
@@ -491,11 +625,9 @@ body.theme-dark :is(
   display: flex;
   flex-direction: column;
 }
-
 /* -------------------------------------------- */
 /*  Character Header                            */
 /* -------------------------------------------- */
-
 .tb2e.sheet .character-header {
   display: flex;
   align-items: center;
@@ -506,7 +638,6 @@ body.theme-dark :is(
   position: relative;
   flex-shrink: 0;
 }
-
 .tb2e.sheet .character-header::after {
   content: "";
   position: absolute;
@@ -514,7 +645,6 @@ body.theme-dark :is(
   background: radial-gradient(ellipse at 30% 50%, var(--tb-blue-glow) 0%, transparent 70%);
   pointer-events: none;
 }
-
 .tb2e.sheet .portrait {
   flex: 0 0 auto;
   display: flex;
@@ -523,7 +653,6 @@ body.theme-dark :is(
   position: relative;
   z-index: 1;
 }
-
 .tb2e.sheet .portrait img {
   width: 80px;
   height: 80px;
@@ -534,11 +663,9 @@ body.theme-dark :is(
   display: block;
   transition: border-color 0.2s;
 }
-
 .tb2e.sheet .portrait img:hover {
   border-color: var(--tb-blue);
 }
-
 .tb2e.sheet .header-fields {
   flex: 1;
   display: flex;
@@ -548,13 +675,11 @@ body.theme-dark :is(
   z-index: 1;
   min-width: 0;
 }
-
 .tb2e.sheet .header-top-row {
   display: flex;
   align-items: baseline;
   gap: 1rem;
 }
-
 .tb2e.sheet .header-summary {
   display: flex;
   align-items: baseline;
@@ -562,13 +687,11 @@ body.theme-dark :is(
   font-size: 0.85rem;
   color: var(--tb-text-dim);
 }
-
 .tb2e.sheet .summary-line {
   font-family: var(--tb-font-heading);
   text-transform: uppercase;
   letter-spacing: 0.06em;
 }
-
 .tb2e.sheet .header-goal {
   font-style: italic;
   color: var(--tb-text-dim);
@@ -577,12 +700,10 @@ body.theme-dark :is(
   text-overflow: ellipsis;
   max-width: 300px;
 }
-
 .tb2e.sheet .header-goal i {
   color: var(--tb-blue);
   margin-right: 0.25em;
 }
-
 /* Header Points */
 .tb2e.sheet .header-points {
   display: flex;
@@ -592,13 +713,11 @@ body.theme-dark :is(
   position: relative;
   z-index: 1;
 }
-
 .tb2e.sheet .point-boxes {
   display: flex;
   align-items: center;
   gap: 0.4rem;
 }
-
 .tb2e.sheet .point-label {
   font-family: var(--tb-font-heading);
   font-size: 0.8rem;
@@ -607,12 +726,10 @@ body.theme-dark :is(
   color: var(--tb-text-dim);
   min-width: 4.5rem;
 }
-
 .tb2e.sheet .point-label i {
   color: var(--tb-blue);
   margin-right: 0.2em;
 }
-
 .tb2e.sheet .point-current-input,
 .tb2e.sheet .point-spent-input {
   width: 2.5rem;
@@ -624,24 +741,20 @@ body.theme-dark :is(
   background: var(--tb-bg-mid);
   color: var(--tb-text-body);
 }
-
 .tb2e.sheet .point-current-input:focus,
 .tb2e.sheet .point-spent-input:focus {
   border-color: var(--tb-blue);
   outline: none;
 }
-
 .tb2e.sheet .point-spent-label {
   font-size: 0.7rem;
   color: var(--tb-text-faint);
   text-transform: uppercase;
   letter-spacing: 0.04em;
 }
-
 /* -------------------------------------------- */
 /*  Torchbearer Logo                            */
 /* -------------------------------------------- */
-
 .tb2e.sheet .torchbearer-logo {
   height: 1.75rem;
   width: auto;
@@ -649,19 +762,13 @@ body.theme-dark :is(
   margin: 0;
   transition: filter 0.3s;
 }
-
 body.theme-dark .tb2e.sheet .torchbearer-logo,
 .themed.theme-dark.tb2e.sheet .torchbearer-logo {
-  filter:
-    brightness(1.25)
-    drop-shadow(0 0 3px rgba(245, 158, 11, 0.5))
-    drop-shadow(0 0 8px rgba(245, 158, 11, 0.25));
+  filter: brightness(1.25) drop-shadow(0 0 3px rgba(245, 158, 11, 0.5)) drop-shadow(0 0 8px rgba(245, 158, 11, 0.25));
 }
-
 /* -------------------------------------------- */
 /*  Character Name Input                        */
 /* -------------------------------------------- */
-
 .tb2e.sheet .character-name {
   font-family: var(--tb-font-heading);
   font-size: 1.35rem;
@@ -673,27 +780,22 @@ body.theme-dark .tb2e.sheet .torchbearer-logo,
   padding: 0.15rem 0.25rem;
   transition: border-color 0.2s, background-color 0.2s;
 }
-
 .tb2e.sheet .character-name:hover {
   border-bottom-color: var(--tb-border-light);
 }
-
 .tb2e.sheet .character-name:focus {
   background: var(--tb-frost);
   border-color: var(--tb-blue);
   outline: none;
   box-shadow: 0 0 0 1px var(--tb-blue-glow);
 }
-
 .tb2e.sheet .character-name::placeholder {
   color: var(--tb-text-faint);
   font-style: italic;
 }
-
 /* -------------------------------------------- */
 /*  Conditions Strip                            */
 /* -------------------------------------------- */
-
 .tb2e.sheet .conditions-strip {
   display: flex;
   gap: 0;
@@ -703,7 +805,6 @@ body.theme-dark .tb2e.sheet .torchbearer-logo,
   justify-content: stretch;
   flex-shrink: 0;
 }
-
 .tb2e.sheet .conditions-strip > .condition-btn {
   all: unset;
   flex: 1;
@@ -721,40 +822,33 @@ body.theme-dark .tb2e.sheet .torchbearer-logo,
   box-sizing: border-box;
   transition: color 0.2s, border-color 0.2s, background-color 0.2s, box-shadow 0.2s;
 }
-
 .tb2e.sheet .conditions-strip > .condition-btn > i {
   font-size: 1rem;
   line-height: 1;
   transition: color 0.2s;
 }
-
 .tb2e.sheet .conditions-strip > .condition-btn:hover {
   color: var(--tb-text-dim);
   background: var(--tb-bg-mid);
 }
-
 .tb2e.sheet .conditions-strip > .condition-btn.active {
   color: var(--cond-color);
   border-bottom-color: var(--cond-color);
   background: color-mix(in srgb, var(--cond-color) 8%, transparent);
   box-shadow: inset 0 -8px 12px -8px color-mix(in srgb, var(--cond-color) 20%, transparent);
 }
-
 .tb2e.sheet .conditions-strip > .condition-btn.active > i {
   color: var(--cond-color);
 }
-
 .tb2e.sheet .condition-label {
   font-family: var(--tb-font-heading);
   text-transform: uppercase;
   letter-spacing: 0.04em;
   line-height: 1;
 }
-
 /* -------------------------------------------- */
 /*  Reference Bar                               */
 /* -------------------------------------------- */
-
 .tb2e.sheet .reference-bar {
   display: flex;
   align-items: center;
@@ -766,26 +860,21 @@ body.theme-dark .tb2e.sheet .torchbearer-logo,
   min-height: 1.4rem;
   flex-shrink: 0;
 }
-
 .tb2e.sheet .reference-bar-icon {
   color: var(--tb-blue);
   font-size: 0.7rem;
 }
-
 .tb2e.sheet .reference-bar-text {
   color: var(--tb-text-body);
   font-family: var(--tb-font-body);
 }
-
 .tb2e.sheet .reference-bar-text.placeholder {
   color: var(--tb-text-faint);
   font-style: italic;
 }
-
 /* -------------------------------------------- */
 /*  Tab Navigation                              */
 /* -------------------------------------------- */
-
 .tb2e.sheet .sheet-tabs.tabs {
   display: flex;
   gap: 0;
@@ -795,7 +884,6 @@ body.theme-dark .tb2e.sheet .torchbearer-logo,
   margin: 0;
   flex-shrink: 0;
 }
-
 .tb2e.sheet .sheet-tabs.tabs a {
   font-family: var(--tb-font-heading);
   font-size: 0.95rem;
@@ -808,16 +896,13 @@ body.theme-dark .tb2e.sheet .torchbearer-logo,
   text-decoration: none;
   position: relative;
 }
-
 .tb2e.sheet .sheet-tabs.tabs a:hover {
   color: var(--tb-text-body);
 }
-
 .tb2e.sheet .sheet-tabs.tabs a.active {
   color: var(--tb-blue);
   border-bottom-color: var(--tb-blue);
 }
-
 .tb2e.sheet .sheet-tabs.tabs a.active::after {
   content: "";
   position: absolute;
@@ -828,199 +913,38 @@ body.theme-dark .tb2e.sheet .torchbearer-logo,
   background: linear-gradient(to top, var(--tb-blue-glow-strong), transparent);
   pointer-events: none;
 }
-
 .tb2e.sheet .sheet-tabs.tabs a i {
   margin-right: 0.4em;
   font-size: 0.85em;
 }
-
 /* -------------------------------------------- */
 /*  Tab Content                                 */
 /* -------------------------------------------- */
-
 .tb2e.sheet .tab {
   display: none;
   padding: 1rem;
 }
-
 .tb2e.sheet .tab.active {
   display: block;
 }
-
 .tb2e.sheet .tab.scrollable {
   overflow-y: auto;
   flex: 1;
   min-height: 0;
 }
-
-/* -------------------------------------------- */
-/*  Fieldsets                                   */
-/* -------------------------------------------- */
-
-.tb2e.sheet fieldset {
-  background: var(--tb-bg-raised);
-  border: 1px solid var(--tb-border);
-  border-radius: var(--tb-radius-lg);
-  padding: 0.75rem 1rem 1rem;
-  margin: 0 0 1rem;
-}
-
-.tb2e.sheet fieldset legend {
-  font-family: var(--tb-font-heading);
-  font-size: 1.05rem;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  color: var(--tb-blue-dim);
-  padding: 0 0.5rem;
-}
-
-.tb2e.sheet fieldset legend i {
-  color: var(--tb-blue);
-  margin-right: 0.3em;
-  font-size: 0.9em;
-}
-
-/* -------------------------------------------- */
-/*  Who You Are — Field Grid                    */
-/* -------------------------------------------- */
-
-.tb2e.sheet .field-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 0.5rem 1rem;
-}
-
-.tb2e.sheet .field-pair {
-  display: flex;
-  flex-direction: column;
-  gap: 0.2rem;
-}
-
-.tb2e.sheet .field-pair label {
-  font-family: var(--tb-font-heading);
-  font-size: 0.8rem;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  color: var(--tb-text-dim);
-}
-
-/* -------------------------------------------- */
-/*  Inputs & Textareas                          */
-/* -------------------------------------------- */
-
-.tb2e.sheet input[type="text"],
-.tb2e.sheet input[type="number"] {
-  font-family: var(--tb-font-body);
-  font-size: 0.9rem;
-  color: var(--tb-text-bright);
-  background: var(--tb-bg-surface);
-  border: 1px solid var(--tb-border);
-  border-radius: var(--tb-radius);
-  padding: 0.35rem 0.5rem;
-  transition: border-color 0.2s, box-shadow 0.2s;
-}
-
-.tb2e.sheet input[type="text"]:hover,
-.tb2e.sheet input[type="number"]:hover {
-  border-color: var(--tb-border-light);
-}
-
-.tb2e.sheet input[type="text"]:focus,
-.tb2e.sheet input[type="number"]:focus {
-  border-color: var(--tb-blue);
-  outline: none;
-  box-shadow: 0 0 0 2px var(--tb-blue-glow);
-}
-
-.tb2e.sheet textarea {
-  font-family: var(--tb-font-body);
-  font-size: 0.9rem;
-  color: var(--tb-text-bright);
-  background: var(--tb-bg-surface);
-  border: 1px solid var(--tb-border);
-  border-radius: var(--tb-radius);
-  padding: 0.4rem 0.5rem;
-  resize: vertical;
-  transition: border-color 0.2s, box-shadow 0.2s;
-  width: 100%;
-}
-
-.tb2e.sheet textarea:hover {
-  border-color: var(--tb-border-light);
-}
-
-.tb2e.sheet textarea:focus {
-  border-color: var(--tb-blue);
-  outline: none;
-  box-shadow: 0 0 0 2px var(--tb-blue-glow);
-}
-
-.tb2e.sheet input[type="number"] {
-  max-width: 5rem;
-}
-
-.tb2e.sheet select {
-  font-family: var(--tb-font-body);
-  font-size: 0.9rem;
-  color: var(--tb-text-bright);
-  background: var(--tb-bg-surface);
-  border: 1px solid var(--tb-border);
-  border-radius: var(--tb-radius);
-  padding: 0.35rem 0.5rem;
-}
-
-.tb2e.sheet select:focus {
-  border-color: var(--tb-blue);
-  outline: none;
-  box-shadow: 0 0 0 2px var(--tb-blue-glow);
-}
-
-/* -------------------------------------------- */
-/*  What You Fight For — Conviction Fields      */
-/* -------------------------------------------- */
-
-.tb2e.sheet .conviction-field {
-  margin-bottom: 0.75rem;
-}
-
-.tb2e.sheet .conviction-field:last-child {
-  margin-bottom: 0;
-}
-
-.tb2e.sheet .conviction-field label {
-  font-family: var(--tb-font-heading);
-  font-size: 0.9rem;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  color: var(--tb-text-body);
-  display: block;
-  margin-bottom: 0.2rem;
-}
-
-.tb2e.sheet .conviction-field .hint {
-  font-size: 0.8rem;
-  font-style: italic;
-  color: var(--tb-text-faint);
-  margin: 0.25rem 0 0;
-  line-height: 1.3;
-}
-
 /* -------------------------------------------- */
 /*  Advancement Bubbles                         */
 /* -------------------------------------------- */
-
 .tb2e.sheet .advancement-bubbles {
   display: flex;
   flex-direction: column;
   gap: 1px;
 }
-
 .tb2e.sheet .bubble-row {
   display: flex;
   align-items: center;
   gap: 1px;
 }
-
 .tb2e.sheet .bubble-label {
   font-family: var(--tb-font-heading);
   font-size: 0.6rem;
@@ -1029,7 +953,6 @@ body.theme-dark .tb2e.sheet .torchbearer-logo,
   width: 0.8em;
   text-align: center;
 }
-
 .tb2e.sheet .bubble {
   all: unset;
   width: 10px;
@@ -1046,31 +969,26 @@ body.theme-dark .tb2e.sheet .torchbearer-logo,
   display: inline-block;
   transition: background-color 0.15s, border-color 0.15s, box-shadow 0.15s;
 }
-
 .tb2e.sheet .bubble:hover {
   border-color: var(--tb-text-dim);
 }
-
 .tb2e.sheet .pass-bubble.filled {
   background: var(--tb-pass-color);
   border-color: var(--tb-pass-color);
   box-shadow: 0 0 4px var(--tb-blue-glow-strong);
 }
-
 .tb2e.sheet .fail-bubble.filled {
   background: var(--tb-fail-color);
   border-color: var(--tb-fail-color);
-  box-shadow: 0 0 4px rgba(234, 88, 12, 0.3);  /* fail-color glow — invariant */
+  box-shadow: 0 0 4px rgba(234, 88, 12, 0.3);
+  /* fail-color glow — invariant */
 }
-
 /* -------------------------------------------- */
 /*  Abilities Tab                               */
 /* -------------------------------------------- */
-
 .tb2e.sheet .abilities-group {
   margin-bottom: 1rem;
 }
-
 .tb2e.sheet .ability-row {
   display: grid;
   /* name | rating input | bubbles */
@@ -1080,11 +998,9 @@ body.theme-dark .tb2e.sheet .torchbearer-logo,
   padding: 0.4rem 0;
   border-bottom: 1px solid var(--tb-border);
 }
-
 .tb2e.sheet .ability-row:last-child {
   border-bottom: none;
 }
-
 .tb2e.sheet .ability-name {
   font-family: var(--tb-font-heading);
   font-size: 0.95rem;
@@ -1092,46 +1008,36 @@ body.theme-dark .tb2e.sheet .torchbearer-logo,
   letter-spacing: 0.06em;
   color: var(--tb-text-body);
 }
-
 .tb2e.sheet .ability-rating {
   width: 3.5rem;
   text-align: center;
   font-weight: bold;
 }
-
-
-
 .tb2e.sheet .nature-ability-row .nature-rating-group {
   display: inline-flex;
   align-items: center;
   gap: 0.15rem;
 }
-
 .tb2e.sheet .nature-ability-row .nature-separator {
   font-size: 0.85rem;
   color: var(--tb-text-faint);
   font-weight: bold;
 }
-
 .tb2e.sheet .nature-ability-row .nature-current {
   width: 2.4rem;
 }
-
 .tb2e.sheet .nature-ability-row .nature-max {
   width: 2.4rem;
   color: var(--tb-text-dim);
 }
-
 .tb2e.sheet .nature-ability-row.nature-taxed .nature-current {
   color: var(--tb-amber);
   font-weight: bold;
 }
-
 .tb2e.sheet .nature-actions {
   display: flex;
   gap: 0.4rem;
 }
-
 .tb2e.sheet .nature-action-btn {
   display: inline-flex;
   align-items: center;
@@ -1147,24 +1053,20 @@ body.theme-dark .tb2e.sheet .torchbearer-logo,
   line-height: 1;
   transition: color 0.15s, border-color 0.15s, background 0.15s;
 }
-
 .tb2e.sheet .nature-action-btn.recover:hover:not(:disabled) {
   color: var(--tb-green);
   border-color: var(--tb-green);
   background: var(--tb-green-subtle);
 }
-
 .tb2e.sheet .nature-action-btn.conserve:hover:not(:disabled) {
   color: var(--tb-amber);
   border-color: var(--tb-amber);
   background: var(--tb-amber-glow);
 }
-
 .tb2e.sheet .nature-action-btn:disabled {
   opacity: 0.35;
   cursor: default;
 }
-
 /* Nature descriptors — chip editor */
 .tb2e.sheet .nature-descriptors {
   margin-top: 0.4rem;
@@ -1172,7 +1074,6 @@ body.theme-dark .tb2e.sheet .torchbearer-logo,
   padding-left: 0.3rem;
   border-top: 1px solid var(--tb-border);
 }
-
 .tb2e.sheet .descriptor-label {
   display: block;
   font-size: 0.7rem;
@@ -1181,14 +1082,12 @@ body.theme-dark .tb2e.sheet .torchbearer-logo,
   color: var(--tb-text-faint);
   margin-bottom: 0.25rem;
 }
-
 .tb2e.sheet .descriptor-chips {
   display: flex;
   flex-wrap: wrap;
   gap: 0.3rem;
   align-items: center;
 }
-
 .tb2e.sheet .descriptor-chip {
   display: inline-flex;
   align-items: center;
@@ -1201,7 +1100,6 @@ body.theme-dark .tb2e.sheet .torchbearer-logo,
   color: var(--tb-text-body);
   font-family: var(--tb-font-body);
 }
-
 .tb2e.sheet .descriptor-remove {
   background: none;
   border: none;
@@ -1211,17 +1109,14 @@ body.theme-dark .tb2e.sheet .torchbearer-logo,
   font-size: 0.6rem;
   line-height: 1;
 }
-
 .tb2e.sheet .descriptor-remove:hover {
   color: var(--tb-red);
 }
-
 .tb2e.sheet .descriptor-add {
   display: inline-flex;
   align-items: center;
   gap: 0.2rem;
 }
-
 .tb2e.sheet .descriptor-input {
   width: 8rem;
   font-size: 0.75rem;
@@ -1231,7 +1126,6 @@ body.theme-dark .tb2e.sheet .torchbearer-logo,
   background: var(--tb-bg-white);
   color: var(--tb-text-body);
 }
-
 .tb2e.sheet .descriptor-add-btn {
   background: none;
   border: 1px solid var(--tb-border-light);
@@ -1242,32 +1136,25 @@ body.theme-dark .tb2e.sheet .torchbearer-logo,
   font-size: 0.65rem;
   line-height: 1;
 }
-
 .tb2e.sheet .descriptor-add-btn:hover {
   color: var(--tb-green);
   border-color: var(--tb-green);
 }
-
 .tb2e.sheet .might-row .ability-name {
   color: var(--tb-blue-dim);
 }
-
 /* Checks */
 .tb2e.sheet .checks-group .checks-row {
   display: flex;
   gap: 1.5rem;
 }
-
-/* -------------------------------------------- */
 /*  Skills Tab                                  */
 /* -------------------------------------------- */
-
 .tb2e.sheet .skills-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 0 1.5rem;
 }
-
 .tb2e.sheet .skill-row {
   display: grid;
   /* name | BL badge | rating input | bubbles */
@@ -1278,16 +1165,13 @@ body.theme-dark .tb2e.sheet .torchbearer-logo,
   border-bottom: 1px solid var(--tb-border);
   border-radius: var(--tb-radius);
 }
-
 .tb2e.sheet .skill-row:hover {
   background: var(--tb-frost);
 }
-
 .tb2e.sheet .skill-row.has-rating .skill-name {
   color: var(--tb-text-bright);
   font-weight: bold;
 }
-
 .tb2e.sheet .skill-name {
   font-family: var(--tb-font-heading);
   font-size: 0.85rem;
@@ -1298,7 +1182,6 @@ body.theme-dark .tb2e.sheet .torchbearer-logo,
   text-overflow: ellipsis;
   white-space: nowrap;
 }
-
 .tb2e.sheet .skill-bl {
   font-size: 0.7rem;
   font-weight: bold;
@@ -1308,24 +1191,19 @@ body.theme-dark .tb2e.sheet .torchbearer-logo,
   border-radius: 2px;
   line-height: 1;
 }
-
 .tb2e.sheet .skill-rating {
   width: 3rem;
   text-align: center;
   font-weight: bold;
 }
-
-/* -------------------------------------------- */
 /*  Traits & Wises Tab                          */
 /* -------------------------------------------- */
-
 .tb2e.sheet .traits-list,
 .tb2e.sheet .wises-list {
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
 }
-
 .tb2e.sheet .trait-row {
   display: flex;
   align-items: center;
@@ -1333,29 +1211,24 @@ body.theme-dark .tb2e.sheet .torchbearer-logo,
   padding: 0.35rem 0;
   border-bottom: 1px solid var(--tb-border);
 }
-
 .tb2e.sheet .trait-row:last-child {
   border-bottom: none;
 }
-
 .tb2e.sheet .trait-name {
   flex: 1;
   min-width: 0;
 }
-
 .tb2e.sheet .trait-level {
   display: flex;
   align-items: center;
   gap: 2px;
 }
-
 .tb2e.sheet .trait-level label {
   font-family: var(--tb-font-heading);
   font-size: 0.75rem;
   color: var(--tb-text-faint);
   margin-right: 2px;
 }
-
 .tb2e.sheet .level-pip {
   width: 22px;
   height: 22px;
@@ -1372,39 +1245,32 @@ body.theme-dark .tb2e.sheet .torchbearer-logo,
   padding: 0;
   transition: all 0.15s;
 }
-
 .tb2e.sheet .level-pip:hover {
   border-color: var(--tb-blue);
   color: var(--tb-blue);
 }
-
 .tb2e.sheet .level-pip.active {
   background: var(--tb-blue);
   border-color: var(--tb-blue);
   color: var(--tb-bg-white);
 }
-
 .tb2e.sheet .trait-counters {
   display: flex;
   gap: 0.5rem;
 }
-
 .tb2e.sheet .trait-counter {
   display: flex;
   align-items: center;
   gap: 3px;
 }
-
 .tb2e.sheet .trait-counter label {
   color: var(--tb-text-faint);
   font-size: 0.8rem;
 }
-
 .tb2e.sheet .trait-count {
   width: 2.5rem;
   text-align: center;
 }
-
 /* Wises */
 .tb2e.sheet .wise-row {
   display: flex;
@@ -1413,43 +1279,34 @@ body.theme-dark .tb2e.sheet .torchbearer-logo,
   padding: 0.35rem 0;
   border-bottom: 1px solid var(--tb-border);
 }
-
 .tb2e.sheet .wise-row:last-child {
   border-bottom: none;
 }
-
 .tb2e.sheet .wise-name {
   flex: 1;
   min-width: 0;
 }
-
 .tb2e.sheet .wise-checks {
   display: flex;
   gap: 0.5rem;
 }
-
 .tb2e.sheet .wise-check {
   display: flex;
   align-items: center;
   gap: 2px;
   cursor: pointer;
 }
-
 .tb2e.sheet .wise-check span {
   font-family: var(--tb-font-heading);
   font-size: 0.75rem;
   text-transform: uppercase;
   color: var(--tb-text-faint);
 }
-
 .tb2e.sheet .wise-check input[type="checkbox"] {
   accent-color: var(--tb-blue);
 }
-
-/* -------------------------------------------- */
 /*  Inventory Tab                               */
 /* -------------------------------------------- */
-
 .tb2e.sheet .inventory-config {
   display: flex;
   align-items: center;
@@ -1460,7 +1317,6 @@ body.theme-dark .tb2e.sheet .torchbearer-logo,
   border: 1px solid var(--tb-border);
   border-radius: var(--tb-radius-lg);
 }
-
 .tb2e.sheet .checkbox-field {
   display: flex;
   align-items: center;
@@ -1468,24 +1324,20 @@ body.theme-dark .tb2e.sheet .torchbearer-logo,
   font-size: 0.9rem;
   cursor: pointer;
 }
-
 .tb2e.sheet .checkbox-field input[type="checkbox"] {
   accent-color: var(--tb-blue);
 }
-
 .tb2e.sheet .inventory-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 1rem;
 }
-
 .tb2e.sheet .inventory-slot-group {
   background: var(--tb-bg-raised);
   border: 1px solid var(--tb-border);
   border-radius: var(--tb-radius-lg);
   padding: 0.5rem 0.75rem;
 }
-
 .tb2e.sheet .slot-heading {
   font-family: var(--tb-font-heading);
   font-size: 0.85rem;
@@ -1494,18 +1346,15 @@ body.theme-dark .tb2e.sheet .torchbearer-logo,
   color: var(--tb-blue-dim);
   margin: 0 0 0.35rem;
 }
-
 .tb2e.sheet .slot-count {
   color: var(--tb-text-faint);
   font-size: 0.8em;
 }
-
 .tb2e.sheet .slot-list {
   display: flex;
   flex-direction: column;
   gap: 3px;
 }
-
 .tb2e.sheet .inventory-slot {
   padding: 0.3rem 0.5rem;
   border-radius: var(--tb-radius);
@@ -1515,26 +1364,20 @@ body.theme-dark .tb2e.sheet .torchbearer-logo,
   display: flex;
   align-items: center;
 }
-
 .tb2e.sheet .inventory-slot.empty {
   border-style: dashed;
   background: var(--tb-bg-mid);
 }
-
 .tb2e.sheet .slot-empty {
   color: var(--tb-text-faint);
   font-size: 0.85rem;
 }
-
 .tb2e.sheet .slot-item {
   color: var(--tb-text-body);
   font-size: 0.85rem;
 }
-
-/* -------------------------------------------- */
 /*  Magic Tab                                   */
 /* -------------------------------------------- */
-
 .tb2e.sheet .spells-table,
 .tb2e.sheet .relics-table,
 .tb2e.sheet .allies-table,
@@ -1543,7 +1386,6 @@ body.theme-dark .tb2e.sheet .torchbearer-logo,
   border-collapse: collapse;
   font-size: 0.85rem;
 }
-
 .tb2e.sheet .spells-table th,
 .tb2e.sheet .relics-table th,
 .tb2e.sheet .allies-table th,
@@ -1557,7 +1399,6 @@ body.theme-dark .tb2e.sheet .torchbearer-logo,
   border-bottom: 2px solid var(--tb-border);
   text-align: left;
 }
-
 .tb2e.sheet .spells-table td,
 .tb2e.sheet .relics-table td,
 .tb2e.sheet .allies-table td,
@@ -1566,7 +1407,6 @@ body.theme-dark .tb2e.sheet .torchbearer-logo,
   border-bottom: 1px solid var(--tb-border);
   vertical-align: middle;
 }
-
 .tb2e.sheet .spells-table input[type="text"],
 .tb2e.sheet .relics-table input[type="text"],
 .tb2e.sheet .allies-table input[type="text"] {
@@ -1574,17 +1414,14 @@ body.theme-dark .tb2e.sheet .torchbearer-logo,
   padding: 0.2rem 0.3rem;
   font-size: 0.85rem;
 }
-
 .tb2e.sheet .spells-table input[type="checkbox"],
 .tb2e.sheet .relics-table input[type="checkbox"] {
   accent-color: var(--tb-blue);
 }
-
 .tb2e.sheet .input-sm {
   max-width: 3.5rem;
   text-align: center;
 }
-
 /* Add/Delete buttons */
 .tb2e.sheet .btn-add {
   display: inline-flex;
@@ -1603,11 +1440,9 @@ body.theme-dark .tb2e.sheet .torchbearer-logo,
   cursor: pointer;
   transition: background-color 0.15s;
 }
-
 .tb2e.sheet .btn-add:hover {
   background: var(--tb-frost-bright);
 }
-
 .tb2e.sheet .btn-icon {
   background: none;
   border: none;
@@ -1617,82 +1452,111 @@ body.theme-dark .tb2e.sheet .torchbearer-logo,
   font-size: 0.8rem;
   transition: color 0.15s;
 }
-
 .tb2e.sheet .btn-icon:hover {
   color: var(--tb-cond-angry);
 }
-
-/* -------------------------------------------- */
 /*  Biography Tab                               */
 /* -------------------------------------------- */
-
 .tb2e.sheet .bio-section .editor {
   min-height: 150px;
 }
-
 .tb2e.sheet .urdr-memory .editor {
   min-height: 100px;
 }
-
 /* Level requirements reference */
 .tb2e.sheet .level-req-table .current-level {
   background: var(--tb-frost);
   font-weight: bold;
 }
-
 .tb2e.sheet .level-req-table .current-level td {
   color: var(--tb-blue-dim);
 }
-
 .tb2e.sheet .level-req-table td.met {
   color: var(--tb-green);
 }
-
 .tb2e.sheet .level-req-table .next-target {
   background: var(--tb-frost);
 }
-
-/* -------------------------------------------- */
 /*  Rollable Rows                               */
 /* -------------------------------------------- */
-
 .tb2e.sheet .rollable {
   cursor: pointer;
   transition: background-color 0.15s, box-shadow 0.15s;
 }
-
 .tb2e.sheet .rollable:hover {
   background: var(--tb-frost);
   box-shadow: inset 2px 0 0 var(--tb-blue);
 }
-
 .tb2e.sheet .rollable:hover .ability-name,
 .tb2e.sheet .rollable:hover .skill-name {
   color: var(--tb-blue);
 }
-
 .tb2e.sheet .rollable input,
 .tb2e.sheet .rollable button.bubble {
   cursor: default;
 }
-
+/*  Advance Button (Sheet)                      */
+/* -------------------------------------------- */
+.tb2e.sheet .btn-advance {
+  all: unset;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--tb-amber), var(--tb-amber-bright));
+  color: var(--tb-bg-white);
+  font-size: 0.7rem;
+  cursor: pointer;
+  box-shadow: 0 0 6px rgba(245, 158, 11, 0.4);
+  transition: transform 0.15s, box-shadow 0.15s;
+  animation: tb2e-advance-pulse 2s ease-in-out infinite;
+}
+.tb2e.sheet .btn-advance:hover {
+  transform: scale(1.15);
+  box-shadow: 0 0 10px rgba(245, 158, 11, 0.6);
+}
+.tb2e.sheet .btn-advance-spacer {
+  display: inline-block;
+  width: 22px;
+  height: 22px;
+}
+@keyframes tb2e-advance-pulse {
+  0%,
+  100% {
+    box-shadow: 0 0 6px rgba(245, 158, 11, 0.4);
+  }
+  50% {
+    box-shadow: 0 0 12px rgba(245, 158, 11, 0.7);
+  }
+}
+/* Adjust ability-row grid to 4 columns */
+.tb2e.sheet .ability-row {
+  grid-template-columns: 7rem 22px 3.5rem 1fr;
+}
+/* Nature row — 5 columns: name | advance | current/max | bubbles | actions */
+.tb2e.sheet .nature-ability-row {
+  grid-template-columns: 7rem 22px auto 1fr auto;
+}
+/* Adjust skill-row grid to 5 columns */
+.tb2e.sheet .skill-row {
+  grid-template-columns: 1fr 1.5rem 22px 3rem 9rem;
+}
 /* -------------------------------------------- */
 /*  Roll Dialog                                 */
 /* -------------------------------------------- */
-
 .tb2e.roll-dialog .tb2e-roll-dialog-form {
   display: flex;
   flex-direction: column;
   gap: 0.75rem;
   padding: 0.5rem 0;
 }
-
 .tb2e.roll-dialog .roll-dialog-header {
   display: flex;
   align-items: center;
   gap: 0.5rem;
 }
-
 .tb2e.roll-dialog .roll-dialog-badge {
   font-size: 0.7rem;
   font-weight: bold;
@@ -1703,7 +1567,6 @@ body.theme-dark .tb2e.sheet .torchbearer-logo,
   padding: 2px 8px;
   border-radius: 3px;
 }
-
 .tb2e.roll-dialog .roll-dialog-title {
   font-family: var(--tb-font-heading);
   font-size: 1.2rem;
@@ -1712,19 +1575,16 @@ body.theme-dark .tb2e.sheet .torchbearer-logo,
   color: var(--tb-text-body);
   margin: 0;
 }
-
 .tb2e.roll-dialog .roll-dialog-fields {
   display: flex;
   gap: 1rem;
 }
-
 .tb2e.roll-dialog .roll-field {
   display: flex;
   flex-direction: column;
   gap: 0.25rem;
   flex: 1;
 }
-
 .tb2e.roll-dialog .roll-field label {
   font-family: var(--tb-font-heading);
   font-size: 0.8rem;
@@ -1732,20 +1592,17 @@ body.theme-dark .tb2e.sheet .torchbearer-logo,
   letter-spacing: 0.06em;
   color: var(--tb-text-faint);
 }
-
 .tb2e.roll-dialog .roll-field input {
   text-align: center;
   font-size: 1.1rem;
   font-weight: bold;
   padding: 0.4rem 0.5rem;
 }
-
 .tb2e.roll-dialog .roll-dialog-modifiers {
   display: flex;
   flex-direction: column;
   gap: 2px;
 }
-
 .tb2e.roll-dialog .roll-modifier {
   display: flex;
   align-items: center;
@@ -1754,32 +1611,27 @@ body.theme-dark .tb2e.sheet .torchbearer-logo,
   border-radius: 3px;
   background: var(--tb-overlay-white);
 }
-
 .tb2e.roll-dialog .roll-modifier i {
   color: var(--mod-color);
   font-size: 0.85rem;
   width: 1.2em;
   text-align: center;
 }
-
 .tb2e.roll-dialog .roll-modifier .mod-label {
   flex: 1;
   color: var(--tb-text-faint);
   font-size: 0.85rem;
 }
-
 .tb2e.roll-dialog .roll-modifier .mod-value {
   color: var(--mod-color);
   font-weight: bold;
   font-size: 0.85rem;
 }
-
 .tb2e.roll-dialog .roll-dialog-helpers {
   display: flex;
   flex-direction: column;
   gap: 0.35rem;
 }
-
 .tb2e.roll-dialog .helpers-heading {
   display: flex;
   align-items: center;
@@ -1790,24 +1642,19 @@ body.theme-dark .tb2e.sheet .torchbearer-logo,
   letter-spacing: 0.06em;
   color: var(--tb-text-faint);
 }
-
 .tb2e.roll-dialog .helpers-heading i {
   color: var(--tb-green);
   font-size: 0.75rem;
 }
-
 .tb2e.roll-dialog .helpers-list {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 0.3rem;
 }
-
 /* NPC helpers — collapsible section */
-
 .tb2e.roll-dialog .helpers-npc-group {
   margin-top: 0.25rem;
 }
-
 .tb2e.roll-dialog .helpers-npc-heading {
   display: flex;
   align-items: center;
@@ -1821,38 +1668,32 @@ body.theme-dark .tb2e.sheet .torchbearer-logo,
   list-style: none;
   padding: 0.15rem 0;
 }
-
 .tb2e.roll-dialog .helpers-npc-heading::-webkit-details-marker {
   display: none;
 }
-
 .tb2e.roll-dialog .helpers-npc-heading i {
   color: var(--tb-text-dim);
   font-size: 0.7rem;
 }
-
 .tb2e.roll-dialog .helpers-npc-heading::before {
-  content: "\f0da"; /* fa-caret-right */
+  content: "\f0da";
+  /* fa-caret-right */
   font-family: "Font Awesome 6 Free";
   font-weight: 900;
   font-size: 0.65rem;
   color: var(--tb-text-dim);
   transition: transform 0.15s;
 }
-
 .tb2e.roll-dialog .helpers-npc-group[open] > .helpers-npc-heading::before {
   transform: rotate(90deg);
 }
-
 .tb2e.roll-dialog .helpers-npc-count {
   font-size: 0.7rem;
   color: var(--tb-text-dim);
 }
-
 .tb2e.roll-dialog .helpers-npc-group .helpers-list {
   margin-top: 0.25rem;
 }
-
 .tb2e.roll-dialog .helper-toggle {
   display: inline-flex;
   align-items: center;
@@ -1866,40 +1707,33 @@ body.theme-dark .tb2e.sheet .torchbearer-logo,
   cursor: pointer;
   transition: all 0.15s;
 }
-
 .tb2e.roll-dialog .helper-toggle:hover {
   border-color: var(--tb-green);
   color: var(--tb-green-text);
 }
-
 .tb2e.roll-dialog .helper-toggle.active {
   border-color: var(--tb-green);
   background: var(--tb-green-subtle);
   color: var(--tb-green-text);
 }
-
 .tb2e.roll-dialog .helper-toggle .helper-dice {
   font-weight: 700;
   color: var(--tb-green);
   opacity: 0.4;
   transition: opacity 0.15s;
 }
-
 .tb2e.roll-dialog .helper-toggle.active .helper-dice {
   opacity: 1;
 }
-
 .tb2e.roll-dialog .helper-toggle .helper-via {
   font-size: 0.7rem;
   color: var(--tb-text-faint);
   font-style: italic;
 }
-
 .tb2e.roll-dialog .helper-toggle .helper-warning {
   color: var(--tb-amber);
   font-size: 0.7rem;
 }
-
 .tb2e.roll-dialog .helper-row {
   display: flex;
   align-items: center;
@@ -1932,13 +1766,11 @@ body.theme-dark .tb2e.sheet .torchbearer-logo,
   background: var(--tb-amber-glow);
   color: var(--tb-amber);
 }
-
 .tb2e.roll-dialog .roll-dialog-options {
   display: flex;
   flex-direction: column;
   gap: 0.25rem;
 }
-
 .tb2e.roll-dialog .roll-option {
   display: flex;
   align-items: center;
@@ -1947,11 +1779,9 @@ body.theme-dark .tb2e.sheet .torchbearer-logo,
   color: var(--tb-text-faint);
   cursor: pointer;
 }
-
 .tb2e.roll-dialog .roll-option input[type="checkbox"] {
   accent-color: var(--tb-blue-bright);
 }
-
 .tb2e.roll-dialog .roll-dialog-summary {
   display: flex;
   align-items: center;
@@ -1962,43 +1792,35 @@ body.theme-dark .tb2e.sheet .torchbearer-logo,
   padding-top: 0.25rem;
   border-top: 1px solid var(--tb-overlay-border-dim);
 }
-
 .tb2e.roll-dialog .roll-dialog-summary i {
   color: var(--tb-blue-bright);
 }
-
 /* -------------------------------------------- */
 /*  Roll Dialog — BL Badge                      */
 /* -------------------------------------------- */
-
 .tb2e.roll-dialog .bl-badge {
   background: var(--tb-amber-glow);
   color: var(--tb-amber-dim);
   cursor: default;
 }
-
 .tb2e.roll-dialog .bl-badge i {
   font-size: 0.6rem;
 }
-
 /* -------------------------------------------- */
 /*  Roll Dialog — Trait Selector                */
 /* -------------------------------------------- */
-
 /* Roll Dialog — Nature Descriptors Section */
 .tb2e.roll-dialog .roll-dialog-nature {
   display: flex;
   flex-direction: column;
   gap: 0.3rem;
 }
-
 .tb2e.roll-dialog .nature-descriptor-chips {
   display: flex;
   flex-wrap: wrap;
   gap: 0.25rem;
   padding-left: 0.3rem;
 }
-
 .tb2e.roll-dialog .nature-ref-chip {
   display: inline-block;
   background: var(--tb-bg-raised);
@@ -2008,13 +1830,11 @@ body.theme-dark .tb2e.sheet .torchbearer-logo,
   font-size: 0.7rem;
   color: var(--tb-text-body);
 }
-
 .tb2e.roll-dialog .nature-ref-chip.small {
   font-size: 0.65rem;
   padding: 0.05rem 0.35rem;
   opacity: 0.85;
 }
-
 .tb2e.roll-dialog .nature-within-toggle {
   display: flex;
   align-items: center;
@@ -2023,32 +1843,25 @@ body.theme-dark .tb2e.sheet .torchbearer-logo,
   cursor: pointer;
   padding-left: 0.3rem;
 }
-
 .tb2e.roll-dialog .nature-within-toggle input[type="checkbox"] {
   accent-color: var(--tb-green);
 }
-
 .tb2e.roll-dialog .nature-within-label {
   font-weight: bold;
   transition: color 0.15s;
 }
-
 .tb2e.roll-dialog .nature-within-label.outside {
   color: var(--tb-amber);
 }
-
 .tb2e.roll-dialog .nature-within-label.within {
   color: var(--tb-green);
 }
-
 /* -------------------------------------------- */
-
 .tb2e.roll-dialog .roll-dialog-traits {
   display: flex;
   flex-direction: column;
   gap: 0.35rem;
 }
-
 .tb2e.roll-dialog .section-heading {
   display: flex;
   align-items: center;
@@ -2059,17 +1872,14 @@ body.theme-dark .tb2e.sheet .torchbearer-logo,
   letter-spacing: 0.06em;
   color: var(--tb-text-faint);
 }
-
 .tb2e.roll-dialog .section-heading i {
   font-size: 0.75rem;
 }
-
 .tb2e.roll-dialog .traits-list {
   display: flex;
   flex-direction: column;
   gap: 2px;
 }
-
 .tb2e.roll-dialog .trait-row {
   display: flex;
   align-items: center;
@@ -2078,25 +1888,21 @@ body.theme-dark .tb2e.sheet .torchbearer-logo,
   border-radius: 3px;
   background: var(--tb-overlay-white);
 }
-
 .tb2e.roll-dialog .trait-name {
   flex: 1;
   font-size: 0.85rem;
   color: var(--tb-text-body);
 }
-
 .tb2e.roll-dialog .trait-level {
   font-size: 0.7rem;
   font-weight: bold;
   color: var(--tb-text-dim);
   text-transform: uppercase;
 }
-
 .tb2e.roll-dialog .trait-mode {
   display: flex;
   gap: 2px;
 }
-
 .tb2e.roll-dialog .trait-btn {
   all: unset;
   display: inline-flex;
@@ -2112,63 +1918,52 @@ body.theme-dark .tb2e.sheet .torchbearer-logo,
   cursor: pointer;
   transition: all 0.15s;
 }
-
 .tb2e.roll-dialog .trait-btn:hover:not(:disabled) {
   border-color: var(--tb-blue);
   color: var(--tb-blue);
 }
-
 .tb2e.roll-dialog .trait-btn.active {
   border-color: var(--tb-green);
   background: var(--tb-green-subtle);
   color: var(--tb-green-bright);
 }
-
 .tb2e.roll-dialog .trait-btn[data-mode="against"].active {
   border-color: var(--tb-red);
   background: rgba(220, 38, 38, 0.1);
   color: var(--tb-red);
 }
-
 .tb2e.roll-dialog .trait-btn:disabled {
   opacity: 0.35;
   cursor: not-allowed;
 }
-
 .tb2e.roll-dialog .trait-uses {
   font-size: 0.7rem;
   color: var(--tb-text-dim);
   min-width: 1.5rem;
   text-align: center;
 }
-
 /* -------------------------------------------- */
 /*  Roll Dialog — Persona Controls              */
 /* -------------------------------------------- */
-
 .tb2e.roll-dialog .roll-dialog-persona {
   display: flex;
   flex-direction: column;
   gap: 0.35rem;
 }
-
 .tb2e.roll-dialog .persona-controls {
   display: flex;
   flex-direction: column;
   gap: 0.3rem;
 }
-
 .tb2e.roll-dialog .persona-advantage {
   display: flex;
   align-items: center;
   gap: 0.5rem;
 }
-
 .tb2e.roll-dialog .persona-advantage-label {
   font-size: 0.85rem;
   color: var(--tb-text-body);
 }
-
 .tb2e.roll-dialog .stepper {
   display: inline-flex;
   align-items: center;
@@ -2177,7 +1972,6 @@ body.theme-dark .tb2e.sheet .torchbearer-logo,
   border-radius: 4px;
   overflow: hidden;
 }
-
 .tb2e.roll-dialog .stepper-btn {
   all: unset;
   display: inline-flex;
@@ -2191,12 +1985,10 @@ body.theme-dark .tb2e.sheet .torchbearer-logo,
   cursor: pointer;
   transition: background 0.15s;
 }
-
 .tb2e.roll-dialog .stepper-btn:hover {
   background: var(--tb-blue-glow);
   color: var(--tb-blue);
 }
-
 .tb2e.roll-dialog .stepper-value {
   display: inline-flex;
   align-items: center;
@@ -2208,13 +2000,11 @@ body.theme-dark .tb2e.sheet .torchbearer-logo,
   color: var(--tb-amber);
   background: var(--tb-overlay-white);
 }
-
 .tb2e.roll-dialog .persona-hint {
   font-size: 0.75rem;
   color: var(--tb-text-faint);
   font-style: italic;
 }
-
 .tb2e.roll-dialog .persona-channel {
   display: flex;
   align-items: center;
@@ -2223,11 +2013,9 @@ body.theme-dark .tb2e.sheet .torchbearer-logo,
   color: var(--tb-text-body);
   cursor: pointer;
 }
-
 .tb2e.roll-dialog .persona-channel input[type="checkbox"] {
   accent-color: var(--tb-blue-bright);
 }
-
 .tb2e.roll-dialog .channel-nature-descriptors {
   display: flex;
   flex-wrap: wrap;
@@ -2235,41 +2023,33 @@ body.theme-dark .tb2e.sheet .torchbearer-logo,
   margin-left: 1.5rem;
   margin-top: 0.15rem;
 }
-
 .tb2e.roll-dialog .persona-total {
   font-size: 0.8rem;
   color: var(--tb-text-dim);
 }
-
 .tb2e.roll-dialog .persona-total-value {
   color: var(--tb-amber);
 }
-
 /* -------------------------------------------- */
 /*  Roll Dialog — Wise Selector                 */
 /* -------------------------------------------- */
-
 .tb2e.roll-dialog .roll-dialog-wises {
   display: flex;
   flex-direction: column;
   gap: 0.35rem;
 }
-
 .tb2e.roll-dialog .roll-dialog-wises select {
   font-size: 0.9rem;
   padding: 0.3rem 0.5rem;
 }
-
 /* -------------------------------------------- */
 /*  Roll Dialog — Manual Modifier Input         */
 /* -------------------------------------------- */
-
 .tb2e.roll-dialog .roll-dialog-manual {
   display: flex;
   flex-direction: column;
   gap: 0.3rem;
 }
-
 .tb2e.roll-dialog .add-modifier-btn {
   all: unset;
   display: inline-flex;
@@ -2281,42 +2061,35 @@ body.theme-dark .tb2e.sheet .torchbearer-logo,
   padding: 0.2rem 0;
   transition: color 0.15s;
 }
-
 .tb2e.roll-dialog .add-modifier-btn:hover {
   color: var(--tb-blue);
 }
-
 .tb2e.roll-dialog .add-modifier-btn i {
   font-size: 0.7rem;
 }
-
 .tb2e.roll-dialog .manual-modifier-input {
   display: flex;
   align-items: center;
   gap: 0.3rem;
   padding: 0.25rem 0;
 }
-
 .tb2e.roll-dialog .manual-modifier-input .manual-label {
   flex: 1;
   font-size: 0.85rem;
   padding: 0.2rem 0.4rem;
   min-width: 0;
 }
-
 .tb2e.roll-dialog .manual-modifier-input .manual-type {
   width: 3rem;
   font-size: 0.8rem;
   padding: 0.2rem;
 }
-
 .tb2e.roll-dialog .manual-modifier-input .manual-value {
   width: 3rem;
   font-size: 0.85rem;
   text-align: center;
   padding: 0.2rem;
 }
-
 .tb2e.roll-dialog .manual-modifier-input button {
   all: unset;
   display: inline-flex;
@@ -2329,27 +2102,21 @@ body.theme-dark .tb2e.sheet .torchbearer-logo,
   font-size: 0.7rem;
   transition: all 0.15s;
 }
-
 .tb2e.roll-dialog .manual-confirm {
   color: var(--tb-green);
 }
-
 .tb2e.roll-dialog .manual-confirm:hover {
   background: var(--tb-green-subtle);
 }
-
 .tb2e.roll-dialog .manual-cancel {
   color: var(--tb-text-faint);
 }
-
 .tb2e.roll-dialog .manual-cancel:hover {
   color: var(--tb-red);
 }
-
 /* -------------------------------------------- */
 /*  Roll Dialog — Modifier Remove Button        */
 /* -------------------------------------------- */
-
 .tb2e.roll-dialog .mod-remove {
   all: unset;
   display: inline-flex;
@@ -2363,26 +2130,121 @@ body.theme-dark .tb2e.sheet .torchbearer-logo,
   color: var(--tb-text-faint);
   transition: all 0.15s;
 }
-
 .tb2e.roll-dialog .mod-remove:hover {
   color: var(--tb-red);
   background: rgba(220, 38, 38, 0.1);
 }
-
 /* -------------------------------------------- */
 /*  Roll Dialog — Afraid Helpers Disabled       */
 /* -------------------------------------------- */
-
 .tb2e.roll-dialog .helpers-disabled {
   font-size: 0.7rem;
   color: var(--tb-cond-afraid);
   font-style: italic;
 }
-
+/* -------------------------------------------- */
+/*  Utility                                     */
+/* -------------------------------------------- */
+.hidden {
+  display: none !important;
+}
+/* -------------------------------------------- */
+/*  Roll Dialog — Mode Toggle                   */
+/* -------------------------------------------- */
+.tb2e.roll-dialog .roll-dialog-mode-toggle {
+  all: unset;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.7rem;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--tb-frost-deep);
+  background: var(--tb-blue-glow-strong);
+  padding: 2px 8px;
+  border-radius: 3px;
+  cursor: pointer;
+  transition: background-color 0.15s, color 0.15s;
+}
+.tb2e.roll-dialog .roll-dialog-mode-toggle:hover:not(.locked) {
+  background: rgba(37, 99, 235, 0.4);
+  color: var(--tb-frost-bright);
+}
+.tb2e.roll-dialog .roll-dialog-mode-toggle.locked {
+  cursor: default;
+}
+.tb2e.roll-dialog .roll-dialog-mode-toggle .mode-caret {
+  font-size: 0.6rem;
+  opacity: 0.7;
+}
+/* -------------------------------------------- */
+/*  Roll Dialog — Challenge Selector            */
+/* -------------------------------------------- */
+.tb2e.roll-dialog .roll-dialog-challenge {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+.tb2e.roll-dialog .roll-dialog-challenge label {
+  font-family: var(--tb-font-heading);
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--tb-text-faint);
+}
+.tb2e.roll-dialog .roll-dialog-challenge select {
+  font-size: 0.9rem;
+  padding: 0.4rem 0.5rem;
+}
+/* -------------------------------------------- */
+/*  Advancement Dialog                          */
+/* -------------------------------------------- */
+.tb2e.advancement-dialog .advancement-dialog-body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.5rem 0;
+}
+.tb2e.advancement-dialog .advancement-dialog-title {
+  font-family: var(--tb-font-heading);
+  font-size: 1.3rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--tb-text-body);
+  margin: 0;
+}
+.tb2e.advancement-dialog .advancement-dialog-prompt {
+  color: var(--tb-text-faint);
+  font-size: 0.9rem;
+  margin: 0;
+}
+.tb2e.advancement-dialog .advancement-rating-display,
+.tb2e-advancement-card .advancement-card-rating {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-size: 1.4rem;
+  font-weight: bold;
+}
+.tb2e.advancement-dialog .advancement-rating-display .fa-arrow-right,
+.tb2e-advancement-card .advancement-card-rating .fa-arrow-right {
+  color: var(--tb-amber-bright);
+  font-size: 0.9rem;
+}
+.tb2e.advancement-dialog .advancement-rating.old,
+.tb2e-advancement-card .advancement-rating.old {
+  color: var(--tb-text-faint);
+}
+.tb2e.advancement-dialog .advancement-rating.new,
+.tb2e-advancement-card .advancement-rating.new {
+  color: var(--tb-amber);
+  text-shadow: 0 0 8px rgba(245, 158, 11, 0.4);
+}
 /* -------------------------------------------- */
 /*  Chat Roll Card                              */
 /* -------------------------------------------- */
-
 .tb2e-roll-card {
   border: 1px solid var(--tb-border);
   border-radius: 6px;
@@ -2390,7 +2252,6 @@ body.theme-dark .tb2e.sheet .torchbearer-logo,
   background: var(--tb-bg-raised);
   font-family: var(--tb-font-body);
 }
-
 .tb2e-roll-card .roll-card-header {
   display: flex;
   align-items: center;
@@ -2399,7 +2260,6 @@ body.theme-dark .tb2e.sheet .torchbearer-logo,
   background: var(--tb-bg-mid);
   border-bottom: 1px solid var(--tb-border);
 }
-
 .tb2e-roll-card .roll-card-portrait {
   width: 32px;
   height: 32px;
@@ -2407,31 +2267,26 @@ body.theme-dark .tb2e.sheet .torchbearer-logo,
   object-fit: cover;
   border: 1px solid var(--tb-border-light);
 }
-
 .tb2e-roll-card .roll-card-info {
   display: flex;
   flex-direction: column;
   line-height: 1.2;
 }
-
 .tb2e-roll-card .roll-card-name {
   font-weight: bold;
   font-size: 0.85rem;
   color: var(--tb-text-bright);
 }
-
 .tb2e-roll-card .roll-card-context {
   font-size: 0.8rem;
   color: var(--tb-text-dim);
   font-style: italic;
 }
-
 .tb2e-roll-card .roll-card-subtitle {
   font-size: 0.75rem;
   color: var(--tb-text-faint);
   font-style: italic;
 }
-
 .tb2e-roll-card .roll-card-test {
   font-family: var(--tb-font-heading);
   font-size: 0.8rem;
@@ -2439,7 +2294,6 @@ body.theme-dark .tb2e.sheet .torchbearer-logo,
   letter-spacing: 0.06em;
   color: var(--tb-blue);
 }
-
 .tb2e-roll-card .roll-card-breakdown {
   display: flex;
   flex-direction: column;
@@ -2447,7 +2301,6 @@ body.theme-dark .tb2e.sheet .torchbearer-logo,
   padding: 0.4rem 0.75rem;
   border-bottom: 1px solid var(--tb-border);
 }
-
 .tb2e-roll-card .breakdown-line {
   display: flex;
   align-items: center;
@@ -2455,33 +2308,26 @@ body.theme-dark .tb2e.sheet .torchbearer-logo,
   font-size: 0.8rem;
   color: var(--tb-steel);
 }
-
 .tb2e-roll-card .breakdown-line > i {
   color: var(--tb-blue);
   width: 1.2em;
   text-align: center;
 }
-
 .tb2e-roll-card .breakdown-label {
   flex: 1;
 }
-
 .tb2e-roll-card .breakdown-value {
   font-weight: bold;
 }
-
 .tb2e-roll-card .breakdown-modifier > i {
   color: var(--mod-color);
 }
-
 .tb2e-roll-card .breakdown-modifier .breakdown-label {
   color: var(--tb-text-dim);
 }
-
 .tb2e-roll-card .breakdown-modifier .breakdown-value {
   color: var(--mod-color);
 }
-
 .tb2e-roll-card .breakdown-total {
   display: flex;
   align-items: center;
@@ -2493,7 +2339,6 @@ body.theme-dark .tb2e.sheet .torchbearer-logo,
   margin-top: 0.2rem;
   border-top: 1px solid var(--tb-border);
 }
-
 .tb2e-roll-card .roll-card-dice {
   display: flex;
   flex-wrap: wrap;
@@ -2501,7 +2346,6 @@ body.theme-dark .tb2e.sheet .torchbearer-logo,
   padding: 0.5rem 0.75rem;
   justify-content: center;
 }
-
 .tb2e-roll-card .die-result {
   display: inline-flex;
   align-items: center;
@@ -2513,24 +2357,20 @@ body.theme-dark .tb2e.sheet .torchbearer-logo,
   font-size: 0.85rem;
   line-height: 1;
 }
-
 .tb2e-roll-card .die-success {
   background: var(--tb-blue);
   color: var(--tb-bg-white);
   box-shadow: 0 0 6px var(--tb-blue-glow-strong);
 }
-
 .tb2e-roll-card .die-fail {
   background: var(--tb-border);
   color: var(--tb-text-faint);
 }
-
 .tb2e-roll-card .die-sun {
   background: var(--tb-fail-color);
   color: var(--tb-bg-white);
   box-shadow: 0 0 6px rgba(234, 88, 12, 0.3);
 }
-
 .tb2e-roll-card .roll-card-tally {
   display: flex;
   justify-content: space-between;
@@ -2539,7 +2379,6 @@ body.theme-dark .tb2e.sheet .torchbearer-logo,
   color: var(--tb-steel);
   border-top: 1px solid var(--tb-border);
 }
-
 .tb2e-roll-card .roll-card-banner {
   display: flex;
   align-items: center;
@@ -2552,34 +2391,28 @@ body.theme-dark .tb2e.sheet .torchbearer-logo,
   letter-spacing: 0.08em;
   font-weight: bold;
 }
-
 .tb2e-roll-card .banner-pass {
   background: linear-gradient(135deg, var(--tb-banner-pass-from), var(--tb-banner-pass-to));
   color: var(--tb-banner-pass-text);
   border-top: 2px solid var(--tb-banner-pass-border);
 }
-
 .tb2e-roll-card .banner-fail {
   background: linear-gradient(135deg, var(--tb-banner-fail-from), var(--tb-banner-fail-to));
   color: var(--tb-banner-fail-text);
   border-top: 2px solid var(--tb-banner-fail-border);
 }
-
 .tb2e-roll-card .banner-disposition {
   background: linear-gradient(135deg, var(--tb-banner-disposition-from), var(--tb-banner-disposition-to));
   color: var(--tb-banner-disposition-text);
   border-top: 2px solid var(--tb-banner-disposition-border);
 }
-
 .tb2e-roll-card .tally-ability {
   color: var(--tb-blue);
   font-weight: bold;
 }
-
 /* -------------------------------------------- */
 /*  Chat Roll Card — BL Badge                   */
 /* -------------------------------------------- */
-
 .tb2e-roll-card .roll-card-bl-badge {
   display: inline-flex;
   align-items: center;
@@ -2594,20 +2427,16 @@ body.theme-dark .tb2e.sheet .torchbearer-logo,
   border-radius: 3px;
   margin-left: 0.25rem;
 }
-
 .tb2e-roll-card .roll-card-bl-badge i {
   font-size: 0.55rem;
 }
-
 /* -------------------------------------------- */
 /*  Chat Roll Card — Post-Roll Success Mods     */
 /* -------------------------------------------- */
-
 .tb2e-roll-card .roll-card-post-mods {
   padding: 0.25rem 0.75rem;
   border-top: 1px dashed var(--tb-border);
 }
-
 .tb2e-roll-card .post-mod-line {
   display: flex;
   align-items: center;
@@ -2615,22 +2444,18 @@ body.theme-dark .tb2e.sheet .torchbearer-logo,
   font-size: 0.8rem;
   color: var(--tb-text-dim);
 }
-
 .tb2e-roll-card .post-mod-line i {
   color: var(--mod-color, var(--tb-text-faint));
   font-size: 0.75rem;
 }
-
 .tb2e-roll-card .post-mod-value {
   font-weight: bold;
   margin-left: auto;
   color: var(--mod-color, var(--tb-text-dim));
 }
-
 /* -------------------------------------------- */
 /*  Chat Roll Card — Post-Roll Action Buttons   */
 /* -------------------------------------------- */
-
 .tb2e-roll-card .roll-card-actions {
   display: flex;
   flex-direction: column;
@@ -2639,7 +2464,6 @@ body.theme-dark .tb2e.sheet .torchbearer-logo,
   border-top: 1px solid var(--tb-border);
   background: var(--tb-bg-surface);
 }
-
 .tb2e-roll-card .post-roll-btn {
   all: unset;
   display: inline-flex;
@@ -2657,65 +2481,53 @@ body.theme-dark .tb2e.sheet .torchbearer-logo,
   cursor: pointer;
   transition: all 0.15s;
 }
-
 .tb2e-roll-card .post-roll-label {
   display: flex;
   align-items: center;
   gap: 0.4em;
 }
-
 .tb2e-roll-card .post-roll-summary {
   font-size: 0.75rem;
   color: var(--tb-text-dim);
   font-weight: 400;
 }
-
 .tb2e-roll-card .post-roll-btn:hover {
   border-color: var(--tb-blue);
   color: var(--tb-blue);
   background: var(--tb-blue-glow);
 }
-
 .tb2e-roll-card .fate-luck-btn {
   color: var(--tb-amber-dim);
   border-color: var(--tb-amber);
 }
-
 .tb2e-roll-card .fate-luck-btn:hover {
   background: var(--tb-amber-glow);
   color: var(--tb-amber-bright);
 }
-
 .tb2e-roll-card .deeper-btn {
   color: var(--tb-amber-dim);
   border-color: var(--tb-amber);
 }
-
 .tb2e-roll-card .deeper-btn:hover {
   background: var(--tb-amber-glow);
   color: var(--tb-amber-bright);
 }
-
 .tb2e-roll-card .of-course-btn {
   color: var(--tb-blue-dim);
   border-color: var(--tb-blue);
 }
-
 .tb2e-roll-card .of-course-btn:hover {
   background: var(--tb-blue-glow);
   color: var(--tb-blue-bright);
 }
-
 .tb2e-roll-card .finalize-btn {
   color: var(--tb-green-bright);
   border-color: var(--tb-green);
 }
-
 .tb2e-roll-card .finalize-btn:hover {
   background: var(--tb-green-subtle);
   color: var(--tb-green-bright);
 }
-
 .tb2e-roll-card .nature-tax-prompt {
   display: flex;
   align-items: center;
@@ -2723,12 +2535,10 @@ body.theme-dark .tb2e.sheet .torchbearer-logo,
   font-size: 0.8rem;
   color: var(--tb-text-body);
 }
-
 .tb2e-roll-card .nature-tax-btn {
   padding: 0.2rem 0.5rem;
   font-size: 0.75rem;
 }
-
 .tb2e-roll-card .nature-tax-notice {
   font-size: 0.75rem;
   padding: 0.25rem 0.5rem;
@@ -2737,19 +2547,16 @@ body.theme-dark .tb2e.sheet .torchbearer-logo,
   align-items: center;
   gap: 0.3rem;
 }
-
 .tb2e-roll-card .nature-tax-notice.outside {
   background: var(--tb-amber-glow);
   color: var(--tb-amber);
   border: 1px solid var(--tb-amber);
 }
-
 .tb2e-roll-card .nature-tax-notice.within {
   background: var(--tb-green-subtle);
   color: var(--tb-green);
   border: 1px solid var(--tb-green);
 }
-
 /* Synergy section on chat card */
 .tb2e-roll-card .roll-card-helpers {
   padding: 0.4rem 0.75rem;
@@ -2771,13 +2578,10 @@ body.theme-dark .tb2e.sheet .torchbearer-logo,
   background: var(--tb-amber-glow);
   color: var(--tb-amber-bright);
 }
-
 /* Die results — rerolled and luck markers */
-
 .tb2e-roll-card .die-result.die-rerolled {
   position: relative;
 }
-
 .tb2e-roll-card .die-result.die-rerolled::after {
   content: "";
   position: absolute;
@@ -2789,125 +2593,16 @@ body.theme-dark .tb2e.sheet .torchbearer-logo,
   border-radius: 50%;
   background: var(--tb-amber);
 }
-
 .tb2e-roll-card .die-result.die-luck {
   border-style: dashed;
 }
-
 .tb2e-roll-card .die-result.die-of-course {
   border-style: dashed;
   border-color: var(--tb-amber);
 }
-
-/* -------------------------------------------- */
-/*  Advance Button (Sheet)                      */
-/* -------------------------------------------- */
-
-.tb2e.sheet .btn-advance {
-  all: unset;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 22px;
-  height: 22px;
-  border-radius: 50%;
-  background: linear-gradient(135deg, var(--tb-amber), var(--tb-amber-bright));
-  color: var(--tb-bg-white);
-  font-size: 0.7rem;
-  cursor: pointer;
-  box-shadow: 0 0 6px rgba(245, 158, 11, 0.4);
-  transition: transform 0.15s, box-shadow 0.15s;
-  animation: tb2e-advance-pulse 2s ease-in-out infinite;
-}
-
-.tb2e.sheet .btn-advance:hover {
-  transform: scale(1.15);
-  box-shadow: 0 0 10px rgba(245, 158, 11, 0.6);
-}
-
-.tb2e.sheet .btn-advance-spacer {
-  display: inline-block;
-  width: 22px;
-  height: 22px;
-}
-
-@keyframes tb2e-advance-pulse {
-  0%, 100% { box-shadow: 0 0 6px rgba(245, 158, 11, 0.4); }
-  50% { box-shadow: 0 0 12px rgba(245, 158, 11, 0.7); }
-}
-
-/* Adjust ability-row grid to 4 columns */
-.tb2e.sheet .ability-row {
-  grid-template-columns: 7rem 22px 3.5rem 1fr;
-}
-
-/* Nature row — 5 columns: name | advance | current/max | bubbles | actions */
-.tb2e.sheet .nature-ability-row {
-  grid-template-columns: 7rem 22px auto 1fr auto;
-}
-
-/* Adjust skill-row grid to 5 columns */
-.tb2e.sheet .skill-row {
-  grid-template-columns: 1fr 1.5rem 22px 3rem 9rem;
-}
-
-/* -------------------------------------------- */
-/*  Advancement Dialog                          */
-/* -------------------------------------------- */
-
-.tb2e.advancement-dialog .advancement-dialog-body {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0.75rem;
-  padding: 0.5rem 0;
-}
-
-.tb2e.advancement-dialog .advancement-dialog-title {
-  font-family: var(--tb-font-heading);
-  font-size: 1.3rem;
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
-  color: var(--tb-text-body);
-  margin: 0;
-}
-
-.tb2e.advancement-dialog .advancement-dialog-prompt {
-  color: var(--tb-text-faint);
-  font-size: 0.9rem;
-  margin: 0;
-}
-
-.tb2e.advancement-dialog .advancement-rating-display,
-.tb2e-advancement-card .advancement-card-rating {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  font-size: 1.4rem;
-  font-weight: bold;
-}
-
-.tb2e.advancement-dialog .advancement-rating-display .fa-arrow-right,
-.tb2e-advancement-card .advancement-card-rating .fa-arrow-right {
-  color: var(--tb-amber-bright);
-  font-size: 0.9rem;
-}
-
-.tb2e.advancement-dialog .advancement-rating.old,
-.tb2e-advancement-card .advancement-rating.old {
-  color: var(--tb-text-faint);
-}
-
-.tb2e.advancement-dialog .advancement-rating.new,
-.tb2e-advancement-card .advancement-rating.new {
-  color: var(--tb-amber);
-  text-shadow: 0 0 8px rgba(245, 158, 11, 0.4);
-}
-
 /* -------------------------------------------- */
 /*  Advancement Chat Card                       */
 /* -------------------------------------------- */
-
 .tb2e-advancement-card {
   border: 1px solid var(--tb-amber-bright);
   border-radius: 6px;
@@ -2915,7 +2610,6 @@ body.theme-dark .tb2e.sheet .torchbearer-logo,
   background: var(--tb-amber-bg);
   font-family: var(--tb-font-body);
 }
-
 .tb2e-advancement-card .advancement-card-header {
   display: flex;
   align-items: center;
@@ -2924,7 +2618,6 @@ body.theme-dark .tb2e.sheet .torchbearer-logo,
   background: var(--tb-amber-glow);
   border-bottom: 1px solid var(--tb-amber-glow-bright);
 }
-
 .tb2e-advancement-card .advancement-card-portrait {
   width: 32px;
   height: 32px;
@@ -2932,19 +2625,16 @@ body.theme-dark .tb2e.sheet .torchbearer-logo,
   object-fit: cover;
   border: 1px solid var(--tb-amber-bright);
 }
-
 .tb2e-advancement-card .advancement-card-info {
   display: flex;
   flex-direction: column;
   line-height: 1.2;
 }
-
 .tb2e-advancement-card .advancement-card-name {
   font-weight: bold;
   font-size: 0.85rem;
   color: var(--tb-text-bright);
 }
-
 .tb2e-advancement-card .advancement-card-skill {
   font-family: var(--tb-font-heading);
   font-size: 0.8rem;
@@ -2952,7 +2642,6 @@ body.theme-dark .tb2e.sheet .torchbearer-logo,
   letter-spacing: 0.06em;
   color: var(--tb-amber-bright);
 }
-
 .tb2e-advancement-card .advancement-card-banner {
   display: flex;
   align-items: center;
@@ -2968,7 +2657,6 @@ body.theme-dark .tb2e.sheet .torchbearer-logo,
   color: var(--tb-amber-dim);
   border-top: 2px solid var(--tb-amber-bright);
 }
-
 .tb2e-advancement-card .advancement-card-rating {
   display: flex;
   align-items: center;
@@ -2979,107 +2667,38 @@ body.theme-dark .tb2e.sheet .torchbearer-logo,
   font-weight: bold;
   background: var(--tb-amber-bg);
 }
-
 .tb2e-advancement-card .advancement-card-rating .advancement-rating.old {
   color: var(--tb-text-faint);
 }
-
 .tb2e-advancement-card .advancement-card-rating .advancement-rating.new {
   color: var(--tb-amber-bright);
 }
-
-/* -------------------------------------------- */
-/*  Utility                                     */
-/* -------------------------------------------- */
-
-.hidden {
-  display: none !important;
-}
-
-/* -------------------------------------------- */
-/*  Roll Dialog — Mode Toggle                   */
-/* -------------------------------------------- */
-
-.tb2e.roll-dialog .roll-dialog-mode-toggle {
-  all: unset;
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
-  font-size: 0.7rem;
-  font-weight: bold;
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
-  color: var(--tb-frost-deep);
-  background: var(--tb-blue-glow-strong);
-  padding: 2px 8px;
-  border-radius: 3px;
-  cursor: pointer;
-  transition: background-color 0.15s, color 0.15s;
-}
-
-.tb2e.roll-dialog .roll-dialog-mode-toggle:hover:not(.locked) {
-  background: rgba(37, 99, 235, 0.4);
-  color: var(--tb-frost-bright);
-}
-
-.tb2e.roll-dialog .roll-dialog-mode-toggle.locked {
-  cursor: default;
-}
-
-.tb2e.roll-dialog .roll-dialog-mode-toggle .mode-caret {
-  font-size: 0.6rem;
-  opacity: 0.7;
-}
-
-/* -------------------------------------------- */
-/*  Roll Dialog — Challenge Selector            */
-/* -------------------------------------------- */
-
-.tb2e.roll-dialog .roll-dialog-challenge {
-  display: flex;
-  flex-direction: column;
-  gap: 0.25rem;
-}
-
-.tb2e.roll-dialog .roll-dialog-challenge label {
-  font-family: var(--tb-font-heading);
-  font-size: 0.8rem;
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
-  color: var(--tb-text-faint);
-}
-
-.tb2e.roll-dialog .roll-dialog-challenge select {
-  font-size: 0.9rem;
-  padding: 0.4rem 0.5rem;
-}
-
 /* -------------------------------------------- */
 /*  Chat — Pending Versus Banner                */
 /* -------------------------------------------- */
-
 .tb2e-roll-card .banner-pending {
   background: linear-gradient(135deg, var(--tb-banner-pending-from), var(--tb-banner-pending-to));
   color: var(--tb-banner-pending-text);
   border-top: 2px solid var(--tb-banner-pending-border);
   animation: tb2e-pending-pulse 2.5s ease-in-out infinite;
 }
-
 .tb2e-roll-card .banner-resolved {
   background: linear-gradient(135deg, var(--tb-banner-resolved-from), var(--tb-banner-resolved-to));
   color: var(--tb-banner-resolved-text);
   border-top: 2px solid var(--tb-banner-resolved-border);
 }
-
 @keyframes tb2e-pending-pulse {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.7; }
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.7;
+  }
 }
-
 /* -------------------------------------------- */
 /*  Chat — Versus Resolution Card               */
 /* -------------------------------------------- */
-
 .tb2e-versus-card {
   border: 1px solid var(--tb-border);
   border-radius: 6px;
@@ -3087,7 +2706,6 @@ body.theme-dark .tb2e.sheet .torchbearer-logo,
   background: var(--tb-bg-raised);
   font-family: var(--tb-font-body);
 }
-
 .tb2e-versus-card .versus-card-header {
   display: flex;
   align-items: center;
@@ -3096,7 +2714,6 @@ body.theme-dark .tb2e.sheet .torchbearer-logo,
   background: var(--tb-bg-mid);
   border-bottom: 1px solid var(--tb-border);
 }
-
 .tb2e-versus-card .versus-card-title {
   font-family: var(--tb-font-heading);
   font-size: 0.9rem;
@@ -3105,14 +2722,12 @@ body.theme-dark .tb2e.sheet .torchbearer-logo,
   color: var(--tb-blue);
   font-weight: bold;
 }
-
 .tb2e-versus-card .versus-combatants {
   display: flex;
   align-items: center;
   padding: 0.75rem;
   gap: 0.5rem;
 }
-
 .tb2e-versus-card .versus-combatant {
   flex: 1;
   display: flex;
@@ -3121,7 +2736,6 @@ body.theme-dark .tb2e.sheet .torchbearer-logo,
   gap: 0.25rem;
   text-align: center;
 }
-
 .tb2e-versus-card .versus-portrait {
   width: 48px;
   height: 48px;
@@ -3130,18 +2744,15 @@ body.theme-dark .tb2e.sheet .torchbearer-logo,
   border: 2px solid var(--tb-border-light);
   transition: border-color 0.2s, box-shadow 0.2s;
 }
-
 .tb2e-versus-card .versus-winner .versus-portrait {
   border-color: var(--tb-blue);
   box-shadow: 0 0 10px var(--tb-blue-glow-strong);
 }
-
 .tb2e-versus-card .versus-name {
   font-weight: bold;
   font-size: 0.85rem;
   color: var(--tb-text-bright);
 }
-
 .tb2e-versus-card .versus-skill {
   font-family: var(--tb-font-heading);
   font-size: 0.75rem;
@@ -3149,13 +2760,11 @@ body.theme-dark .tb2e.sheet .torchbearer-logo,
   letter-spacing: 0.06em;
   color: var(--tb-text-dim);
 }
-
 .tb2e-versus-card .versus-successes {
   font-size: 0.8rem;
   font-weight: bold;
   color: var(--tb-steel);
 }
-
 .tb2e-versus-card .versus-divider {
   font-family: var(--tb-font-heading);
   font-size: 1.1rem;
@@ -3165,7 +2774,6 @@ body.theme-dark .tb2e.sheet .torchbearer-logo,
   letter-spacing: 0.1em;
   flex-shrink: 0;
 }
-
 .tb2e-versus-card .versus-banner {
   display: flex;
   align-items: center;
@@ -3181,25 +2789,105 @@ body.theme-dark .tb2e.sheet .torchbearer-logo,
   color: var(--tb-banner-pass-text);
   border-top: 2px solid var(--tb-banner-pass-border);
 }
-
 .tb2e-versus-card .versus-winner-name {
   color: var(--tb-blue-dim);
 }
-
+/* ============================================ */
+/*  Nature Crisis Chat Card                     */
+/* ============================================ */
+.tb2e-nature-crisis {
+  padding: 0.75rem;
+  background: var(--tb-bg-raised);
+  border: 2px solid var(--tb-amber);
+  border-radius: var(--tb-radius-lg);
+}
+.tb2e-nature-crisis .crisis-header {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+.tb2e-nature-crisis .crisis-portrait {
+  border-radius: 50%;
+  border: 2px solid var(--tb-amber);
+}
+.tb2e-nature-crisis .crisis-title {
+  margin: 0;
+  font-family: var(--tb-font-logo);
+  font-size: 1.1rem;
+  color: var(--tb-amber);
+}
+.tb2e-nature-crisis .crisis-text {
+  font-size: 0.8rem;
+  color: var(--tb-text-body);
+  line-height: 1.4;
+  margin: 0 0 0.5rem;
+}
+.tb2e-nature-crisis .crisis-form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+.tb2e-nature-crisis .crisis-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+.tb2e-nature-crisis .crisis-field label {
+  font-size: 0.75rem;
+  font-weight: bold;
+  color: var(--tb-text-dim);
+}
+.tb2e-nature-crisis .crisis-trait-select,
+.tb2e-nature-crisis .crisis-new-name {
+  padding: 0.25rem 0.4rem;
+  font-size: 0.8rem;
+  border: 1px solid var(--tb-border);
+  border-radius: var(--tb-radius);
+  background: var(--tb-bg-white);
+  color: var(--tb-text-body);
+}
+.tb2e-nature-crisis .nature-crisis-confirm {
+  margin-top: 0.3rem;
+  padding: 0.35rem 0.75rem;
+  border: 1px solid var(--tb-amber);
+  border-radius: var(--tb-radius);
+  background: var(--tb-amber-glow);
+  color: var(--tb-amber);
+  font-weight: bold;
+  font-size: 0.8rem;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+.tb2e-nature-crisis .nature-crisis-confirm:hover {
+  background: var(--tb-amber);
+  color: var(--tb-bg-white);
+}
+.tb2e-nature-crisis .crisis-resolved {
+  font-size: 0.8rem;
+  color: var(--tb-text-body);
+}
+.tb2e-nature-crisis .crisis-retirement {
+  font-weight: bold;
+  color: var(--tb-red);
+  margin-top: 0.3rem;
+}
+.tb2e-nature-crisis .crisis-no-traits {
+  font-size: 0.8rem;
+  color: var(--tb-text-faint);
+  font-style: italic;
+}
 /* ============================================ */
 /*  Conflict Tracker                            */
 /* ============================================ */
-
 .tb2e-conflict-header {
   padding: 0.5rem;
 }
-
 .tb2e-conflict-header .encounter-controls {
   display: flex;
   align-items: center;
   gap: 0.5rem;
 }
-
 .tb2e-conflict-header .encounter-title {
   display: flex;
   align-items: center;
@@ -3209,35 +2897,27 @@ body.theme-dark .tb2e.sheet .torchbearer-logo,
   font-weight: bold;
   color: var(--tb-text-body);
 }
-
 .tb2e-conflict-header .encounter-title i {
   color: var(--tb-blue);
 }
-
 .tb2e-conflict-header .encounter-context-menu {
   cursor: pointer;
   color: var(--tb-text-dim);
 }
-
 .tb2e-conflict-header .encounter-context-menu:hover {
   color: var(--tb-blue);
 }
-
 /* Conflict body */
-
 .tb2e-conflict-body {
   padding: 0 0.5rem;
 }
-
 .tb2e-conflict-body .conflict-empty {
   text-align: center;
   color: var(--tb-text-faint);
   padding: 2rem 0;
   font-style: italic;
 }
-
 /* Group sections */
-
 .conflict-group {
   margin-bottom: 0.75rem;
   border: 1px solid var(--tb-border);
@@ -3245,7 +2925,6 @@ body.theme-dark .tb2e.sheet .torchbearer-logo,
   background: var(--tb-bg-raised);
   overflow: hidden;
 }
-
 .conflict-group .group-header {
   display: flex;
   align-items: center;
@@ -3260,37 +2939,30 @@ body.theme-dark .tb2e.sheet .torchbearer-logo,
   text-transform: uppercase;
   letter-spacing: 0.05em;
 }
-
 .conflict-group .group-disposition {
   font-family: inherit;
   font-size: 0.75rem;
   font-weight: normal;
   color: var(--tb-blue);
 }
-
 /* Combatant list */
-
 .conflict-group .group-combatants {
   list-style: none;
   margin: 0;
   padding: 0;
 }
-
 .conflict-group .combatant {
   padding: 0.3rem 0.6rem;
   border-bottom: 1px solid var(--tb-bg-mid);
 }
-
 .conflict-group .combatant:last-child {
   border-bottom: none;
 }
-
 .conflict-group .combatant-info {
   display: flex;
   align-items: center;
   gap: 0.4rem;
 }
-
 .conflict-group .combatant-img {
   width: 24px;
   height: 24px;
@@ -3299,7 +2971,6 @@ body.theme-dark .tb2e.sheet .torchbearer-logo,
   object-fit: cover;
   flex-shrink: 0;
 }
-
 .conflict-group .combatant-name {
   flex: 1;
   font-size: 0.8rem;
@@ -3308,34 +2979,27 @@ body.theme-dark .tb2e.sheet .torchbearer-logo,
   overflow: hidden;
   text-overflow: ellipsis;
 }
-
 .conflict-group .captain-icon {
   font-size: 0.7rem;
   margin-right: 0.15rem;
   color: var(--tb-border-light);
 }
-
 .conflict-group .captain-icon.fa-solid {
   color: var(--tb-cond-hungry);
 }
-
 .conflict-group .captain-icon[data-action] {
   cursor: pointer;
 }
-
 .conflict-group .captain-icon[data-action]:hover {
   color: var(--tb-amber);
 }
-
 .conflict-group .combatant-disposition {
   font-size: 0.75rem;
   font-weight: 600;
   color: var(--tb-blue);
   flex-shrink: 0;
 }
-
 /* Disposition bar */
-
 .disposition-bar {
   height: 5px;
   background: var(--tb-border);
@@ -3343,21 +3007,17 @@ body.theme-dark .tb2e.sheet .torchbearer-logo,
   margin-top: 0.2rem;
   overflow: hidden;
 }
-
 .disposition-bar .disposition-fill {
   height: 100%;
   background: linear-gradient(90deg, var(--tb-blue), var(--tb-blue-bright));
   border-radius: 3px;
   transition: width 0.3s ease;
 }
-
 /* Group controls */
-
 .conflict-group .group-controls {
   padding: 0.3rem 0.6rem;
   border-top: 1px solid var(--tb-bg-mid);
 }
-
 .conflict-group .add-combatant-select {
   width: 100%;
   font-size: 0.75rem;
@@ -3367,13 +3027,10 @@ body.theme-dark .tb2e.sheet .torchbearer-logo,
   background: var(--tb-bg-white);
   color: var(--tb-steel-bright);
 }
-
 /* Footer controls */
-
 .tb2e-conflict-footer {
   padding: 0.5rem;
 }
-
 .tb2e-conflict-footer .conflict-control {
   display: flex;
   align-items: center;
@@ -3391,30 +3048,24 @@ body.theme-dark .tb2e.sheet .torchbearer-logo,
   transition: background 0.2s;
   margin-bottom: 0.25rem;
 }
-
 .tb2e-conflict-footer .conflict-control:hover:not(:disabled) {
   background: linear-gradient(135deg, var(--tb-blue-bright), var(--tb-blue));
 }
-
 .tb2e-conflict-footer .conflict-control:disabled {
   opacity: 0.5;
   cursor: not-allowed;
 }
-
 .tb2e-conflict-footer .conflict-control[data-action="endConflict"] {
   background: linear-gradient(135deg, var(--tb-red), var(--tb-red-dim));
 }
-
 .tb2e-conflict-footer .conflict-control[data-action="endConflict"]:hover {
   background: linear-gradient(135deg, var(--tb-red-bright), var(--tb-red));
 }
-
 .tb2e-conflict-footer .create-conflict-controls {
   display: flex;
   flex-direction: column;
   gap: 0.4rem;
 }
-
 .tb2e-conflict-footer .conflict-type-select {
   width: 100%;
   font-size: 0.85rem;
@@ -3424,18 +3075,15 @@ body.theme-dark .tb2e.sheet .torchbearer-logo,
   background: var(--tb-bg-raised);
   color: var(--tb-text-body);
 }
-
 /* ============================================ */
 /*  Inline Rolling Phase                        */
 /* ============================================ */
-
 .skill-picker {
   display: flex;
   gap: 0.3rem;
   padding: 0.4rem 0.6rem;
   border-top: 1px solid var(--tb-bg-mid);
 }
-
 .skill-option {
   flex: 1;
   padding: 0.3rem 0.5rem;
@@ -3447,12 +3095,10 @@ body.theme-dark .tb2e.sheet .torchbearer-logo,
   cursor: pointer;
   transition: background 0.15s, border-color 0.15s;
 }
-
 .skill-option:hover {
   background: var(--tb-frost);
   border-color: var(--tb-blue);
 }
-
 .roll-controls {
   display: flex;
   align-items: center;
@@ -3460,7 +3106,6 @@ body.theme-dark .tb2e.sheet .torchbearer-logo,
   padding: 0.4rem 0.6rem;
   border-top: 1px solid var(--tb-bg-mid);
 }
-
 /* Captain badge — small gold pill */
 .captain-badge {
   display: inline-block;
@@ -3476,7 +3121,6 @@ body.theme-dark .tb2e.sheet .torchbearer-logo,
   vertical-align: middle;
   margin-right: 0.2rem;
 }
-
 /* Help toggle — compact button */
 .help-toggle {
   display: inline-flex;
@@ -3492,27 +3136,22 @@ body.theme-dark .tb2e.sheet .torchbearer-logo,
   cursor: pointer;
   transition: all 0.15s;
 }
-
 .help-toggle:hover:not(:disabled) {
   border-color: var(--tb-green);
   color: var(--tb-green-bright);
 }
-
 .help-toggle.active {
   border-color: var(--tb-green);
   background: var(--tb-green-subtle);
   color: var(--tb-green-bright);
 }
-
 .help-toggle:disabled {
   opacity: 0.5;
   cursor: not-allowed;
 }
-
 .help-toggle .help-label {
   font-weight: 600;
 }
-
 .roll-button {
   display: flex;
   align-items: center;
@@ -3526,11 +3165,9 @@ body.theme-dark .tb2e.sheet .torchbearer-logo,
   cursor: pointer;
   transition: background 0.2s;
 }
-
 .roll-button:hover {
   background: linear-gradient(135deg, var(--tb-blue-bright), var(--tb-blue));
 }
-
 .dice-results {
   display: flex;
   flex-wrap: wrap;
@@ -3539,7 +3176,6 @@ body.theme-dark .tb2e.sheet .torchbearer-logo,
   padding: 0.4rem 0.6rem;
   border-top: 1px solid var(--tb-bg-mid);
 }
-
 .die-face {
   display: inline-flex;
   align-items: center;
@@ -3550,26 +3186,22 @@ body.theme-dark .tb2e.sheet .torchbearer-logo,
   font-size: 0.75rem;
   font-weight: bold;
 }
-
 .die-face.success {
   background: var(--tb-frost);
   color: var(--tb-blue-dim);
   border: 1px solid var(--tb-frost-deep);
 }
-
 .die-face.fail {
   background: var(--tb-bg-surface);
   color: var(--tb-text-faint);
   border: 1px solid var(--tb-border);
 }
-
 .dice-total {
   font-size: 0.8rem;
   font-weight: bold;
   color: var(--tb-blue);
   margin-left: 0.25rem;
 }
-
 .waiting-indicator {
   padding: 0.4rem 0.6rem;
   border-top: 1px solid var(--tb-bg-mid);
@@ -3578,19 +3210,14 @@ body.theme-dark .tb2e.sheet .torchbearer-logo,
   font-style: italic;
   text-align: center;
 }
-
 .group-combatants.compact .combatant {
   padding: 0.2rem 0.6rem;
 }
-
-/* ============================================ */
 /*  Inline Distribution Phase                   */
 /* ============================================ */
-
 .group-distribution {
   padding: 0.4rem 0.6rem;
 }
-
 .group-distribution .distribution-summary {
   display: flex;
   justify-content: space-between;
@@ -3600,22 +3227,18 @@ body.theme-dark .tb2e.sheet .torchbearer-logo,
   font-size: 0.75rem;
   color: var(--tb-text-dim);
 }
-
 .group-distribution .remaining-value {
   color: var(--tb-blue);
 }
-
 .group-distribution .remaining-value.invalid {
   color: var(--tb-red);
   font-weight: bold;
 }
-
 .group-distribution .distribution-list {
   list-style: none;
   margin: 0;
   padding: 0;
 }
-
 .group-distribution .distribution-row {
   display: flex;
   align-items: center;
@@ -3623,22 +3246,18 @@ body.theme-dark .tb2e.sheet .torchbearer-logo,
   padding: 0.25rem 0;
   border-bottom: 1px solid var(--tb-bg-surface);
 }
-
 .group-distribution .distribution-row:last-child {
   border-bottom: none;
 }
-
 .group-distribution .distribution-name {
   font-size: 0.8rem;
   color: var(--tb-text-body);
 }
-
 .group-distribution .captain-icon {
   color: var(--tb-cond-hungry);
   font-size: 0.7rem;
   margin-right: 0.15rem;
 }
-
 .group-distribution .disposition-value {
   width: 3.5rem;
   text-align: center;
@@ -3650,15 +3269,12 @@ body.theme-dark .tb2e.sheet .torchbearer-logo,
   border: 1px solid var(--tb-border-light);
   border-radius: 4px;
 }
-
 .group-distribution .distribute-button {
   margin-top: 0.4rem;
   font-size: 0.8rem;
   padding: 0.35rem;
 }
-
 /* Phase indicator in footer */
-
 .phase-indicator {
   display: flex;
   align-items: center;
@@ -3669,11 +3285,9 @@ body.theme-dark .tb2e.sheet .torchbearer-logo,
   color: var(--tb-text-dim);
   font-style: italic;
 }
-
 /* ============================================ */
 /*  Character Sheet — Disposition Display       */
 /* ============================================ */
-
 .character-header .conflict-disposition {
   grid-column: 1 / -1;
   display: flex;
@@ -3685,288 +3299,50 @@ body.theme-dark .tb2e.sheet .torchbearer-logo,
   border-radius: 6px;
   margin-top: 0.25rem;
 }
-
 .character-header .conflict-label {
   font-size: 0.8rem;
   color: var(--tb-blue-dim);
   font-weight: 600;
   white-space: nowrap;
 }
-
 .character-header .conflict-label i {
   margin-right: 0.3rem;
 }
-
 .character-header .conflict-disposition .disposition-bar {
   flex: 1;
   height: 8px;
   background: var(--tb-frost-bright);
   border-radius: 4px;
 }
-
 .character-header .conflict-disposition .disposition-fill {
   height: 100%;
   background: linear-gradient(90deg, var(--tb-blue), var(--tb-blue-bright));
   border-radius: 4px;
   transition: width 0.3s ease;
 }
-
 /* -------------------------------------------- */
 /*  Tracker Roll Card (compact for sidebar)     */
 /* -------------------------------------------- */
-
-.tracker-roll-card { margin: 0.25rem 0; }
-.tracker-roll-card .roll-card-portrait { width: 24px; height: 24px; }
-.tracker-roll-card .die-result { width: 22px; height: 22px; font-size: 0.75rem; }
-
-/* ============================================ */
-/*  Conflict Resolution Window                  */
-/* ============================================ */
-
-.conflict-window .window-content {
-  padding: 0;
+.tracker-roll-card {
+  margin: 0.25rem 0;
 }
-
-.conflict-window-content {
-  /* Action accent color tokens (from :root) */
-  --attack-hue: var(--tb-attack-hue);
-  --attack-light: var(--tb-attack-light);
-  --attack-bg: var(--tb-attack-bg);
-  --defend-hue: var(--tb-defend-hue);
-  --defend-light: var(--tb-defend-light);
-  --defend-bg: var(--tb-defend-bg);
-  --feint-hue: var(--tb-feint-hue);
-  --feint-light: var(--tb-feint-light);
-  --feint-bg: var(--tb-feint-bg);
-  --maneuver-hue: var(--tb-maneuver-hue);
-  --maneuver-light: var(--tb-maneuver-light);
-  --maneuver-bg: var(--tb-maneuver-bg);
-
-  /* Card dimensions */
-  --card-w: 68px;
-  --card-h: 96px;
-  --card-radius: 6px;
-
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-  font-family: system-ui, -apple-system, sans-serif;
-  background: var(--tb-bg-raised);
-  color: var(--tb-text-body);
+.tracker-roll-card .roll-card-portrait {
+  width: 24px;
+  height: 24px;
 }
-
-/* Header */
-
-.cw-header {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0.5rem 1rem;
-  background: linear-gradient(135deg, var(--tb-bg-dark), var(--tb-bg-darkest));
-  border-bottom: 1px solid var(--tb-border);
-}
-
-.cw-title {
-  font-family: var(--tb-font-logo);
-  font-size: 1rem;
-  font-weight: bold;
-  color: var(--tb-steel-bright);
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-}
-
-/* Grid layout: Team | Reveal | Team */
-
-.cw-grid {
-  display: grid;
-  grid-template-columns: 1fr auto 1fr;
-  grid-template-rows: auto repeat(3, 1fr) auto;
-  flex: 1;
-  overflow-y: auto;
-  min-height: 0;
-}
-
-/* Team column */
-
-.cw-team {
-  display: grid;
-  grid-template-rows: subgrid;
-  grid-row: 1 / -1;
-  border-right: 1px solid var(--tb-border);
-}
-
-.cw-team:last-child {
-  border-right: none;
-  border-left: 1px solid var(--tb-border);
-}
-
-.cw-team-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0.45rem 0.75rem;
-  background: linear-gradient(135deg, var(--tb-blue-glow), rgba(37,99,235,0.03));
-  border-bottom: 1px solid var(--tb-border);
-}
-
-.cw-team-name {
-  font-family: var(--tb-font-logo);
-  font-size: 0.82rem;
-  color: var(--tb-steel-bright);
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-}
-
-.cw-team-disp {
+.tracker-roll-card .die-result {
+  width: 22px;
+  height: 22px;
   font-size: 0.75rem;
-  font-weight: 600;
-  color: var(--tb-blue);
 }
-
-/* Order list */
-
-.cw-order-list {
-  padding: 0.35rem 0.65rem;
-  border-bottom: 1px solid var(--tb-border);
-  background: var(--tb-overlay-white-mid);
-}
-
-.cw-order-label {
-  font-size: 0.6rem;
-  font-weight: 600;
-  color: var(--tb-text-faint);
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  margin-bottom: 0.15rem;
-}
-
-.cw-order {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  counter-reset: order;
-}
-
-.cw-order-item {
-  counter-increment: order;
-  display: flex;
-  align-items: center;
-  gap: 0.35rem;
-  padding: 0.12rem 0;
-  font-size: 0.75rem;
-  color: var(--tb-text-body);
-}
-
-.cw-order-item::before {
-  content: counter(order) ".";
-  font-weight: 600;
-  color: var(--tb-text-faint);
-  font-size: 0.65rem;
-  min-width: 1rem;
-}
-
-.cw-order-img {
-  width: 20px;
-  height: 20px;
-  border-radius: 50%;
-  border: 1px solid var(--tb-border-light);
-  object-fit: cover;
-  flex-shrink: 0;
-}
-
-.cw-order-name {
-  flex: 1;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.cw-order-controls {
-  display: flex;
-  gap: 2px;
-  flex-shrink: 0;
-}
-
-.cw-order-btn {
-  width: 16px;
-  height: 16px;
-  padding: 0;
-  border: 1px solid var(--tb-border-light);
-  border-radius: 3px;
-  background: var(--tb-bg-white);
-  color: var(--tb-text-faint);
-  font-size: 0.5rem;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: all 0.15s;
-}
-
-.cw-order-btn:hover {
-  background: var(--tb-frost);
-  border-color: var(--tb-blue);
-  color: var(--tb-blue);
-}
-
-/* Volley rows */
-
-.cw-volley {
-  padding: 0.55rem 0.65rem;
-  border-bottom: 1px solid rgba(226,232,240,0.6);
-  min-height: 120px;
-}
-
-.cw-volley:last-child {
-  border-bottom: none;
-}
-
-.cw-volley-header {
-  display: flex;
-  align-items: center;
-  gap: 0.3rem;
-  margin-bottom: 0.4rem;
-}
-
-.cw-volley-badge {
-  font-family: var(--tb-font-logo);
-  font-size: 0.65rem;
-  font-weight: bold;
-  color: var(--tb-bg-white);
-  background: var(--tb-blue);
-  width: 20px;
-  height: 20px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-}
-
-.cw-volley-actor-img {
-  width: 18px;
-  height: 18px;
-  border-radius: 50%;
-  border: 1px solid var(--tb-border-light);
-  object-fit: cover;
-}
-
-.cw-volley-actor {
-  font-size: 0.72rem;
-  color: var(--tb-text-dim);
-  font-style: italic;
-}
-
-/* -------------------------------------------- */
+/* ============================================ */
 /*  Playing Cards — Core                        */
 /* -------------------------------------------- */
-
 .cw-card-row {
   display: flex;
   gap: 6px;
   align-items: flex-start;
 }
-
 /* Base card shape */
 .cw-card {
   width: var(--card-w);
@@ -3976,22 +3352,15 @@ body.theme-dark .tb2e.sheet .torchbearer-logo,
   cursor: pointer;
   transition: transform 0.2s ease, box-shadow 0.2s ease;
   flex-shrink: 0;
-  box-shadow:
-    0 1px 2px rgba(0,0,0,0.1),
-    0 3px 6px rgba(0,0,0,0.06);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1), 0 3px 6px rgba(0, 0, 0, 0.06);
 }
-
 .cw-card:hover {
   transform: translateY(-3px);
-  box-shadow:
-    0 3px 6px rgba(0,0,0,0.12),
-    0 6px 16px rgba(0,0,0,0.08);
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.12), 0 6px 16px rgba(0, 0, 0, 0.08);
 }
-
 /* -------------------------------------------- */
 /*  Playing Cards — Face Up                     */
 /* -------------------------------------------- */
-
 .cw-card-face {
   width: 100%;
   height: 100%;
@@ -4005,7 +3374,6 @@ body.theme-dark .tb2e.sheet .torchbearer-logo,
   position: relative;
   overflow: hidden;
 }
-
 /* Inner decorative frame */
 .cw-card-face::before {
   content: '';
@@ -4017,7 +3385,6 @@ body.theme-dark .tb2e.sheet .torchbearer-logo,
   opacity: 0.25;
   pointer-events: none;
 }
-
 /* Decorative watermark behind icon */
 .cw-card-face::after {
   content: '';
@@ -4028,7 +3395,6 @@ body.theme-dark .tb2e.sheet .torchbearer-logo,
   opacity: 0.06;
   pointer-events: none;
 }
-
 /* Corner pips */
 .cw-card-pip {
   position: absolute;
@@ -4037,26 +3403,22 @@ body.theme-dark .tb2e.sheet .torchbearer-logo,
   line-height: 1;
   opacity: 0.6;
 }
-
 .cw-card-pip.top-left {
   top: 5px;
   left: 6px;
   text-align: center;
 }
-
 .cw-card-pip.bottom-right {
   bottom: 5px;
   right: 6px;
   text-align: center;
   transform: rotate(180deg);
 }
-
 .cw-card-pip i {
   display: block;
   font-size: 0.45rem;
   margin-top: 1px;
 }
-
 /* Center icon */
 .cw-card-icon {
   font-size: 1.5rem;
@@ -4064,7 +3426,6 @@ body.theme-dark .tb2e.sheet .torchbearer-logo,
   position: relative;
   z-index: 1;
 }
-
 /* Card label */
 .cw-card-label {
   font-family: "MedievalSharp", cursive;
@@ -4074,11 +3435,9 @@ body.theme-dark .tb2e.sheet .torchbearer-logo,
   position: relative;
   z-index: 1;
 }
-
 /* -------------------------------------------- */
 /*  Card Color Variants                         */
 /* -------------------------------------------- */
-
 /* Attack — Crimson */
 .cw-card[data-action-key="attack"] .cw-card-face {
   border-color: var(--attack-light);
@@ -4088,7 +3447,6 @@ body.theme-dark .tb2e.sheet .torchbearer-logo,
 .cw-card[data-action-key="attack"] .cw-card-face::after {
   background: var(--attack-hue);
 }
-
 /* Defend — Steel Blue */
 .cw-card[data-action-key="defend"] .cw-card-face {
   border-color: var(--defend-light);
@@ -4098,7 +3456,6 @@ body.theme-dark .tb2e.sheet .torchbearer-logo,
 .cw-card[data-action-key="defend"] .cw-card-face::after {
   background: var(--defend-hue);
 }
-
 /* Feint — Amethyst */
 .cw-card[data-action-key="feint"] .cw-card-face {
   border-color: var(--feint-light);
@@ -4108,7 +3465,6 @@ body.theme-dark .tb2e.sheet .torchbearer-logo,
 .cw-card[data-action-key="feint"] .cw-card-face::after {
   background: var(--feint-hue);
 }
-
 /* Maneuver — Forest */
 .cw-card[data-action-key="maneuver"] .cw-card-face {
   border-color: var(--maneuver-light);
@@ -4118,52 +3474,36 @@ body.theme-dark .tb2e.sheet .torchbearer-logo,
 .cw-card[data-action-key="maneuver"] .cw-card-face::after {
   background: var(--maneuver-hue);
 }
-
 /* -------------------------------------------- */
 /*  Card States                                 */
 /* -------------------------------------------- */
-
 /* Selected state — lift + glow ring */
 .cw-card.selected {
   transform: translateY(-5px);
-  box-shadow:
-    0 0 0 2px var(--tb-blue),
-    0 4px 8px var(--tb-blue-glow-strong),
-    0 8px 20px var(--tb-blue-glow);
+  box-shadow: 0 0 0 2px var(--tb-blue), 0 4px 8px var(--tb-blue-glow-strong), 0 8px 20px var(--tb-blue-glow);
 }
-
 .cw-card.selected .cw-card-face {
   border-color: var(--tb-blue);
 }
-
 /* Locked own card — subtle dim */
 .cw-card.own-locked {
   opacity: 0.75;
   cursor: default;
 }
-
 .cw-card.own-locked:hover {
   transform: none;
-  box-shadow:
-    0 1px 2px rgba(0,0,0,0.1),
-    0 3px 6px rgba(0,0,0,0.06);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1), 0 3px 6px rgba(0, 0, 0, 0.06);
 }
-
 /* -------------------------------------------- */
 /*  Playing Cards — Face Down (Card Back)       */
 /* -------------------------------------------- */
-
 .cw-card.face-down {
   cursor: default;
 }
-
 .cw-card.face-down:hover {
   transform: none;
-  box-shadow:
-    0 1px 2px rgba(0,0,0,0.1),
-    0 3px 6px rgba(0,0,0,0.06);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1), 0 3px 6px rgba(0, 0, 0, 0.06);
 }
-
 .cw-card-back {
   width: 100%;
   height: 100%;
@@ -4173,29 +3513,22 @@ body.theme-dark .tb2e.sheet .torchbearer-logo,
   position: relative;
   overflow: hidden;
 }
-
 /* Inner frame */
 .cw-card-back::before {
   content: '';
   position: absolute;
   inset: 3px;
-  border: 1px solid rgba(255,255,255,0.25);
+  border: 1px solid rgba(255, 255, 255, 0.25);
   border-radius: 3px;
 }
-
 /* Diamond cross-hatch pattern */
 .cw-card-back-pattern {
   position: absolute;
   inset: 6px;
-  background:
-    linear-gradient(45deg, rgba(255,255,255,0.08) 25%, transparent 25%),
-    linear-gradient(-45deg, rgba(255,255,255,0.08) 25%, transparent 25%),
-    linear-gradient(45deg, transparent 75%, rgba(255,255,255,0.08) 75%),
-    linear-gradient(-45deg, transparent 75%, rgba(255,255,255,0.08) 75%);
+  background: linear-gradient(45deg, rgba(255, 255, 255, 0.08) 25%, transparent 25%), linear-gradient(-45deg, rgba(255, 255, 255, 0.08) 25%, transparent 25%), linear-gradient(45deg, transparent 75%, rgba(255, 255, 255, 0.08) 75%), linear-gradient(-45deg, transparent 75%, rgba(255, 255, 255, 0.08) 75%);
   background-size: 10px 10px;
   background-position: 0 0, 0 5px, 5px -5px, -5px 0;
 }
-
 /* Center medallion on card back */
 .cw-card-back-emblem {
   position: absolute;
@@ -4205,46 +3538,44 @@ body.theme-dark .tb2e.sheet .torchbearer-logo,
   width: 28px;
   height: 28px;
   border-radius: 50%;
-  border: 1.5px solid rgba(255,255,255,0.35);
+  border: 1.5px solid rgba(255, 255, 255, 0.35);
   display: flex;
   align-items: center;
   justify-content: center;
-  background: rgba(0,0,0,0.12);
+  background: rgba(0, 0, 0, 0.12);
   z-index: 1;
 }
-
 .cw-card-back-emblem i {
   font-size: 0.7rem;
-  color: rgba(255,255,255,0.5);
+  color: rgba(255, 255, 255, 0.5);
 }
-
 /* -------------------------------------------- */
 /*  Card Reveal Animation                       */
 /* -------------------------------------------- */
-
 @keyframes cardReveal {
-  0%   { transform: rotateY(90deg); opacity: 0.5; }
-  100% { transform: rotateY(0deg);  opacity: 1; }
+  0% {
+    transform: rotateY(90deg);
+    opacity: 0.5;
+  }
+  100% {
+    transform: rotateY(0deg);
+    opacity: 1;
+  }
 }
-
 .cw-card.just-revealed .cw-card-face {
   animation: cardReveal 0.4s ease-out;
 }
-
 /* -------------------------------------------- */
 /*  Volley Actions Layout                       */
 /* -------------------------------------------- */
-
 .cw-volley-actions {
   display: flex;
   align-items: flex-start;
   gap: 0.4rem;
 }
-
 .cw-volley-actions .cw-card-row {
   flex: 1;
 }
-
 .cw-volley-side {
   display: flex;
   flex-direction: column;
@@ -4252,9 +3583,7 @@ body.theme-dark .tb2e.sheet .torchbearer-logo,
   gap: 0.15rem;
   padding-top: 0.25rem;
 }
-
 /* Roll button */
-
 .cw-roll-btn {
   display: inline-flex;
   align-items: center;
@@ -4271,15 +3600,12 @@ body.theme-dark .tb2e.sheet .torchbearer-logo,
   box-shadow: 0 1px 3px var(--tb-blue-glow-strong);
   align-self: flex-start;
 }
-
 .cw-roll-btn:hover {
   background: linear-gradient(135deg, var(--tb-blue-bright), var(--tb-blue));
   transform: translateY(-1px);
   box-shadow: 0 2px 6px var(--tb-blue-glow-strong);
 }
-
 /* Result badge */
-
 .cw-result-badge {
   display: inline-flex;
   align-items: center;
@@ -4288,9 +3614,7 @@ body.theme-dark .tb2e.sheet .torchbearer-logo,
   color: var(--tb-green);
   font-weight: 600;
 }
-
 /* Reveal column */
-
 .cw-reveal-column {
   display: grid;
   grid-template-rows: subgrid;
@@ -4301,18 +3625,15 @@ body.theme-dark .tb2e.sheet .torchbearer-logo,
   border-left: 1px solid var(--tb-border);
   border-right: 1px solid var(--tb-border);
 }
-
 .cw-reveal-cell {
   display: flex;
   align-items: center;
   justify-content: center;
   border-bottom: 1px solid var(--tb-bg-mid);
 }
-
 .cw-reveal-cell:last-child {
   border-bottom: none;
 }
-
 .cw-reveal-btn {
   width: 28px;
   height: 28px;
@@ -4327,35 +3648,29 @@ body.theme-dark .tb2e.sheet .torchbearer-logo,
   align-items: center;
   justify-content: center;
   transition: all 0.2s;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
 }
-
 .cw-reveal-btn:hover {
   background: var(--tb-frost);
   border-color: var(--tb-blue);
   transform: scale(1.1);
   box-shadow: 0 2px 6px var(--tb-blue-glow);
 }
-
 .cw-revealed-icon {
   color: var(--tb-green);
   font-size: 0.8rem;
 }
-
 .cw-waiting-icon {
   color: var(--tb-border-light);
   font-size: 0.7rem;
 }
-
 /* Team footer (lock button) */
-
 .cw-team-footer {
   padding: 0.5rem 0.65rem;
   border-top: 1px solid var(--tb-border);
   text-align: center;
   background: var(--tb-overlay-white-mid);
 }
-
 .cw-lock-btn {
   display: inline-flex;
   align-items: center;
@@ -4371,25 +3686,20 @@ body.theme-dark .tb2e.sheet .torchbearer-logo,
   transition: all 0.2s;
   box-shadow: 0 2px 4px var(--tb-blue-glow-strong);
 }
-
 .cw-lock-btn:hover {
   background: linear-gradient(135deg, var(--tb-blue-bright), var(--tb-blue));
   transform: translateY(-1px);
   box-shadow: 0 3px 8px var(--tb-blue-glow-strong);
 }
-
 .cw-locked-badge {
   font-size: 0.72rem;
   color: var(--tb-green);
   font-weight: 600;
 }
-
 .cw-locked-badge i {
   margin-right: 0.2rem;
 }
-
 /* Peek button */
-
 .cw-peek-btn {
   width: 22px;
   height: 22px;
@@ -4406,22 +3716,18 @@ body.theme-dark .tb2e.sheet .torchbearer-logo,
   margin-left: 0.5rem;
   transition: all 0.15s ease;
 }
-
 .cw-peek-btn:hover {
   color: var(--tb-blue);
   border-color: var(--tb-blue);
   background: var(--tb-blue-glow);
 }
-
 /* Footer (new round button) */
-
 .cw-footer {
   padding: 0.6rem;
   border-top: 1px solid var(--tb-border-light);
   text-align: center;
   background: linear-gradient(180deg, var(--tb-bg-dark), var(--tb-bg-darkest));
 }
-
 .cw-new-round-btn {
   display: inline-flex;
   align-items: center;
@@ -4437,25 +3743,20 @@ body.theme-dark .tb2e.sheet .torchbearer-logo,
   transition: all 0.2s;
   box-shadow: 0 2px 6px var(--tb-blue-glow-strong);
 }
-
 .cw-new-round-btn:hover {
   background: linear-gradient(135deg, var(--tb-blue-bright), var(--tb-blue));
   transform: translateY(-1px);
 }
-
 /* Empty state */
-
 .cw-empty {
   text-align: center;
   color: var(--tb-text-faint);
   padding: 2rem;
   font-style: italic;
 }
-
 /* -------------------------------------------- */
 /*  Team Toggle Switch                          */
 /* -------------------------------------------- */
-
 .tb2e.sheet .team-switch {
   all: unset;
   display: flex;
@@ -4475,27 +3776,22 @@ body.theme-dark .tb2e.sheet .torchbearer-logo,
   cursor: pointer;
   transition: background 0.2s, border-color 0.2s, color 0.2s;
 }
-
 .tb2e.sheet .team-switch.team-party {
   background: var(--tb-blue-glow);
   border-color: var(--tb-blue-bright);
   color: var(--tb-blue-dim);
 }
-
 .tb2e.sheet .team-switch.team-gm {
   background: rgba(71, 85, 105, 0.1);
   border-color: var(--tb-steel-dim);
   color: var(--tb-steel-bright);
 }
-
 .tb2e.sheet .team-switch:hover {
   filter: brightness(1.1);
 }
-
 .tb2e.sheet .team-switch i {
   font-size: 0.7rem;
 }
-
 .tb2e.sheet .team-switch-track {
   position: relative;
   width: 24px;
@@ -4504,15 +3800,12 @@ body.theme-dark .tb2e.sheet .torchbearer-logo,
   background: var(--tb-border-light);
   transition: background 0.2s;
 }
-
 .tb2e.sheet .team-switch.team-party .team-switch-track {
   background: var(--tb-frost-bright);
 }
-
 .tb2e.sheet .team-switch.team-gm .team-switch-track {
   background: var(--tb-steel-dim);
 }
-
 .tb2e.sheet .team-switch-thumb {
   position: absolute;
   top: 1px;
@@ -4523,18 +3816,613 @@ body.theme-dark .tb2e.sheet .torchbearer-logo,
   background: var(--tb-blue);
   transition: transform 0.2s, background 0.2s;
 }
-
 .tb2e.sheet .team-switch.team-gm .team-switch-thumb {
   transform: translateX(12px);
   background: var(--tb-steel-bright);
 }
-
+/* ============================================ */
+/*  Conflict Resolution Window                  */
+/* ============================================ */
+.conflict-window .window-content {
+  padding: 0;
+}
+.conflict-window-content {
+  /* Action accent color tokens (from :root) */
+  --attack-hue: var(--tb-attack-hue);
+  --attack-light: var(--tb-attack-light);
+  --attack-bg: var(--tb-attack-bg);
+  --defend-hue: var(--tb-defend-hue);
+  --defend-light: var(--tb-defend-light);
+  --defend-bg: var(--tb-defend-bg);
+  --feint-hue: var(--tb-feint-hue);
+  --feint-light: var(--tb-feint-light);
+  --feint-bg: var(--tb-feint-bg);
+  --maneuver-hue: var(--tb-maneuver-hue);
+  --maneuver-light: var(--tb-maneuver-light);
+  --maneuver-bg: var(--tb-maneuver-bg);
+  /* Card dimensions */
+  --card-w: 68px;
+  --card-h: 96px;
+  --card-radius: 6px;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  font-family: system-ui, -apple-system, sans-serif;
+  background: var(--tb-bg-raised);
+  color: var(--tb-text-body);
+}
+/* Header */
+.cw-header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.5rem 1rem;
+  background: linear-gradient(135deg, var(--tb-bg-dark), var(--tb-bg-darkest));
+  border-bottom: 1px solid var(--tb-border);
+}
+.cw-title {
+  font-family: var(--tb-font-logo);
+  font-size: 1rem;
+  font-weight: bold;
+  color: var(--tb-steel-bright);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+/* Grid layout: Team | Reveal | Team */
+.cw-grid {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  grid-template-rows: auto repeat(3, 1fr) auto;
+  flex: 1;
+  overflow-y: auto;
+  min-height: 0;
+}
+/* Team column */
+.cw-team {
+  display: grid;
+  grid-template-rows: subgrid;
+  grid-row: 1 / -1;
+  border-right: 1px solid var(--tb-border);
+}
+.cw-team:last-child {
+  border-right: none;
+  border-left: 1px solid var(--tb-border);
+}
+.cw-team-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.45rem 0.75rem;
+  background: linear-gradient(135deg, var(--tb-blue-glow), rgba(37, 99, 235, 0.03));
+  border-bottom: 1px solid var(--tb-border);
+}
+.cw-team-name {
+  font-family: var(--tb-font-logo);
+  font-size: 0.82rem;
+  color: var(--tb-steel-bright);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+.cw-team-disp {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--tb-blue);
+}
+/* Order list */
+.cw-order-list {
+  padding: 0.35rem 0.65rem;
+  border-bottom: 1px solid var(--tb-border);
+  background: var(--tb-overlay-white-mid);
+}
+.cw-order-label {
+  font-size: 0.6rem;
+  font-weight: 600;
+  color: var(--tb-text-faint);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-bottom: 0.15rem;
+}
+.cw-order {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  counter-reset: order;
+}
+.cw-order-item {
+  counter-increment: order;
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.12rem 0;
+  font-size: 0.75rem;
+  color: var(--tb-text-body);
+}
+.cw-order-item::before {
+  content: counter(order) ".";
+  font-weight: 600;
+  color: var(--tb-text-faint);
+  font-size: 0.65rem;
+  min-width: 1rem;
+}
+.cw-order-img {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  border: 1px solid var(--tb-border-light);
+  object-fit: cover;
+  flex-shrink: 0;
+}
+.cw-order-name {
+  flex: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.cw-order-controls {
+  display: flex;
+  gap: 2px;
+  flex-shrink: 0;
+}
+.cw-order-btn {
+  width: 16px;
+  height: 16px;
+  padding: 0;
+  border: 1px solid var(--tb-border-light);
+  border-radius: 3px;
+  background: var(--tb-bg-white);
+  color: var(--tb-text-faint);
+  font-size: 0.5rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.15s;
+}
+.cw-order-btn:hover {
+  background: var(--tb-frost);
+  border-color: var(--tb-blue);
+  color: var(--tb-blue);
+}
+/* Volley rows */
+.cw-volley {
+  padding: 0.55rem 0.65rem;
+  border-bottom: 1px solid rgba(226, 232, 240, 0.6);
+  min-height: 120px;
+}
+.cw-volley:last-child {
+  border-bottom: none;
+}
+.cw-volley-header {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  margin-bottom: 0.4rem;
+}
+.cw-volley-badge {
+  font-family: var(--tb-font-logo);
+  font-size: 0.65rem;
+  font-weight: bold;
+  color: var(--tb-bg-white);
+  background: var(--tb-blue);
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.cw-volley-actor-img {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  border: 1px solid var(--tb-border-light);
+  object-fit: cover;
+}
+.cw-volley-actor {
+  font-size: 0.72rem;
+  color: var(--tb-text-dim);
+  font-style: italic;
+}
+/* ============================================ */
+/*  Conflict Window — Resolution Area           */
+/* ============================================ */
+.cw-resolution {
+  padding: 0.5rem 0.75rem;
+  border-top: 2px solid var(--tb-border);
+  background: linear-gradient(180deg, var(--tb-bg-raised), var(--tb-bg-surface));
+}
+.cw-resolution-header {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.4rem;
+}
+.cw-resolution-badge {
+  font-family: var(--tb-font-logo);
+  font-size: 0.8rem;
+  font-weight: bold;
+  color: var(--tb-steel-bright);
+  text-transform: uppercase;
+}
+.cw-resolution-resolved {
+  font-size: 0.7rem;
+  color: var(--tb-green);
+  font-weight: 600;
+}
+.cw-resolution-matchup {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  padding: 0.4rem 0;
+}
+.cw-resolution-side {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.2rem;
+  flex: 1;
+}
+.cw-resolution-actor {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--tb-text-body);
+}
+.cw-resolution-action {
+  font-family: var(--tb-font-logo);
+  font-size: 0.85rem;
+  font-weight: bold;
+  text-transform: uppercase;
+  padding: 0.15rem 0.5rem;
+  border-radius: 4px;
+}
+.cw-action-attack {
+  color: var(--tb-attack-hue);
+  background: var(--tb-attack-bg);
+}
+.cw-action-defend {
+  color: var(--tb-defend-hue);
+  background: var(--tb-defend-bg);
+}
+.cw-action-feint {
+  color: var(--tb-feint-hue);
+  background: var(--tb-feint-bg);
+}
+.cw-action-maneuver {
+  color: var(--tb-maneuver-hue);
+  background: var(--tb-maneuver-bg);
+}
+.cw-resolution-interaction {
+  font-size: 0.65rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 0.1rem 0.35rem;
+  border-radius: 3px;
+}
+.interaction-independent {
+  color: var(--tb-interaction-independent);
+  background: var(--tb-interaction-independent-bg);
+}
+.interaction-versus {
+  color: var(--tb-interaction-versus);
+  background: var(--tb-interaction-versus-bg);
+}
+.interaction-none {
+  color: var(--tb-interaction-none);
+  background: var(--tb-interaction-none-bg);
+}
+.cw-vs {
+  font-family: var(--tb-font-logo);
+  font-size: 0.9rem;
+  font-weight: bold;
+  color: var(--tb-text-faint);
+  text-transform: uppercase;
+}
+.cw-resolution-controls {
+  display: flex;
+  justify-content: center;
+  padding: 0.3rem 0;
+}
+/* Conflict window: combatant select */
+.cw-combatant-select {
+  flex: 1;
+  font-size: 0.72rem;
+  padding: 0.15rem 0.3rem;
+  border: 1px solid var(--tb-border-light);
+  border-radius: 4px;
+  background: var(--tb-bg-white);
+  color: var(--tb-steel-bright);
+  max-width: 160px;
+}
+.cw-hidden-actor {
+  color: var(--tb-text-faint);
+  font-style: italic;
+}
+/* Footer end conflict button */
+.cw-end-conflict-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.4rem 1rem;
+  border: none;
+  border-radius: 6px;
+  background: linear-gradient(135deg, var(--tb-red), var(--tb-red-dim));
+  color: var(--tb-bg-white);
+  font-family: var(--tb-font-logo);
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: all 0.2s;
+  margin-left: 0.5rem;
+}
+.cw-end-conflict-btn:hover {
+  background: linear-gradient(135deg, var(--tb-red-bright), var(--tb-red));
+}
+/* ============================================ */
+/*  Character Sheet — Conflict Panel            */
+/* ============================================ */
+.character-conflict-panel {
+  background: linear-gradient(135deg, var(--tb-frost), var(--tb-bg-raised));
+  border: 1px solid var(--tb-frost-bright);
+  border-radius: 6px;
+  margin: 0.5rem 1rem;
+  overflow: hidden;
+}
+.conflict-panel-header {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.4rem 0.75rem;
+  background: linear-gradient(135deg, var(--tb-blue-glow), rgba(37, 99, 235, 0.04));
+  border-bottom: 1px solid var(--tb-frost-bright);
+}
+.conflict-panel-title {
+  font-family: var(--tb-font-logo);
+  font-size: 0.85rem;
+  font-weight: bold;
+  color: var(--tb-blue-dim);
+  white-space: nowrap;
+}
+.conflict-panel-title i {
+  margin-right: 0.3rem;
+}
+.conflict-panel-hp {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--tb-blue);
+  white-space: nowrap;
+  margin-left: auto;
+}
+.conflict-panel-hp-bar {
+  flex: 0 0 80px;
+  height: 6px;
+  background: var(--tb-frost-bright);
+  border-radius: 3px;
+  overflow: hidden;
+}
+.conflict-panel-hp-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--tb-blue), var(--tb-blue-bright));
+  border-radius: 3px;
+  transition: width 0.3s;
+}
+.conflict-panel-role {
+  padding: 0.35rem 0.75rem;
+  border-bottom: 1px solid var(--tb-frost);
+}
+.conflict-role-badge.captain {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.2rem;
+  padding: 0.1rem 0.4rem;
+  border-radius: 8px;
+  background: var(--tb-amber-glow);
+  color: var(--tb-amber-dim);
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+.conflict-help-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.2rem;
+  padding: 0.15rem 0.4rem;
+  border: 1px solid var(--tb-neutral-border);
+  border-radius: 4px;
+  background: var(--tb-neutral-bg);
+  color: var(--tb-neutral-text);
+  font-size: 0.7rem;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.conflict-help-toggle:hover {
+  border-color: var(--tb-green);
+  color: var(--tb-green-bright);
+}
+.conflict-help-toggle.active {
+  border-color: var(--tb-green);
+  background: var(--tb-green-subtle);
+  color: var(--tb-green-bright);
+}
+.conflict-panel-section {
+  padding: 0.4rem 0.75rem;
+  border-bottom: 1px solid var(--tb-frost);
+}
+.conflict-section-label {
+  font-family: var(--tb-font-logo);
+  font-size: 0.75rem;
+  color: var(--tb-blue-dim);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 0.3rem;
+}
+.conflict-skill-picker {
+  display: flex;
+  gap: 0.3rem;
+}
+.conflict-skill-btn {
+  flex: 1;
+  padding: 0.3rem 0.5rem;
+  border: 1px solid var(--tb-border-light);
+  border-radius: 4px;
+  background: var(--tb-bg-white);
+  color: var(--tb-steel-bright);
+  font-size: 0.75rem;
+  cursor: pointer;
+  transition: background 0.15s, border-color 0.15s;
+}
+.conflict-skill-btn:hover {
+  background: var(--tb-frost);
+  border-color: var(--tb-blue);
+}
+.conflict-roll-area {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.conflict-roll-info {
+  font-size: 0.8rem;
+  color: var(--tb-steel-bright);
+}
+.conflict-roll-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0.3rem 0.6rem;
+  border: none;
+  border-radius: 4px;
+  background: linear-gradient(135deg, var(--tb-blue), var(--tb-blue-dim));
+  color: var(--tb-bg-white);
+  font-size: 0.75rem;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.conflict-roll-btn:hover {
+  background: linear-gradient(135deg, var(--tb-blue-bright), var(--tb-blue));
+}
+/* Distribution in conflict panel */
+.conflict-distribution .conflict-dist-summary {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.2rem 0;
+  margin-bottom: 0.3rem;
+  font-size: 0.75rem;
+  color: var(--tb-text-dim);
+}
+.conflict-dist-remaining.invalid {
+  color: var(--tb-red);
+  font-weight: bold;
+}
+.conflict-dist-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.conflict-dist-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.2rem 0;
+}
+.conflict-dist-name {
+  font-size: 0.8rem;
+  color: var(--tb-text-body);
+}
+.conflict-dist-name i {
+  color: var(--tb-cond-hungry);
+  font-size: 0.7rem;
+  margin-right: 0.15rem;
+}
+.conflict-dist-value {
+  width: 3.5rem;
+  text-align: center;
+  font-size: 0.8rem;
+  font-weight: bold;
+  padding: 0.2rem;
+  background: var(--tb-bg-white);
+  color: var(--tb-text-body);
+  border: 1px solid var(--tb-border-light);
+  border-radius: 4px;
+}
+.conflict-control-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.3rem;
+  width: 100%;
+  padding: 0.35rem;
+  margin-top: 0.3rem;
+  border: none;
+  border-radius: 4px;
+  background: linear-gradient(135deg, var(--tb-blue), var(--tb-blue-dim));
+  color: var(--tb-bg-white);
+  font-size: 0.75rem;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.conflict-control-btn:hover {
+  background: linear-gradient(135deg, var(--tb-blue-bright), var(--tb-blue));
+}
+/* Weapon area */
+.conflict-weapon-area {
+  display: flex;
+  gap: 0.3rem;
+  align-items: center;
+}
+.conflict-weapon-input {
+  flex: 1;
+  padding: 0.3rem 0.5rem;
+  border: 1px solid var(--tb-border-light);
+  border-radius: 4px;
+  font-size: 0.8rem;
+  background: var(--tb-bg-white);
+}
+.conflict-weapon-input:focus {
+  border-color: var(--tb-blue);
+  outline: none;
+  box-shadow: 0 0 0 2px var(--tb-blue-glow);
+}
+.conflict-weapon-area .conflict-control-btn {
+  width: auto;
+  margin-top: 0;
+  padding: 0.3rem 0.6rem;
+}
+.conflict-panel-weapon-display {
+  padding: 0.3rem 0.75rem;
+  font-size: 0.8rem;
+  color: var(--tb-steel-bright);
+  font-style: italic;
+}
+.conflict-panel-weapon-display i {
+  color: var(--tb-text-dim);
+  margin-right: 0.2rem;
+}
+/* Tracker: weapon indicator */
+.combatant-weapon {
+  font-size: 0.65rem;
+  color: var(--tb-text-dim);
+  margin-left: 0.1rem;
+}
+/* Tracker: help indicator (read-only in rolling phase) */
+.help-indicator {
+  font-size: 0.65rem;
+  color: var(--tb-green-bright);
+  font-weight: 600;
+  margin-left: auto;
+}
+/* Tracker: knocked out state */
+.combatant.knocked-out .combatant-name {
+  text-decoration: line-through;
+  color: var(--tb-text-faint);
+}
+.combatant.knocked-out .combatant-img {
+  opacity: 0.5;
+}
 /* ============================================ */
 /*  Monster Sheet                               */
 /* ============================================ */
-
 /* Monster Header */
-
 .tb2e.sheet.monster .monster-header {
   display: flex;
   align-items: center;
@@ -4545,7 +4433,6 @@ body.theme-dark .tb2e.sheet .torchbearer-logo,
   position: relative;
   flex-shrink: 0;
 }
-
 .tb2e.sheet.monster .monster-header::after {
   content: "";
   position: absolute;
@@ -4553,15 +4440,12 @@ body.theme-dark .tb2e.sheet .torchbearer-logo,
   background: radial-gradient(ellipse at 30% 50%, rgba(71, 85, 105, 0.08) 0%, transparent 70%);
   pointer-events: none;
 }
-
 .tb2e.sheet.monster .monster-header .portrait img {
   border-color: var(--tb-steel);
 }
-
 .tb2e.sheet.monster .monster-header .portrait img:hover {
   border-color: var(--tb-steel-bright);
 }
-
 .tb2e.sheet.monster .monster-header .conflict-disposition {
   grid-column: 1 / -1;
   display: flex;
@@ -4574,7 +4458,6 @@ body.theme-dark .tb2e.sheet .torchbearer-logo,
   flex: 0 0 100%;
   margin-top: 0.5rem;
 }
-
 .tb2e.sheet.monster .monster-header .conflict-label {
   white-space: nowrap;
   color: var(--tb-steel-bright);
@@ -4583,60 +4466,48 @@ body.theme-dark .tb2e.sheet .torchbearer-logo,
   letter-spacing: 0.05em;
   font-size: 0.8rem;
 }
-
 .tb2e.sheet.monster .monster-header .conflict-label i {
   color: var(--tb-steel);
   margin-right: 0.3rem;
 }
-
 .tb2e.sheet.monster .monster-header .conflict-disposition .disposition-bar {
   flex: 1;
   height: 8px;
   background: var(--tb-border);
   border-radius: 4px;
 }
-
 .tb2e.sheet.monster .monster-header .conflict-disposition .disposition-fill {
   height: 100%;
   background: linear-gradient(90deg, var(--tb-steel), var(--tb-steel-dim));
   border-radius: 4px;
   transition: width 0.3s;
 }
-
 /* Monster Body */
-
 .tb2e.sheet.monster .monster-body {
   padding: 1rem;
   flex: 1;
   min-height: 0;
   overflow-y: auto;
 }
-
 /* Core Stats Grid */
-
 .tb2e.sheet.monster .monster-stat-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 0.5rem 1rem;
 }
-
 .tb2e.sheet.monster .monster-nature-descriptors {
   margin-top: 0.5rem;
 }
-
 .tb2e.sheet.monster .monster-nature-descriptors input {
   max-width: none;
   width: 100%;
 }
-
 /* Dispositions Table */
-
 .tb2e.sheet.monster .dispositions-table {
   display: flex;
   flex-direction: column;
   gap: 0.4rem;
 }
-
 .tb2e.sheet.monster .disposition-row {
   display: flex;
   gap: 0.5rem;
@@ -4646,43 +4517,34 @@ body.theme-dark .tb2e.sheet .torchbearer-logo,
   border-radius: var(--tb-radius);
   background: var(--tb-bg-surface);
 }
-
 .tb2e.sheet.monster .disposition-row.tier-strength {
   border-left-color: var(--tb-blue);
 }
-
 .tb2e.sheet.monster .disposition-row.tier-competency {
   border-left-color: var(--tb-steel);
 }
-
 .tb2e.sheet.monster .disposition-row.tier-weakness {
   border-left-color: var(--tb-amber-bright);
 }
-
 .tb2e.sheet.monster .disposition-type {
   flex: 1;
 }
-
 .tb2e.sheet.monster .disposition-hp {
   width: 4rem;
   text-align: center;
 }
-
 .tb2e.sheet.monster .hint {
   font-size: 0.8rem;
   color: var(--tb-text-faint);
   font-style: italic;
   margin: 0 0 0.5rem;
 }
-
 /* Weapons Table */
-
 .tb2e.sheet.monster .weapons-table {
   width: 100%;
   border-collapse: collapse;
   font-size: 0.85rem;
 }
-
 .tb2e.sheet.monster .weapons-table th {
   font-family: var(--tb-font-heading);
   text-transform: uppercase;
@@ -4693,32 +4555,26 @@ body.theme-dark .tb2e.sheet .torchbearer-logo,
   text-align: left;
   border-bottom: 1px solid var(--tb-border);
 }
-
 .tb2e.sheet.monster .weapons-table td {
   padding: 0.25rem 0.25rem;
 }
-
 .tb2e.sheet.monster .weapons-table input {
   width: 100%;
   font-size: 0.85rem;
   padding: 0.25rem 0.35rem;
 }
-
 .tb2e.sheet.monster .weapons-table .col-adfm {
   width: 3.5rem;
   text-align: center;
 }
-
 .tb2e.sheet.monster .weapons-table .col-adfm input {
   text-align: center;
   max-width: none;
 }
-
 .tb2e.sheet.monster .weapons-table .col-action {
   width: 2rem;
   text-align: center;
 }
-
 .tb2e.sheet.monster .btn-delete {
   all: unset;
   cursor: pointer;
@@ -4728,11 +4584,9 @@ body.theme-dark .tb2e.sheet .torchbearer-logo,
   border-radius: var(--tb-radius);
   transition: color 0.2s;
 }
-
 .tb2e.sheet.monster .btn-delete:hover {
   color: var(--tb-cond-angry);
 }
-
 .tb2e.sheet.monster .btn-add {
   all: unset;
   cursor: pointer;
@@ -4750,18 +4604,14 @@ body.theme-dark .tb2e.sheet .torchbearer-logo,
   border-radius: var(--tb-radius);
   transition: color 0.2s, border-color 0.2s;
 }
-
 .tb2e.sheet.monster .btn-add:hover {
   color: var(--tb-blue);
   border-color: var(--tb-blue);
 }
-
 /* ============================================ */
 /*  NPC Sheet                                   */
 /* ============================================ */
-
 /* NPC Header */
-
 .tb2e.sheet.npc .npc-header {
   display: flex;
   align-items: center;
@@ -4772,7 +4622,6 @@ body.theme-dark .tb2e.sheet .torchbearer-logo,
   position: relative;
   flex-shrink: 0;
 }
-
 .tb2e.sheet.npc .npc-header::after {
   content: "";
   position: absolute;
@@ -4780,15 +4629,12 @@ body.theme-dark .tb2e.sheet .torchbearer-logo,
   background: radial-gradient(ellipse at 30% 50%, rgba(71, 85, 105, 0.08) 0%, transparent 70%);
   pointer-events: none;
 }
-
 .tb2e.sheet.npc .npc-header .portrait img {
   border-color: var(--tb-steel);
 }
-
 .tb2e.sheet.npc .npc-header .portrait img:hover {
   border-color: var(--tb-steel-bright);
 }
-
 .tb2e.sheet.npc .npc-header .conflict-disposition {
   grid-column: 1 / -1;
   display: flex;
@@ -4801,7 +4647,6 @@ body.theme-dark .tb2e.sheet .torchbearer-logo,
   flex: 0 0 100%;
   margin-top: 0.5rem;
 }
-
 .tb2e.sheet.npc .npc-header .conflict-label {
   white-space: nowrap;
   color: var(--tb-steel-bright);
@@ -4810,43 +4655,35 @@ body.theme-dark .tb2e.sheet .torchbearer-logo,
   letter-spacing: 0.05em;
   font-size: 0.8rem;
 }
-
 .tb2e.sheet.npc .npc-header .conflict-label i {
   color: var(--tb-steel);
   margin-right: 0.3rem;
 }
-
 .tb2e.sheet.npc .npc-header .conflict-disposition .disposition-bar {
   flex: 1;
   height: 8px;
   background: var(--tb-border);
   border-radius: 4px;
 }
-
 .tb2e.sheet.npc .npc-header .conflict-disposition .disposition-fill {
   height: 100%;
   background: linear-gradient(90deg, var(--tb-steel), var(--tb-steel-dim));
   border-radius: 4px;
   transition: width 0.3s;
 }
-
 /* NPC Body */
-
 .tb2e.sheet.npc .npc-body {
   padding: 1rem;
   flex: 1;
   min-height: 0;
   overflow-y: auto;
 }
-
 /* NPC Identity Fields */
-
 .tb2e.sheet.npc .npc-identity-fields {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 0.4rem 1rem;
 }
-
 .tb2e.sheet.npc .npc-identity-fields label {
   font-family: var(--tb-font-heading);
   font-size: 0.8rem;
@@ -4857,42 +4694,33 @@ body.theme-dark .tb2e.sheet .torchbearer-logo,
   flex-direction: column;
   gap: 0.15rem;
 }
-
 .tb2e.sheet.npc .npc-identity-goal {
   grid-column: 1 / -1;
 }
-
 /* NPC Ability Grid — 2-column layout for ability-row */
-
 .tb2e.sheet.npc .npc-ability-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 0.25rem 1rem;
 }
-
 /* NPC ability-row override: name + rating only (no advancement bubbles) */
 .tb2e.sheet.npc .ability-row {
   grid-template-columns: 7rem 3.5rem;
 }
-
 /* NPC skill-row override: dropdown + rating + delete */
 .tb2e.sheet.npc .skill-row {
   grid-template-columns: 1fr 3rem 2rem;
 }
-
 .tb2e.sheet.npc .npc-skills-list {
   display: flex;
   flex-direction: column;
 }
-
 /* NPC Tables (traits) */
-
 .tb2e.sheet.npc .npc-table {
   width: 100%;
   border-collapse: collapse;
   font-size: 0.85rem;
 }
-
 .tb2e.sheet.npc .npc-table th {
   font-family: var(--tb-font-heading);
   text-transform: uppercase;
@@ -4903,61 +4731,49 @@ body.theme-dark .tb2e.sheet .torchbearer-logo,
   text-align: left;
   border-bottom: 1px solid var(--tb-border);
 }
-
 .tb2e.sheet.npc .npc-table td {
   padding: 0.25rem 0.25rem;
 }
-
 .tb2e.sheet.npc .npc-table input,
 .tb2e.sheet.npc .npc-table select {
   width: 100%;
   font-size: 0.85rem;
   padding: 0.25rem 0.35rem;
 }
-
 .tb2e.sheet.npc .npc-table .col-rating {
   width: 4rem;
   text-align: center;
 }
-
 .tb2e.sheet.npc .npc-table .col-rating input {
   text-align: center;
   max-width: none;
 }
-
 .tb2e.sheet.npc .npc-table .col-action {
   width: 2rem;
   text-align: center;
 }
-
 /* NPC Wises */
-
 .tb2e.sheet.npc .npc-wises-list {
   display: flex;
   flex-direction: column;
   gap: 0.35rem;
 }
-
 .tb2e.sheet.npc .npc-wise-row {
   display: flex;
   gap: 0.5rem;
   align-items: center;
 }
-
 .tb2e.sheet.npc .npc-wise-row input {
   flex: 1;
   font-size: 0.85rem;
   padding: 0.25rem 0.35rem;
 }
-
 /* NPC Trait Level Pips */
-
 .tb2e.sheet.npc .trait-level-pips {
   display: flex;
   gap: 0.15rem;
   justify-content: center;
 }
-
 .tb2e.sheet.npc .trait-pip {
   all: unset;
   cursor: pointer;
@@ -4973,20 +4789,16 @@ body.theme-dark .tb2e.sheet .torchbearer-logo,
   border: 1px solid var(--tb-border);
   transition: all 0.15s;
 }
-
 .tb2e.sheet.npc .trait-pip:hover {
   border-color: var(--tb-blue);
   color: var(--tb-blue);
 }
-
 .tb2e.sheet.npc .trait-pip.active {
   background: var(--tb-blue);
   border-color: var(--tb-blue);
   color: var(--tb-bg-white);
 }
-
 /* NPC Buttons (reuse monster patterns) */
-
 .tb2e.sheet.npc .btn-delete {
   all: unset;
   cursor: pointer;
@@ -4996,11 +4808,9 @@ body.theme-dark .tb2e.sheet .torchbearer-logo,
   border-radius: var(--tb-radius);
   transition: color 0.2s;
 }
-
 .tb2e.sheet.npc .btn-delete:hover {
   color: var(--tb-cond-angry);
 }
-
 .tb2e.sheet.npc .btn-add {
   all: unset;
   cursor: pointer;
@@ -5018,541 +4828,8 @@ body.theme-dark .tb2e.sheet .torchbearer-logo,
   border-radius: var(--tb-radius);
   transition: color 0.2s, border-color 0.2s;
 }
-
 .tb2e.sheet.npc .btn-add:hover {
   color: var(--tb-blue);
   border-color: var(--tb-blue);
 }
-
-/* ============================================ */
-/*  Character Sheet — Conflict Panel            */
-/* ============================================ */
-
-.character-conflict-panel {
-  background: linear-gradient(135deg, var(--tb-frost), var(--tb-bg-raised));
-  border: 1px solid var(--tb-frost-bright);
-  border-radius: 6px;
-  margin: 0.5rem 1rem;
-  overflow: hidden;
-}
-
-.conflict-panel-header {
-  display: flex;
-  align-items: center;
-  gap: 0.6rem;
-  padding: 0.4rem 0.75rem;
-  background: linear-gradient(135deg, var(--tb-blue-glow), rgba(37,99,235,0.04));
-  border-bottom: 1px solid var(--tb-frost-bright);
-}
-
-.conflict-panel-title {
-  font-family: var(--tb-font-logo);
-  font-size: 0.85rem;
-  font-weight: bold;
-  color: var(--tb-blue-dim);
-  white-space: nowrap;
-}
-
-.conflict-panel-title i {
-  margin-right: 0.3rem;
-}
-
-.conflict-panel-hp {
-  font-size: 0.75rem;
-  font-weight: 600;
-  color: var(--tb-blue);
-  white-space: nowrap;
-  margin-left: auto;
-}
-
-.conflict-panel-hp-bar {
-  flex: 0 0 80px;
-  height: 6px;
-  background: var(--tb-frost-bright);
-  border-radius: 3px;
-  overflow: hidden;
-}
-
-.conflict-panel-hp-fill {
-  height: 100%;
-  background: linear-gradient(90deg, var(--tb-blue), var(--tb-blue-bright));
-  border-radius: 3px;
-  transition: width 0.3s;
-}
-
-.conflict-panel-role {
-  padding: 0.35rem 0.75rem;
-  border-bottom: 1px solid var(--tb-frost);
-}
-
-.conflict-role-badge.captain {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.2rem;
-  padding: 0.1rem 0.4rem;
-  border-radius: 8px;
-  background: var(--tb-amber-glow);
-  color: var(--tb-amber-dim);
-  font-size: 0.7rem;
-  font-weight: 700;
-  text-transform: uppercase;
-}
-
-.conflict-help-toggle {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.2rem;
-  padding: 0.15rem 0.4rem;
-  border: 1px solid var(--tb-neutral-border);
-  border-radius: 4px;
-  background: var(--tb-neutral-bg);
-  color: var(--tb-neutral-text);
-  font-size: 0.7rem;
-  cursor: pointer;
-  transition: all 0.15s;
-}
-
-.conflict-help-toggle:hover {
-  border-color: var(--tb-green);
-  color: var(--tb-green-bright);
-}
-
-.conflict-help-toggle.active {
-  border-color: var(--tb-green);
-  background: var(--tb-green-subtle);
-  color: var(--tb-green-bright);
-}
-
-.conflict-panel-section {
-  padding: 0.4rem 0.75rem;
-  border-bottom: 1px solid var(--tb-frost);
-}
-
-.conflict-section-label {
-  font-family: var(--tb-font-logo);
-  font-size: 0.75rem;
-  color: var(--tb-blue-dim);
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  margin-bottom: 0.3rem;
-}
-
-.conflict-skill-picker {
-  display: flex;
-  gap: 0.3rem;
-}
-
-.conflict-skill-btn {
-  flex: 1;
-  padding: 0.3rem 0.5rem;
-  border: 1px solid var(--tb-border-light);
-  border-radius: 4px;
-  background: var(--tb-bg-white);
-  color: var(--tb-steel-bright);
-  font-size: 0.75rem;
-  cursor: pointer;
-  transition: background 0.15s, border-color 0.15s;
-}
-
-.conflict-skill-btn:hover {
-  background: var(--tb-frost);
-  border-color: var(--tb-blue);
-}
-
-.conflict-roll-area {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-}
-
-.conflict-roll-info {
-  font-size: 0.8rem;
-  color: var(--tb-steel-bright);
-}
-
-.conflict-roll-btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.3rem;
-  padding: 0.3rem 0.6rem;
-  border: none;
-  border-radius: 4px;
-  background: linear-gradient(135deg, var(--tb-blue), var(--tb-blue-dim));
-  color: var(--tb-bg-white);
-  font-size: 0.75rem;
-  cursor: pointer;
-  transition: background 0.2s;
-}
-
-.conflict-roll-btn:hover {
-  background: linear-gradient(135deg, var(--tb-blue-bright), var(--tb-blue));
-}
-
-/* Distribution in conflict panel */
-.conflict-distribution .conflict-dist-summary {
-  display: flex;
-  justify-content: space-between;
-  padding: 0.2rem 0;
-  margin-bottom: 0.3rem;
-  font-size: 0.75rem;
-  color: var(--tb-text-dim);
-}
-
-.conflict-dist-remaining.invalid {
-  color: var(--tb-red);
-  font-weight: bold;
-}
-
-.conflict-dist-list {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-}
-
-.conflict-dist-row {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0.2rem 0;
-}
-
-.conflict-dist-name {
-  font-size: 0.8rem;
-  color: var(--tb-text-body);
-}
-
-.conflict-dist-name i {
-  color: var(--tb-cond-hungry);
-  font-size: 0.7rem;
-  margin-right: 0.15rem;
-}
-
-.conflict-dist-value {
-  width: 3.5rem;
-  text-align: center;
-  font-size: 0.8rem;
-  font-weight: bold;
-  padding: 0.2rem;
-  background: var(--tb-bg-white);
-  color: var(--tb-text-body);
-  border: 1px solid var(--tb-border-light);
-  border-radius: 4px;
-}
-
-.conflict-control-btn {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.3rem;
-  width: 100%;
-  padding: 0.35rem;
-  margin-top: 0.3rem;
-  border: none;
-  border-radius: 4px;
-  background: linear-gradient(135deg, var(--tb-blue), var(--tb-blue-dim));
-  color: var(--tb-bg-white);
-  font-size: 0.75rem;
-  cursor: pointer;
-  transition: background 0.2s;
-}
-
-.conflict-control-btn:hover {
-  background: linear-gradient(135deg, var(--tb-blue-bright), var(--tb-blue));
-}
-
-/* Weapon area */
-.conflict-weapon-area {
-  display: flex;
-  gap: 0.3rem;
-  align-items: center;
-}
-
-.conflict-weapon-input {
-  flex: 1;
-  padding: 0.3rem 0.5rem;
-  border: 1px solid var(--tb-border-light);
-  border-radius: 4px;
-  font-size: 0.8rem;
-  background: var(--tb-bg-white);
-}
-
-.conflict-weapon-input:focus {
-  border-color: var(--tb-blue);
-  outline: none;
-  box-shadow: 0 0 0 2px var(--tb-blue-glow);
-}
-
-.conflict-weapon-area .conflict-control-btn {
-  width: auto;
-  margin-top: 0;
-  padding: 0.3rem 0.6rem;
-}
-
-.conflict-panel-weapon-display {
-  padding: 0.3rem 0.75rem;
-  font-size: 0.8rem;
-  color: var(--tb-steel-bright);
-  font-style: italic;
-}
-
-.conflict-panel-weapon-display i {
-  color: var(--tb-text-dim);
-  margin-right: 0.2rem;
-}
-
-/* Tracker: weapon indicator */
-.combatant-weapon {
-  font-size: 0.65rem;
-  color: var(--tb-text-dim);
-  margin-left: 0.1rem;
-}
-
-/* Tracker: help indicator (read-only in rolling phase) */
-.help-indicator {
-  font-size: 0.65rem;
-  color: var(--tb-green-bright);
-  font-weight: 600;
-  margin-left: auto;
-}
-
-/* Tracker: knocked out state */
-.combatant.knocked-out .combatant-name {
-  text-decoration: line-through;
-  color: var(--tb-text-faint);
-}
-
-.combatant.knocked-out .combatant-img {
-  opacity: 0.5;
-}
-
-/* ============================================ */
-/*  Conflict Window — Resolution Area           */
-/* ============================================ */
-
-.cw-resolution {
-  padding: 0.5rem 0.75rem;
-  border-top: 2px solid var(--tb-border);
-  background: linear-gradient(180deg, var(--tb-bg-raised), var(--tb-bg-surface));
-}
-
-.cw-resolution-header {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  margin-bottom: 0.4rem;
-}
-
-.cw-resolution-badge {
-  font-family: var(--tb-font-logo);
-  font-size: 0.8rem;
-  font-weight: bold;
-  color: var(--tb-steel-bright);
-  text-transform: uppercase;
-}
-
-.cw-resolution-resolved {
-  font-size: 0.7rem;
-  color: var(--tb-green);
-  font-weight: 600;
-}
-
-.cw-resolution-matchup {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.75rem;
-  padding: 0.4rem 0;
-}
-
-.cw-resolution-side {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0.2rem;
-  flex: 1;
-}
-
-.cw-resolution-actor {
-  font-size: 0.8rem;
-  font-weight: 600;
-  color: var(--tb-text-body);
-}
-
-.cw-resolution-action {
-  font-family: var(--tb-font-logo);
-  font-size: 0.85rem;
-  font-weight: bold;
-  text-transform: uppercase;
-  padding: 0.15rem 0.5rem;
-  border-radius: 4px;
-}
-
-.cw-action-attack { color: var(--tb-attack-hue); background: var(--tb-attack-bg); }
-.cw-action-defend { color: var(--tb-defend-hue); background: var(--tb-defend-bg); }
-.cw-action-feint { color: var(--tb-feint-hue); background: var(--tb-feint-bg); }
-.cw-action-maneuver { color: var(--tb-maneuver-hue); background: var(--tb-maneuver-bg); }
-
-.cw-resolution-interaction {
-  font-size: 0.65rem;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  padding: 0.1rem 0.35rem;
-  border-radius: 3px;
-}
-
-.interaction-independent { color: var(--tb-interaction-independent); background: var(--tb-interaction-independent-bg); }
-.interaction-versus { color: var(--tb-interaction-versus); background: var(--tb-interaction-versus-bg); }
-.interaction-none { color: var(--tb-interaction-none); background: var(--tb-interaction-none-bg); }
-
-.cw-vs {
-  font-family: var(--tb-font-logo);
-  font-size: 0.9rem;
-  font-weight: bold;
-  color: var(--tb-text-faint);
-  text-transform: uppercase;
-}
-
-.cw-resolution-controls {
-  display: flex;
-  justify-content: center;
-  padding: 0.3rem 0;
-}
-
-/* Conflict window: combatant select */
-.cw-combatant-select {
-  flex: 1;
-  font-size: 0.72rem;
-  padding: 0.15rem 0.3rem;
-  border: 1px solid var(--tb-border-light);
-  border-radius: 4px;
-  background: var(--tb-bg-white);
-  color: var(--tb-steel-bright);
-  max-width: 160px;
-}
-
-.cw-hidden-actor {
-  color: var(--tb-text-faint);
-  font-style: italic;
-}
-
-/* Footer end conflict button */
-.cw-end-conflict-btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.4rem;
-  padding: 0.4rem 1rem;
-  border: none;
-  border-radius: 6px;
-  background: linear-gradient(135deg, var(--tb-red), var(--tb-red-dim));
-  color: var(--tb-bg-white);
-  font-family: var(--tb-font-logo);
-  font-size: 0.85rem;
-  cursor: pointer;
-  transition: all 0.2s;
-  margin-left: 0.5rem;
-}
-
-.cw-end-conflict-btn:hover {
-  background: linear-gradient(135deg, var(--tb-red-bright), var(--tb-red));
-}
-
-/* ============================================ */
-/*  Nature Crisis Chat Card                     */
-/* ============================================ */
-
-.tb2e-nature-crisis {
-  padding: 0.75rem;
-  background: var(--tb-bg-raised);
-  border: 2px solid var(--tb-amber);
-  border-radius: var(--tb-radius-lg);
-}
-
-.tb2e-nature-crisis .crisis-header {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  margin-bottom: 0.5rem;
-}
-
-.tb2e-nature-crisis .crisis-portrait {
-  border-radius: 50%;
-  border: 2px solid var(--tb-amber);
-}
-
-.tb2e-nature-crisis .crisis-title {
-  margin: 0;
-  font-family: var(--tb-font-logo);
-  font-size: 1.1rem;
-  color: var(--tb-amber);
-}
-
-.tb2e-nature-crisis .crisis-text {
-  font-size: 0.8rem;
-  color: var(--tb-text-body);
-  line-height: 1.4;
-  margin: 0 0 0.5rem;
-}
-
-.tb2e-nature-crisis .crisis-form {
-  display: flex;
-  flex-direction: column;
-  gap: 0.4rem;
-}
-
-.tb2e-nature-crisis .crisis-field {
-  display: flex;
-  flex-direction: column;
-  gap: 0.15rem;
-}
-
-.tb2e-nature-crisis .crisis-field label {
-  font-size: 0.75rem;
-  font-weight: bold;
-  color: var(--tb-text-dim);
-}
-
-.tb2e-nature-crisis .crisis-trait-select,
-.tb2e-nature-crisis .crisis-new-name {
-  padding: 0.25rem 0.4rem;
-  font-size: 0.8rem;
-  border: 1px solid var(--tb-border);
-  border-radius: var(--tb-radius);
-  background: var(--tb-bg-white);
-  color: var(--tb-text-body);
-}
-
-.tb2e-nature-crisis .nature-crisis-confirm {
-  margin-top: 0.3rem;
-  padding: 0.35rem 0.75rem;
-  border: 1px solid var(--tb-amber);
-  border-radius: var(--tb-radius);
-  background: var(--tb-amber-glow);
-  color: var(--tb-amber);
-  font-weight: bold;
-  font-size: 0.8rem;
-  cursor: pointer;
-  transition: background 0.15s;
-}
-
-.tb2e-nature-crisis .nature-crisis-confirm:hover {
-  background: var(--tb-amber);
-  color: var(--tb-bg-white);
-}
-
-.tb2e-nature-crisis .crisis-resolved {
-  font-size: 0.8rem;
-  color: var(--tb-text-body);
-}
-
-.tb2e-nature-crisis .crisis-retirement {
-  font-weight: bold;
-  color: var(--tb-red);
-  margin-top: 0.3rem;
-}
-
-.tb2e-nature-crisis .crisis-no-traits {
-  font-size: 0.8rem;
-  color: var(--tb-text-faint);
-  font-style: italic;
-}
+/*# sourceMappingURL=tb2e.css.map */

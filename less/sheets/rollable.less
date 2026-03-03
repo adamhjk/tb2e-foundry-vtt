@@ -1,0 +1,73 @@
+/*  Rollable Rows                               */
+/* -------------------------------------------- */
+
+.tb2e.sheet .rollable {
+  cursor: pointer;
+  transition: background-color 0.15s, box-shadow 0.15s;
+}
+
+.tb2e.sheet .rollable:hover {
+  background: var(--tb-frost);
+  box-shadow: inset 2px 0 0 var(--tb-blue);
+}
+
+.tb2e.sheet .rollable:hover .ability-name,
+.tb2e.sheet .rollable:hover .skill-name {
+  color: var(--tb-blue);
+}
+
+.tb2e.sheet .rollable input,
+.tb2e.sheet .rollable button.bubble {
+  cursor: default;
+}
+
+/*  Advance Button (Sheet)                      */
+/* -------------------------------------------- */
+
+.tb2e.sheet .btn-advance {
+  all: unset;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--tb-amber), var(--tb-amber-bright));
+  color: var(--tb-bg-white);
+  font-size: 0.7rem;
+  cursor: pointer;
+  box-shadow: 0 0 6px rgba(245, 158, 11, 0.4);
+  transition: transform 0.15s, box-shadow 0.15s;
+  animation: tb2e-advance-pulse 2s ease-in-out infinite;
+}
+
+.tb2e.sheet .btn-advance:hover {
+  transform: scale(1.15);
+  box-shadow: 0 0 10px rgba(245, 158, 11, 0.6);
+}
+
+.tb2e.sheet .btn-advance-spacer {
+  display: inline-block;
+  width: 22px;
+  height: 22px;
+}
+
+@keyframes tb2e-advance-pulse {
+  0%, 100% { box-shadow: 0 0 6px rgba(245, 158, 11, 0.4); }
+  50% { box-shadow: 0 0 12px rgba(245, 158, 11, 0.7); }
+}
+
+/* Adjust ability-row grid to 4 columns */
+.tb2e.sheet .ability-row {
+  grid-template-columns: 7rem 22px 3.5rem 1fr;
+}
+
+/* Nature row — 5 columns: name | advance | current/max | bubbles | actions */
+.tb2e.sheet .nature-ability-row {
+  grid-template-columns: 7rem 22px auto 1fr auto;
+}
+
+/* Adjust skill-row grid to 5 columns */
+.tb2e.sheet .skill-row {
+  grid-template-columns: 1fr 1.5rem 22px 3rem 9rem;
+}
