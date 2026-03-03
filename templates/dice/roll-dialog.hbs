@@ -73,6 +73,25 @@
   </div>
   {{/if}}
 
+  {{! Direct Nature Test — Within/Outside Descriptors }}
+  {{#if isDirectNatureTest}}
+  <div class="roll-dialog-nature">
+    <div class="section-heading">
+      <i class="fa-solid fa-paw"></i>
+      <span>{{localize "TB2E.Nature.DescriptorsRef"}}</span>
+    </div>
+    <div class="nature-descriptor-chips">
+      {{#each natureDescriptors}}
+      <span class="nature-ref-chip">{{this}}</span>
+      {{/each}}
+    </div>
+    <label class="nature-within-toggle">
+      <input type="checkbox" name="withinNature">
+      <span class="nature-within-label outside">{{localize "TB2E.Nature.OutsideDescriptors"}}</span>
+    </label>
+  </div>
+  {{/if}}
+
   {{! Persona Controls (characters only) }}
   {{#if showPersona}}
   <div class="roll-dialog-persona">
@@ -95,6 +114,13 @@
         <input type="checkbox" name="channelNature">
         <span>Channel Nature (+{{natureRating}}D)</span>
       </label>
+      {{#if channelNatureDescriptors.length}}
+      <div class="channel-nature-descriptors">
+        {{#each channelNatureDescriptors}}
+        <span class="nature-ref-chip small">{{this}}</span>
+        {{/each}}
+      </div>
+      {{/if}}
       {{/unless}}
       <div class="persona-total">
         Cost: <strong class="persona-total-value">0</strong> / {{personaAvailable}} persona

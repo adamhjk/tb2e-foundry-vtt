@@ -12,13 +12,15 @@ export async function showAdvancementDialog({ actor, type, key }) {
   const cfg = type === "ability" ? abilities[key] : skills[key];
   const label = game.i18n.localize(cfg.label);
   const data = actor.system[category][key];
-  const needed = advancementNeeded(data.rating);
+  // For nature, advancement thresholds are based on max (not taxed current)
+  const advRating = (type === "ability" && key === "nature") ? data.max : data.rating;
+  const needed = advancementNeeded(advRating);
 
   // Guard — both rows must be full, and rating must be > 0
   if ( needed.pass <= 0 ) return;
   if ( data.pass < needed.pass || data.fail < needed.fail ) return;
 
-  const currentRating = data.rating;
+  const currentRating = advRating;
   const newRating = currentRating + 1;
 
   const content = await foundry.applications.handlebars.renderTemplate("systems/tb2e/templates/dice/advancement-dialog.hbs", {
@@ -52,11 +54,19 @@ export async function showAdvancementDialog({ actor, type, key }) {
   if ( !result ) return;
 
   // Apply advancement: rating +1, pips reset to 0
-  await actor.update({
+  const updates = {
     [`system.${category}.${key}.rating`]: newRating,
     [`system.${category}.${key}.pass`]: 0,
     [`system.${category}.${key}.fail`]: 0
-  });
+  };
+
+  // Nature advancement: increase max by 1 and current by 1 (preserving tax amount)
+  if ( type === "ability" && key === "nature" ) {
+    updates["system.abilities.nature.max"] = newRating;
+    updates["system.abilities.nature.rating"] = Math.min(data.rating + 1, newRating);
+  }
+
+  await actor.update(updates);
 
   // Post celebration chat card
   const chatContent = await foundry.applications.handlebars.renderTemplate("systems/tb2e/templates/chat/advancement-result.hbs", {
@@ -73,4 +83,12 @@ export async function showAdvancementDialog({ actor, type, key }) {
     content: chatContent,
     type: CONST.CHAT_MESSAGE_STYLES.OTHER
   });
+
+  // Nature 7 retirement warning
+  if ( type === "ability" && key === "nature" && newRating >= 7 ) {
+    ui.notifications.warn(
+      game.i18n.format("TB2E.Nature.ReachedSeven", { name: actor.name }),
+      { permanent: true }
+    );
+  }
 }

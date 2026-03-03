@@ -108,6 +108,16 @@
       <button type="button" class="post-roll-btn nature-tax-btn" data-action="nature-no">No</button>
     </div>
     {{/if}}
+    {{#if showDirectNatureTax}}
+    <div class="nature-tax-notice outside">
+      <i class="fa-solid fa-paw"></i> {{localize "TB2E.Nature.OutsideDescriptors"}} — {{localize "TB2E.Nature.TaxOnFailure"}}
+    </div>
+    {{/if}}
+    {{#if directNatureWithin}}
+    <div class="nature-tax-notice within">
+      <i class="fa-solid fa-paw"></i> {{localize "TB2E.Nature.ActingWithin"}} — no tax
+    </div>
+    {{/if}}
     <button type="button" class="post-roll-btn finalize-btn" data-action="finalize">
       <i class="fa-solid fa-check-double"></i> Finalize
     </button>

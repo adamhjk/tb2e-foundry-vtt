@@ -4,6 +4,38 @@
   <fieldset class="abilities-group">
     <legend><i class="fa-solid fa-dice-d20"></i> {{localize "TB2E.Section.RawAbilities"}}</legend>
     {{#each rawAbilities}}
+    {{#if (eq key "nature")}}
+    {{!-- Nature row — custom layout with current/max --}}
+    <div class="ability-row rollable nature-ability-row{{#if ../nature.isTaxed}} nature-taxed{{/if}}" data-action="rollTest" data-type="ability" data-key="nature" data-page="{{page}}">
+      <span class="ability-name">{{../nature.stockLabel}}</span>
+      {{#if canAdvance}}
+      <button type="button" class="btn-advance" data-action="advance" data-type="ability" data-key="nature">
+        <i class="fa-solid fa-arrow-up"></i>
+      </button>
+      {{else}}
+      <span class="btn-advance-spacer"></span>
+      {{/if}}
+      <span class="nature-rating-group">
+        <input type="number" name="system.abilities.nature.rating" value="{{../nature.rating}}" min="0" max="{{../nature.max}}" class="ability-rating nature-current">
+        <span class="nature-separator">/</span>
+        <input type="number" name="system.abilities.nature.max" value="{{../nature.max}}" min="0" max="7" class="ability-rating nature-max">
+      </span>
+      {{> "systems/tb2e/templates/actors/parts/advancement-bubbles.hbs"
+          path=path rating=rating pass=pass fail=fail passArray=passArray failArray=failArray}}
+      <div class="nature-actions">
+        <button type="button" class="nature-action-btn recover" data-action="recoverNature"
+          data-page="DH p.69"
+          {{#unless ../nature.canRecover}} disabled{{/unless}}>
+          <i class="fa-solid fa-heart-pulse"></i> {{localize "TB2E.Nature.Recover"}}
+        </button>
+        <button type="button" class="nature-action-btn conserve" data-action="conserveNature"
+          data-page="DH p.69"
+          {{#unless ../nature.canConserve}} disabled{{/unless}}>
+          <i class="fa-solid fa-shield-halved"></i> {{localize "TB2E.Nature.Conserve"}}
+        </button>
+      </div>
+    </div>
+    {{else}}
     <div class="ability-row rollable" data-action="rollTest" data-type="ability" data-key="{{key}}" data-page="{{page}}">
       <span class="ability-name">{{label}}</span>
       {{#if canAdvance}}
@@ -17,13 +49,28 @@
       {{> "systems/tb2e/templates/actors/parts/advancement-bubbles.hbs"
           path=path rating=rating pass=pass fail=fail passArray=passArray failArray=failArray}}
     </div>
+    {{/if}}
     {{/each}}
 
     {{!-- Nature Descriptors --}}
     <div class="nature-descriptors">
-      <label>{{localize "TB2E.Fields.NatureDescriptors"}}</label>
-      <input type="text" name="system.natureDescriptors" value="{{system.natureDescriptors}}"
-             placeholder="Sneaking, Riddling, Merrymaking...">
+      <span class="descriptor-label" data-page="DH pp.65-68">{{localize "TB2E.Nature.DescriptorsLabel"}}</span>
+      <div class="descriptor-chips">
+        {{#each nature.descriptors}}
+        <span class="descriptor-chip">
+          {{this}}
+          <button type="button" class="descriptor-remove" data-action="removeDescriptor" data-index="{{@index}}">
+            <i class="fa-solid fa-xmark"></i>
+          </button>
+        </span>
+        {{/each}}
+        <span class="descriptor-add">
+          <input type="text" class="descriptor-input" placeholder="{{localize "TB2E.Nature.DescriptorPlaceholder"}}">
+          <button type="button" class="descriptor-add-btn" data-action="addDescriptor">
+            <i class="fa-solid fa-plus"></i>
+          </button>
+        </span>
+      </div>
     </div>
   </fieldset>
 

@@ -4,7 +4,7 @@ import * as documents from "./module/documents/_module.mjs";
 import * as applications from "./module/applications/_module.mjs";
 import * as dice from "./module/dice/_module.mjs";
 import { PendingVersusRegistry, resolveVersus } from "./module/dice/versus.mjs";
-import { activatePostRollListeners, processSynergyMailbox } from "./module/dice/post-roll.mjs";
+import { activatePostRollListeners, activateNatureCrisisListeners, processSynergyMailbox } from "./module/dice/post-roll.mjs";
 
 Hooks.once("init", function() {
   globalThis.tb2e = game.tb2e = { dice };
@@ -64,7 +64,8 @@ Hooks.once("init", function() {
     "systems/tb2e/templates/chat/roll-result.hbs",
     "systems/tb2e/templates/chat/versus-pending.hbs",
     "systems/tb2e/templates/chat/versus-resolution.hbs",
-    "systems/tb2e/templates/conflict/conflict-window.hbs"
+    "systems/tb2e/templates/conflict/conflict-window.hbs",
+    "systems/tb2e/templates/chat/nature-crisis.hbs"
   ]);
 
   console.log("Torchbearer 2E | System initialized.");
@@ -84,6 +85,7 @@ Hooks.on("createChatMessage", (message) => {
 // Activate post-roll action buttons on chat cards.
 Hooks.on("renderChatMessageHTML", (message, html) => {
   activatePostRollListeners(message, html);
+  activateNatureCrisisListeners(message, html);
 });
 
 // Process synergy mailbox: player writes pendingSynergy flag, GM picks it up here.

@@ -1,4 +1,4 @@
-import { advancementNeeded, conditions, abilities, skills, packSlots, levelRequirements } from "../../config.mjs";
+import { advancementNeeded, conditions, abilities, skills, packSlots, levelRequirements, stockDescriptors } from "../../config.mjs";
 import { rollTest, showAdvancementDialog } from "../../dice/_module.mjs";
 import { rollDisposition, evaluateRoll, gatherHelpModifiers } from "../../dice/tb2e-roll.mjs";
 import { getEligibleHelpers } from "../../dice/help.mjs";
@@ -23,7 +23,11 @@ export default class CharacterSheet extends HandlebarsApplicationMixin(ActorShee
       conflictChooseSkill: CharacterSheet.#onConflictChooseSkill,
       conflictRollDisposition: CharacterSheet.#onConflictRollDisposition,
       conflictDistribute: CharacterSheet.#onConflictDistribute,
-      conflictDeclareWeapon: CharacterSheet.#onConflictDeclareWeapon
+      conflictDeclareWeapon: CharacterSheet.#onConflictDeclareWeapon,
+      conserveNature: CharacterSheet.#onConserveNature,
+      recoverNature: CharacterSheet.#onRecoverNature,
+      addDescriptor: CharacterSheet.#onAddDescriptor,
+      removeDescriptor: CharacterSheet.#onRemoveDescriptor
     },
     form: { submitOnChange: true },
     window: { resizable: true }
@@ -255,7 +259,8 @@ export default class CharacterSheet extends HandlebarsApplicationMixin(ActorShee
     for ( const [key, cfg] of Object.entries(abilities) ) {
       if ( cfg.group === "special" ) continue;
       const data = sys.abilities[key];
-      const adv = advancementNeeded(data.rating);
+      const rating = key === "nature" ? data.max : data.rating;
+      const adv = advancementNeeded(rating);
       const entry = {
         key,
         label: game.i18n.localize(cfg.label),
@@ -271,6 +276,19 @@ export default class CharacterSheet extends HandlebarsApplicationMixin(ActorShee
       if ( cfg.group === "raw" ) context.rawAbilities.push(entry);
       else context.townAbilities.push(entry);
     }
+
+    // Nature sub-system data
+    const nature = sys.abilities.nature;
+    context.nature = {
+      rating: nature.rating,
+      max: nature.max,
+      isTaxed: nature.rating < nature.max,
+      canRecover: nature.rating < nature.max,
+      canConserve: nature.max > 1,
+      stockLabel: game.i18n.format("TB2E.Nature.StockLabel", { stock: sys.stock || "?" }),
+      descriptors: sys.natureDescriptors || [],
+      defaultDescriptors: stockDescriptors[sys.stock] || []
+    };
   }
 
   /* -------------------------------------------- */
@@ -557,7 +575,8 @@ export default class CharacterSheet extends HandlebarsApplicationMixin(ActorShee
       const placeholder = bar.textContent;
       this.element.querySelectorAll("[data-page]").forEach(el => {
         el.addEventListener("mouseenter", () => {
-          const label = el.querySelector(".skill-name, .ability-name, .condition-label, .point-label")?.textContent || "";
+          const label = el.querySelector(".skill-name, .ability-name, .condition-label, .point-label")?.textContent
+            || el.textContent || "";
           bar.textContent = `${label.trim()} \u2014 ${el.dataset.page}`;
           bar.classList.remove("placeholder");
         });
@@ -565,6 +584,18 @@ export default class CharacterSheet extends HandlebarsApplicationMixin(ActorShee
           bar.textContent = placeholder;
           bar.classList.add("placeholder");
         });
+      });
+    }
+
+    // Descriptor input: Enter key triggers add.
+    const descInput = this.element.querySelector(".descriptor-input");
+    if ( descInput ) {
+      descInput.addEventListener("keydown", (e) => {
+        if ( e.key === "Enter" ) {
+          e.preventDefault();
+          e.stopPropagation();
+          this.element.querySelector(".descriptor-add-btn")?.click();
+        }
       });
     }
 
@@ -867,5 +898,66 @@ export default class CharacterSheet extends HandlebarsApplicationMixin(ActorShee
     const input = section?.querySelector(".conflict-weapon-input");
     const weaponName = input?.value?.trim() || "";
     await info.combat.setWeapon(info.combatant.id, weaponName);
+  }
+
+  /* -------------------------------------------- */
+  /*  Nature Action Handlers                      */
+  /* -------------------------------------------- */
+
+  /**
+   * Conserve Nature: reduce max by 1, restore current to new max, clear advancement.
+   */
+  static async #onConserveNature(event, target) {
+    const sys = this.document.system;
+    if ( sys.abilities.nature.max <= 1 ) return;
+
+    const confirmed = await foundry.applications.api.DialogV2.confirm({
+      window: { title: game.i18n.localize("TB2E.Nature.Conserve") },
+      content: `<p>${game.i18n.localize("TB2E.Nature.ConserveConfirm")}</p>`,
+      yes: { default: true }
+    });
+    if ( !confirmed ) return;
+
+    const newMax = sys.abilities.nature.max - 1;
+    await this.document.update({
+      "system.abilities.nature.max": newMax,
+      "system.abilities.nature.rating": newMax,
+      "system.abilities.nature.pass": 0,
+      "system.abilities.nature.fail": 0
+    });
+  }
+
+  /**
+   * Recover 1 point of taxed Nature (up to max).
+   */
+  static #onRecoverNature(event, target) {
+    const sys = this.document.system;
+    if ( sys.abilities.nature.rating >= sys.abilities.nature.max ) return;
+    this.document.update({
+      "system.abilities.nature.rating": sys.abilities.nature.rating + 1
+    });
+  }
+
+  /**
+   * Add a nature descriptor.
+   */
+  static #onAddDescriptor(event, target) {
+    const section = target.closest(".nature-descriptors");
+    const input = section?.querySelector(".descriptor-input");
+    const value = input?.value?.trim();
+    if ( !value ) return;
+    const descriptors = [...(this.document.system.natureDescriptors || []), value];
+    input.value = "";
+    this.document.update({ "system.natureDescriptors": descriptors });
+  }
+
+  /**
+   * Remove a nature descriptor by index.
+   */
+  static #onRemoveDescriptor(event, target) {
+    const index = Number(target.dataset.index);
+    const descriptors = [...(this.document.system.natureDescriptors || [])];
+    descriptors.splice(index, 1);
+    this.document.update({ "system.natureDescriptors": descriptors });
   }
 }

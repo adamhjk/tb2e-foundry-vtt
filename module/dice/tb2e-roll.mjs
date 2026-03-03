@@ -187,7 +187,10 @@ export async function _logAdvancement({ actor, type, key, baseDice, pass }) {
   const result = pass ? "pass" : "fail";
   const path = `system.${category}.${key}.${result}`;
   const current = foundry.utils.getProperty(actor, path) ?? 0;
-  const max = advancementNeeded(baseDice)[result];
+  // For nature, advancement thresholds are based on max (not taxed current)
+  const advRating = (type === "ability" && key === "nature")
+    ? actor.system.abilities.nature.max : baseDice;
+  const max = advancementNeeded(advRating)[result];
   if ( current < max ) await actor.update({ [path]: current + 1 });
   await showAdvancementDialog({ actor, type, key });
 }
@@ -258,6 +261,13 @@ async function _showRollDialog({
   const hideChannelNature = !showPersona;
   const natureRating = isCharacter ? actor.system.abilities.nature.rating : 0;
 
+  // Direct nature test: show within/outside descriptors toggle
+  const isDirectNatureTest = isCharacter && !disposition && type === "ability" && key === "nature";
+  const natureDescriptors = isDirectNatureTest ? (actor.system.natureDescriptors || []) : [];
+  // Also provide descriptors as reference when channel nature is available
+  const channelNatureDescriptors = (isCharacter && !disposition && !isResourcesOrCircles)
+    ? (actor.system.natureDescriptors || []) : [];
+
   // Open challenges for versus mode
   const openChallenges = disposition ? [] : PendingVersusRegistry.getOpenChallenges(actorId);
 
@@ -275,6 +285,7 @@ async function _showRollDialog({
       hasWises, wises: wiseData,
       showPersona, personaAvailable,
       hideChannelNature, natureRating,
+      isDirectNatureTest, natureDescriptors, channelNatureDescriptors,
       blInfo,
       isAfraid, isAngry,
       helpLabel: game.i18n.localize("TB2E.Roll.Help"),
@@ -300,6 +311,7 @@ async function _showRollDialog({
   let helperBonus = 0;
   const traitState = { index: -1, mode: "none" };
   const personaState = { advantage: 0, channelNature: false };
+  const natureState = { withinNature: false };
 
   const result = await foundry.applications.api.DialogV2.wait({
     window: { title: dialogTitle },
@@ -500,6 +512,24 @@ async function _showRollDialog({
         updatePersonaDisplay();
       }
 
+      /* ------ Within Nature Toggle (Direct Nature Tests) ------ */
+      if ( isDirectNatureTest ) {
+        const withinToggle = form.querySelector("input[name='withinNature']");
+        if ( withinToggle ) {
+          withinToggle.addEventListener("change", () => {
+            natureState.withinNature = withinToggle.checked;
+            const label = form.querySelector(".nature-within-label");
+            if ( label ) {
+              label.textContent = natureState.withinNature
+                ? game.i18n.localize("TB2E.Nature.ActingWithin")
+                : game.i18n.localize("TB2E.Nature.OutsideDescriptors");
+              label.classList.toggle("within", natureState.withinNature);
+              label.classList.toggle("outside", !natureState.withinNature);
+            }
+          });
+        }
+      }
+
       /* ------ Manual Modifier Add ------ */
       const addBtn = form.querySelector(".add-modifier-btn");
       if ( addBtn ) {
@@ -608,6 +638,7 @@ async function _showRollDialog({
       dialog.element.__tb2eCollectModifiers = _collectAllModifiers;
       dialog.element.__tb2eTraitState = traitState;
       dialog.element.__tb2ePersonaState = personaState;
+      dialog.element.__tb2eNatureState = natureState;
 
       // Initial render
       renderModifierList();
@@ -651,6 +682,7 @@ async function _showRollDialog({
           // Trait state from closure
           const traitInfo = dialog.element.__tb2eTraitState ?? { index: -1, mode: "none" };
           const personaInfo = dialog.element.__tb2ePersonaState ?? { advantage: 0, channelNature: false };
+          const natureInfo = dialog.element.__tb2eNatureState ?? { withinNature: false };
 
           const baseDice = form.elements.poolSize.valueAsNumber;
 
@@ -673,6 +705,7 @@ async function _showRollDialog({
             modifiers: allMods,
             traitState: traitInfo,
             personaState: personaInfo,
+            natureState: natureInfo,
             wiseIndex
           };
         }
@@ -923,6 +956,8 @@ function _buildRollFlags({ actor, type, key, label, baseDice, poolSize, successe
     } : null,
     wise: wiseInfo,
     channelNature: config.personaState?.channelNature ?? false,
+    directNatureTest: type === "ability" && key === "nature",
+    withinNature: config.natureState?.withinNature ?? false,
     actorId: actor.id,
     resolved: false,
     postSuccessMods: postSuccessMods.map(m => ({ ...m })),
@@ -986,6 +1021,8 @@ async function _handleIndependentRoll({ actor, type, key, label, baseDice, poolS
       hasFate: actor.type === "character" && actor.system.fate.current > 0,
       hasPersona: actor.type === "character" && actor.system.persona.current > 0,
       showNatureTax: rollFlags.channelNature,
+      showDirectNatureTax: rollFlags.directNatureTest && !rollFlags.withinNature,
+      directNatureWithin: rollFlags.directNatureTest && rollFlags.withinNature,
       synergyHelpers: _buildSynergyHelpers(config.selectedHelpers),
       passLabel: game.i18n.localize("TB2E.Roll.Pass"),
       failLabel: game.i18n.localize("TB2E.Roll.Fail"),
@@ -1035,6 +1072,7 @@ function _hasPostRollActions(rollFlags, actor) {
   if ( rollFlags.wise && hasFate && hasWyrms ) return true; // Deeper Understanding
   if ( rollFlags.wise && hasPersona && hasWyrms ) return true; // Of Course!
   if ( rollFlags.channelNature ) return true; // Nature tax prompt
+  if ( rollFlags.directNatureTest && !rollFlags.withinNature ) return true; // Direct nature tax
   return false;
 }
 

@@ -75,14 +75,14 @@ export const skills = {
 };
 
 /**
- * Advancement formula: passes needed = rating, fails needed = rating - 1 (min 1).
+ * Advancement formula: passes needed = rating, fails needed = rating - 1 (min 0).
  * @param {number} rating - Current ability/skill rating.
  * @returns {{ pass: number, fail: number }}
  */
 export function advancementNeeded(rating) {
   return {
     pass: rating,
-    fail: Math.max(rating - 1, 1)
+    fail: Math.max(rating - 1, 0)
   };
 }
 
@@ -325,7 +325,19 @@ export const maneuverEffects = {
   4: { key: "rearm",    label: "TB2E.Conflict.Maneuver.Rearm",    description: "Equip weapon mid-round" }
 };
 
+/**
+ * Default nature descriptors per stock.
+ * @enum {string[]}
+ */
+export const stockDescriptors = {
+  Human: ["Boasting", "Demanding", "Running"],
+  Dwarf: ["Delving", "Crafting", "Avenging Grudges"],
+  Elf: ["Singing", "Remembering", "Hiding"],
+  Halfling: ["Sneaking", "Riddling", "Merrymaking"]
+};
+
 export default {
   conditions, abilities, skills, advancementNeeded, packSlots, levelRequirements,
-  conflictTypes, conflictActions, conflictInteractions, conflictObstacles, maneuverEffects
+  conflictTypes, conflictActions, conflictInteractions, conflictObstacles, maneuverEffects,
+  stockDescriptors
 };

@@ -62,13 +62,21 @@ export default class CharacterData extends foundry.abstract.TypeDataModel {
       abilities: new fields.SchemaField({
         will: advancementField(4),
         health: advancementField(4),
-        nature: advancementField(3),
+        nature: new fields.SchemaField({
+          rating: new fields.NumberField({ initial: 3, integer: true, min: 0, max: 7 }),
+          max: new fields.NumberField({ initial: 3, integer: true, min: 0, max: 7 }),
+          pass: new fields.NumberField({ initial: 0, integer: true, min: 0 }),
+          fail: new fields.NumberField({ initial: 0, integer: true, min: 0 })
+        }),
         resources: advancementField(0),
         circles: advancementField(0),
         precedence: advancementField(0)
       }),
       might: new fields.NumberField({ initial: 1, integer: true, min: 0, max: 10 }),
-      natureDescriptors: new fields.StringField(),
+      natureDescriptors: new fields.ArrayField(
+        new fields.StringField(),
+        { initial: [] }
+      ),
 
       // ---- Skills (34 fixed skills) ----
       skills: new fields.SchemaField({

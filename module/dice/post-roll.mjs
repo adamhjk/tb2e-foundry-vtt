@@ -283,10 +283,16 @@ async function _handleNatureTax(message, withinDescriptors) {
   if ( taxAmount > 0 ) {
     const currentNature = actor.system.abilities.nature.rating;
     const newNature = Math.max(0, currentNature - taxAmount);
+    const natureMax = actor.system.abilities.nature.max;
     await actor.update({ "system.abilities.nature.rating": newNature });
     ui.notifications.info(
-      game.i18n.format("TB2E.PostRoll.NatureTaxed", { amount: taxAmount, rating: newNature })
+      game.i18n.format("TB2E.PostRoll.NatureTaxed", { amount: taxAmount, rating: newNature, max: natureMax })
     );
+
+    // Check for tax-to-0
+    if ( newNature === 0 ) {
+      await _postNatureCrisis(actor);
+    }
   }
 
   // Hide the nature tax prompt
@@ -419,6 +425,30 @@ async function _handleFinalize(message) {
     return;
   }
 
+  // Apply direct nature test tax (outside descriptors, failure only)
+  if ( actor && tbFlags.directNatureTest && !tbFlags.withinNature && !tbFlags.directNatureTaxApplied ) {
+    if ( !rollData.pass ) {
+      const obstacle = rollData.obstacle ?? 0;
+      const successes = rollData.finalSuccesses ?? rollData.successes ?? 0;
+      const taxAmount = Math.max(obstacle - successes, 1);
+      const currentNature = actor.system.abilities.nature.rating;
+      const newNature = Math.max(0, currentNature - taxAmount);
+      const natureMax = actor.system.abilities.nature.max;
+      await actor.update({ "system.abilities.nature.rating": newNature });
+      ui.notifications.info(
+        game.i18n.format("TB2E.PostRoll.NatureTaxDirect", { amount: taxAmount, rating: newNature, max: natureMax })
+      );
+      await message.update({ "flags.tb2e.directNatureTaxApplied": true, "flags.tb2e.directNatureTaxAmount": taxAmount });
+
+      // Check for tax-to-0
+      if ( newNature === 0 ) {
+        await _postNatureCrisis(actor);
+      }
+    } else {
+      await message.update({ "flags.tb2e.directNatureTaxApplied": true, "flags.tb2e.directNatureTaxAmount": 0 });
+    }
+  }
+
   // Mark resolved
   await message.update({ "flags.tb2e.resolved": true });
 
@@ -438,6 +468,127 @@ async function _handleFinalize(message) {
 
   // Re-render to remove action buttons
   await _reRenderChatCard(message);
+}
+
+/* -------------------------------------------- */
+/*  Nature Crisis — Tax to 0                    */
+/* -------------------------------------------- */
+
+/**
+ * Post a nature crisis chat card when Nature is taxed to 0.
+ * The card lets the player choose a non-class trait to replace.
+ * @param {Actor} actor
+ */
+async function _postNatureCrisis(actor) {
+  const traits = actor.system.traits || [];
+  const classTrait = actor.system.class || "";
+
+  // Build list of non-class traits for the picker
+  const eligibleTraits = traits.map((t, i) => ({
+    index: i,
+    name: t.name,
+    level: t.level,
+    isClass: t.name?.toLowerCase() === classTrait.toLowerCase()
+  })).filter(t => t.name && !t.isClass);
+
+  const cardContent = await foundry.applications.handlebars.renderTemplate(
+    "systems/tb2e/templates/chat/nature-crisis.hbs", {
+      actorName: actor.name,
+      actorImg: actor.img,
+      actorId: actor.id,
+      crisisTitle: game.i18n.format("TB2E.Nature.Crisis", { name: actor.name }),
+      crisisText: game.i18n.localize("TB2E.Nature.CrisisText"),
+      eligibleTraits,
+      hasTraits: eligibleTraits.length > 0,
+      selectTraitLabel: game.i18n.localize("TB2E.Nature.SelectTrait"),
+      newTraitLabel: game.i18n.localize("TB2E.Nature.NewTraitName"),
+      confirmLabel: game.i18n.localize("TB2E.Nature.ConfirmCrisis")
+    }
+  );
+
+  await ChatMessage.create({
+    speaker: ChatMessage.getSpeaker({ actor }),
+    content: cardContent,
+    type: CONST.CHAT_MESSAGE_STYLES.OTHER,
+    flags: { tb2e: { natureCrisis: true, actorId: actor.id } }
+  });
+}
+
+/**
+ * Register click handlers on nature crisis chat cards.
+ * @param {ChatMessage} message
+ * @param {HTMLElement} html
+ */
+export function activateNatureCrisisListeners(message, html) {
+  const flags = message.getFlag("tb2e", "natureCrisis");
+  if ( !flags ) return;
+  if ( message.getFlag("tb2e", "crisisResolved") ) return;
+
+  const confirmBtn = html.querySelector(".nature-crisis-confirm");
+  if ( !confirmBtn ) return;
+
+  confirmBtn.addEventListener("click", async (event) => {
+    event.preventDefault();
+    const actorId = message.getFlag("tb2e", "actorId");
+    const actor = game.actors.get(actorId);
+    if ( !actor || !actor.isOwner ) return;
+
+    const card = confirmBtn.closest(".tb2e-nature-crisis");
+    const traitSelect = card.querySelector(".crisis-trait-select");
+    const newNameInput = card.querySelector(".crisis-new-name");
+
+    const traitIndex = traitSelect ? Number(traitSelect.value) : -1;
+    const newName = newNameInput?.value?.trim() || "";
+
+    if ( traitIndex < 0 || !newName ) {
+      ui.notifications.warn(game.i18n.localize("TB2E.Nature.SelectTrait"));
+      return;
+    }
+
+    // Apply crisis: replace trait, reduce max, restore current, clear advancement
+    const traits = foundry.utils.deepClone(actor.system.traits);
+    if ( traits[traitIndex] ) {
+      traits[traitIndex].name = newName;
+    }
+
+    const newMax = Math.max(0, actor.system.abilities.nature.max - 1);
+    await actor.update({
+      "system.traits": traits,
+      "system.abilities.nature.max": newMax,
+      "system.abilities.nature.rating": newMax,
+      "system.abilities.nature.pass": 0,
+      "system.abilities.nature.fail": 0
+    });
+
+    // Mark crisis as resolved
+    await message.update({ "flags.tb2e.crisisResolved": true });
+
+    // Check for max 0 retirement
+    if ( newMax === 0 ) {
+      ui.notifications.error(game.i18n.format("TB2E.Nature.MaxZero", { name: actor.name }));
+    } else {
+      ui.notifications.info(
+        game.i18n.format("TB2E.PostRoll.NatureTaxed", { amount: 0, rating: newMax, max: newMax })
+      );
+    }
+
+    // Re-render to show resolved state
+    const resolvedContent = await foundry.applications.handlebars.renderTemplate(
+      "systems/tb2e/templates/chat/nature-crisis.hbs", {
+        actorName: actor.name,
+        actorImg: actor.img,
+        actorId: actor.id,
+        crisisTitle: game.i18n.format("TB2E.Nature.Crisis", { name: actor.name }),
+        crisisText: game.i18n.localize("TB2E.Nature.CrisisText"),
+        resolved: true,
+        replacedTrait: traits[traitIndex]?.name,
+        newMax,
+        isRetired: newMax === 0,
+        retirementText: newMax === 0 ? game.i18n.format("TB2E.Nature.Retirement", { name: actor.name }) : ""
+      }
+    );
+    await message.update({ content: resolvedContent });
+  });
 }
 
 /* -------------------------------------------- */
@@ -507,6 +658,8 @@ async function _reRenderChatCard(message) {
       deeperUsed: !!tbFlags.deeperUsed,
       ofCourseUsed: !!tbFlags.ofCourseUsed,
       showNatureTax: tbFlags.channelNature && !tbFlags.natureTaxResolved,
+      showDirectNatureTax: tbFlags.directNatureTest && !tbFlags.withinNature && !tbFlags.directNatureTaxApplied,
+      directNatureWithin: tbFlags.directNatureTest && tbFlags.withinNature,
       synergyHelpers: _buildSynergyHelpers(tbFlags.helpers, tbFlags.helperSynergy || {}),
       passLabel: game.i18n.localize("TB2E.Roll.Pass"),
       failLabel: game.i18n.localize("TB2E.Roll.Fail"),

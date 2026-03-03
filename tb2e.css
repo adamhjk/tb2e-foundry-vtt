@@ -178,7 +178,7 @@ body.theme-light :is(
   .tb2e, .tb2e-roll-card, .tb2e-advancement-card,
   .tb2e-versus-card, .tb2e-conflict-header, .tb2e-conflict-body,
   .tb2e-conflict-footer, .conflict-window-content,
-  .character-conflict-panel) {
+  .character-conflict-panel, .tb2e-nature-crisis) {
   --tb-bg-darkest: #dfe4eb;
   --tb-bg-dark: #e6eaf0;
   --tb-bg-mid: #ebeef3;
@@ -251,7 +251,7 @@ body.theme-dark :is(
   .tb2e, .tb2e-roll-card, .tb2e-advancement-card,
   .tb2e-versus-card, .tb2e-conflict-header, .tb2e-conflict-body,
   .tb2e-conflict-footer, .conflict-window-content,
-  .character-conflict-panel) {
+  .character-conflict-panel, .tb2e-nature-crisis) {
   --tb-bg-darkest: #0c1220;
   --tb-bg-dark: #0f172a;
   --tb-bg-mid: #1e293b;
@@ -329,7 +329,7 @@ body.theme-dark :is(
   .tb2e-roll-card, .tb2e-advancement-card,
   .tb2e-versus-card, .tb2e-conflict-header, .tb2e-conflict-body,
   .tb2e-conflict-footer, .conflict-window-content,
-  .character-conflict-panel) {
+  .character-conflict-panel, .tb2e-nature-crisis) {
   --tb-bg-darkest: #dfe4eb;
   --tb-bg-dark: #e6eaf0;
   --tb-bg-mid: #ebeef3;
@@ -403,7 +403,7 @@ body.theme-dark :is(
   .tb2e-roll-card, .tb2e-advancement-card,
   .tb2e-versus-card, .tb2e-conflict-header, .tb2e-conflict-body,
   .tb2e-conflict-footer, .conflict-window-content,
-  .character-conflict-panel) {
+  .character-conflict-panel, .tb2e-nature-crisis) {
   --tb-bg-darkest: #0c1220;
   --tb-bg-dark: #0f172a;
   --tb-bg-mid: #1e293b;
@@ -1100,24 +1100,152 @@ body.theme-dark .tb2e.sheet .torchbearer-logo,
 }
 
 
+
+.tb2e.sheet .nature-ability-row .nature-rating-group {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.15rem;
+}
+
+.tb2e.sheet .nature-ability-row .nature-separator {
+  font-size: 0.85rem;
+  color: var(--tb-text-faint);
+  font-weight: bold;
+}
+
+.tb2e.sheet .nature-ability-row .nature-current {
+  width: 2.4rem;
+}
+
+.tb2e.sheet .nature-ability-row .nature-max {
+  width: 2.4rem;
+  color: var(--tb-text-dim);
+}
+
+.tb2e.sheet .nature-ability-row.nature-taxed .nature-current {
+  color: var(--tb-amber);
+  font-weight: bold;
+}
+
+.tb2e.sheet .nature-actions {
+  display: flex;
+  gap: 0.4rem;
+}
+
+.tb2e.sheet .nature-action-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  background: none;
+  border: 1px solid var(--tb-border-light);
+  border-radius: var(--tb-radius);
+  color: var(--tb-text-dim);
+  cursor: pointer;
+  padding: 0.2rem 0.5rem;
+  font-size: 0.7rem;
+  font-family: var(--tb-font-body);
+  line-height: 1;
+  transition: color 0.15s, border-color 0.15s, background 0.15s;
+}
+
+.tb2e.sheet .nature-action-btn.recover:hover:not(:disabled) {
+  color: var(--tb-green);
+  border-color: var(--tb-green);
+  background: var(--tb-green-subtle);
+}
+
+.tb2e.sheet .nature-action-btn.conserve:hover:not(:disabled) {
+  color: var(--tb-amber);
+  border-color: var(--tb-amber);
+  background: var(--tb-amber-glow);
+}
+
+.tb2e.sheet .nature-action-btn:disabled {
+  opacity: 0.35;
+  cursor: default;
+}
+
+/* Nature descriptors — chip editor */
 .tb2e.sheet .nature-descriptors {
-  margin-top: 0.5rem;
-  padding-top: 0.5rem;
+  margin-top: 0.4rem;
+  padding-top: 0.4rem;
+  padding-left: 0.3rem;
   border-top: 1px solid var(--tb-border);
 }
 
-.tb2e.sheet .nature-descriptors label {
-  font-family: var(--tb-font-heading);
-  font-size: 0.8rem;
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
-  color: var(--tb-text-dim);
+.tb2e.sheet .descriptor-label {
   display: block;
-  margin-bottom: 0.2rem;
+  font-size: 0.7rem;
+  font-variant: small-caps;
+  letter-spacing: 0.04em;
+  color: var(--tb-text-faint);
+  margin-bottom: 0.25rem;
 }
 
-.tb2e.sheet .nature-descriptors input {
-  width: 100%;
+.tb2e.sheet .descriptor-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.3rem;
+  align-items: center;
+}
+
+.tb2e.sheet .descriptor-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  background: var(--tb-bg-raised);
+  border: 1px solid var(--tb-border-light);
+  border-radius: 999px;
+  padding: 0.15rem 0.5rem;
+  font-size: 0.75rem;
+  color: var(--tb-text-body);
+  font-family: var(--tb-font-body);
+}
+
+.tb2e.sheet .descriptor-remove {
+  background: none;
+  border: none;
+  color: var(--tb-text-faint);
+  cursor: pointer;
+  padding: 0;
+  font-size: 0.6rem;
+  line-height: 1;
+}
+
+.tb2e.sheet .descriptor-remove:hover {
+  color: var(--tb-red);
+}
+
+.tb2e.sheet .descriptor-add {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.2rem;
+}
+
+.tb2e.sheet .descriptor-input {
+  width: 8rem;
+  font-size: 0.75rem;
+  padding: 0.1rem 0.35rem;
+  border: 1px solid var(--tb-border-light);
+  border-radius: var(--tb-radius);
+  background: var(--tb-bg-white);
+  color: var(--tb-text-body);
+}
+
+.tb2e.sheet .descriptor-add-btn {
+  background: none;
+  border: 1px solid var(--tb-border-light);
+  border-radius: var(--tb-radius);
+  color: var(--tb-text-dim);
+  cursor: pointer;
+  padding: 0.1rem 0.3rem;
+  font-size: 0.65rem;
+  line-height: 1;
+}
+
+.tb2e.sheet .descriptor-add-btn:hover {
+  color: var(--tb-green);
+  border-color: var(--tb-green);
 }
 
 .tb2e.sheet .might-row .ability-name {
@@ -1857,6 +1985,64 @@ body.theme-dark .tb2e.sheet .torchbearer-logo,
 /*  Roll Dialog — Trait Selector                */
 /* -------------------------------------------- */
 
+/* Roll Dialog — Nature Descriptors Section */
+.tb2e.roll-dialog .roll-dialog-nature {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.tb2e.roll-dialog .nature-descriptor-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem;
+  padding-left: 0.3rem;
+}
+
+.tb2e.roll-dialog .nature-ref-chip {
+  display: inline-block;
+  background: var(--tb-bg-raised);
+  border: 1px solid var(--tb-border-light);
+  border-radius: 999px;
+  padding: 0.1rem 0.45rem;
+  font-size: 0.7rem;
+  color: var(--tb-text-body);
+}
+
+.tb2e.roll-dialog .nature-ref-chip.small {
+  font-size: 0.65rem;
+  padding: 0.05rem 0.35rem;
+  opacity: 0.85;
+}
+
+.tb2e.roll-dialog .nature-within-toggle {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.85rem;
+  cursor: pointer;
+  padding-left: 0.3rem;
+}
+
+.tb2e.roll-dialog .nature-within-toggle input[type="checkbox"] {
+  accent-color: var(--tb-green);
+}
+
+.tb2e.roll-dialog .nature-within-label {
+  font-weight: bold;
+  transition: color 0.15s;
+}
+
+.tb2e.roll-dialog .nature-within-label.outside {
+  color: var(--tb-amber);
+}
+
+.tb2e.roll-dialog .nature-within-label.within {
+  color: var(--tb-green);
+}
+
+/* -------------------------------------------- */
+
 .tb2e.roll-dialog .roll-dialog-traits {
   display: flex;
   flex-direction: column;
@@ -2040,6 +2226,14 @@ body.theme-dark .tb2e.sheet .torchbearer-logo,
 
 .tb2e.roll-dialog .persona-channel input[type="checkbox"] {
   accent-color: var(--tb-blue-bright);
+}
+
+.tb2e.roll-dialog .channel-nature-descriptors {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.2rem;
+  margin-left: 1.5rem;
+  margin-top: 0.15rem;
 }
 
 .tb2e.roll-dialog .persona-total {
@@ -2535,6 +2729,27 @@ body.theme-dark .tb2e.sheet .torchbearer-logo,
   font-size: 0.75rem;
 }
 
+.tb2e-roll-card .nature-tax-notice {
+  font-size: 0.75rem;
+  padding: 0.25rem 0.5rem;
+  border-radius: var(--tb-radius);
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+
+.tb2e-roll-card .nature-tax-notice.outside {
+  background: var(--tb-amber-glow);
+  color: var(--tb-amber);
+  border: 1px solid var(--tb-amber);
+}
+
+.tb2e-roll-card .nature-tax-notice.within {
+  background: var(--tb-green-subtle);
+  color: var(--tb-green);
+  border: 1px solid var(--tb-green);
+}
+
 /* Synergy section on chat card */
 .tb2e-roll-card .roll-card-helpers {
   padding: 0.4rem 0.75rem;
@@ -2624,6 +2839,11 @@ body.theme-dark .tb2e.sheet .torchbearer-logo,
 /* Adjust ability-row grid to 4 columns */
 .tb2e.sheet .ability-row {
   grid-template-columns: 7rem 22px 3.5rem 1fr;
+}
+
+/* Nature row — 5 columns: name | advance | current/max | bubbles | actions */
+.tb2e.sheet .nature-ability-row {
+  grid-template-columns: 7rem 22px auto 1fr auto;
 }
 
 /* Adjust skill-row grid to 5 columns */
@@ -5237,4 +5457,102 @@ body.theme-dark .tb2e.sheet .torchbearer-logo,
   background: linear-gradient(135deg, var(--tb-red-bright), var(--tb-red));
 }
 
+/* ============================================ */
+/*  Nature Crisis Chat Card                     */
+/* ============================================ */
 
+.tb2e-nature-crisis {
+  padding: 0.75rem;
+  background: var(--tb-bg-raised);
+  border: 2px solid var(--tb-amber);
+  border-radius: var(--tb-radius-lg);
+}
+
+.tb2e-nature-crisis .crisis-header {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.tb2e-nature-crisis .crisis-portrait {
+  border-radius: 50%;
+  border: 2px solid var(--tb-amber);
+}
+
+.tb2e-nature-crisis .crisis-title {
+  margin: 0;
+  font-family: var(--tb-font-logo);
+  font-size: 1.1rem;
+  color: var(--tb-amber);
+}
+
+.tb2e-nature-crisis .crisis-text {
+  font-size: 0.8rem;
+  color: var(--tb-text-body);
+  line-height: 1.4;
+  margin: 0 0 0.5rem;
+}
+
+.tb2e-nature-crisis .crisis-form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.tb2e-nature-crisis .crisis-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+
+.tb2e-nature-crisis .crisis-field label {
+  font-size: 0.75rem;
+  font-weight: bold;
+  color: var(--tb-text-dim);
+}
+
+.tb2e-nature-crisis .crisis-trait-select,
+.tb2e-nature-crisis .crisis-new-name {
+  padding: 0.25rem 0.4rem;
+  font-size: 0.8rem;
+  border: 1px solid var(--tb-border);
+  border-radius: var(--tb-radius);
+  background: var(--tb-bg-white);
+  color: var(--tb-text-body);
+}
+
+.tb2e-nature-crisis .nature-crisis-confirm {
+  margin-top: 0.3rem;
+  padding: 0.35rem 0.75rem;
+  border: 1px solid var(--tb-amber);
+  border-radius: var(--tb-radius);
+  background: var(--tb-amber-glow);
+  color: var(--tb-amber);
+  font-weight: bold;
+  font-size: 0.8rem;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.tb2e-nature-crisis .nature-crisis-confirm:hover {
+  background: var(--tb-amber);
+  color: var(--tb-bg-white);
+}
+
+.tb2e-nature-crisis .crisis-resolved {
+  font-size: 0.8rem;
+  color: var(--tb-text-body);
+}
+
+.tb2e-nature-crisis .crisis-retirement {
+  font-weight: bold;
+  color: var(--tb-red);
+  margin-top: 0.3rem;
+}
+
+.tb2e-nature-crisis .crisis-no-traits {
+  font-size: 0.8rem;
+  color: var(--tb-text-faint);
+  font-style: italic;
+}
