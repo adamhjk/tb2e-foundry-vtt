@@ -165,7 +165,15 @@ function _applyBLHalving(baseDice, modifiers) {
       halvable += m.value;
     }
   }
-  return Math.max(Math.ceil(halvable / 2) + nonHalvable, 1);
+  const halved = Math.ceil(halvable / 2);
+  const penalty = halved - halvable;
+  const poolSize = Math.max(halved + nonHalvable, 1);
+  const halvingMod = createModifier({
+    label: game.i18n.localize("TB2E.Roll.BLHalving"),
+    type: "dice", value: penalty, source: "bl-halving",
+    icon: "fa-solid fa-divide", color: "--tb-amber", timing: "pre"
+  });
+  return { poolSize, halvingMod };
 }
 
 /* -------------------------------------------- */
@@ -193,6 +201,53 @@ export async function _logAdvancement({ actor, type, key, baseDice, pass }) {
   const max = advancementNeeded(advRating)[result];
   if ( current < max ) await actor.update({ [path]: current + 1 });
   await showAdvancementDialog({ actor, type, key });
+}
+
+/**
+ * Log a Beginner's Luck test toward learning a skill.
+ * After Nature-max tests, the skill opens at rating 2.
+ * @param {object} options
+ * @param {Actor} options.actor
+ * @param {string} options.key - Skill key.
+ */
+export async function _logBLLearning({ actor, key }) {
+  if ( actor.type !== "character" ) return;
+  const skillData = actor.system.skills[key];
+  if ( !skillData || skillData.rating > 0 ) return;
+
+  const newCount = (skillData.learning ?? 0) + 1;
+  const natureMax = actor.system.abilities.nature.max;
+
+  if ( newCount >= natureMax ) {
+    await actor.update({
+      [`system.skills.${key}.rating`]: 2,
+      [`system.skills.${key}.pass`]: 0,
+      [`system.skills.${key}.fail`]: 0,
+      [`system.skills.${key}.learning`]: 0
+    });
+    await _postSkillOpenedCard(actor, key);
+  } else {
+    await actor.update({ [`system.skills.${key}.learning`]: newCount });
+  }
+}
+
+/**
+ * Post a chat card announcing a skill has been learned via Beginner's Luck.
+ * @param {Actor} actor
+ * @param {string} key - Skill key.
+ */
+async function _postSkillOpenedCard(actor, key) {
+  const cfg = skills[key];
+  const label = game.i18n.localize(cfg.label);
+  const chatContent = await foundry.applications.handlebars.renderTemplate(
+    "systems/tb2e/templates/chat/skill-opened.hbs",
+    { actorName: actor.name, actorImg: actor.img, label, newRating: 2 }
+  );
+  await ChatMessage.create({
+    speaker: ChatMessage.getSpeaker({ actor }),
+    content: chatContent,
+    type: CONST.CHAT_MESSAGE_STYLES.OTHER
+  });
 }
 
 /* -------------------------------------------- */
@@ -959,7 +1014,9 @@ export async function rollTest({ actor, type, key, testContext = {} }) {
   let poolSize;
   if ( blInfo ) {
     // BL: halve the halvable portion
-    poolSize = _applyBLHalving(config.baseDice, allModifiers);
+    const { poolSize: blPool, halvingMod } = _applyBLHalving(config.baseDice, allModifiers);
+    poolSize = blPool;
+    if ( halvingMod.value !== 0 ) allModifiers.push(halvingMod);
   } else {
     const diceBonus = allModifiers
       .filter(m => m.timing === "pre" && m.type === "dice")
@@ -1136,7 +1193,7 @@ async function _handleIndependentRoll({ actor, type, key, label, baseDice, poolS
       isBL: !!rollFlags.roll.isBL,
       blAbilityLabel: rollFlags.roll.blAbilityKey ? game.i18n.localize(abilities[rollFlags.roll.blAbilityKey]?.label) : null,
       // Post-roll buttons visibility
-      hasPostActions: _hasPostRollActions(rollFlags, actor),
+      hasPostActions: true,
       hasSuns: diceResults.some(d => d.isSun),
       hasWyrms: diceResults.some(d => !d.success),
       sunCount: diceResults.filter(d => d.isSun).length,
@@ -1177,32 +1234,8 @@ async function _handleIndependentRoll({ actor, type, key, label, baseDice, poolS
       }
     }
   });
-
-  // Log advancement immediately for rolls without post-roll actions
-  // (Post-roll actions like Fate Luck can change the result, so defer advancement for those)
-  if ( logAdvancement && obstacle > 0 && !_hasPostRollActions(rollFlags, actor) ) {
-    await _logAdvancement({ actor, type, key, baseDice, pass });
-  }
 }
 
-/**
- * Check if the roll has any available post-roll actions.
- */
-function _hasPostRollActions(rollFlags, actor) {
-  if ( actor.type !== "character" ) return false;
-  const diceResults = rollFlags.roll.diceResults;
-  const hasSuns = diceResults.some(d => d.isSun);
-  const hasWyrms = diceResults.some(d => !d.success);
-  const hasFate = actor.system.fate.current > 0;
-  const hasPersona = actor.system.persona.current > 0;
-
-  if ( hasFate && hasSuns ) return true; // Luck
-  if ( rollFlags.wise && hasFate && hasWyrms ) return true; // Deeper Understanding
-  if ( rollFlags.wise && hasPersona && hasWyrms ) return true; // Of Course!
-  if ( rollFlags.channelNature ) return true; // Nature tax prompt
-  if ( rollFlags.directNatureTest && !rollFlags.withinNature ) return true; // Direct nature tax
-  return false;
-}
 
 /**
  * Build the synergyHelpers array for the chat card template.
@@ -1263,7 +1296,7 @@ async function _handleVersusRoll({ actor, type, key, label, baseDice, poolSize, 
     isBL: !!rollFlags.roll.isBL,
     blAbilityLabel: rollFlags.roll.blAbilityKey ? game.i18n.localize(abilities[rollFlags.roll.blAbilityKey]?.label) : null,
     // Post-roll buttons visibility
-    hasPostActions: _hasPostRollActions(rollFlags, actor),
+    hasPostActions: true,
     hasSuns: diceResults.some(d => d.isSun),
     hasWyrms: diceResults.some(d => !d.success),
     sunCount: diceResults.filter(d => d.isSun).length,
@@ -1314,7 +1347,7 @@ async function _handleVersusRoll({ actor, type, key, label, baseDice, poolSize, 
             initiatorActorId: initiatorVs.initiatorActorId,
             opponentActorId: actor.id,
             rollType: type, rollKey: key, label, baseDice,
-            logAdvancement, resolved: false
+            logAdvancement, isBL: !!rollFlags.roll.isBL, resolved: false
           },
           helpers: (config.selectedHelpers || []).map(h => ({
             id: h.id, name: h.name, helpVia: h.helpVia, helpViaType: h.helpViaType, synergy: !!h.synergy
@@ -1338,7 +1371,7 @@ async function _handleVersusRoll({ actor, type, key, label, baseDice, poolSize, 
             type: "initiator",
             initiatorActorId: actor.id,
             rollType: type, rollKey: key, label, baseDice,
-            logAdvancement, resolved: false
+            logAdvancement, isBL: !!rollFlags.roll.isBL, resolved: false
           },
           helpers: (config.selectedHelpers || []).map(h => ({
             id: h.id, name: h.name, helpVia: h.helpVia, helpViaType: h.helpViaType, synergy: !!h.synergy

@@ -1,4 +1,4 @@
-import { _logAdvancement } from "./tb2e-roll.mjs";
+import { _logAdvancement, _logBLLearning } from "./tb2e-roll.mjs";
 import { _checkWiseAdvancement } from "./post-roll.mjs";
 import { abilities, skills } from "../config.mjs";
 
@@ -205,24 +205,32 @@ async function _executeVersusResolution(initiatorMessage, opponentMessage) {
   // Log advancement for both sides
   // Initiator's obstacle = opponent's successes; pass = initiator won
   if ( initiatorVs.logAdvancement && oSuccesses > 0 ) {
-    await _logAdvancement({
-      actor: initiatorActor,
-      type: initiatorVs.rollType,
-      key: initiatorVs.rollKey,
-      baseDice: initiatorVs.baseDice,
-      pass: initiatorWins
-    });
+    if ( initiatorVs.isBL ) {
+      await _logBLLearning({ actor: initiatorActor, key: initiatorVs.rollKey });
+    } else {
+      await _logAdvancement({
+        actor: initiatorActor,
+        type: initiatorVs.rollType,
+        key: initiatorVs.rollKey,
+        baseDice: initiatorVs.baseDice,
+        pass: initiatorWins
+      });
+    }
   }
 
   // Opponent's obstacle = initiator's successes; pass = opponent won
   if ( opponentVs.logAdvancement && iSuccesses > 0 ) {
-    await _logAdvancement({
-      actor: opponentActor,
-      type: opponentVs.rollType,
-      key: opponentVs.rollKey,
-      baseDice: opponentVs.baseDice,
-      pass: !initiatorWins
-    });
+    if ( opponentVs.isBL ) {
+      await _logBLLearning({ actor: opponentActor, key: opponentVs.rollKey });
+    } else {
+      await _logAdvancement({
+        actor: opponentActor,
+        type: opponentVs.rollType,
+        key: opponentVs.rollKey,
+        baseDice: opponentVs.baseDice,
+        pass: !initiatorWins
+      });
+    }
   }
 
   // Process wise aiders for both sides
@@ -360,7 +368,9 @@ async function _handleVersusTied(initiatorMessage, opponentMessage, initiatorVs,
           initiatorBaseDice: initiatorVs.baseDice,
           opponentBaseDice: vs.baseDice,
           initiatorLogAdvancement: initiatorVs.logAdvancement,
-          opponentLogAdvancement: vs.logAdvancement
+          opponentLogAdvancement: vs.logAdvancement,
+          initiatorIsBL: !!initiatorVs.isBL,
+          opponentIsBL: !!vs.isBL
         },
         tiedResolved: false
       }
@@ -560,22 +570,30 @@ async function _resolveFromTied(tiedMessage, vs, winnerId, loserId, traitName, t
 
   // Log advancement for both sides
   if ( vs.initiatorLogAdvancement && vs.opponentSuccesses > 0 ) {
-    await _logAdvancement({
-      actor: initiatorActor,
-      type: vs.initiatorRollType,
-      key: vs.initiatorRollKey,
-      baseDice: vs.initiatorBaseDice,
-      pass: initiatorWins
-    });
+    if ( vs.initiatorIsBL ) {
+      await _logBLLearning({ actor: initiatorActor, key: vs.initiatorRollKey });
+    } else {
+      await _logAdvancement({
+        actor: initiatorActor,
+        type: vs.initiatorRollType,
+        key: vs.initiatorRollKey,
+        baseDice: vs.initiatorBaseDice,
+        pass: initiatorWins
+      });
+    }
   }
   if ( vs.opponentLogAdvancement && vs.initiatorSuccesses > 0 ) {
-    await _logAdvancement({
-      actor: opponentActor,
-      type: vs.opponentRollType,
-      key: vs.opponentRollKey,
-      baseDice: vs.opponentBaseDice,
-      pass: !initiatorWins
-    });
+    if ( vs.opponentIsBL ) {
+      await _logBLLearning({ actor: opponentActor, key: vs.opponentRollKey });
+    } else {
+      await _logAdvancement({
+        actor: opponentActor,
+        type: vs.opponentRollType,
+        key: vs.opponentRollKey,
+        baseDice: vs.opponentBaseDice,
+        pass: !initiatorWins
+      });
+    }
   }
 
   // Process wise aiders for both sides

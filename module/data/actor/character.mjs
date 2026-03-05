@@ -7,7 +7,8 @@ export default class CharacterData extends foundry.abstract.TypeDataModel {
     const advancementField = (initial = 0) => new fields.SchemaField({
       rating: new fields.NumberField({ initial, integer: true, min: 0, max: 10 }),
       pass: new fields.NumberField({ initial: 0, integer: true, min: 0 }),
-      fail: new fields.NumberField({ initial: 0, integer: true, min: 0 })
+      fail: new fields.NumberField({ initial: 0, integer: true, min: 0 }),
+      learning: new fields.NumberField({ initial: 0, integer: true, min: 0 })
     });
 
     return {

@@ -1,4 +1,4 @@
-import { _logAdvancement, _buildSynergyHelpers, evaluateRoll } from "./tb2e-roll.mjs";
+import { _logAdvancement, _logBLLearning, _buildSynergyHelpers, evaluateRoll } from "./tb2e-roll.mjs";
 import { abilities, skills } from "../config.mjs";
 
 /* ============================================ */
@@ -499,13 +499,17 @@ async function _handleFinalize(message) {
 
   // Log advancement
   if ( actor && rollData.obstacle > 0 ) {
-    await _logAdvancement({
-      actor,
-      type: rollData.type,
-      key: rollData.key,
-      baseDice: rollData.baseDice,
-      pass: rollData.pass
-    });
+    if ( rollData.isBL ) {
+      await _logBLLearning({ actor, key: rollData.key });
+    } else {
+      await _logAdvancement({
+        actor,
+        type: rollData.type,
+        key: rollData.key,
+        baseDice: rollData.baseDice,
+        pass: rollData.pass
+      });
+    }
   }
 
   // Mark wise advancement for "I Am Wise" aiders

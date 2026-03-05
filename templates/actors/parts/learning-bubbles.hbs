@@ -1,0 +1,17 @@
+{{!--
+  Learning bubbles for skills being learned via Beginner's Luck.
+  Expected context:
+    path           - data path prefix (e.g. "system.skills.rider")
+    learning       - current BL test count
+    learningArray  - array of { filled } objects (length = nature max)
+--}}
+<div class="advancement-bubbles">
+  <div class="bubble-row learning-bubbles" title="{{localize 'TB2E.Skill.LearningTooltip'}}">
+    <span class="bubble-label">L</span>
+    {{#each learningArray}}
+    <button type="button" class="bubble learning-bubble{{#if filled}} filled{{/if}}"
+            data-action="toggleBubble" data-path="{{../path}}.learning" data-index="{{@index}}">
+    </button>
+    {{/each}}
+  </div>
+</div>

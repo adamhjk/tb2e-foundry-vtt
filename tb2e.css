@@ -97,6 +97,10 @@
   --tb-green-bright: #16a34a;
   --tb-green-subtle: #dcfce7;
   --tb-green-text: #86efac;
+  --tb-green-glow: #bbf7d0;
+  --tb-green-glow-bright: #86efac;
+  --tb-green-bg: #f0fdf4;
+  --tb-green-dim: #15803d;
   /* Amber — advancement/captain */
   --tb-amber: #f59e0b;
   --tb-amber-bright: #d97706;
@@ -188,6 +192,10 @@ body.theme-light :is(
   --tb-green-bright: #16a34a;
   --tb-green-subtle: #dcfce7;
   --tb-green-text: #86efac;
+  --tb-green-glow: #bbf7d0;
+  --tb-green-glow-bright: #86efac;
+  --tb-green-bg: #f0fdf4;
+  --tb-green-dim: #15803d;
   /* Amber — advancement/captain */
   --tb-amber: #f59e0b;
   --tb-amber-bright: #d97706;
@@ -269,6 +277,10 @@ body.theme-dark :is(
   --tb-green-bright: #16a34a;
   --tb-green-subtle: rgba(34, 197, 94, 0.15);
   --tb-green-text: #86efac;
+  --tb-green-glow: rgba(34, 197, 94, 0.2);
+  --tb-green-glow-bright: rgba(34, 197, 94, 0.3);
+  --tb-green-bg: rgba(34, 197, 94, 0.1);
+  --tb-green-dim: #4ade80;
   --tb-amber: #f59e0b;
   --tb-amber-bright: #d97706;
   --tb-amber-dim: #fbbf24;
@@ -351,6 +363,10 @@ body.theme-dark :is(
   --tb-green-bright: #16a34a;
   --tb-green-subtle: #dcfce7;
   --tb-green-text: #86efac;
+  --tb-green-glow: #bbf7d0;
+  --tb-green-glow-bright: #86efac;
+  --tb-green-bg: #f0fdf4;
+  --tb-green-dim: #15803d;
   /* Amber — advancement/captain */
   --tb-amber: #f59e0b;
   --tb-amber-bright: #d97706;
@@ -433,6 +449,10 @@ body.theme-dark :is(
   --tb-green-bright: #16a34a;
   --tb-green-subtle: rgba(34, 197, 94, 0.15);
   --tb-green-text: #86efac;
+  --tb-green-glow: rgba(34, 197, 94, 0.2);
+  --tb-green-glow-bright: rgba(34, 197, 94, 0.3);
+  --tb-green-bg: rgba(34, 197, 94, 0.1);
+  --tb-green-dim: #4ade80;
   --tb-amber: #f59e0b;
   --tb-amber-bright: #d97706;
   --tb-amber-dim: #fbbf24;
@@ -1009,6 +1029,11 @@ body.theme-dark .tb2e.sheet .torchbearer-logo,
   box-shadow: 0 0 4px rgba(234, 88, 12, 0.3);
   /* fail-color glow — invariant */
 }
+.tb2e.sheet .learning-bubble.filled {
+  background: var(--tb-green);
+  border-color: var(--tb-green);
+  box-shadow: 0 0 4px var(--tb-green-glow);
+}
 /* -------------------------------------------- */
 /*  Abilities Tab                               */
 /* -------------------------------------------- */
@@ -1217,6 +1242,14 @@ body.theme-dark .tb2e.sheet .torchbearer-logo,
   width: 3rem;
   text-align: center;
   font-weight: bold;
+}
+.tb2e.sheet .skill-learning-x {
+  display: inline-block;
+  width: 3rem;
+  text-align: center;
+  font-weight: bold;
+  color: var(--tb-amber-bright);
+  font-family: var(--tb-font-heading);
 }
 /*  Traits & Wises Tab                          */
 /* -------------------------------------------- */
@@ -2542,6 +2575,28 @@ body.theme-dark .tb2e.sheet .torchbearer-logo,
 }
 .tb2e-chat-card.card-accent--amber .card-label {
   color: var(--tb-amber-bright);
+}
+/* -------------------------------------------- */
+/*  Accent Modifier — Green                     */
+/* -------------------------------------------- */
+.tb2e-chat-card .banner-green {
+  background: linear-gradient(135deg, var(--tb-green-glow), var(--tb-green-glow-bright));
+  color: var(--tb-green-dim);
+  border-top: 2px solid var(--tb-green-bright);
+}
+.tb2e-chat-card.card-accent--green {
+  border-color: var(--tb-green-bright);
+  background: linear-gradient(var(--tb-green-bg), var(--tb-green-bg)), var(--tb-bg-raised);
+}
+.tb2e-chat-card.card-accent--green .card-header {
+  background: linear-gradient(var(--tb-green-glow), var(--tb-green-glow)), var(--tb-bg-mid);
+  border-bottom-color: var(--tb-green-glow-bright);
+}
+.tb2e-chat-card.card-accent--green .card-portrait {
+  border-color: var(--tb-green-bright);
+}
+.tb2e-chat-card.card-accent--green .card-label {
+  color: var(--tb-green-bright);
 }
 /* -------------------------------------------- */
 /*  Chat Roll Card                              */

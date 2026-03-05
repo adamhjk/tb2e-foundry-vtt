@@ -144,6 +144,7 @@ export default class CharacterSheet extends HandlebarsApplicationMixin(ActorShee
 
   static PARTIALS = [
     "systems/tb2e/templates/actors/parts/advancement-bubbles.hbs",
+    "systems/tb2e/templates/actors/parts/learning-bubbles.hbs",
     "systems/tb2e/templates/actors/parts/point-boxes.hbs"
   ];
 
@@ -310,6 +311,7 @@ export default class CharacterSheet extends HandlebarsApplicationMixin(ActorShee
     context.skills = Object.entries(skills).map(([key, cfg]) => {
       const data = sys.skills[key];
       const adv = advancementNeeded(data.rating);
+      const isLearning = data.rating === 0 && (data.learning ?? 0) > 0;
       return {
         key,
         label: game.i18n.localize(cfg.label),
@@ -322,6 +324,9 @@ export default class CharacterSheet extends HandlebarsApplicationMixin(ActorShee
         passArray: this.#buildBubbles(data.pass, adv.pass),
         failArray: this.#buildBubbles(data.fail, adv.fail),
         canAdvance: data.pass >= adv.pass && data.fail >= adv.fail && adv.pass > 0,
+        learning: data.learning ?? 0,
+        isLearning,
+        learningArray: isLearning ? this.#buildBubbles(data.learning ?? 0, sys.abilities.nature.max) : [],
         page: cfg.page
       };
     });

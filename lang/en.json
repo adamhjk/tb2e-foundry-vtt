@@ -128,6 +128,8 @@
   "TB2E.Skill.Stonemason": "Stonemason",
   "TB2E.Skill.Weaver": "Weaver",
   "TB2E.Skill.Theologian": "Theologian",
+  "TB2E.Skill.OpenedChatMessage": "Skill Learned!",
+  "TB2E.Skill.LearningTooltip": "Beginner's Luck tests toward learning",
 
   "TB2E.Pack.none": "None",
   "TB2E.Pack.satchel": "Satchel (3)",
@@ -187,6 +189,7 @@
   "TB2E.Roll.ModifierLabel": "Label",
   "TB2E.Roll.ManualModifier": "Modifier",
   "TB2E.Roll.BLTest": "Beginner's Luck ({ability})",
+  "TB2E.Roll.BLHalving": "Beginner's Luck",
   "TB2E.Roll.AfraidBLWarning": "Afraid condition blocks Beginner's Luck! Use Nature instead.",
 
   "TB2E.Advance.DialogTitle": "{name} Advancement",

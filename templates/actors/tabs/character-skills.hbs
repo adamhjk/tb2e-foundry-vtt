@@ -12,9 +12,18 @@
       {{else}}
       <span class="btn-advance-spacer"></span>
       {{/if}}
+      {{#if isLearning}}
+      <span class="skill-rating skill-learning-x">✕</span>
+      {{else}}
       <input type="number" name="{{path}}.rating" value="{{rating}}" min="0" max="10" class="skill-rating">
+      {{/if}}
+      {{#if isLearning}}
+      {{> "systems/tb2e/templates/actors/parts/learning-bubbles.hbs"
+          path=path learning=learning learningArray=learningArray}}
+      {{else}}
       {{> "systems/tb2e/templates/actors/parts/advancement-bubbles.hbs"
           path=path rating=rating pass=pass fail=fail passArray=passArray failArray=failArray}}
+      {{/if}}
     </div>
     {{/each}}
   </div>
