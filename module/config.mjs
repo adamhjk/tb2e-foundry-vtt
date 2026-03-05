@@ -28,7 +28,7 @@ export const abilities = {
   nature:     { label: "TB2E.Ability.Nature",     group: "raw",     page: "DH p.65" },
   resources:  { label: "TB2E.Ability.Resources",  group: "town",    page: "DH p.60" },
   circles:    { label: "TB2E.Ability.Circles",    group: "town",    page: "DH p.61" },
-  precedence: { label: "TB2E.Ability.Precedence", group: "town",    page: "DH p.62" }
+  precedence: { label: "TB2E.Ability.Precedence", group: "town", rollable: false, page: "DH p.62" }
 };
 
 /**

@@ -1021,8 +1021,9 @@ body.theme-dark .tb2e.sheet .torchbearer-logo,
   grid-template-columns: 7rem 3.5rem 1fr;
   align-items: center;
   gap: 0.5rem;
-  padding: 0.4rem 0;
+  padding: 0.4rem 0.25rem 0.4rem 0.4rem;
   border-bottom: 1px solid var(--tb-border);
+  border-radius: var(--tb-radius);
 }
 .tb2e.sheet .ability-row:last-child {
   border-bottom: none;
@@ -1182,7 +1183,7 @@ body.theme-dark .tb2e.sheet .torchbearer-logo,
   grid-template-columns: 1fr 1.5rem 3rem 9rem;
   align-items: center;
   gap: 0.25rem;
-  padding: 0.3rem 0.25rem;
+  padding: 0.3rem 0.25rem 0.3rem 0.4rem;
   border-bottom: 1px solid var(--tb-border);
   border-radius: var(--tb-radius);
 }

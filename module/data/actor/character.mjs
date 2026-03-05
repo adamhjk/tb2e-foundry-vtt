@@ -67,7 +67,7 @@ export default class CharacterData extends foundry.abstract.TypeDataModel {
         }),
         resources: advancementField(0),
         circles: advancementField(0),
-        precedence: advancementField(0)
+        precedence: new fields.NumberField({ initial: 0, integer: true, min: 0, max: 7 })
       }),
       might: new fields.NumberField({ initial: 1, integer: true, min: 0, max: 10 }),
       natureDescriptors: new fields.ArrayField(
@@ -170,5 +170,4 @@ export default class CharacterData extends foundry.abstract.TypeDataModel {
         status: new fields.StringField()
       }))
     };
-  }
-}
+  }}

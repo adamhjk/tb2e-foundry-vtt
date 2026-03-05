@@ -86,6 +86,14 @@
   <fieldset class="abilities-group">
     <legend><i class="fa-solid fa-city"></i> {{localize "TB2E.Section.TownAbilities"}}</legend>
     {{#each townAbilities}}
+    {{#if (eq rollable false)}}
+    {{!-- Non-rollable town ability (e.g. Precedence) --}}
+    <div class="ability-row might-row" data-page="{{page}}">
+      <span class="ability-name">{{label}}</span>
+      <span class="btn-advance-spacer"></span>
+      <input type="number" name="system.abilities.{{key}}" value="{{lookup ../system.abilities key}}" min="0" max="7" class="ability-rating">
+    </div>
+    {{else}}
     <div class="ability-row rollable" data-action="rollTest" data-type="ability" data-key="{{key}}" data-page="{{page}}">
       <span class="ability-name">{{label}}</span>
       {{#if canAdvance}}
@@ -99,6 +107,7 @@
       {{> "systems/tb2e/templates/actors/parts/advancement-bubbles.hbs"
           path=path rating=rating pass=pass fail=fail passArray=passArray failArray=failArray}}
     </div>
+    {{/if}}
     {{/each}}
   </fieldset>
 
