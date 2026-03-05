@@ -1,0 +1,37 @@
+<div class="tb2e-chat-card card-accent--amber" data-actor-id="{{actorId}}" data-wise-index="{{wiseIndex}}">
+  <div class="card-header">
+    <img class="card-portrait" src="{{actorImg}}" width="32" height="32">
+    <div class="card-info">
+      <span class="card-name">{{actorName}}</span>
+      <span class="card-label">{{advancementTitle}}</span>
+    </div>
+  </div>
+
+  {{#if resolved}}
+  <div class="card-body wise-adv-resolved">
+    <p class="wise-adv-wise-name"><strong>{{wiseName}}</strong></p>
+    <p class="wise-adv-resolved-text">{{resolvedText}}</p>
+  </div>
+  <div class="card-reference"><i class="fa-solid fa-book"></i> DH pp.77-78</div>
+  <div class="card-banner banner-amber">
+    <i class="fa-solid fa-check"></i> <span>Resolved</span>
+  </div>
+  {{else}}
+  <div class="card-body">
+    <p class="wise-adv-wise-name"><strong>{{wiseName}}</strong></p>
+    <p class="wise-adv-text">{{advancementText}}</p>
+    <div class="wise-adv-actions">
+      <button type="button" class="card-btn card-btn--amber wise-adv-btn" data-action="wise-change">
+        <i class="fa-solid fa-shuffle"></i> {{perkChange}}
+      </button>
+      <button type="button" class="card-btn card-btn--amber wise-adv-btn" data-action="wise-bl">
+        <i class="fa-solid fa-graduation-cap"></i> {{perkBL}}
+      </button>
+      <button type="button" class="card-btn card-btn--amber wise-adv-btn" data-action="wise-skill-test">
+        <i class="fa-solid fa-arrow-up"></i> {{perkSkillTest}}
+      </button>
+    </div>
+  </div>
+  <div class="card-reference"><i class="fa-solid fa-book"></i> DH pp.77-78</div>
+  {{/if}}
+</div>

@@ -3,8 +3,8 @@ import * as dataModels from "./module/data/_module.mjs";
 import * as documents from "./module/documents/_module.mjs";
 import * as applications from "./module/applications/_module.mjs";
 import * as dice from "./module/dice/_module.mjs";
-import { PendingVersusRegistry, resolveVersus, handleTraitBreakTie, handleLevel3TraitBreakTie } from "./module/dice/versus.mjs";
-import { activatePostRollListeners, activateNatureCrisisListeners, processSynergyMailbox } from "./module/dice/post-roll.mjs";
+import { PendingVersusRegistry, resolveVersus, processVersusFinalize, handleTraitBreakTie, handleLevel3TraitBreakTie } from "./module/dice/versus.mjs";
+import { activatePostRollListeners, activateNatureCrisisListeners, activateWiseAdvancementListeners, processSynergyMailbox, processWiseAdvancementMailbox } from "./module/dice/post-roll.mjs";
 
 Hooks.once("init", function() {
   globalThis.tb2e = game.tb2e = { dice };
@@ -68,7 +68,8 @@ Hooks.once("init", function() {
     "systems/tb2e/templates/chat/advancement-result.hbs",
     "systems/tb2e/templates/conflict/conflict-window.hbs",
     "systems/tb2e/templates/chat/nature-crisis.hbs",
-    "systems/tb2e/templates/chat/versus-tied.hbs"
+    "systems/tb2e/templates/chat/versus-tied.hbs",
+    "systems/tb2e/templates/chat/wise-advancement.hbs"
   ]);
 
   console.log("Torchbearer 2E | System initialized.");
@@ -89,6 +90,7 @@ Hooks.on("createChatMessage", (message) => {
 Hooks.on("renderChatMessageHTML", (message, html) => {
   activatePostRollListeners(message, html);
   activateNatureCrisisListeners(message, html);
+  activateWiseAdvancementListeners(message, html);
 
   // Versus tied card actions
   const vs = message.getFlag("tb2e", "versus");
@@ -109,10 +111,15 @@ Hooks.on("renderChatMessageHTML", (message, html) => {
 });
 
 // Process synergy mailbox: player writes pendingSynergy flag, GM picks it up here.
+// Process wise advancement mailbox: player writes pendingWiseAdvancement flag, GM picks it up.
 Hooks.on("updateActor", (actor, changes, options, userId) => {
   if ( !game.user.isGM ) return;
   const pending = changes.flags?.tb2e?.pendingSynergy;
   if ( pending?.messageId ) processSynergyMailbox(actor, pending);
+  const pendingWise = changes.flags?.tb2e?.pendingWiseAdvancement;
+  if ( pendingWise?.field ) processWiseAdvancementMailbox(actor, pendingWise);
+  const pendingVersus = changes.flags?.tb2e?.pendingVersusFinalize;
+  if ( pendingVersus?.messageId ) processVersusFinalize(actor, pendingVersus);
 });
 
 // Auto-assign combatants to the correct team group when added to a conflict.

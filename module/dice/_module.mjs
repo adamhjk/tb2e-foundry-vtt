@@ -1,7 +1,7 @@
 export { rollTest, createModifier } from "./tb2e-roll.mjs";
 export { showAdvancementDialog } from "./advancement.mjs";
-export { PendingVersusRegistry, resolveVersus } from "./versus.mjs";
-export { getEligibleHelpers, isBlockedFromHelping } from "./help.mjs";
+export { PendingVersusRegistry, resolveVersus, processVersusFinalize } from "./versus.mjs";
+export { getEligibleHelpers, getEligibleWiseAiders, isBlockedFromHelping } from "./help.mjs";
 export { activatePostRollListeners } from "./post-roll.mjs";
 export {
   getInteraction, buildResolutionContext, calculateMargin,

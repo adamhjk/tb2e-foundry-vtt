@@ -2,6 +2,7 @@ import { advancementNeeded, conditions, abilities, skills, packSlots, levelRequi
 import { rollTest, showAdvancementDialog } from "../../dice/_module.mjs";
 import { rollDisposition, evaluateRoll, gatherHelpModifiers } from "../../dice/tb2e-roll.mjs";
 import { getEligibleHelpers } from "../../dice/help.mjs";
+import { _checkWiseAdvancement } from "../../dice/post-roll.mjs";
 import { resetTraitsForSession } from "../../session.mjs";
 
 const { HandlebarsApplicationMixin } = foundry.applications.api;
@@ -619,6 +620,17 @@ export default class CharacterSheet extends HandlebarsApplicationMixin(ActorShee
         const item = this.document.items.get(itemId);
         if ( item ) item.update({ "system.checks": Number(input.value) || 0 });
       });
+    }
+
+    // Wise checkbox change: detect advancement completion
+    for ( const checksDiv of this.element.querySelectorAll(".wise-checks[data-wise-index]") ) {
+      const wiseIndex = Number(checksDiv.dataset.wiseIndex);
+      for ( const cb of checksDiv.querySelectorAll("input[type='checkbox']") ) {
+        cb.addEventListener("change", () => {
+          // Wait for the form submit to process, then check advancement
+          setTimeout(() => _checkWiseAdvancement(this.document, wiseIndex), 100);
+        });
+      }
     }
 
     // Descriptor input: Enter key triggers add.

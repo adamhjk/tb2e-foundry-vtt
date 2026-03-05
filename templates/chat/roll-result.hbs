@@ -33,6 +33,7 @@
     {{/each}}
     <div class="breakdown-total">
       {{#if isDisposition}}<span>{{poolSize}}D</span>
+      {{else if isVersus}}<span>{{poolSize}}D</span>
       {{else}}<span>{{poolSize}}D vs Ob {{obstacle}}</span>{{/if}}
     </div>
   </div>
@@ -65,7 +66,7 @@
     <span class="tally-successes">{{successesLabel}}: {{successes}}</span>
     {{#if isDisposition}}
     <span class="tally-ability">+ {{abilityLabel}}: {{abilityRating}}</span>
-    {{else}}
+    {{else unless isVersus}}
     <span class="tally-obstacle">{{obstacleLabel}}: {{obstacle}}</span>
     {{/if}}
   </div>
@@ -140,6 +141,16 @@
   <div class="card-banner banner-disposition">
     <i class="fa-solid fa-shield"></i> {{dispositionLabel}}: {{disposition}}
   </div>
+  {{else if isVersus}}
+    {{#if versusFinalized}}
+  <div class="card-banner banner-resolved">
+    <i class="fa-solid fa-check"></i> {{versusResolvedLabel}}
+  </div>
+    {{else}}
+  <div class="card-banner banner-pending">
+    <i class="fa-solid fa-hourglass-half"></i> {{pendingLabel}}
+  </div>
+    {{/if}}
   {{else if pass}}
   <div class="card-banner banner-pass">
     <i class="fa-solid fa-check"></i> {{passLabel}} <span class="banner-margin">(MoS {{margin}})</span>

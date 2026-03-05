@@ -123,6 +123,71 @@ export function getEligibleHelpers({ actor, type, key, testContext = {}, candida
 }
 
 /**
+ * @typedef {object} EligibleWiseAider
+ * @property {string} id - Actor ID
+ * @property {string} name - Actor name
+ * @property {number} wiseIndex - Index into actor.system.wises
+ * @property {string} wiseName - The wise name
+ */
+
+/**
+ * Determine which actors can provide "I Am Wise" aid (+1D) for a test.
+ * All named wises from eligible characters are returned — the roller/GM decides relevance.
+ * @param {object} options
+ * @param {Actor} options.actor - The roller (excluded)
+ * @param {object} [options.testContext={}]
+ * @param {Actor[]} [options.candidates] - Override candidate list
+ * @returns {EligibleWiseAider[]}
+ */
+export function getEligibleWiseAiders({ actor, testContext = {}, candidates }) {
+  // Recovery and lifestyle tests cannot receive wise aid
+  if ( testContext.isRecovery ) return [];
+  if ( testContext.isLifestyle ) return [];
+
+  // Build candidate pool
+  let pool;
+  if ( candidates ) {
+    pool = candidates;
+  } else {
+    const sceneActorIds = new Set(
+      (canvas?.scene?.tokens ?? []).map(t => t.actorId).filter(Boolean)
+    );
+    pool = game.actors.filter(a => {
+      if ( a.id === actor.id ) return false;
+      if ( a.type === "character" ) return true;
+      if ( a.type === "npc" ) return sceneActorIds.has(a.id);
+      return false;
+    });
+  }
+
+  const results = [];
+
+  for ( const candidate of pool ) {
+    if ( candidate.id === actor.id ) continue;
+    if ( candidate.type !== "character" ) continue;
+
+    // Check blocking conditions
+    const { blocked } = isBlockedFromHelping(candidate);
+    if ( blocked ) continue;
+
+    // Collect all named wises
+    const wises = candidate.system.wises || [];
+    for ( let i = 0; i < wises.length; i++ ) {
+      const wise = wises[i];
+      if ( !wise.name ) continue;
+      results.push({
+        id: candidate.id,
+        name: candidate.name,
+        wiseIndex: i,
+        wiseName: wise.name
+      });
+    }
+  }
+
+  return results;
+}
+
+/**
  * Find the best help path a candidate can use for a given test.
  * Returns null if the candidate cannot help.
  * @param {Actor} candidate - The potential helper.

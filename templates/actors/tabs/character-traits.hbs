@@ -56,22 +56,23 @@
       <div class="wise-row">
         <input type="text" name="system.wises.{{@index}}.name" value="{{name}}" placeholder="Wise name"
                class="wise-name">
-        <div class="wise-checks">
-          <label class="wise-check">
+        <div class="wise-checks" data-page="DH pp.77-78" data-wise-index="{{@index}}">
+          <span class="ref-label">Wise Advancement</span>
+          <label class="wise-check" title="{{localize 'TB2E.Wise.PassTitle'}}">
             <input type="checkbox" name="system.wises.{{@index}}.pass" {{#if pass}}checked{{/if}}>
-            <span title="{{localize 'TB2E.Fields.Pass'}}">P</span>
+            <span>{{localize "TB2E.Wise.PassLabel"}}</span>
           </label>
-          <label class="wise-check">
+          <label class="wise-check" title="{{localize 'TB2E.Wise.FailTitle'}}">
             <input type="checkbox" name="system.wises.{{@index}}.fail" {{#if fail}}checked{{/if}}>
-            <span title="{{localize 'TB2E.Fields.Fail'}}">F</span>
+            <span>{{localize "TB2E.Wise.FailLabel"}}</span>
           </label>
-          <label class="wise-check">
+          <label class="wise-check" title="{{localize 'TB2E.Wise.FateTitle'}}">
             <input type="checkbox" name="system.wises.{{@index}}.fate" {{#if fate}}checked{{/if}}>
-            <span title="{{localize 'TB2E.Fields.Fate'}}">Fa</span>
+            <span>{{localize "TB2E.Wise.FateLabel"}}</span>
           </label>
-          <label class="wise-check">
+          <label class="wise-check" title="{{localize 'TB2E.Wise.PersonaTitle'}}">
             <input type="checkbox" name="system.wises.{{@index}}.persona" {{#if persona}}checked{{/if}}>
-            <span title="{{localize 'TB2E.Fields.Persona'}}">Pe</span>
+            <span>{{localize "TB2E.Wise.PersonaLabel"}}</span>
           </label>
         </div>
         <button type="button" class="btn-icon" data-action="deleteRow"

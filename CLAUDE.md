@@ -100,6 +100,8 @@ Foundry VTT restricts document updates to owners. When a player needs to modify 
 | Conflict distribution | `system.pendingDistribution` | Combatant | `updateCombatant` (in `TB2ECombat`) |
 | Conflict actions | `system.pendingActions` | Combatant | `updateCombatant` (in `TB2ECombat`) |
 | Synergy | `flags.tb2e.pendingSynergy` | Actor | `updateActor` (in `tb2e.mjs`) |
+| Wise advancement | `flags.tb2e.pendingWiseAdvancement` | Actor | `updateActor` (in `tb2e.mjs`) |
+| Versus finalize | `flags.tb2e.pendingVersusFinalize` | Actor | `updateActor` (in `tb2e.mjs`) |
 
 ## Styles (LESS → CSS)
 

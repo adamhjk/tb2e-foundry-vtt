@@ -176,6 +176,7 @@
   "TB2E.Roll.Pending": "Awaiting Opponent",
   "TB2E.Roll.ChallengeAccepted": "Challenge Accepted \u2014 {name}",
   "TB2E.Roll.Challenged": "Challenged \u2014 {name}",
+  "TB2E.Roll.VersusFinalized": "Finalized \u2014 {successes} successes",
   "TB2E.Roll.VersusTest": "Versus Test",
   "TB2E.Roll.Wins": "Wins!",
   "TB2E.Roll.Test": "Test",
@@ -387,5 +388,28 @@
   "TB2E.Session.Reset": "New Session",
   "TB2E.Session.ResetTooltip": "Reset trait uses for a new session",
   "TB2E.Session.ResetConfirm": "Reset all trait uses for a new session? This restores beneficial uses and clears used-against flags.",
-  "TB2E.Session.ResetDone": "Trait uses reset for new session."
+  "TB2E.Session.ResetDone": "Trait uses reset for new session.",
+
+  "TB2E.Wise.PassLabel": "Pass",
+  "TB2E.Wise.PassTitle": "I Am Wise — aided a passed test (DH p.78)",
+  "TB2E.Wise.FailLabel": "Fail",
+  "TB2E.Wise.FailTitle": "I Am Wise — aided a failed test (DH p.78)",
+  "TB2E.Wise.FateLabel": "Fate",
+  "TB2E.Wise.FateTitle": "Deeper Understanding — spent fate to reroll one failed die (DH p.77)",
+  "TB2E.Wise.PersonaLabel": "Persona",
+  "TB2E.Wise.PersonaTitle": "Of Course! — spent persona to reroll all failed dice (DH p.77)",
+
+  "TB2E.WiseAid.Heading": "I Am Wise (Aid)",
+  "TB2E.WiseAid.Label": "Wise Aid",
+  "TB2E.WiseAid.MutualExclusion": "Cannot help and use I Am Wise on the same test.",
+
+  "TB2E.Wise.AdvancementTitle": "Wise Advancement",
+  "TB2E.Wise.AdvancementText": "All four marks are complete! Choose a perk (DH p.78):",
+  "TB2E.Wise.PerkChange": "Change to a new wise",
+  "TB2E.Wise.PerkBL": "Beginner's Luck test toward new skill",
+  "TB2E.Wise.PerkSkillTest": "Skill advancement test (pass or fail)",
+  "TB2E.Wise.PerkResolved": "Perk claimed. Marks reset.",
+  "TB2E.Wise.PerkChangeResolved": "Wise cleared — enter a new wise on your character sheet.",
+  "TB2E.Wise.PerkBLResolved": "Mark a Beginner's Luck test toward a new skill.",
+  "TB2E.Wise.PerkSkillTestResolved": "Mark a pass or fail on a skill related to this wise."
 }

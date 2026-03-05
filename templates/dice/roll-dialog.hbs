@@ -199,6 +199,25 @@
   </div>
   {{/if}}
 
+  {{! Wise Aid (I Am Wise) }}
+  {{#if hasWiseAiders}}
+  <div class="roll-dialog-wise-aid">
+    <div class="section-heading">
+      <i class="fa-solid fa-lightbulb"></i>
+      <span>{{localize "TB2E.WiseAid.Heading"}}</span>
+    </div>
+    <div class="wise-aid-list">
+      {{#each wiseAiders}}
+      <button type="button" class="wise-aid-toggle" data-helper-id="{{id}}" data-helper-name="{{name}}" data-wise-index="{{wiseIndex}}" data-wise-name="{{wiseName}}">
+        <span class="helper-name">{{name}}</span>
+        <span class="helper-via">{{wiseName}}</span>
+        <span class="helper-dice">+1D</span>
+      </button>
+      {{/each}}
+    </div>
+  </div>
+  {{/if}}
+
   {{! Manual Modifier Add }}
   {{#unless disposition}}
   <div class="roll-dialog-manual">

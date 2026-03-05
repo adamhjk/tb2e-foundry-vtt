@@ -1,7 +1,7 @@
 import { abilities, advancementNeeded, conditions, skills } from "../config.mjs";
 import { showAdvancementDialog } from "./advancement.mjs";
 import { PendingVersusRegistry } from "./versus.mjs";
-import { getEligibleHelpers } from "./help.mjs";
+import { getEligibleHelpers, getEligibleWiseAiders } from "./help.mjs";
 
 /* ============================================ */
 /*  Modifier Subsystem                          */
@@ -244,7 +244,8 @@ function _buildTraitData(actor, isAngry) {
  */
 async function _showRollDialog({
   label, dice, conditionModifiers = [], contextModifiers = [], actorId, actor,
-  disposition = false, availableHelpers = [], blInfo = null, type, key, testContext = {}
+  disposition = false, availableHelpers = [], availableWiseAiders = [], blInfo = null,
+  type, key, testContext = {}
 }) {
   const isCharacter = actor?.type === "character";
   const isAfraid = actor?.system?.conditions?.afraid ?? false;
@@ -278,11 +279,16 @@ async function _showRollDialog({
   const npcHelpers = availableHelpers.filter(h => h.isNPC);
   const hasHelpers = !isAfraid && (pcHelpers.length > 0 || npcHelpers.length > 0);
 
+  // Wise aiders (I Am Wise)
+  const wiseAiders = !isAfraid && !disposition ? availableWiseAiders : [];
+  const hasWiseAiders = wiseAiders.length > 0;
+
   const content = await foundry.applications.handlebars.renderTemplate(
     "systems/tb2e/templates/dice/roll-dialog.hbs", {
       label, dice, disposition,
       conditionModifiers, contextModifiers,
       hasHelpers, pcHelpers, npcHelpers,
+      hasWiseAiders, wiseAiders,
       hasTraits, traits: traitData,
       hasWises, wises: wiseData,
       showPersona, personaAvailable,
@@ -369,6 +375,16 @@ async function _showRollDialog({
           }));
         }
 
+        // Wise aid modifiers (I Am Wise)
+        const activeWiseAids = form.querySelectorAll(".wise-aid-toggle.active");
+        for ( const el of activeWiseAids ) {
+          all.push(createModifier({
+            label: `${el.dataset.helperName} (${el.dataset.wiseName})`,
+            type: "dice", value: 1, source: "wise-aid",
+            icon: "fa-solid fa-lightbulb", color: "--tb-amber", timing: "pre"
+          }));
+        }
+
         // Trait modifier
         if ( traitState.itemId && traitState.mode !== "none" ) {
           const t = traitData.find(td => td.itemId === traitState.itemId);
@@ -430,9 +446,15 @@ async function _showRollDialog({
       for ( const btn of form.querySelectorAll(".helper-toggle") ) {
         btn.addEventListener("click", () => {
           btn.classList.toggle("active");
-          // Clear synergy when helper is deactivated
           const row = btn.closest(".helper-row");
-          if ( !btn.classList.contains("active") && row ) {
+          if ( btn.classList.contains("active") ) {
+            // Deactivate any wise aid from the same actor (mutual exclusion)
+            const helperId = btn.dataset.helperId;
+            for ( const waBtn of form.querySelectorAll(`.wise-aid-toggle.active[data-helper-id="${helperId}"]`) ) {
+              waBtn.classList.remove("active");
+            }
+          } else if ( row ) {
+            // Clear synergy when helper is deactivated
             row.classList.remove("synergy-active");
           }
           helperBonus = form.querySelectorAll(".helper-toggle.active").length;
@@ -450,11 +472,40 @@ async function _showRollDialog({
           // If help isn't engaged, engage it first
           if ( !toggle.classList.contains("active") ) {
             toggle.classList.add("active");
+            // Deactivate any wise aid from the same actor (mutual exclusion)
+            const helperId = toggle.dataset.helperId;
+            for ( const waBtn of form.querySelectorAll(`.wise-aid-toggle.active[data-helper-id="${helperId}"]`) ) {
+              waBtn.classList.remove("active");
+            }
             helperBonus = form.querySelectorAll(".helper-toggle.active").length;
             renderModifierList();
             updateSummary();
           }
           row.classList.toggle("synergy-active");
+        });
+      }
+
+      /* ------ Wise Aid Toggles (I Am Wise) ------ */
+      for ( const btn of form.querySelectorAll(".wise-aid-toggle") ) {
+        btn.addEventListener("click", () => {
+          const helperId = btn.dataset.helperId;
+          const isActive = btn.classList.toggle("active");
+          if ( isActive ) {
+            // Deactivate regular help from the same actor (mutual exclusion)
+            const helperToggle = form.querySelector(`.helper-toggle.active[data-helper-id="${helperId}"]`);
+            if ( helperToggle ) {
+              helperToggle.classList.remove("active");
+              const row = helperToggle.closest(".helper-row");
+              if ( row ) row.classList.remove("synergy-active");
+              helperBonus = form.querySelectorAll(".helper-toggle.active").length;
+            }
+            // Only one wise aid per actor
+            for ( const other of form.querySelectorAll(`.wise-aid-toggle.active[data-helper-id="${helperId}"]`) ) {
+              if ( other !== btn ) other.classList.remove("active");
+            }
+          }
+          renderModifierList();
+          updateSummary();
         });
       }
 
@@ -729,6 +780,14 @@ async function _showRollDialog({
             };
           });
 
+          // Selected wise aiders (I Am Wise)
+          const selectedWiseAiders = Array.from(form.querySelectorAll(".wise-aid-toggle.active")).map(el => ({
+            id: el.dataset.helperId,
+            name: el.dataset.helperName,
+            wiseIndex: Number(el.dataset.wiseIndex),
+            wiseName: el.dataset.wiseName
+          }));
+
           // Wise selection
           const wiseSelect = form.elements.wise;
           const wiseIndex = wiseSelect ? Number(wiseSelect.value) : -1;
@@ -756,6 +815,7 @@ async function _showRollDialog({
             mode: form.elements.mode.value,
             challengeMessageId: form.elements.challengeMessageId.value,
             selectedHelpers,
+            selectedWiseAiders,
             modifiers: allMods,
             traitState: traitInfo,
             personaState: personaInfo,
@@ -873,6 +933,7 @@ export async function rollTest({ actor, type, key, testContext = {} }) {
   const conditionModifiers = gatherConditionModifiers(actor, testContext);
   const contextModifiers = (testContext.modifiers || []).map(m => createModifier(m));
   const availableHelpers = getEligibleHelpers({ actor, type, key, testContext });
+  const availableWiseAiders = getEligibleWiseAiders({ actor, testContext });
 
   // Show dialog
   const config = await _showRollDialog({
@@ -883,6 +944,7 @@ export async function rollTest({ actor, type, key, testContext = {} }) {
     actorId: actor.id,
     actor,
     availableHelpers,
+    availableWiseAiders,
     blInfo,
     type,
     key,
@@ -1109,6 +1171,9 @@ async function _handleIndependentRoll({ actor, type, key, label, baseDice, poolS
         ...rollFlags,
         helpers: (config.selectedHelpers || []).map(h => ({
           id: h.id, name: h.name, helpVia: h.helpVia, helpViaType: h.helpViaType, synergy: !!h.synergy
+        })),
+        wiseAiders: (config.selectedWiseAiders || []).map(wa => ({
+          id: wa.id, name: wa.name, wiseIndex: wa.wiseIndex, wiseName: wa.wiseName
         }))
       }
     }
@@ -1166,11 +1231,63 @@ export function _buildSynergyHelpers(helpers, helperSynergy = {}) {
 async function _handleVersusRoll({ actor, type, key, label, baseDice, poolSize, successes,
   roll, diceResults, modifiers, logAdvancement, config, rollFlags, postSuccessMods }) {
 
-  // Apply post-success modifiers (+1s from L3 traits, -1s from traits against, etc.)
-  const successBonus = postSuccessMods.reduce((s, m) => s + m.value, 0);
-  const adjustedSuccesses = Math.max(successes + successBonus, 0);
-
   const isOpponent = !!config.challengeMessageId;
+
+  // Store raw successes in roll flags (no obstacle-based pass/fail for versus)
+  rollFlags.roll.successes = successes;
+  rollFlags.roll.finalSuccesses = successes;
+  rollFlags.roll.obstacle = null;
+  rollFlags.roll.pass = null;
+
+  // Apply post-success modifiers to the stored successes
+  const successBonus = postSuccessMods.reduce((s, m) => s + m.value, 0);
+  if ( successBonus !== 0 ) {
+    const adjusted = Math.max(successes + successBonus, 0);
+    rollFlags.roll.successes = successes;
+    rollFlags.roll.finalSuccesses = adjusted;
+  }
+
+  // Build template data — reuse roll-result.hbs with versus mode
+  const templateData = {
+    actorName: actor.name,
+    actorImg: actor.img,
+    actorSubtitle: _buildActorSubtitle(actor),
+    label,
+    baseDice,
+    poolSize,
+    obstacle: null,
+    successes: rollFlags.roll.finalSuccesses,
+    pass: null,
+    modifiers: modifiers.filter(m => m.timing === "pre"),
+    diceResults,
+    postSuccessMods: postSuccessMods.length ? postSuccessMods : null,
+    isBL: !!rollFlags.roll.isBL,
+    blAbilityLabel: rollFlags.roll.blAbilityKey ? game.i18n.localize(abilities[rollFlags.roll.blAbilityKey]?.label) : null,
+    // Post-roll buttons visibility
+    hasPostActions: _hasPostRollActions(rollFlags, actor),
+    hasSuns: diceResults.some(d => d.isSun),
+    hasWyrms: diceResults.some(d => !d.success),
+    sunCount: diceResults.filter(d => d.isSun).length,
+    wyrmCount: diceResults.filter(d => !d.success).length,
+    wiseSelected: !!rollFlags.wise,
+    hasFate: actor.type === "character" && actor.system.fate.current > 0,
+    hasPersona: actor.type === "character" && actor.system.persona.current > 0,
+    synergyHelpers: _buildSynergyHelpers(config.selectedHelpers),
+    // Versus-specific
+    isVersus: true,
+    versusFinalized: false,
+    successesLabel: game.i18n.localize("TB2E.Roll.Successes"),
+    obstacleLabel: game.i18n.localize("TB2E.Roll.ObstacleLabel"),
+    testLabel: game.i18n.localize("TB2E.Roll.Test"),
+    testTypeLabel: game.i18n.localize("TB2E.Roll.Versus"),
+    passLabel: game.i18n.localize("TB2E.Roll.Pass"),
+    failLabel: game.i18n.localize("TB2E.Roll.Fail"),
+    pendingLabel: game.i18n.localize("TB2E.Roll.Pending")
+  };
+
+  const chatContent = await foundry.applications.handlebars.renderTemplate(
+    "systems/tb2e/templates/chat/roll-result.hbs", templateData
+  );
 
   if ( isOpponent ) {
     const initiatorMessage = game.messages.get(config.challengeMessageId);
@@ -1183,21 +1300,6 @@ async function _handleVersusRoll({ actor, type, key, label, baseDice, poolSize, 
       ui.notifications.warn("That challenge has already been resolved.");
       return;
     }
-
-    const chatContent = await foundry.applications.handlebars.renderTemplate(
-      "systems/tb2e/templates/chat/versus-pending.hbs", {
-        actorName: actor.name,
-        actorImg: actor.img,
-        actorSubtitle: _buildActorSubtitle(actor),
-        label, baseDice, poolSize, successes: adjustedSuccesses,
-        modifiers: modifiers.filter(m => m.timing === "pre"), diceResults,
-        postSuccessMods: postSuccessMods.length ? postSuccessMods : null,
-        versusLabel: game.i18n.localize("TB2E.Roll.Versus"),
-        testLabel: game.i18n.localize("TB2E.Roll.Test"),
-        successesLabel: game.i18n.localize("TB2E.Roll.Successes"),
-        pendingLabel: game.i18n.localize("TB2E.Roll.Pending")
-      }
-    );
 
     await ChatMessage.create({
       speaker: ChatMessage.getSpeaker({ actor }),
@@ -1212,31 +1314,19 @@ async function _handleVersusRoll({ actor, type, key, label, baseDice, poolSize, 
             initiatorMessageId: initiatorMessage.id,
             initiatorActorId: initiatorVs.initiatorActorId,
             opponentActorId: actor.id,
-            successes: adjustedSuccesses, rollType: type, rollKey: key, label, baseDice,
+            rollType: type, rollKey: key, label, baseDice,
             logAdvancement, resolved: false
           },
           helpers: (config.selectedHelpers || []).map(h => ({
-            id: h.id, name: h.name, helpVia: h.helpVia
+            id: h.id, name: h.name, helpVia: h.helpVia, helpViaType: h.helpViaType, synergy: !!h.synergy
+          })),
+          wiseAiders: (config.selectedWiseAiders || []).map(wa => ({
+            id: wa.id, name: wa.name, wiseIndex: wa.wiseIndex, wiseName: wa.wiseName
           }))
         }
       }
     });
   } else {
-    const chatContent = await foundry.applications.handlebars.renderTemplate(
-      "systems/tb2e/templates/chat/versus-pending.hbs", {
-        actorName: actor.name,
-        actorImg: actor.img,
-        actorSubtitle: _buildActorSubtitle(actor),
-        label, baseDice, poolSize, successes: adjustedSuccesses,
-        modifiers: modifiers.filter(m => m.timing === "pre"), diceResults,
-        postSuccessMods: postSuccessMods.length ? postSuccessMods : null,
-        versusLabel: game.i18n.localize("TB2E.Roll.Versus"),
-        testLabel: game.i18n.localize("TB2E.Roll.Test"),
-        successesLabel: game.i18n.localize("TB2E.Roll.Successes"),
-        pendingLabel: game.i18n.localize("TB2E.Roll.Pending")
-      }
-    );
-
     const message = await ChatMessage.create({
       speaker: ChatMessage.getSpeaker({ actor }),
       content: chatContent,
@@ -1248,11 +1338,14 @@ async function _handleVersusRoll({ actor, type, key, label, baseDice, poolSize, 
           versus: {
             type: "initiator",
             initiatorActorId: actor.id,
-            successes: adjustedSuccesses, rollType: type, rollKey: key, label, baseDice,
+            rollType: type, rollKey: key, label, baseDice,
             logAdvancement, resolved: false
           },
           helpers: (config.selectedHelpers || []).map(h => ({
-            id: h.id, name: h.name, helpVia: h.helpVia
+            id: h.id, name: h.name, helpVia: h.helpVia, helpViaType: h.helpViaType, synergy: !!h.synergy
+          })),
+          wiseAiders: (config.selectedWiseAiders || []).map(wa => ({
+            id: wa.id, name: wa.name, wiseIndex: wa.wiseIndex, wiseName: wa.wiseName
           }))
         }
       }
