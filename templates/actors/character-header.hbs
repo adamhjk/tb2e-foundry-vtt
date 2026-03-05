@@ -14,6 +14,10 @@
   <div class="header-fields">
     <div class="header-top-row">
       <img class="torchbearer-logo" src="systems/tb2e/assets/torchbearer-logo.png" alt="Torchbearer">
+      <button type="button" class="session-reset-btn" data-action="resetSession"
+              title="{{localize 'TB2E.Session.ResetTooltip'}}">
+        <i class="fa-solid fa-rotate"></i> {{localize "TB2E.Session.Reset"}}
+      </button>
     </div>
     <input type="text" name="name" value="{{actor.name}}"
            placeholder="{{localize 'TB2E.Fields.Name'}}" class="character-name">
@@ -35,10 +39,12 @@
         current=system.fate.current spent=system.fate.spent icon="fa-solid fa-star" page="SG pp.83-88"}}
     {{> "systems/tb2e/templates/actors/parts/point-boxes.hbs" label=personaLabel path="system.persona"
         current=system.persona.current spent=system.persona.spent icon="fa-solid fa-mask" page="SG pp.85-89"}}
-    <button type="button" class="session-reset-btn" data-action="resetSession"
-            title="{{localize 'TB2E.Session.ResetTooltip'}}">
-      <i class="fa-solid fa-rotate"></i> {{localize "TB2E.Session.Reset"}}
-    </button>
+    <div class="point-boxes" data-page="DH pp.79-82">
+      <span class="point-label"><i class="fa-solid fa-check-double"></i> {{checksLabel}}</span>
+      <input type="number" class="point-current-input" name="system.checks"
+             value="{{system.checks}}" min="0"
+             title="{{localize 'TB2E.Fields.Checks'}}">
+    </div>
   </div>
   {{#if inConflict}}
   <div class="conflict-disposition">

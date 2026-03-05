@@ -452,8 +452,7 @@ export async function handleTraitBreakTie(message, actorId, traitId) {
   });
   if ( actor.type === "character" ) {
     await actor.update({
-      "system.checks.earned": actor.system.checks.earned + 2,
-      "system.checks.remaining": actor.system.checks.remaining + 2
+      "system.checks": actor.system.checks + 2
     });
   }
 

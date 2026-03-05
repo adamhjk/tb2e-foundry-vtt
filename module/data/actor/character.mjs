@@ -41,10 +41,7 @@ export default class CharacterData extends foundry.abstract.TypeDataModel {
         current: new fields.NumberField({ initial: 0, integer: true, min: 0 }),
         spent: new fields.NumberField({ initial: 0, integer: true, min: 0 })
       }),
-      checks: new fields.SchemaField({
-        earned: new fields.NumberField({ initial: 0, integer: true, min: 0 }),
-        remaining: new fields.NumberField({ initial: 0, integer: true, min: 0 })
-      }),
+      checks: new fields.NumberField({ initial: 0, integer: true, min: 0 }),
 
       // ---- Conditions ----
       conditions: new fields.SchemaField({

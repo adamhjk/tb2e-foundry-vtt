@@ -217,6 +217,7 @@ export default class CharacterSheet extends HandlebarsApplicationMixin(ActorShee
     const sys = this.document.system;
     context.fateLabel = game.i18n.localize("TB2E.Fields.Fate");
     context.personaLabel = game.i18n.localize("TB2E.Fields.Persona");
+    context.checksLabel = game.i18n.localize("TB2E.Fields.Checks");
 
     // Team toggle display.
     const team = sys.conflict.team || "party";

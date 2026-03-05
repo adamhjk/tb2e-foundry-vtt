@@ -79,7 +79,9 @@ When asked about Torchbearer rules, how a mechanic works, or when implementing a
 
 ## Mailbox Pattern (Cross-Permission Operations)
 
-Foundry VTT restricts document updates to owners. When a player needs to modify a document they don't own (e.g., a GM-owned chat message), use the **mailbox pattern**:
+**Any time you build functionality where a player needs to modify a document they don't own (GM-owned chat messages, other players' actors, combat encounters, etc.), you MUST use the mailbox pattern.** Do not attempt direct updates — they will silently fail for non-owner players. Always design with this constraint in mind from the start.
+
+Foundry VTT restricts document updates to owners. The mailbox pattern works as follows:
 
 1. **Player writes** to a `pending*` field on a document they own (actor flag, combatant system field, etc.)
 2. **GM detects** the write via a hook (`updateActor`, `updateCombatant`, etc.) and processes it

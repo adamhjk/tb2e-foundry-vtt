@@ -1031,8 +1031,7 @@ async function _applyPreRollActorChanges({ actor, config, allModifiers }) {
           "system.checks": traitItem.system.checks + checksEarned,
           "system.usedAgainst": true
         });
-        updates["system.checks.earned"] = actor.system.checks.earned + checksEarned;
-        updates["system.checks.remaining"] = actor.system.checks.remaining + checksEarned;
+        updates["system.checks"] = actor.system.checks + checksEarned;
       }
     }
   }
