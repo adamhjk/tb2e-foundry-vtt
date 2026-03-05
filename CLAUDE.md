@@ -25,6 +25,9 @@ This is a game system for the Foundry Virtual Tabletop for Torchbearer 2nd Editi
 | Sheet applications | `module/applications/` |
 | Handlebars templates | `templates/` |
 | Localization | `lang/en.json` |
+| Pack sources (YAML) | `packs/_source/` (edit these) |
+| Compiled packs (LevelDB) | `packs/` (generated — do not edit) |
+| Pack build script | `utils/packs.mjs` |
 
 ## Reference Sources
 
@@ -76,6 +79,21 @@ When asked about Torchbearer rules, how a mechanic works, or when implementing a
 ## Actor Types
 
 - `character` — `CharacterData` model, `CharacterSheet` (AppV2)
+
+## Compendium Packs
+
+Item compendiums are maintained as YAML source files in `packs/_source/<pack>/` and compiled to LevelDB in `packs/<pack>/` via `@foundryvtt/foundryvtt-cli`.
+
+```sh
+npm run build:db     # Compile YAML → LevelDB (all packs)
+```
+
+- **Stop Foundry before rebuilding packs** (or restart it after). Foundry locks LevelDB databases; rebuilding while running causes empty compendiums.
+- **Never edit LevelDB files** in `packs/` directly — edit the YAML sources and rebuild.
+- To add a new item: create a `.yml` file in the appropriate `packs/_source/<pack>/` directory with a unique `_id` (16-char hex) and a `_key: '!items!<_id>'` field, then run `npm run build:db`. **Both `_id` and `_key` are required** — without `_key` the CLI silently skips the entry. **Do not escape `!` in `_key`** — `'\!items\!'` embeds literal backslashes, which Foundry can't find.
+- To add a new pack: create a `packs/_source/<name>/` directory, add YAML files, and register the pack in `system.json` under `packs`.
+- To extract from LevelDB back to YAML: `node utils/packs.mjs --extract`.
+- **Troubleshooting**: `npm run build:db` logs each packed entry (e.g. `Packed <id> (Name)`). If a compendium appears empty, check the build output to see which items were packed and verify missing items have a `_key` field.
 
 ## Mailbox Pattern (Cross-Permission Operations)
 

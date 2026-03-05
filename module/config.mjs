@@ -87,13 +87,50 @@ export function advancementNeeded(rating) {
 }
 
 /**
- * Pack type → number of carried slots.
- * @enum {number}
+ * Armor type definitions.
+ * @enum {object}
  */
-export const packSlots = {
-  none: 0,
-  satchel: 3,
-  backpack: 6
+export const armorTypes = {
+  leather: { label: "TB2E.Armor.Leather" },
+  chain: { label: "TB2E.Armor.Chain" },
+  plate: { label: "TB2E.Armor.Plate" },
+  helmet: { label: "TB2E.Armor.Helmet" },
+  shield: { label: "TB2E.Armor.Shield" }
+};
+
+/**
+ * Container type definitions with default slot counts.
+ * @enum {object}
+ */
+export const containerTypes = {
+  backpack: { label: "TB2E.Container.Backpack", slots: 6, occupies: "torso", occupiesSlots: 2 },
+  satchel: { label: "TB2E.Container.Satchel", slots: 3, occupies: "torso", occupiesSlots: 1 },
+  largeSack: { label: "TB2E.Container.LargeSack", slots: 6, occupies: "carried", occupiesSlots: 2 },
+  smallSack: { label: "TB2E.Container.SmallSack", slots: 2, occupies: "pack", occupiesSlots: 1 },
+  pouch: { label: "TB2E.Container.Pouch", slots: 1, occupies: "belt", occupiesSlots: 1 },
+  quiver: { label: "TB2E.Container.Quiver", slots: 3, occupies: "worn", occupiesSlots: 1 }
+};
+
+/**
+ * Supply type definitions.
+ * @enum {object}
+ */
+export const supplyTypes = {
+  food: { label: "TB2E.Supply.Food" },
+  light: { label: "TB2E.Supply.Light" },
+  spellMaterial: { label: "TB2E.Supply.SpellMaterial" },
+  sacramental: { label: "TB2E.Supply.Sacramental" },
+  ammunition: { label: "TB2E.Supply.Ammunition" },
+  other: { label: "TB2E.Supply.Other" }
+};
+
+/**
+ * Weapon wield type definitions.
+ * @enum {object}
+ */
+export const wieldTypes = {
+  1: { label: "TB2E.Wield.OneHand" },
+  2: { label: "TB2E.Wield.TwoHand" }
 };
 
 /**
@@ -337,7 +374,7 @@ export const stockDescriptors = {
 };
 
 export default {
-  conditions, abilities, skills, advancementNeeded, packSlots, levelRequirements,
+  conditions, abilities, skills, advancementNeeded, levelRequirements,
   conflictTypes, conflictActions, conflictInteractions, conflictObstacles, maneuverEffects,
-  stockDescriptors
+  stockDescriptors, armorTypes, containerTypes, supplyTypes, wieldTypes
 };

@@ -1,33 +1,48 @@
 /*  Inventory Tab                               */
 /* -------------------------------------------- */
 
-.tb2e.sheet .inventory-config {
+.tb2e.sheet .inventory-toolbar {
   display: flex;
+  gap: 0.5rem;
+  margin-bottom: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.tb2e.sheet .inventory-toolbar button {
+  all: unset;
+  display: inline-flex;
   align-items: center;
-  gap: 1.5rem;
-  margin-bottom: 1rem;
-  padding: 0.75rem 1rem;
-  background: var(--tb-bg-raised);
+  gap: 0.3rem;
+  padding: 0.3rem 0.6rem;
   border: 1px solid var(--tb-border);
-  border-radius: var(--tb-radius-lg);
-}
-
-.tb2e.sheet .checkbox-field {
-  display: flex;
-  align-items: center;
-  gap: 0.4rem;
-  font-size: 0.9rem;
+  border-radius: var(--tb-radius);
+  background: var(--tb-bg-raised);
+  color: var(--tb-text-dim);
+  font-size: 0.75rem;
   cursor: pointer;
+  transition: all 0.15s;
 }
 
-.tb2e.sheet .checkbox-field input[type="checkbox"] {
-  accent-color: var(--tb-blue);
+.tb2e.sheet .inventory-toolbar button:hover {
+  border-color: var(--tb-blue);
+  color: var(--tb-blue);
+  background: var(--tb-bg-surface);
 }
 
-.tb2e.sheet .inventory-grid {
+.tb2e.sheet .inventory-toolbar button i {
+  font-size: 0.7rem;
+}
+
+.tb2e.sheet .inventory-columns {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 1rem;
+}
+
+.tb2e.sheet .inventory-column {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
 }
 
 .tb2e.sheet .inventory-slot-group {
@@ -37,6 +52,11 @@
   padding: 0.5rem 0.75rem;
 }
 
+.tb2e.sheet .inventory-slot-group.container-group {
+  border-color: var(--tb-blue-dim);
+  border-style: dashed;
+}
+
 .tb2e.sheet .slot-heading {
   font-family: var(--tb-font-heading);
   font-size: 0.85rem;
@@ -44,11 +64,18 @@
   letter-spacing: 0.06em;
   color: var(--tb-blue-dim);
   margin: 0 0 0.35rem;
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
 }
 
 .tb2e.sheet .slot-count {
   color: var(--tb-text-faint);
   font-size: 0.8em;
+}
+
+.tb2e.sheet .container-remove-btn {
+  margin-left: auto;
 }
 
 .tb2e.sheet .slot-list {
@@ -65,11 +92,36 @@
   min-height: 1.8rem;
   display: flex;
   align-items: center;
+  gap: 0.3rem;
+  transition: border-color 0.15s, background 0.15s;
 }
 
 .tb2e.sheet .inventory-slot.empty {
   border-style: dashed;
   background: var(--tb-bg-mid);
+}
+
+.tb2e.sheet .inventory-slot.span-continuation {
+  border-top: 1px dashed var(--tb-border-light);
+  background: var(--tb-bg-mid);
+  opacity: 0.7;
+  min-height: 1.4rem;
+  padding: 0.15rem 0.5rem;
+}
+
+.tb2e.sheet .inventory-slot .continuation-label {
+  font-size: 0.75rem;
+  color: var(--tb-text-faint);
+  font-style: italic;
+}
+
+.tb2e.sheet .inventory-slot.empty.drag-over {
+  border-color: var(--tb-blue);
+  background: var(--tb-bg-raised);
+}
+
+.tb2e.sheet .inventory-slot.damaged {
+  border-color: var(--tb-red-dim);
 }
 
 .tb2e.sheet .slot-empty {
@@ -78,6 +130,155 @@
 }
 
 .tb2e.sheet .slot-item {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  flex: 1;
+  min-width: 0;
+}
+
+.tb2e.sheet .slot-item-name {
   color: var(--tb-text-body);
   font-size: 0.85rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.tb2e.sheet .slot-qty {
+  font-size: 0.7rem;
+  color: var(--tb-text-dim);
+  background: var(--tb-bg-mid);
+  padding: 0 0.3rem;
+  border-radius: 3px;
+  flex-shrink: 0;
+}
+
+.tb2e.sheet .slot-badge {
+  font-size: 0.65rem;
+  flex-shrink: 0;
+}
+
+.tb2e.sheet .damaged-badge {
+  color: var(--tb-red);
+}
+
+.tb2e.sheet .slot-actions {
+  display: flex;
+  gap: 2px;
+  flex-shrink: 0;
+  opacity: 0;
+  transition: opacity 0.15s;
+}
+
+.tb2e.sheet .inventory-slot:hover .slot-actions,
+.tb2e.sheet .inventory-item:hover .slot-actions {
+  opacity: 1;
+}
+
+.tb2e.sheet .slot-action-btn {
+  all: unset;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.2rem;
+  height: 1.2rem;
+  border-radius: 2px;
+  color: var(--tb-text-faint);
+  cursor: pointer;
+  font-size: 0.65rem;
+  transition: all 0.15s;
+}
+
+.tb2e.sheet .slot-action-btn:hover {
+  color: var(--tb-blue);
+  background: var(--tb-bg-mid);
+}
+
+.tb2e.sheet .slot-action-btn[data-action="deleteItem"]:hover,
+.tb2e.sheet .slot-action-btn[data-action="removeFromSlot"]:hover {
+  color: var(--tb-red);
+}
+
+/* Torso Status */
+
+.tb2e.sheet .torso-status {
+  display: flex;
+  gap: 1rem;
+  padding: 0.5rem 0.75rem;
+  background: var(--tb-bg-raised);
+  border: 1px solid var(--tb-border);
+  border-radius: var(--tb-radius-lg);
+}
+
+.tb2e.sheet .torso-status .field-pair {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.tb2e.sheet .torso-status label {
+  font-size: 0.8rem;
+  color: var(--tb-text-dim);
+  white-space: nowrap;
+}
+
+.tb2e.sheet .torso-status input[type="number"] {
+  width: 3rem;
+  text-align: center;
+  font-size: 0.85rem;
+}
+
+/* Dropped & Unassigned Sections */
+
+.tb2e.sheet .inventory-dropped,
+.tb2e.sheet .inventory-unassigned {
+  margin-top: 0.75rem;
+  padding: 0.5rem 0.75rem;
+  background: var(--tb-bg-raised);
+  border: 1px solid var(--tb-border);
+  border-radius: var(--tb-radius-lg);
+}
+
+.tb2e.sheet .dropped-heading {
+  color: var(--tb-amber);
+}
+
+.tb2e.sheet .unassigned-heading {
+  color: var(--tb-text-dim);
+}
+
+.tb2e.sheet .dropped-list,
+.tb2e.sheet .unassigned-list {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.tb2e.sheet .inventory-item {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.3rem 0.5rem;
+  border-radius: var(--tb-radius);
+  background: var(--tb-bg-surface);
+  border: 1px solid var(--tb-border);
+  min-height: 1.8rem;
+  cursor: grab;
+}
+
+.tb2e.sheet .dropped-item {
+  opacity: 0.65;
+  border-style: dashed;
+}
+
+.tb2e.sheet .item-type-badge {
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--tb-text-faint);
+  background: var(--tb-bg-mid);
+  padding: 0 0.3rem;
+  border-radius: 3px;
+  flex-shrink: 0;
 }

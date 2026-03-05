@@ -1,4 +1,4 @@
-import { advancementNeeded, conditions, abilities, skills, packSlots, levelRequirements, stockDescriptors } from "../../config.mjs";
+import { advancementNeeded, conditions, abilities, skills, levelRequirements, stockDescriptors, containerTypes } from "../../config.mjs";
 import { rollTest, showAdvancementDialog } from "../../dice/_module.mjs";
 import { rollDisposition, evaluateRoll, gatherHelpModifiers } from "../../dice/tb2e-roll.mjs";
 import { getEligibleHelpers } from "../../dice/help.mjs";
@@ -33,7 +33,16 @@ export default class CharacterSheet extends HandlebarsApplicationMixin(ActorShee
       addDescriptor: CharacterSheet.#onAddDescriptor,
       removeDescriptor: CharacterSheet.#onRemoveDescriptor,
       toggleClassTrait: CharacterSheet.#onToggleClassTrait,
-      resetSession: CharacterSheet.#onResetSession
+      resetSession: CharacterSheet.#onResetSession,
+      removeFromSlot: CharacterSheet.#onRemoveFromSlot,
+      dropItem: CharacterSheet.#onDropItem,
+      pickUpItem: CharacterSheet.#onPickUpItem,
+      toggleDamaged: CharacterSheet.#onToggleDamaged,
+      consumePortion: CharacterSheet.#onConsumePortion,
+      consumeLight: CharacterSheet.#onConsumeLight,
+      editItem: CharacterSheet.#onEditItem,
+      deleteItem: CharacterSheet.#onDeleteItem,
+      createItem: CharacterSheet.#onCreateItem
     },
     form: { submitOnChange: true },
     window: { resizable: true }
@@ -355,38 +364,121 @@ export default class CharacterSheet extends HandlebarsApplicationMixin(ActorShee
 
   #prepareInventoryContext(context) {
     const sys = this.document.system;
-    const packCount = packSlots[sys.inventory.packType] || 0;
+    const actor = this.document;
 
-    context.packOptions = [
-      { key: "none", label: game.i18n.localize("TB2E.Pack.none"), selected: sys.inventory.packType === "none" },
-      { key: "satchel", label: game.i18n.localize("TB2E.Pack.satchel"), selected: sys.inventory.packType === "satchel" },
-      { key: "backpack", label: game.i18n.localize("TB2E.Pack.backpack"), selected: sys.inventory.packType === "backpack" }
+    // Gather all inventory items (everything except traits).
+    const allItems = [...(actor.itemTypes.weapon || []), ...(actor.itemTypes.armor || []),
+      ...(actor.itemTypes.container || []), ...(actor.itemTypes.gear || []),
+      ...(actor.itemTypes.supply || [])];
+
+    // Build fixed body slot groups.
+    const fixedSlots = [
+      { key: "head",    label: "TB2E.Inventory.Head",    count: 1, column: "left" },
+      { key: "neck",    label: "TB2E.Inventory.Neck",    count: 1, column: "left" },
+      { key: "hand-L",  label: "TB2E.Inventory.HandL",   count: 2, column: "left", sublabels: ["TB2E.Inventory.Worn", "TB2E.Inventory.Carried"] },
+      { key: "hand-R",  label: "TB2E.Inventory.HandR",   count: 2, column: "left", sublabels: ["TB2E.Inventory.Worn", "TB2E.Inventory.Carried"] },
+      { key: "feet",    label: "TB2E.Inventory.Feet",    count: 1, column: "left" },
+      { key: "pocket",  label: "TB2E.Inventory.Pocket",  count: 2, column: "left" },
+      { key: "torso",   label: "TB2E.Inventory.Torso",   count: 3, column: "right" },
+      { key: "belt",    label: "TB2E.Inventory.Belt",    count: 3, column: "right" }
     ];
 
-    // Build slot groups
-    const slotDefs = [
-      { key: "head",   label: "TB2E.Inventory.Head",   count: 1 },
-      { key: "neck",   label: "TB2E.Inventory.Neck",   count: 1 },
-      { key: "hands",  label: "TB2E.Inventory.Hands",  count: 2 },
-      { key: "torso",  label: "TB2E.Inventory.Torso",  count: 3 },
-      { key: "belt",   label: "TB2E.Inventory.Belt",   count: 3 },
-      { key: "feet",   label: "TB2E.Inventory.Feet",   count: 1 },
-      { key: "pocket", label: "TB2E.Inventory.Pocket", count: 1 },
-      { key: "pack",   label: "TB2E.Inventory.Pack",   count: packCount }
-    ];
-    if ( sys.inventory.hasLargeSack ) {
-      slotDefs.push({ key: "sack", label: "TB2E.Inventory.Sack", count: 6 });
-    }
-    for ( let i = 0; i < sys.inventory.smallSacks; i++ ) {
-      slotDefs.push({ key: `smallsack${i}`, label: "TB2E.Inventory.Sack", count: 3 });
+    // Build dynamic container slot groups from equipped container items.
+    const containerGroups = [];
+    const containers = (actor.itemTypes.container || []).filter(c => c.system.slot && !c.system.dropped && !c.system.lost);
+    for ( const c of containers ) {
+      const cKey = c.system.containerKey || `container-${c.id}`;
+      containerGroups.push({
+        key: cKey,
+        label: c.name,
+        count: c.system.containerSlots,
+        column: "right",
+        containerId: c.id,
+        containerType: c.system.containerType,
+        isContainer: true
+      });
     }
 
-    context.inventorySlots = slotDefs.filter(s => s.count > 0).map(s => ({
-      key: s.key,
-      label: game.i18n.localize(s.label),
-      count: s.count,
-      slots: Array.from({ length: s.count }, () => ({ occupied: false, name: "" }))
-    }));
+    // Combine all slot groups.
+    const allSlotDefs = [...fixedSlots, ...containerGroups];
+
+    // Index items by slot.
+    const slotMap = new Map();
+    for ( const def of allSlotDefs ) slotMap.set(def.key, []);
+
+    const unassigned = [];
+    const dropped = [];
+    for ( const item of allItems ) {
+      if ( item.system.dropped ) {
+        dropped.push(this.#itemSummary(item));
+        continue;
+      }
+      if ( !item.system.slot ) {
+        unassigned.push(this.#itemSummary(item));
+        continue;
+      }
+      const bucket = slotMap.get(item.system.slot);
+      if ( bucket ) bucket.push(this.#itemSummary(item));
+      else unassigned.push(this.#itemSummary(item));
+    }
+
+    // Build slot group context with item placement.
+    const leftSlots = [];
+    const rightSlots = [];
+    for ( const def of allSlotDefs ) {
+      const items = slotMap.get(def.key) || [];
+      items.sort((a, b) => a.slotIndex - b.slotIndex);
+      const slots = Array.from({ length: def.count }, (_, i) => {
+        const item = items.find(it => it.slotIndex === i);
+        if ( item ) return { occupied: true, ...item, isSpanStart: true };
+        const spanning = items.find(it => i > it.slotIndex && i < it.slotIndex + it.slotsRequired);
+        if ( spanning ) return { occupied: true, ...spanning, isSpanContinuation: true };
+        return { occupied: false, index: i };
+      });
+      const group = {
+        key: def.key,
+        label: game.i18n.localize(def.label),
+        count: def.count,
+        slots,
+        isContainer: def.isContainer || false,
+        containerId: def.containerId || null,
+        sublabels: def.sublabels?.map(l => game.i18n.localize(l)) || null
+      };
+      if ( def.column === "left" ) leftSlots.push(group);
+      else rightSlots.push(group);
+    }
+
+    context.leftSlots = leftSlots;
+    context.rightSlots = rightSlots;
+    context.unassigned = unassigned;
+    context.dropped = dropped;
+    context.hasDropped = dropped.length > 0;
+    context.hasUnassigned = unassigned.length > 0;
+    context.torsoDamage = sys.inventory.torsoDamage;
+    context.torsoWeariness = sys.inventory.torsoWeariness;
+  }
+
+  /**
+   * Build a summary object for an inventory item.
+   * @param {Item} item
+   * @returns {object}
+   */
+  #itemSummary(item) {
+    return {
+      itemId: item.id,
+      name: item.name,
+      type: item.type,
+      img: item.img,
+      slotIndex: item.system.slotIndex ?? 0,
+      slotsRequired: item.system.slotsRequired ?? 1,
+      damaged: item.system.damaged ?? false,
+      dropped: item.system.dropped ?? false,
+      quantity: item.system.quantity ?? 1,
+      quantityMax: item.system.quantityMax ?? 1,
+      isContainer: item.type === "container",
+      isSupply: item.type === "supply",
+      hasQuantity: (item.system.quantityMax ?? 1) > 1
+    };
   }
 
   /* -------------------------------------------- */
@@ -981,6 +1073,257 @@ export default class CharacterSheet extends HandlebarsApplicationMixin(ActorShee
     const input = section?.querySelector(".conflict-weapon-input");
     const weaponName = input?.value?.trim() || "";
     await info.combat.setWeapon(info.combatant.id, weaponName);
+  }
+
+  /* -------------------------------------------- */
+  /*  Inventory Action Handlers                   */
+  /* -------------------------------------------- */
+
+  /**
+   * Remove an item from its current slot (goes to unassigned).
+   * If the item is a container, cascade its children to unassigned.
+   */
+  static async #onRemoveFromSlot(event, target) {
+    const itemId = target.dataset.itemId;
+    const item = this.document.items.get(itemId);
+    if ( !item ) return;
+
+    const updates = [{ _id: item.id, "system.slot": "", "system.slotIndex": 0 }];
+
+    // If container, cascade children.
+    if ( item.type === "container" ) {
+      const containerKey = item.system.containerKey || `container-${item.id}`;
+      for ( const child of this.document.items ) {
+        if ( child.system.slot === containerKey ) {
+          updates.push({ _id: child.id, "system.slot": "", "system.slotIndex": 0 });
+        }
+      }
+    }
+    await this.document.updateEmbeddedDocuments("Item", updates);
+  }
+
+  /**
+   * Drop an item on the ground.
+   * If container, also drop contents.
+   */
+  static async #onDropItem(event, target) {
+    const itemId = target.dataset.itemId;
+    const item = this.document.items.get(itemId);
+    if ( !item ) return;
+
+    const updates = [{ _id: item.id, "system.slot": "", "system.slotIndex": 0, "system.dropped": true }];
+
+    if ( item.type === "container" ) {
+      const containerKey = item.system.containerKey || `container-${item.id}`;
+      for ( const child of this.document.items ) {
+        if ( child.system.slot === containerKey ) {
+          updates.push({ _id: child.id, "system.slot": "", "system.slotIndex": 0, "system.dropped": true });
+        }
+      }
+    }
+    await this.document.updateEmbeddedDocuments("Item", updates);
+  }
+
+  /**
+   * Pick up a dropped item (goes to unassigned).
+   */
+  static async #onPickUpItem(event, target) {
+    const itemId = target.dataset.itemId;
+    const item = this.document.items.get(itemId);
+    if ( !item ) return;
+    await item.update({ "system.dropped": false });
+  }
+
+  /**
+   * Toggle the damaged state of an item.
+   */
+  static async #onToggleDamaged(event, target) {
+    const itemId = target.dataset.itemId;
+    const item = this.document.items.get(itemId);
+    if ( !item ) return;
+    await item.update({ "system.damaged": !item.system.damaged });
+  }
+
+  /**
+   * Consume a portion of a supply item (food/drink).
+   */
+  static async #onConsumePortion(event, target) {
+    const itemId = target.dataset.itemId;
+    const item = this.document.items.get(itemId);
+    if ( !item || item.system.portions <= 0 ) return;
+    await item.update({ "system.portions": item.system.portions - 1 });
+  }
+
+  /**
+   * Consume a turn of a light source.
+   */
+  static async #onConsumeLight(event, target) {
+    const itemId = target.dataset.itemId;
+    const item = this.document.items.get(itemId);
+    if ( !item || item.system.turnsRemaining <= 0 ) return;
+    await item.update({ "system.turnsRemaining": item.system.turnsRemaining - 1 });
+  }
+
+  /**
+   * Open the item sheet for editing.
+   */
+  static #onEditItem(event, target) {
+    const itemId = target.dataset.itemId;
+    const item = this.document.items.get(itemId);
+    if ( item ) item.sheet.render(true);
+  }
+
+  /**
+   * Delete an inventory item after confirmation.
+   */
+  static async #onDeleteItem(event, target) {
+    const itemId = target.dataset.itemId;
+    const item = this.document.items.get(itemId);
+    if ( !item ) return;
+    await item.delete();
+  }
+
+  /**
+   * Create a new inventory item via dropdown menu.
+   */
+  static async #onCreateItem(event, target) {
+    const type = target.dataset.type || "gear";
+    const defaultNames = {
+      weapon: "New Weapon", armor: "New Armor", container: "New Container",
+      gear: "New Gear", supply: "New Supply"
+    };
+    await Item.create({
+      name: defaultNames[type] || "New Item",
+      type
+    }, { parent: this.document });
+  }
+
+  /* -------------------------------------------- */
+
+  /**
+   * Assign an item to a slot. Validates capacity.
+   * @param {Item} item
+   * @param {string} slotKey
+   * @param {number} slotIndex
+   */
+  async #assignSlot(item, slotKey, slotIndex) {
+    // Find how many slots are already occupied in this group.
+    const occupants = this.document.items.filter(i =>
+      i.system.slot === slotKey && i.id !== item.id
+    );
+
+    // Find the slot group definition to determine capacity.
+    const groupCapacity = this.#getSlotCapacity(slotKey);
+    if ( groupCapacity === null ) return;
+
+    // Check available space.
+    const usedSlots = occupants.reduce((sum, i) => sum + (i.system.slotsRequired ?? 1), 0);
+    const needed = item.system.slotsRequired ?? 1;
+    if ( usedSlots + needed > groupCapacity ) {
+      ui.notifications.warn("Not enough room in that slot.");
+      return;
+    }
+
+    // Check positional fit: item must not overflow past the end of the group.
+    if ( slotIndex + needed > groupCapacity ) {
+      ui.notifications.warn("Not enough room at that position.");
+      return;
+    }
+
+    // Check positional fit: item must not overlap with existing occupants.
+    for ( const occ of occupants ) {
+      const occStart = occ.system.slotIndex ?? 0;
+      const occEnd = occStart + (occ.system.slotsRequired ?? 1);
+      if ( slotIndex < occEnd && slotIndex + needed > occStart ) {
+        ui.notifications.warn("Not enough room at that position.");
+        return;
+      }
+    }
+
+    // Belt restriction: no bundled items.
+    if ( slotKey === "belt" && (item.system.quantityMax ?? 1) > 1 ) {
+      ui.notifications.warn("Belt slots cannot hold bundled items.");
+      return;
+    }
+
+    await item.update({
+      "system.slot": slotKey,
+      "system.slotIndex": slotIndex,
+      "system.dropped": false
+    });
+  }
+
+  /**
+   * Get the capacity of a slot group by key.
+   * @param {string} slotKey
+   * @returns {number|null}
+   */
+  #getSlotCapacity(slotKey) {
+    const fixedCapacities = {
+      head: 1, neck: 1, "hand-L": 2, "hand-R": 2,
+      torso: 3, belt: 3, feet: 1, pocket: 2
+    };
+    if ( slotKey in fixedCapacities ) return fixedCapacities[slotKey];
+
+    // Check container-provided slots.
+    for ( const item of this.document.items ) {
+      if ( item.type !== "container" ) continue;
+      const cKey = item.system.containerKey || `container-${item.id}`;
+      if ( cKey === slotKey ) return item.system.containerSlots;
+    }
+    return null;
+  }
+
+  /* -------------------------------------------- */
+  /*  Drag-and-Drop                               */
+  /* -------------------------------------------- */
+
+  /** @override */
+  _onDragStart(event) {
+    const target = event.currentTarget;
+    const itemId = target.dataset.itemId;
+    if ( itemId ) {
+      event.dataTransfer.setData("text/plain", JSON.stringify({
+        type: "Item",
+        uuid: this.document.items.get(itemId)?.uuid
+      }));
+    } else {
+      super._onDragStart(event);
+    }
+  }
+
+  /** @override */
+  async _onDrop(event) {
+    const data = TextEditor.implementation.getDragEventData(event);
+    if ( !data ) return super._onDrop(event);
+
+    // Find the drop target slot.
+    const dropTarget = event.target.closest("[data-slot-key]");
+
+    if ( data.type === "Item" ) {
+      // Item from sidebar/compendium or from within the sheet.
+      const item = await fromUuid(data.uuid);
+      if ( !item ) return;
+
+      // If the item is from another source, create it on this actor first.
+      let ownedItem;
+      if ( item.parent?.id === this.document.id ) {
+        ownedItem = item;
+      } else {
+        const created = await this.document.createEmbeddedDocuments("Item", [item.toObject()]);
+        ownedItem = created[0];
+      }
+
+      // If dropped onto a slot, assign it.
+      if ( dropTarget ) {
+        const slotKey = dropTarget.dataset.slotKey;
+        const slotIndex = Number(dropTarget.dataset.slotIndex ?? 0);
+        await this.#assignSlot(ownedItem, slotKey, slotIndex);
+      }
+      return;
+    }
+
+    return super._onDrop(event);
   }
 
   /* -------------------------------------------- */

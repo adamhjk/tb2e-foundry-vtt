@@ -15,6 +15,7 @@
 /* -------------------------------------------- */
 
 .tb2e.sheet,
+.tb2e.gear-sheet,
 .tb2e-chat-card,
 .tb2e-conflict-header,
 .tb2e-conflict-body,
@@ -31,14 +32,14 @@
 body.theme-light :is(
   .tb2e, .tb2e-chat-card, .tb2e-conflict-header, .tb2e-conflict-body,
   .tb2e-conflict-footer, .conflict-window-content,
-  .character-conflict-panel) {
+  .character-conflict-panel, .tb2e.gear-sheet) {
   .mixin-theme-light();
 }
 
 body.theme-dark :is(
   .tb2e, .tb2e-chat-card, .tb2e-conflict-header, .tb2e-conflict-body,
   .tb2e-conflict-footer, .conflict-window-content,
-  .character-conflict-panel) {
+  .character-conflict-panel, .tb2e.gear-sheet) {
   .mixin-theme-dark();
 }
 
@@ -50,7 +51,7 @@ body.theme-dark :is(
 .themed.theme-light :is(
   .tb2e-chat-card, .tb2e-conflict-header, .tb2e-conflict-body,
   .tb2e-conflict-footer, .conflict-window-content,
-  .character-conflict-panel) {
+  .character-conflict-panel, .tb2e.gear-sheet) {
   .mixin-theme-light();
 }
 
@@ -58,7 +59,7 @@ body.theme-dark :is(
 .themed.theme-dark :is(
   .tb2e-chat-card, .tb2e-conflict-header, .tb2e-conflict-body,
   .tb2e-conflict-footer, .conflict-window-content,
-  .character-conflict-panel) {
+  .character-conflict-panel, .tb2e.gear-sheet) {
   .mixin-theme-dark();
 }
 
@@ -77,6 +78,7 @@ body.theme-dark :is(
 @import "sheets/magic.less";
 @import "sheets/biography.less";
 @import "sheets/rollable.less";
+@import "sheets/gear-sheet.less";
 
 // Dice dialogs
 @import "dice/roll-dialog.less";

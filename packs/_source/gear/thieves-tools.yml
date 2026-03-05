@@ -1,0 +1,24 @@
+_id: 55eb98d284d7a0d0
+name: Thieves' Tools
+type: gear
+img: icons/svg/trap.svg
+system:
+  description: "<p>A set of lockpicks, probes, and other tools for bypassing locks and disarming traps.</p>"
+  slot: ""
+  slotIndex: 0
+  slotsRequired: 1
+  cost: 4
+  inventoryNotation: "Pack 1"
+  damaged: false
+  dropped: false
+  quantity: 1
+  quantityMax: 1
+  skillBonuses:
+    - skill: criminal
+      value: 1
+      condition: "Picking locks"
+    - skill: sapper
+      value: 1
+      condition: "Disarming traps"
+  specialRules: ""
+_key: '!items!55eb98d284d7a0d0'

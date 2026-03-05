@@ -1,0 +1,214 @@
+<form class="gear-sheet-form" autocomplete="off">
+
+  {{!-- Header: Name + Type --}}
+  <div class="gear-header">
+    <img class="gear-img" src="{{item.img}}" data-edit="img" title="{{item.name}}">
+    <div class="gear-header-fields">
+      <input type="text" name="name" value="{{item.name}}" class="gear-name-input" placeholder="Item Name">
+      <span class="gear-type-label">{{itemType}}</span>
+    </div>
+  </div>
+
+  {{!-- Common Fields --}}
+  <div class="gear-fields">
+    <div class="field-pair">
+      <label>{{localize "TB2E.Item.Cost"}}</label>
+      <input type="number" name="system.cost" value="{{system.cost}}" min="0">
+    </div>
+    <div class="field-pair">
+      <label>{{localize "TB2E.Item.SlotsRequired"}}</label>
+      <input type="number" name="system.slotsRequired" value="{{system.slotsRequired}}" min="1">
+    </div>
+    <div class="field-pair">
+      <label>{{localize "TB2E.Item.Notation"}}</label>
+      <input type="text" name="system.inventoryNotation" value="{{system.inventoryNotation}}">
+    </div>
+    <label class="checkbox-field">
+      <input type="checkbox" name="system.damaged" {{#if system.damaged}}checked{{/if}}>
+      {{localize "TB2E.Item.Damaged"}}
+    </label>
+  </div>
+
+  {{!-- Quantity (for bundled items) --}}
+  <div class="gear-fields">
+    <div class="field-pair">
+      <label>{{localize "TB2E.Item.Quantity"}}</label>
+      <input type="number" name="system.quantity" value="{{system.quantity}}" min="0">
+    </div>
+    <div class="field-pair">
+      <label>{{localize "TB2E.Item.QuantityMax"}}</label>
+      <input type="number" name="system.quantityMax" value="{{system.quantityMax}}" min="1">
+    </div>
+  </div>
+
+  {{!-- Weapon Fields --}}
+  {{#if isWeapon}}
+  <fieldset class="gear-section">
+    <legend>{{localize "TB2E.Item.WeaponDetails"}}</legend>
+    <div class="gear-fields">
+      <div class="field-pair">
+        <label>{{localize "TB2E.Item.Wield"}}</label>
+        <select name="system.wield">
+          {{#each wieldOptions}}
+          <option value="{{key}}"{{#if selected}} selected{{/if}}>{{label}}</option>
+          {{/each}}
+        </select>
+      </div>
+    </div>
+    <table class="conflict-bonuses-table">
+      <thead>
+        <tr>
+          <th>{{localize "TB2E.Item.Action"}}</th>
+          <th>{{localize "TB2E.Item.BonusType"}}</th>
+          <th>{{localize "TB2E.Item.BonusValue"}}</th>
+        </tr>
+      </thead>
+      <tbody>
+        {{#each conflictActions}}
+        <tr>
+          <td>{{label}}</td>
+          <td>
+            <select name="system.conflictBonuses.{{action}}.type">
+              <option value="dice"{{#if (eq type "dice")}} selected{{/if}}>Dice</option>
+              <option value="success"{{#if (eq type "success")}} selected{{/if}}>Success</option>
+            </select>
+          </td>
+          <td><input type="number" name="system.conflictBonuses.{{action}}.value" value="{{value}}"></td>
+        </tr>
+        {{/each}}
+      </tbody>
+    </table>
+    <div class="field-pair full-width">
+      <label>{{localize "TB2E.Item.SpecialRules"}}</label>
+      <textarea name="system.specialRules">{{system.specialRules}}</textarea>
+    </div>
+  </fieldset>
+  {{/if}}
+
+  {{!-- Armor Fields --}}
+  {{#if isArmor}}
+  <fieldset class="gear-section">
+    <legend>{{localize "TB2E.Item.ArmorDetails"}}</legend>
+    <div class="gear-fields">
+      <div class="field-pair">
+        <label>{{localize "TB2E.Item.ArmorType"}}</label>
+        <select name="system.armorType">
+          {{#each armorTypeOptions}}
+          <option value="{{key}}"{{#if selected}} selected{{/if}}>{{label}}</option>
+          {{/each}}
+        </select>
+      </div>
+      <div class="field-pair">
+        <label>{{localize "TB2E.Item.Absorbs"}}</label>
+        <input type="number" name="system.absorbs" value="{{system.absorbs}}" min="0">
+      </div>
+    </div>
+    <div class="field-pair full-width">
+      <label>{{localize "TB2E.Item.SpecialRules"}}</label>
+      <textarea name="system.specialRules">{{system.specialRules}}</textarea>
+    </div>
+  </fieldset>
+  {{/if}}
+
+  {{!-- Container Fields --}}
+  {{#if isContainer}}
+  <fieldset class="gear-section">
+    <legend>{{localize "TB2E.Item.ContainerDetails"}}</legend>
+    <div class="gear-fields">
+      <div class="field-pair">
+        <label>{{localize "TB2E.Item.ContainerType"}}</label>
+        <select name="system.containerType">
+          {{#each containerTypeOptions}}
+          <option value="{{key}}"{{#if selected}} selected{{/if}}>{{label}}</option>
+          {{/each}}
+        </select>
+      </div>
+      <div class="field-pair">
+        <label>{{localize "TB2E.Item.ContainerSlots"}}</label>
+        <input type="number" name="system.containerSlots" value="{{system.containerSlots}}" min="0">
+      </div>
+      <div class="field-pair">
+        <label>{{localize "TB2E.Item.ContainerKey"}}</label>
+        <input type="text" name="system.containerKey" value="{{system.containerKey}}" placeholder="pack, sack-1, etc.">
+      </div>
+    </div>
+  </fieldset>
+  {{/if}}
+
+  {{!-- Gear Fields --}}
+  {{#if isGear}}
+  <fieldset class="gear-section">
+    <legend>{{localize "TB2E.Item.SkillBonuses"}}</legend>
+    {{#each skillBonuses}}
+    <div class="skill-bonus-row">
+      <select name="system.skillBonuses.{{index}}.skill">
+        <option value="">—</option>
+        {{#each ../skillOptions}}
+        <option value="{{key}}"{{#if (eq key ../skill)}} selected{{/if}}>{{label}}</option>
+        {{/each}}
+      </select>
+      <input type="number" name="system.skillBonuses.{{index}}.value" value="{{value}}" min="0" class="bonus-value-input">
+      <input type="text" name="system.skillBonuses.{{index}}.condition" value="{{condition}}" placeholder="Condition" class="bonus-condition-input">
+      <button type="button" data-action="removeSkillBonus" data-index="{{index}}" class="remove-bonus-btn"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+    {{/each}}
+    <button type="button" data-action="addSkillBonus" class="add-bonus-btn"><i class="fa-solid fa-plus"></i> {{localize "TB2E.Item.AddSkillBonus"}}</button>
+    <div class="field-pair full-width">
+      <label>{{localize "TB2E.Item.SpecialRules"}}</label>
+      <textarea name="system.specialRules">{{system.specialRules}}</textarea>
+    </div>
+  </fieldset>
+  {{/if}}
+
+  {{!-- Supply Fields --}}
+  {{#if isSupply}}
+  <fieldset class="gear-section">
+    <legend>{{localize "TB2E.Item.SupplyDetails"}}</legend>
+    <div class="gear-fields">
+      <div class="field-pair">
+        <label>{{localize "TB2E.Item.SupplyType"}}</label>
+        <select name="system.supplyType">
+          {{#each supplyTypeOptions}}
+          <option value="{{key}}"{{#if selected}} selected{{/if}}>{{label}}</option>
+          {{/each}}
+        </select>
+      </div>
+      <div class="field-pair">
+        <label>{{localize "TB2E.Item.Portions"}}</label>
+        <input type="number" name="system.portions" value="{{system.portions}}" min="0">
+      </div>
+      <div class="field-pair">
+        <label>{{localize "TB2E.Item.TurnsRemaining"}}</label>
+        <input type="number" name="system.turnsRemaining" value="{{system.turnsRemaining}}" min="0">
+      </div>
+    </div>
+    {{!-- Supply skill bonuses --}}
+    <div class="skill-bonuses-section">
+      <h4>{{localize "TB2E.Item.SkillBonuses"}}</h4>
+      {{#each skillBonuses}}
+      <div class="skill-bonus-row">
+        <select name="system.skillBonuses.{{index}}.skill">
+          <option value="">—</option>
+          {{#each ../skillOptions}}
+          <option value="{{key}}"{{#if (eq key ../skill)}} selected{{/if}}>{{label}}</option>
+          {{/each}}
+        </select>
+        <input type="number" name="system.skillBonuses.{{index}}.value" value="{{value}}" min="0" class="bonus-value-input">
+        <input type="text" name="system.skillBonuses.{{index}}.condition" value="{{condition}}" placeholder="Condition" class="bonus-condition-input">
+        <button type="button" data-action="removeSkillBonus" data-index="{{index}}" class="remove-bonus-btn"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      {{/each}}
+      <button type="button" data-action="addSkillBonus" class="add-bonus-btn"><i class="fa-solid fa-plus"></i> {{localize "TB2E.Item.AddSkillBonus"}}</button>
+    </div>
+  </fieldset>
+  {{/if}}
+
+  {{!-- Description --}}
+  <fieldset class="gear-section">
+    <legend>{{localize "TB2E.Item.Description"}}</legend>
+    <div class="editor-wrapper">
+      {{editor system.description target="system.description" button=true editable=true}}
+    </div>
+  </fieldset>
+
+</form>

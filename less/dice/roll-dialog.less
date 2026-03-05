@@ -307,6 +307,76 @@
 /*  Roll Dialog — Trait Selector                */
 /* -------------------------------------------- */
 
+/* -------------------------------------------- */
+/*  Roll Dialog — Gear & Supplies              */
+/* -------------------------------------------- */
+
+.tb2e.roll-dialog .roll-dialog-gear {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.tb2e.roll-dialog .gear-supply-list {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.3rem;
+}
+
+.tb2e.roll-dialog .gear-bonus-toggle,
+.tb2e.roll-dialog .supply-bonus-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0.2rem 0.5rem;
+  border: 1px solid var(--tb-overlay-border);
+  border-radius: 4px;
+  background: var(--tb-overlay-white);
+  color: var(--tb-text-faint);
+  font-size: 0.8rem;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.tb2e.roll-dialog .gear-bonus-toggle:hover {
+  border-color: var(--tb-blue);
+  color: var(--tb-blue);
+}
+
+.tb2e.roll-dialog .gear-bonus-toggle.active {
+  border-color: var(--tb-blue);
+  background: var(--tb-blue-glow);
+  color: var(--tb-blue);
+}
+
+.tb2e.roll-dialog .supply-bonus-toggle:hover {
+  border-color: var(--tb-green);
+  color: var(--tb-green-text);
+}
+
+.tb2e.roll-dialog .supply-bonus-toggle.active {
+  border-color: var(--tb-green);
+  background: var(--tb-green-subtle);
+  color: var(--tb-green-text);
+}
+
+.tb2e.roll-dialog .gear-bonus-toggle .helper-dice,
+.tb2e.roll-dialog .supply-bonus-toggle .helper-dice {
+  font-weight: 700;
+  opacity: 0.4;
+  transition: opacity 0.15s;
+}
+
+.tb2e.roll-dialog .gear-bonus-toggle.active .helper-dice {
+  color: var(--tb-blue);
+  opacity: 1;
+}
+
+.tb2e.roll-dialog .supply-bonus-toggle.active .helper-dice {
+  color: var(--tb-green);
+  opacity: 1;
+}
+
 /* Roll Dialog — Nature Descriptors Section */
 .tb2e.roll-dialog .roll-dialog-nature {
   display: flex;

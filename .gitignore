@@ -1,3 +1,5 @@
 node_modules/
 .playwright-mcp
 tb2e.css.map
+packs/*
+!packs/_source

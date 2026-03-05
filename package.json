@@ -7,9 +7,11 @@
   "private": true,
   "scripts": {
     "build:css": "lessc less/tb2e.less tb2e.css --source-map",
-    "watch:css": "less-watch-compiler less/ ./ tb2e.less --source-map"
+    "watch:css": "less-watch-compiler less/ ./ tb2e.less --source-map",
+    "build:db": "node utils/packs.mjs --compile"
   },
   "devDependencies": {
+    "@foundryvtt/foundryvtt-cli": "^3.0.3",
     "less": "^4.5.1",
     "less-watch-compiler": "^1.17.5"
   }

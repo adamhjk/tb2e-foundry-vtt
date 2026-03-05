@@ -1,43 +1,135 @@
 <section class="tab scrollable{{#if tab.active}} active{{/if}}" data-group="{{tab.group}}" data-tab="{{tab.id}}">
 
-  {{!-- Pack Configuration --}}
-  <div class="inventory-config">
-    <div class="field-pair">
-      <label>{{localize "TB2E.Fields.PackType"}}</label>
-      <select name="system.inventory.packType">
-        {{#each packOptions}}
-        <option value="{{key}}"{{#if selected}} selected{{/if}}>{{label}}</option>
-        {{/each}}
-      </select>
+  {{!-- Create Item Buttons --}}
+  <div class="inventory-toolbar">
+    <button type="button" data-action="createItem" data-type="weapon"><i class="fa-solid fa-sword"></i> Weapon</button>
+    <button type="button" data-action="createItem" data-type="armor"><i class="fa-solid fa-shield"></i> Armor</button>
+    <button type="button" data-action="createItem" data-type="container"><i class="fa-solid fa-bag-shopping"></i> Container</button>
+    <button type="button" data-action="createItem" data-type="gear"><i class="fa-solid fa-gear"></i> Gear</button>
+    <button type="button" data-action="createItem" data-type="supply"><i class="fa-solid fa-flask"></i> Supply</button>
+  </div>
+
+  {{!-- Two-Column Slot Grid --}}
+  <div class="inventory-columns">
+
+    {{!-- Left Column: Body Slots --}}
+    <div class="inventory-column inventory-column-left">
+      {{#each leftSlots}}
+      <div class="inventory-slot-group" data-slot-group="{{key}}">
+        <h3 class="slot-heading">{{label}} <span class="slot-count">({{count}})</span></h3>
+        <div class="slot-list">
+          {{#each slots}}
+          <div class="inventory-slot{{#unless occupied}} empty{{/unless}}{{#if damaged}} damaged{{/if}}{{#if isSpanContinuation}} span-continuation{{/if}}" data-slot-key="{{../key}}" data-slot-index="{{@index}}" draggable="{{#if isSpanStart}}true{{else}}{{#unless occupied}}false{{else}}false{{/unless}}{{/if}}"{{#if occupied}} data-item-id="{{itemId}}"{{/if}}>
+            {{#if isSpanContinuation}}
+            <span class="slot-item span-connector">
+              <span class="slot-item-name continuation-label">{{name}}</span>
+            </span>
+            {{else if occupied}}
+            <span class="slot-item">
+              <span class="slot-item-name">{{name}}</span>
+              {{#if hasQuantity}}<span class="slot-qty">{{quantity}}/{{quantityMax}}</span>{{/if}}
+              {{#if damaged}}<i class="fa-solid fa-heart-crack slot-badge damaged-badge" title="Damaged"></i>{{/if}}
+            </span>
+            <span class="slot-actions">
+              <button type="button" class="slot-action-btn" data-action="editItem" data-item-id="{{itemId}}" title="Edit"><i class="fa-solid fa-pen-to-square"></i></button>
+              <button type="button" class="slot-action-btn" data-action="removeFromSlot" data-item-id="{{itemId}}" title="Remove"><i class="fa-solid fa-xmark"></i></button>
+            </span>
+            {{else}}
+            <span class="slot-empty">&mdash;</span>
+            {{/if}}
+          </div>
+          {{/each}}
+        </div>
+      </div>
+      {{/each}}
     </div>
-    <label class="checkbox-field">
-      <input type="checkbox" name="system.inventory.hasLargeSack" {{#if system.inventory.hasLargeSack}}checked{{/if}}>
-      {{localize "TB2E.Fields.LargeSack"}}
-    </label>
-    <div class="field-pair">
-      <label>{{localize "TB2E.Fields.SmallSacks"}}</label>
-      <input type="number" name="system.inventory.smallSacks" value="{{system.inventory.smallSacks}}" min="0" max="3">
+
+    {{!-- Right Column: Storage Slots --}}
+    <div class="inventory-column inventory-column-right">
+      {{#each rightSlots}}
+      <div class="inventory-slot-group{{#if isContainer}} container-group{{/if}}" data-slot-group="{{key}}">
+        <h3 class="slot-heading">
+          {{label}} <span class="slot-count">({{count}})</span>
+          {{#if isContainer}}
+          <button type="button" class="slot-action-btn container-remove-btn" data-action="removeFromSlot" data-item-id="{{containerId}}" title="Remove container"><i class="fa-solid fa-xmark"></i></button>
+          {{/if}}
+        </h3>
+        <div class="slot-list">
+          {{#each slots}}
+          <div class="inventory-slot{{#unless occupied}} empty{{/unless}}{{#if damaged}} damaged{{/if}}{{#if isSpanContinuation}} span-continuation{{/if}}" data-slot-key="{{../key}}" data-slot-index="{{@index}}" draggable="{{#if isSpanStart}}true{{else}}{{#unless occupied}}false{{else}}false{{/unless}}{{/if}}"{{#if occupied}} data-item-id="{{itemId}}"{{/if}}>
+            {{#if isSpanContinuation}}
+            <span class="slot-item span-connector">
+              <span class="slot-item-name continuation-label">{{name}}</span>
+            </span>
+            {{else if occupied}}
+            <span class="slot-item">
+              <span class="slot-item-name">{{name}}</span>
+              {{#if hasQuantity}}<span class="slot-qty">{{quantity}}/{{quantityMax}}</span>{{/if}}
+              {{#if damaged}}<i class="fa-solid fa-heart-crack slot-badge damaged-badge" title="Damaged"></i>{{/if}}
+            </span>
+            <span class="slot-actions">
+              <button type="button" class="slot-action-btn" data-action="editItem" data-item-id="{{itemId}}" title="Edit"><i class="fa-solid fa-pen-to-square"></i></button>
+              <button type="button" class="slot-action-btn" data-action="removeFromSlot" data-item-id="{{itemId}}" title="Remove"><i class="fa-solid fa-xmark"></i></button>
+            </span>
+            {{else}}
+            <span class="slot-empty">&mdash;</span>
+            {{/if}}
+          </div>
+          {{/each}}
+        </div>
+      </div>
+      {{/each}}
+
+      {{!-- Torso Damage/Weariness --}}
+      <div class="torso-status">
+        <div class="field-pair">
+          <label>{{localize "TB2E.Inventory.TorsoDamage"}}</label>
+          <input type="number" name="system.inventory.torsoDamage" value="{{torsoDamage}}" min="0">
+        </div>
+        <div class="field-pair">
+          <label>{{localize "TB2E.Inventory.TorsoWeariness"}}</label>
+          <input type="number" name="system.inventory.torsoWeariness" value="{{torsoWeariness}}" min="0">
+        </div>
+      </div>
     </div>
   </div>
 
-  {{!-- Slot Grid --}}
-  <div class="inventory-grid">
-    {{#each inventorySlots}}
-    <div class="inventory-slot-group">
-      <h3 class="slot-heading">{{label}} <span class="slot-count">({{count}})</span></h3>
-      <div class="slot-list">
-        {{#each slots}}
-        <div class="inventory-slot{{#unless occupied}} empty{{/unless}}" data-slot="{{../key}}" data-index="{{@index}}">
-          {{#if occupied}}
-          <span class="slot-item">{{name}}</span>
-          {{else}}
-          <span class="slot-empty">—</span>
-          {{/if}}
-        </div>
-        {{/each}}
+  {{!-- Dropped Items --}}
+  {{#if hasDropped}}
+  <div class="inventory-dropped">
+    <h3 class="slot-heading dropped-heading"><i class="fa-solid fa-arrow-down"></i> {{localize "TB2E.Inventory.Dropped"}}</h3>
+    <div class="dropped-list">
+      {{#each dropped}}
+      <div class="inventory-item dropped-item" data-item-id="{{itemId}}" draggable="true">
+        <span class="slot-item-name">{{name}}</span>
+        <span class="slot-actions">
+          <button type="button" class="slot-action-btn" data-action="pickUpItem" data-item-id="{{itemId}}" title="Pick up"><i class="fa-solid fa-hand"></i></button>
+          <button type="button" class="slot-action-btn" data-action="deleteItem" data-item-id="{{itemId}}" title="Delete"><i class="fa-solid fa-trash"></i></button>
+        </span>
       </div>
+      {{/each}}
     </div>
-    {{/each}}
   </div>
+  {{/if}}
+
+  {{!-- Unassigned Items --}}
+  {{#if hasUnassigned}}
+  <div class="inventory-unassigned">
+    <h3 class="slot-heading unassigned-heading"><i class="fa-solid fa-box-open"></i> {{localize "TB2E.Inventory.Unassigned"}}</h3>
+    <div class="unassigned-list">
+      {{#each unassigned}}
+      <div class="inventory-item unassigned-item" data-item-id="{{itemId}}" draggable="true">
+        <span class="slot-item-name">{{name}}</span>
+        <span class="item-type-badge">{{type}}</span>
+        <span class="slot-actions">
+          <button type="button" class="slot-action-btn" data-action="editItem" data-item-id="{{itemId}}" title="Edit"><i class="fa-solid fa-pen-to-square"></i></button>
+          <button type="button" class="slot-action-btn" data-action="dropItem" data-item-id="{{itemId}}" title="Drop"><i class="fa-solid fa-arrow-down"></i></button>
+          <button type="button" class="slot-action-btn" data-action="deleteItem" data-item-id="{{itemId}}" title="Delete"><i class="fa-solid fa-trash"></i></button>
+        </span>
+      </div>
+      {{/each}}
+    </div>
+  </div>
+  {{/if}}
 
 </section>

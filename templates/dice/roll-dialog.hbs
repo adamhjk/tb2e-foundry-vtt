@@ -73,6 +73,32 @@
   </div>
   {{/if}}
 
+  {{! Gear & Supplies Section }}
+  {{#if hasGearSupplies}}
+  <div class="roll-dialog-gear">
+    <div class="section-heading">
+      <i class="fa-solid fa-gear"></i>
+      <span>Gear &amp; Supplies</span>
+    </div>
+    <div class="gear-supply-list">
+      {{#each gearItems}}
+      <button type="button" class="gear-bonus-toggle" data-item-id="{{itemId}}" data-item-name="{{name}}">
+        <span class="helper-name">{{name}}</span>
+        {{#if condition}}<span class="helper-via">{{condition}}</span>{{/if}}
+        <span class="helper-dice">+1D</span>
+      </button>
+      {{/each}}
+      {{#each supplyItems}}
+      <button type="button" class="supply-bonus-toggle" data-item-id="{{itemId}}" data-item-name="{{name}}">
+        <span class="helper-name">{{name}}</span>
+        <span class="helper-via">(consumed)</span>
+        <span class="helper-dice">+1D</span>
+      </button>
+      {{/each}}
+    </div>
+  </div>
+  {{/if}}
+
   {{! Direct Nature Test — Within/Outside Descriptors }}
   {{#if isDirectNatureTest}}
   <div class="roll-dialog-nature">

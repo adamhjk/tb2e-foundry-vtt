@@ -241,6 +241,63 @@ async function _postSkillOpenedCard(actor, key) {
 }
 
 /* -------------------------------------------- */
+/*  Gear Modifier Gathering                     */
+/* -------------------------------------------- */
+
+/**
+ * Gather gear and supply items that can provide skill bonuses for a test.
+ * @param {Actor} actor
+ * @param {string} skillKey - The skill being tested.
+ * @returns {{ gearItems: object[], supplyItems: object[] }}
+ */
+export function _gatherGearModifiers(actor, skillKey) {
+  if ( !skillKey || actor.type !== "character" ) return { gearItems: [], supplyItems: [] };
+
+  const gearItems = [];
+  for ( const item of (actor.itemTypes.gear || []) ) {
+    if ( item.system.dropped || !item.system.slot ) continue;
+    for ( const bonus of (item.system.skillBonuses || []) ) {
+      if ( bonus.skill === skillKey && bonus.value > 0 ) {
+        gearItems.push({ itemId: item.id, name: item.name, value: bonus.value, condition: bonus.condition });
+        break;
+      }
+    }
+  }
+
+  const supplyItems = [];
+  for ( const item of (actor.itemTypes.supply || []) ) {
+    if ( item.system.dropped || !item.system.slot ) continue;
+    if ( (item.system.quantity ?? 0) <= 0 ) continue;
+    for ( const bonus of (item.system.skillBonuses || []) ) {
+      if ( bonus.skill === skillKey && bonus.value > 0 ) {
+        supplyItems.push({
+          itemId: item.id, name: item.name, value: bonus.value,
+          condition: bonus.condition, quantity: item.system.quantity
+        });
+        break;
+      }
+    }
+  }
+
+  return { gearItems, supplyItems };
+}
+
+/**
+ * Check if an actor has a backpack-type container equipped.
+ * @param {Actor} actor
+ * @returns {boolean}
+ */
+function _checkBackpackEquipped(actor) {
+  if ( actor.type !== "character" ) return false;
+  for ( const item of (actor.itemTypes.container || []) ) {
+    if ( item.system.containerType === "backpack" && item.system.slot && !item.system.dropped && !item.system.lost ) {
+      return true;
+    }
+  }
+  return false;
+}
+
+/* -------------------------------------------- */
 /*  Roll Dialog                                 */
 /* -------------------------------------------- */
 
@@ -328,6 +385,12 @@ async function _showRollDialog({
   const wiseAiders = !isAfraid && !disposition ? availableWiseAiders : [];
   const hasWiseAiders = wiseAiders.length > 0;
 
+  // Gear & supply modifiers for skill tests
+  const skillKey = type === "skill" ? key : null;
+  const { gearItems, supplyItems } = isCharacter && skillKey && !disposition
+    ? _gatherGearModifiers(actor, skillKey) : { gearItems: [], supplyItems: [] };
+  const hasGearSupplies = gearItems.length > 0 || supplyItems.length > 0;
+
   const content = await foundry.applications.handlebars.renderTemplate(
     "systems/tb2e/templates/dice/roll-dialog.hbs", {
       label, dice, disposition,
@@ -341,6 +404,7 @@ async function _showRollDialog({
       isDirectNatureTest, natureDescriptors, channelNatureDescriptors,
       blInfo,
       isAfraid, isAngry,
+      hasGearSupplies, gearItems, supplyItems,
       helpLabel: game.i18n.localize("TB2E.Roll.Help"),
       npcHelpLabel: game.i18n.localize("TB2E.Help.NPCSection"),
       obstacleLabel: game.i18n.localize("TB2E.Roll.Obstacle"),
@@ -482,6 +546,26 @@ async function _showRollDialog({
           }));
         }
 
+        // Gear modifier (from dialog selection)
+        const activeGear = form.querySelector(".gear-bonus-toggle.active");
+        if ( activeGear ) {
+          all.push(createModifier({
+            label: activeGear.dataset.itemName,
+            type: "dice", value: 1, source: "gear",
+            icon: "fa-solid fa-gear", color: "--tb-blue", timing: "pre"
+          }));
+        }
+
+        // Supply modifier (from dialog selection, consumed on roll)
+        const activeSupply = form.querySelector(".supply-bonus-toggle.active");
+        if ( activeSupply ) {
+          all.push(createModifier({
+            label: `${activeSupply.dataset.itemName} (consumed)`,
+            type: "dice", value: 1, source: "supply",
+            icon: "fa-solid fa-flask", color: "--tb-green", timing: "pre"
+          }));
+        }
+
         // Manual modifiers
         all.push(...manualModifiers);
         return all;
@@ -527,6 +611,30 @@ async function _showRollDialog({
             updateSummary();
           }
           row.classList.toggle("synergy-active");
+        });
+      }
+
+      /* ------ Gear & Supply Toggles ------ */
+      for ( const btn of form.querySelectorAll(".gear-bonus-toggle") ) {
+        btn.addEventListener("click", () => {
+          // Radio behavior: only one gear item at a time
+          for ( const other of form.querySelectorAll(".gear-bonus-toggle.active") ) {
+            if ( other !== btn ) other.classList.remove("active");
+          }
+          btn.classList.toggle("active");
+          renderModifierList();
+          updateSummary();
+        });
+      }
+      for ( const btn of form.querySelectorAll(".supply-bonus-toggle") ) {
+        btn.addEventListener("click", () => {
+          // Radio behavior: only one supply item at a time
+          for ( const other of form.querySelectorAll(".supply-bonus-toggle.active") ) {
+            if ( other !== btn ) other.classList.remove("active");
+          }
+          btn.classList.toggle("active");
+          renderModifierList();
+          updateSummary();
         });
       }
 
@@ -852,6 +960,10 @@ async function _showRollDialog({
               modifiers: allMods
             };
           }
+          // Supply item ID for consumption after roll
+          const activeSupplyBtn = form.querySelector(".supply-bonus-toggle.active");
+          const supplyItemId = activeSupplyBtn ? activeSupplyBtn.dataset.itemId : null;
+
           return {
             baseDice,
             poolSize: baseDice + totalDiceBonus,
@@ -865,7 +977,8 @@ async function _showRollDialog({
             traitState: traitInfo,
             personaState: personaInfo,
             natureState: natureInfo,
-            wiseIndex
+            wiseIndex,
+            supplyItemId
           };
         }
       },
@@ -980,6 +1093,15 @@ export async function rollTest({ actor, type, key, testContext = {} }) {
   const availableHelpers = getEligibleHelpers({ actor, type, key, testContext });
   const availableWiseAiders = getEligibleWiseAiders({ actor, testContext });
 
+  // Backpack factor: +1 Ob for Fighter/Dungeoneer when carrying a backpack
+  if ( type === "skill" && (key === "fighter" || key === "dungeoneer") && _checkBackpackEquipped(actor) ) {
+    contextModifiers.push(createModifier({
+      label: "Backpack (+1 Ob)",
+      type: "dice", value: 0, source: "context",
+      icon: "fa-solid fa-bag-shopping", color: "--tb-amber", timing: "pre"
+    }));
+  }
+
   // Show dialog
   const config = await _showRollDialog({
     label,
@@ -1084,6 +1206,15 @@ async function _applyPreRollActorChanges({ actor, config, allModifiers }) {
   }
 
   if ( Object.keys(updates).length ) await actor.update(updates);
+
+  // Supply consumption: if a supply modifier was selected, decrement quantity.
+  const supplyMod = allModifiers.find(m => m.source === "supply");
+  if ( supplyMod && config.supplyItemId ) {
+    const supplyItem = actor.items.get(config.supplyItemId);
+    if ( supplyItem && supplyItem.system.quantity > 0 ) {
+      await supplyItem.update({ "system.quantity": supplyItem.system.quantity - 1 });
+    }
+  }
 }
 
 /* -------------------------------------------- */

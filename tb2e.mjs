@@ -58,6 +58,12 @@ Hooks.once("init", function() {
     makeDefault: true,
     label: "TB2E.SheetNPC"
   });
+  DSC.unregisterSheet(Item, "core", foundry.appv1.sheets.ItemSheet);
+  DSC.registerSheet(Item, "tb2e", applications.item.GearSheet, {
+    types: ["weapon", "armor", "container", "gear", "supply"],
+    makeDefault: true,
+    label: "TB2E.SheetGear"
+  });
 
   // Preload templates.
   loadTemplates([
@@ -69,7 +75,8 @@ Hooks.once("init", function() {
     "systems/tb2e/templates/conflict/conflict-window.hbs",
     "systems/tb2e/templates/chat/nature-crisis.hbs",
     "systems/tb2e/templates/chat/versus-tied.hbs",
-    "systems/tb2e/templates/chat/wise-advancement.hbs"
+    "systems/tb2e/templates/chat/wise-advancement.hbs",
+    "systems/tb2e/templates/items/gear-sheet.hbs"
   ]);
 
   console.log("Torchbearer 2E | System initialized.");

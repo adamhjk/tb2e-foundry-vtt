@@ -125,9 +125,6 @@ export default class CharacterData extends foundry.abstract.TypeDataModel {
 
       // ---- Inventory config ----
       inventory: new fields.SchemaField({
-        packType: new fields.StringField({ initial: "none", choices: ["none", "satchel", "backpack"] }),
-        hasLargeSack: new fields.BooleanField({ initial: false }),
-        smallSacks: new fields.NumberField({ initial: 0, integer: true, min: 0, max: 3 }),
         torsoDamage: new fields.NumberField({ initial: 0, integer: true, min: 0 }),
         torsoWeariness: new fields.NumberField({ initial: 0, integer: true, min: 0 })
       }),
