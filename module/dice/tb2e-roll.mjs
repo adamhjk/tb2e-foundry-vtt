@@ -2,6 +2,7 @@ import { abilities, advancementNeeded, conditions, skills } from "../config.mjs"
 import { showAdvancementDialog } from "./advancement.mjs";
 import { PendingVersusRegistry } from "./versus.mjs";
 import { getEligibleHelpers, getEligibleWiseAiders } from "./help.mjs";
+import { buildChatTemplateData, mapHelpersForFlags, mapWiseAidersForFlags } from "./roll-utils.mjs";
 
 /* ============================================ */
 /*  Modifier Subsystem                          */
@@ -31,17 +32,6 @@ export function createModifier({
 /* -------------------------------------------- */
 /*  Shared Helpers                              */
 /* -------------------------------------------- */
-
-/**
- * Build a subtitle string for chat cards based on actor type.
- * @param {Actor} actor
- * @returns {string}
- */
-function _buildActorSubtitle(actor) {
-  if ( actor.type !== "npc" ) return "";
-  const parts = [actor.system.stock, actor.system.class].filter(Boolean);
-  return parts.length ? `NPC \u2014 ${parts.join(" ")}` : "NPC";
-}
 
 /**
  * Resolve the label and dice pool for a roll.
@@ -374,7 +364,7 @@ async function _showRollDialog({
   let helperBonus = 0;
   const traitState = { itemId: null, mode: "none", againstType: null };
   const personaState = { advantage: 0, channelNature: false };
-  const natureState = { withinNature: false };
+  const natureState = { withinNature: true };
 
   const result = await foundry.applications.api.DialogV2.wait({
     window: { title: dialogTitle },
@@ -642,18 +632,18 @@ async function _showRollDialog({
 
       /* ------ Within Nature Toggle (Direct Nature Tests) ------ */
       if ( isDirectNatureTest ) {
-        const withinToggle = form.querySelector("input[name='withinNature']");
+        const withinToggle = form.querySelector(".nature-switch");
         if ( withinToggle ) {
-          withinToggle.addEventListener("change", () => {
-            natureState.withinNature = withinToggle.checked;
-            const label = form.querySelector(".nature-within-label");
+          withinToggle.addEventListener("click", () => {
+            natureState.withinNature = !natureState.withinNature;
+            const label = withinToggle.querySelector(".nature-switch-label");
             if ( label ) {
               label.textContent = natureState.withinNature
                 ? game.i18n.localize("TB2E.Nature.ActingWithin")
                 : game.i18n.localize("TB2E.Nature.OutsideDescriptors");
-              label.classList.toggle("within", natureState.withinNature);
-              label.classList.toggle("outside", !natureState.withinNature);
             }
+            withinToggle.classList.toggle("within", natureState.withinNature);
+            withinToggle.classList.toggle("outside", !natureState.withinNature);
           });
         }
       }
@@ -1176,45 +1166,20 @@ async function _handleIndependentRoll({ actor, type, key, label, baseDice, poolS
   rollFlags.roll.obstacle = obstacle;
   rollFlags.roll.pass = pass;
 
+  // Build tbFlags-like object for buildChatTemplateData (rollFlags uses flat keys, not nested)
+  const tbFlagsForTemplate = { ...rollFlags, resolved: false };
+  const templateData = buildChatTemplateData({
+    actor, rollData: rollFlags.roll, tbFlags: tbFlagsForTemplate, isVersus: false,
+    synergyHelpers: _buildSynergyHelpers(config.selectedHelpers)
+  });
+  Object.assign(templateData, {
+    showNatureTax: rollFlags.channelNature,
+    showDirectNatureTax: rollFlags.directNatureTest && !rollFlags.withinNature,
+    directNatureWithin: rollFlags.directNatureTest && rollFlags.withinNature
+  });
+
   const chatContent = await foundry.applications.handlebars.renderTemplate(
-    "systems/tb2e/templates/chat/roll-result.hbs", {
-      actorName: actor.name,
-      actorImg: actor.img,
-      actorSubtitle: _buildActorSubtitle(actor),
-      label,
-      baseDice,
-      poolSize,
-      obstacle,
-      successes: finalSuccesses,
-      pass,
-      modifiers: modifiers.filter(m => m.timing === "pre"),
-      diceResults,
-      postSuccessMods: postSuccessMods.length ? postSuccessMods : null,
-      isBL: !!rollFlags.roll.isBL,
-      blAbilityLabel: rollFlags.roll.blAbilityKey ? game.i18n.localize(abilities[rollFlags.roll.blAbilityKey]?.label) : null,
-      // Post-roll buttons visibility
-      hasPostActions: true,
-      hasSuns: diceResults.some(d => d.isSun),
-      hasWyrms: diceResults.some(d => !d.success),
-      sunCount: diceResults.filter(d => d.isSun).length,
-      wyrmCount: diceResults.filter(d => !d.success).length,
-      wiseSelected: !!rollFlags.wise,
-      hasFate: actor.type === "character" && actor.system.fate.current > 0,
-      hasPersona: actor.type === "character" && actor.system.persona.current > 0,
-      showNatureTax: rollFlags.channelNature,
-      showDirectNatureTax: rollFlags.directNatureTest && !rollFlags.withinNature,
-      directNatureWithin: rollFlags.directNatureTest && rollFlags.withinNature,
-      synergyHelpers: _buildSynergyHelpers(config.selectedHelpers),
-      margin: pass ? (finalSuccesses - obstacle) : (obstacle - finalSuccesses),
-      passLabel: game.i18n.localize("TB2E.Roll.Pass"),
-      failLabel: game.i18n.localize("TB2E.Roll.Fail"),
-      successesLabel: game.i18n.localize("TB2E.Roll.Successes"),
-      obstacleLabel: game.i18n.localize("TB2E.Roll.ObstacleLabel"),
-      testLabel: game.i18n.localize("TB2E.Roll.Test"),
-      testTypeLabel: rollFlags.roll.isBL
-        ? game.i18n.format("TB2E.Roll.BLTest", { ability: game.i18n.localize(abilities[rollFlags.roll.blAbilityKey]?.label) })
-        : game.i18n.localize("TB2E.Roll.Independent")
-    }
+    "systems/tb2e/templates/chat/roll-result.hbs", templateData
   );
 
   await ChatMessage.create({
@@ -1225,12 +1190,8 @@ async function _handleIndependentRoll({ actor, type, key, label, baseDice, poolS
     flags: {
       tb2e: {
         ...rollFlags,
-        helpers: (config.selectedHelpers || []).map(h => ({
-          id: h.id, name: h.name, helpVia: h.helpVia, helpViaType: h.helpViaType, synergy: !!h.synergy
-        })),
-        wiseAiders: (config.selectedWiseAiders || []).map(wa => ({
-          id: wa.id, name: wa.name, wiseIndex: wa.wiseIndex, wiseName: wa.wiseName
-        }))
+        helpers: mapHelpersForFlags(config.selectedHelpers),
+        wiseAiders: mapWiseAidersForFlags(config.selectedWiseAiders)
       }
     }
   });
@@ -1280,42 +1241,12 @@ async function _handleVersusRoll({ actor, type, key, label, baseDice, poolSize, 
   }
 
   // Build template data — reuse roll-result.hbs with versus mode
-  const templateData = {
-    actorName: actor.name,
-    actorImg: actor.img,
-    actorSubtitle: _buildActorSubtitle(actor),
-    label,
-    baseDice,
-    poolSize,
-    obstacle: null,
-    successes: rollFlags.roll.finalSuccesses,
-    pass: null,
-    modifiers: modifiers.filter(m => m.timing === "pre"),
-    diceResults,
-    postSuccessMods: postSuccessMods.length ? postSuccessMods : null,
-    isBL: !!rollFlags.roll.isBL,
-    blAbilityLabel: rollFlags.roll.blAbilityKey ? game.i18n.localize(abilities[rollFlags.roll.blAbilityKey]?.label) : null,
-    // Post-roll buttons visibility
-    hasPostActions: true,
-    hasSuns: diceResults.some(d => d.isSun),
-    hasWyrms: diceResults.some(d => !d.success),
-    sunCount: diceResults.filter(d => d.isSun).length,
-    wyrmCount: diceResults.filter(d => !d.success).length,
-    wiseSelected: !!rollFlags.wise,
-    hasFate: actor.type === "character" && actor.system.fate.current > 0,
-    hasPersona: actor.type === "character" && actor.system.persona.current > 0,
-    synergyHelpers: _buildSynergyHelpers(config.selectedHelpers),
-    // Versus-specific
-    isVersus: true,
-    versusFinalized: false,
-    successesLabel: game.i18n.localize("TB2E.Roll.Successes"),
-    obstacleLabel: game.i18n.localize("TB2E.Roll.ObstacleLabel"),
-    testLabel: game.i18n.localize("TB2E.Roll.Test"),
-    testTypeLabel: game.i18n.localize("TB2E.Roll.Versus"),
-    passLabel: game.i18n.localize("TB2E.Roll.Pass"),
-    failLabel: game.i18n.localize("TB2E.Roll.Fail"),
-    pendingLabel: game.i18n.localize("TB2E.Roll.Pending")
-  };
+  const tbFlagsForTemplate = { ...rollFlags, resolved: false };
+  const templateData = buildChatTemplateData({
+    actor, rollData: rollFlags.roll, tbFlags: tbFlagsForTemplate, isVersus: true,
+    synergyHelpers: _buildSynergyHelpers(config.selectedHelpers)
+  });
+  templateData.versusFinalized = false;
 
   const chatContent = await foundry.applications.handlebars.renderTemplate(
     "systems/tb2e/templates/chat/roll-result.hbs", templateData
@@ -1349,12 +1280,8 @@ async function _handleVersusRoll({ actor, type, key, label, baseDice, poolSize, 
             rollType: type, rollKey: key, label, baseDice,
             logAdvancement, isBL: !!rollFlags.roll.isBL, resolved: false
           },
-          helpers: (config.selectedHelpers || []).map(h => ({
-            id: h.id, name: h.name, helpVia: h.helpVia, helpViaType: h.helpViaType, synergy: !!h.synergy
-          })),
-          wiseAiders: (config.selectedWiseAiders || []).map(wa => ({
-            id: wa.id, name: wa.name, wiseIndex: wa.wiseIndex, wiseName: wa.wiseName
-          }))
+          helpers: mapHelpersForFlags(config.selectedHelpers),
+          wiseAiders: mapWiseAidersForFlags(config.selectedWiseAiders)
         }
       }
     });
@@ -1373,12 +1300,8 @@ async function _handleVersusRoll({ actor, type, key, label, baseDice, poolSize, 
             rollType: type, rollKey: key, label, baseDice,
             logAdvancement, isBL: !!rollFlags.roll.isBL, resolved: false
           },
-          helpers: (config.selectedHelpers || []).map(h => ({
-            id: h.id, name: h.name, helpVia: h.helpVia, helpViaType: h.helpViaType, synergy: !!h.synergy
-          })),
-          wiseAiders: (config.selectedWiseAiders || []).map(wa => ({
-            id: wa.id, name: wa.name, wiseIndex: wa.wiseIndex, wiseName: wa.wiseName
-          }))
+          helpers: mapHelpersForFlags(config.selectedHelpers),
+          wiseAiders: mapWiseAidersForFlags(config.selectedWiseAiders)
         }
       }
     });

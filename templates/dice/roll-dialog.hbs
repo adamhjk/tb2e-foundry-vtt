@@ -85,10 +85,12 @@
       <span class="nature-ref-chip">{{this}}</span>
       {{/each}}
     </div>
-    <label class="nature-within-toggle">
-      <input type="checkbox" name="withinNature">
-      <span class="nature-within-label outside">{{localize "TB2E.Nature.OutsideDescriptors"}}</span>
-    </label>
+    <button type="button" class="nature-switch within">
+      <span class="nature-switch-label">{{localize "TB2E.Nature.ActingWithin"}}</span>
+      <span class="nature-switch-track">
+        <span class="nature-switch-thumb"></span>
+      </span>
+    </button>
   </div>
   {{/if}}
 

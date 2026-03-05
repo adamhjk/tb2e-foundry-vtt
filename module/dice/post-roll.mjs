@@ -1,4 +1,5 @@
 import { _logAdvancement, _logBLLearning, _buildSynergyHelpers, evaluateRoll } from "./tb2e-roll.mjs";
+import { recalculateSuccesses, processWiseAiders, calculateNatureTax, buildChatTemplateData, logAdvancementForSide } from "./roll-utils.mjs";
 import { abilities, skills } from "../config.mjs";
 
 /* ============================================ */
@@ -96,24 +97,12 @@ async function _handleFateLuck(message) {
     "flags.tb2e.luckUsed": true
   };
 
-  if ( tbFlags.versus ) {
-    // Versus mode: no obstacle-based pass/fail, just update successes
-    const postMods = tbFlags.postSuccessMods || [];
-    const successBonus = postMods.reduce((s, m) => s + m.value, 0);
-    updateData["flags.tb2e.roll.finalSuccesses"] = Math.max(newSuccesses + successBonus, 0);
-  } else {
-    // Independent mode: recalculate pass/fail with post-success modifiers
-    const obstacle = rollData.obstacle;
-    const postMods = tbFlags.postSuccessMods || [];
-    const autoBonus = postMods.filter(m => m.value < 0).reduce((s, m) => s + m.value, 0);
-    const conditionalBonus = postMods.filter(m => m.value > 0).reduce((s, m) => s + m.value, 0);
-    const adjusted = newSuccesses + autoBonus;
-    const isPass = adjusted >= obstacle;
-    const finalSuccesses = isPass ? adjusted + conditionalBonus : adjusted;
-    const pass = finalSuccesses >= obstacle;
-    updateData["flags.tb2e.roll.finalSuccesses"] = finalSuccesses;
-    updateData["flags.tb2e.roll.pass"] = pass;
-  }
+  const { finalSuccesses, pass } = recalculateSuccesses({
+    successes: newSuccesses, obstacle: rollData.obstacle,
+    postSuccessMods: tbFlags.postSuccessMods || [], isVersus: !!tbFlags.versus
+  });
+  updateData["flags.tb2e.roll.finalSuccesses"] = finalSuccesses;
+  if ( pass !== null ) updateData["flags.tb2e.roll.pass"] = pass;
 
   await message.update(updateData);
 
@@ -181,21 +170,13 @@ async function _handleDeeperUnderstanding(message) {
     "flags.tb2e.deeperUsed": true
   };
 
-  if ( tbFlags.versus ) {
-    const postMods = tbFlags.postSuccessMods || [];
-    const successBonus = postMods.reduce((s, m) => s + m.value, 0);
-    duUpdateData["flags.tb2e.roll.finalSuccesses"] = Math.max(newSuccesses + successBonus, 0);
-  } else {
-    const obstacle = rollData.obstacle;
-    const postMods = tbFlags.postSuccessMods || [];
-    const autoBonus = postMods.filter(m => m.value < 0).reduce((s, m) => s + m.value, 0);
-    const conditionalBonus = postMods.filter(m => m.value > 0).reduce((s, m) => s + m.value, 0);
-    const adjusted = newSuccesses + autoBonus;
-    const isPass = adjusted >= obstacle;
-    const finalSuccesses = isPass ? adjusted + conditionalBonus : adjusted;
-    const pass = finalSuccesses >= obstacle;
+  {
+    const { finalSuccesses, pass } = recalculateSuccesses({
+      successes: newSuccesses, obstacle: rollData.obstacle,
+      postSuccessMods: tbFlags.postSuccessMods || [], isVersus: !!tbFlags.versus
+    });
     duUpdateData["flags.tb2e.roll.finalSuccesses"] = finalSuccesses;
-    duUpdateData["flags.tb2e.roll.pass"] = pass;
+    if ( pass !== null ) duUpdateData["flags.tb2e.roll.pass"] = pass;
   }
 
   await message.update(duUpdateData);
@@ -262,21 +243,13 @@ async function _handleOfCourse(message) {
     "flags.tb2e.ofCourseUsed": true
   };
 
-  if ( tbFlags.versus ) {
-    const postMods = tbFlags.postSuccessMods || [];
-    const successBonus = postMods.reduce((s, m) => s + m.value, 0);
-    ocUpdateData["flags.tb2e.roll.finalSuccesses"] = Math.max(newSuccesses + successBonus, 0);
-  } else {
-    const obstacle = rollData.obstacle;
-    const postMods = tbFlags.postSuccessMods || [];
-    const autoBonus = postMods.filter(m => m.value < 0).reduce((s, m) => s + m.value, 0);
-    const conditionalBonus = postMods.filter(m => m.value > 0).reduce((s, m) => s + m.value, 0);
-    const adjusted = newSuccesses + autoBonus;
-    const isPass = adjusted >= obstacle;
-    const finalSuccesses = isPass ? adjusted + conditionalBonus : adjusted;
-    const pass = finalSuccesses >= obstacle;
+  {
+    const { finalSuccesses, pass } = recalculateSuccesses({
+      successes: newSuccesses, obstacle: rollData.obstacle,
+      postSuccessMods: tbFlags.postSuccessMods || [], isVersus: !!tbFlags.versus
+    });
     ocUpdateData["flags.tb2e.roll.finalSuccesses"] = finalSuccesses;
-    ocUpdateData["flags.tb2e.roll.pass"] = pass;
+    if ( pass !== null ) ocUpdateData["flags.tb2e.roll.pass"] = pass;
   }
 
   await message.update(ocUpdateData);
@@ -296,15 +269,11 @@ async function _handleNatureTax(message, withinDescriptors) {
 
   let taxAmount = 0;
   if ( !withinDescriptors ) {
-    if ( rollData.pass ) {
-      // Pass outside descriptors: tax 1
-      taxAmount = 1;
-    } else {
-      // Fail outside descriptors: tax by margin of failure
-      const obstacle = rollData.obstacle ?? 0;
-      const successes = rollData.finalSuccesses ?? rollData.successes ?? 0;
-      taxAmount = Math.max(obstacle - successes, 1);
-    }
+    taxAmount = calculateNatureTax({
+      pass: rollData.pass,
+      obstacle: rollData.obstacle ?? 0,
+      finalSuccesses: rollData.finalSuccesses ?? rollData.successes ?? 0
+    });
   }
 
   if ( taxAmount > 0 ) {
@@ -473,9 +442,11 @@ async function _handleFinalize(message) {
   // Apply direct nature test tax (outside descriptors, failure only)
   if ( actor && tbFlags.directNatureTest && !tbFlags.withinNature && !tbFlags.directNatureTaxApplied ) {
     if ( !rollData.pass ) {
-      const obstacle = rollData.obstacle ?? 0;
-      const successes = rollData.finalSuccesses ?? rollData.successes ?? 0;
-      const taxAmount = Math.max(obstacle - successes, 1);
+      const taxAmount = calculateNatureTax({
+        pass: false,
+        obstacle: rollData.obstacle ?? 0,
+        finalSuccesses: rollData.finalSuccesses ?? rollData.successes ?? 0
+      });
       const currentNature = actor.system.abilities.nature.rating;
       const newNature = Math.max(0, currentNature - taxAmount);
       const natureMax = actor.system.abilities.nature.max;
@@ -499,41 +470,19 @@ async function _handleFinalize(message) {
 
   // Log advancement
   if ( actor && rollData.obstacle > 0 ) {
-    if ( rollData.isBL ) {
-      await _logBLLearning({ actor, key: rollData.key });
-    } else {
-      await _logAdvancement({
-        actor,
-        type: rollData.type,
-        key: rollData.key,
-        baseDice: rollData.baseDice,
-        pass: rollData.pass
-      });
-    }
+    await logAdvancementForSide({
+      actor, type: rollData.type, key: rollData.key,
+      baseDice: rollData.baseDice, pass: rollData.pass, isBL: !!rollData.isBL,
+      logAdvancement: _logAdvancement, logBLLearning: _logBLLearning
+    });
   }
 
   // Mark wise advancement for "I Am Wise" aiders
-  const wiseAiders = tbFlags.wiseAiders || [];
-  for ( const aider of wiseAiders ) {
-    const aiderActor = game.actors.get(aider.id);
-    if ( !aiderActor ) continue;
-    const field = rollData.pass ? "pass" : "fail";
-    if ( aiderActor.isOwner ) {
-      // Direct update
-      const wises = foundry.utils.deepClone(aiderActor.system.wises);
-      if ( wises[aider.wiseIndex] ) {
-        wises[aider.wiseIndex][field] = true;
-        await aiderActor.update({ "system.wises": wises });
-        _checkWiseAdvancement(aiderActor, aider.wiseIndex);
-      }
-    } else {
-      // Mailbox pattern for non-owned actors
-      await aiderActor.setFlag("tb2e", "pendingWiseAdvancement", {
-        wiseIndex: aider.wiseIndex,
-        field
-      });
-    }
-  }
+  await processWiseAiders({
+    wiseAiders: tbFlags.wiseAiders || [],
+    pass: rollData.pass,
+    checkWiseAdvancement: _checkWiseAdvancement
+  });
 
   // Re-render to remove action buttons
   await _reRenderChatCard(message);
@@ -811,83 +760,31 @@ async function _reRenderChatCard(message) {
   const actor = game.actors.get(tbFlags.actorId);
   if ( !actor ) return;
 
-  const resolved = tbFlags.resolved;
-  const diceResults = rollData.diceResults || [];
-  const finalSuccesses = rollData.finalSuccesses ?? rollData.successes;
-  const obstacle = rollData.obstacle;
-  const pass = rollData.pass;
-
-  // Determine which post-roll buttons remain
-  const hasSuns = diceResults.some(d => d.isSun);
-  const hasWyrms = diceResults.some(d => !d.success);
-  const hasFate = actor.system.fate.current > 0;
-  const hasPersona = actor.system.persona.current > 0;
-  const wiseSelected = !!tbFlags.wise;
-
-  const hasPostActions = !resolved && (
-    (hasFate && hasSuns && !tbFlags.luckUsed) ||
-    (wiseSelected && hasFate && hasWyrms && !tbFlags.deeperUsed && !tbFlags.luckUsed) ||
-    (wiseSelected && hasPersona && hasWyrms && !tbFlags.ofCourseUsed && !tbFlags.luckUsed) ||
-    (tbFlags.channelNature && !tbFlags.natureTaxResolved) ||
-    true // Finalize button always shown until resolved
-  );
-
-  const abilityLabel = rollData.blAbilityKey
-    ? game.i18n.localize(`TB2E.Ability.${rollData.blAbilityKey.charAt(0).toUpperCase() + rollData.blAbilityKey.slice(1)}`)
-    : null;
-
   const isVersus = !!tbFlags.versus;
+  const resolved = tbFlags.resolved;
+  const finalSuccesses = rollData.finalSuccesses ?? rollData.successes;
+
+  const templateData = buildChatTemplateData({
+    actor, rollData, tbFlags, isVersus,
+    synergyHelpers: _buildSynergyHelpers(tbFlags.helpers, tbFlags.helperSynergy || {})
+  });
+
+  // Re-render additions: post-roll button state and nature tax visibility
+  Object.assign(templateData, {
+    luckUsed: !!tbFlags.luckUsed,
+    deeperUsed: !!tbFlags.deeperUsed,
+    ofCourseUsed: !!tbFlags.ofCourseUsed,
+    showNatureTax: !isVersus && tbFlags.channelNature && !tbFlags.natureTaxResolved,
+    showDirectNatureTax: !isVersus && tbFlags.directNatureTest && !tbFlags.withinNature && !tbFlags.directNatureTaxApplied,
+    directNatureWithin: !isVersus && tbFlags.directNatureTest && tbFlags.withinNature,
+    versusFinalized: isVersus && resolved,
+    versusResolvedLabel: isVersus && resolved
+      ? game.i18n.format("TB2E.Roll.VersusFinalized", { successes: finalSuccesses })
+      : null
+  });
 
   const chatContent = await foundry.applications.handlebars.renderTemplate(
-    "systems/tb2e/templates/chat/roll-result.hbs", {
-      actorName: actor.name,
-      actorImg: actor.img,
-      actorSubtitle: actor.type === "npc" ? `NPC \u2014 ${[actor.system.stock, actor.system.class].filter(Boolean).join(" ")}` : "",
-      label: rollData.label,
-      baseDice: rollData.baseDice,
-      poolSize: rollData.poolSize,
-      obstacle: isVersus ? null : obstacle,
-      successes: finalSuccesses,
-      pass: isVersus ? null : pass,
-      modifiers: (rollData.modifiers || []).filter(m => m.timing === "pre"),
-      diceResults,
-      postSuccessMods: (tbFlags.postSuccessMods || []).length ? tbFlags.postSuccessMods : null,
-      isBL: rollData.isBL,
-      blAbilityLabel: abilityLabel,
-      hasPostActions: !resolved,
-      hasSuns,
-      hasWyrms,
-      sunCount: diceResults.filter(d => d.isSun).length,
-      wyrmCount: diceResults.filter(d => !d.success).length,
-      wiseSelected,
-      hasFate,
-      hasPersona,
-      luckUsed: !!tbFlags.luckUsed,
-      deeperUsed: !!tbFlags.deeperUsed,
-      ofCourseUsed: !!tbFlags.ofCourseUsed,
-      showNatureTax: !isVersus && tbFlags.channelNature && !tbFlags.natureTaxResolved,
-      showDirectNatureTax: !isVersus && tbFlags.directNatureTest && !tbFlags.withinNature && !tbFlags.directNatureTaxApplied,
-      directNatureWithin: !isVersus && tbFlags.directNatureTest && tbFlags.withinNature,
-      synergyHelpers: _buildSynergyHelpers(tbFlags.helpers, tbFlags.helperSynergy || {}),
-      margin: isVersus ? null : (pass ? (finalSuccesses - obstacle) : (obstacle - finalSuccesses)),
-      // Versus-specific
-      isVersus,
-      versusFinalized: isVersus && resolved,
-      versusResolvedLabel: isVersus && resolved
-        ? game.i18n.format("TB2E.Roll.VersusFinalized", { successes: finalSuccesses })
-        : null,
-      passLabel: game.i18n.localize("TB2E.Roll.Pass"),
-      failLabel: game.i18n.localize("TB2E.Roll.Fail"),
-      successesLabel: game.i18n.localize("TB2E.Roll.Successes"),
-      obstacleLabel: game.i18n.localize("TB2E.Roll.ObstacleLabel"),
-      testLabel: game.i18n.localize("TB2E.Roll.Test"),
-      testTypeLabel: isVersus
-        ? game.i18n.localize("TB2E.Roll.Versus")
-        : (rollData.isBL
-          ? game.i18n.format("TB2E.Roll.BLTest", { ability: abilityLabel })
-          : game.i18n.localize("TB2E.Roll.Independent")),
-      pendingLabel: game.i18n.localize("TB2E.Roll.Pending")
-    }
+    "systems/tb2e/templates/chat/roll-result.hbs", templateData
   );
 
   await message.update({ content: chatContent });
