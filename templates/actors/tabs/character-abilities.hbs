@@ -3,6 +3,7 @@
   {{!-- Raw Abilities --}}
   <fieldset class="abilities-group">
     <legend><i class="fa-solid fa-dice-d20"></i> {{localize "TB2E.Section.RawAbilities"}}</legend>
+
     {{#each rawAbilities}}
     {{#if (eq key "nature")}}
     {{!-- Nature row — custom layout with current/max --}}
@@ -34,6 +35,13 @@
           <i class="fa-solid fa-shield-halved"></i> {{localize "TB2E.Nature.Conserve"}}
         </button>
       </div>
+    </div>
+    {{else if (eq rollable false)}}
+    {{!-- Non-rollable ability (e.g. Might) --}}
+    <div class="ability-row might-row" data-page="{{page}}">
+      <span class="ability-name">{{label}}</span>
+      <span class="btn-advance-spacer"></span>
+      <input type="number" name="system.{{key}}" value="{{lookup ../system key}}" min="0" max="10" class="ability-rating">
     </div>
     {{else}}
     <div class="ability-row rollable" data-action="rollTest" data-type="ability" data-key="{{key}}" data-page="{{page}}">
@@ -92,12 +100,6 @@
           path=path rating=rating pass=pass fail=fail passArray=passArray failArray=failArray}}
     </div>
     {{/each}}
-
-    {{!-- Might (no advancement, not rollable) --}}
-    <div class="ability-row might-row">
-      <span class="ability-name">{{localize "TB2E.Ability.Might"}}</span>
-      <input type="number" name="system.might" value="{{system.might}}" min="0" max="10" class="ability-rating">
-    </div>
   </fieldset>
 
 

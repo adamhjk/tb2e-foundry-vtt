@@ -264,7 +264,12 @@ export default class CharacterSheet extends HandlebarsApplicationMixin(ActorShee
     context.townAbilities = [];
 
     for ( const [key, cfg] of Object.entries(abilities) ) {
-      if ( cfg.group === "special" ) continue;
+      if ( cfg.rollable === false ) {
+        const entry = { key, label: game.i18n.localize(cfg.label), rollable: false, page: cfg.page };
+        if ( cfg.group === "raw" ) context.rawAbilities.push(entry);
+        else context.townAbilities.push(entry);
+        continue;
+      }
       const data = sys.abilities[key];
       const rating = key === "nature" ? data.max : data.rating;
       const adv = advancementNeeded(rating);
