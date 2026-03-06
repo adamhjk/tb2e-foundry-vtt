@@ -1,0 +1,224 @@
+<div class="spell-sheet-form">
+
+  {{!-- Header: Name + Circle --}}
+  <div class="gear-header">
+    <img class="gear-img" src="{{item.img}}" data-edit="img" title="{{item.name}}">
+    <div class="gear-header-fields">
+      <input type="text" name="name" value="{{item.name}}" class="gear-name-input" placeholder="Spell Name">
+      <select name="system.circle" class="spell-circle-select">
+        {{#each circleOptions}}
+        <option value="{{key}}"{{#if selected}} selected{{/if}}>{{label}}</option>
+        {{/each}}
+      </select>
+    </div>
+  </div>
+
+  {{!-- Casting Section --}}
+  <fieldset class="gear-section">
+    <legend>{{localize "TB2E.Spell.Casting"}}</legend>
+    <div class="gear-fields">
+      <div class="field-pair">
+        <label>{{localize "TB2E.Spell.CastingType"}}</label>
+        <select name="system.castingType">
+          {{#each castingTypeOptions}}
+          <option value="{{key}}"{{#if selected}} selected{{/if}}>{{label}}</option>
+          {{/each}}
+        </select>
+      </div>
+      <div class="field-pair">
+        <label>{{localize "TB2E.Spell.CastingTime"}}</label>
+        <select name="system.castingTime">
+          {{#each castingTimeOptions}}
+          <option value="{{key}}"{{#if selected}} selected{{/if}}>{{label}}</option>
+          {{/each}}
+        </select>
+      </div>
+    </div>
+    {{#if showObstacle}}
+    <div class="gear-fields">
+      {{#if isFixed}}
+      <div class="field-pair">
+        <label>{{localize "TB2E.Spell.FixedObstacle"}}</label>
+        <input type="number" name="system.fixedObstacle" value="{{system.fixedObstacle}}" min="0">
+      </div>
+      {{/if}}
+      <div class="field-pair">
+        <label>{{localize "TB2E.Spell.ObstacleNote"}}</label>
+        <input type="text" name="system.obstacleNote" value="{{system.obstacleNote}}" placeholder="e.g. 1 + circle of target spell">
+      </div>
+    </div>
+    {{/if}}
+    {{#if isVersus}}
+    <div class="gear-fields">
+      <div class="field-pair">
+        <label>{{localize "TB2E.Spell.VersusDefense"}}</label>
+        <select name="system.versusDefense">
+          {{#each versusDefenseOptions}}
+          <option value="{{key}}"{{#if selected}} selected{{/if}}>{{label}}</option>
+          {{/each}}
+        </select>
+      </div>
+      <label class="checkbox-field">
+        <input type="checkbox" name="system.mightPenalty" {{#if system.mightPenalty}}checked{{/if}}>
+        {{localize "TB2E.Spell.MightPenalty"}}
+      </label>
+    </div>
+    {{/if}}
+    <div class="field-pair">
+      <label>{{localize "TB2E.Spell.Duration"}}</label>
+      <input type="text" name="system.duration" value="{{system.duration}}">
+    </div>
+  </fieldset>
+
+  {{!-- Factors Editor (only for factor-type spells) --}}
+  {{#if isFactors}}
+  <fieldset class="gear-section">
+    <legend>{{localize "TB2E.Spell.Factors"}}</legend>
+    {{#each factors}}
+    <div class="factor-group" data-group-index="{{groupIndex}}">
+      <div class="factor-group-header">
+        <input type="text" name="system.factors.{{groupIndex}}.name" value="{{name}}" placeholder="{{localize 'TB2E.Spell.FactorName'}}">
+        <button type="button" data-action="removeFactorGroup" data-group-index="{{groupIndex}}" class="btn-icon" title="{{localize 'TB2E.Action.DeleteRow'}}"><i class="fa-solid fa-trash"></i></button>
+      </div>
+      <table class="factor-options-table">
+        <thead>
+          <tr>
+            <th>{{localize "TB2E.Spell.OptionLabel"}}</th>
+            <th>{{localize "TB2E.Spell.OptionValue"}}</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          {{#each options}}
+          <tr>
+            <td><input type="text" name="system.factors.{{groupIndex}}.options.{{optionIndex}}.label" value="{{label}}"></td>
+            <td><input type="number" name="system.factors.{{groupIndex}}.options.{{optionIndex}}.value" value="{{value}}"></td>
+            <td><button type="button" data-action="removeFactorOption" data-group-index="{{groupIndex}}" data-option-index="{{optionIndex}}" class="btn-icon"><i class="fa-solid fa-xmark"></i></button></td>
+          </tr>
+          {{/each}}
+        </tbody>
+      </table>
+      <button type="button" data-action="addFactorOption" data-group-index="{{groupIndex}}" class="btn-add btn-sm">
+        <i class="fa-solid fa-plus"></i> {{localize "TB2E.Spell.AddOption"}}
+      </button>
+    </div>
+    {{/each}}
+    <button type="button" data-action="addFactorGroup" class="btn-add">
+      <i class="fa-solid fa-plus"></i> {{localize "TB2E.Spell.AddFactorGroup"}}
+    </button>
+    <div class="field-pair">
+      <label>{{localize "TB2E.Spell.FactorNote"}}</label>
+      <input type="text" name="system.factorNote" value="{{system.factorNote}}">
+    </div>
+  </fieldset>
+  {{/if}}
+
+  {{!-- Components --}}
+  <fieldset class="gear-section">
+    <legend>{{localize "TB2E.Spell.Components"}}</legend>
+    <div class="field-pair">
+      <label>{{localize "TB2E.Spell.Materials"}}</label>
+      <input type="text" name="system.materials" value="{{system.materials}}" placeholder="e.g. A dried cephalopod">
+    </div>
+    <div class="field-pair">
+      <label>{{localize "TB2E.Spell.Focus"}}</label>
+      <input type="text" name="system.focus" value="{{system.focus}}" placeholder="e.g. A silver bell [carried 1]">
+    </div>
+  </fieldset>
+
+  {{!-- Learning --}}
+  <fieldset class="gear-section">
+    <legend>{{localize "TB2E.Spell.Learning"}}</legend>
+    <div class="gear-fields">
+      <div class="field-pair">
+        <label>{{localize "TB2E.Spell.ScribeObstacle"}}</label>
+        <input type="number" name="system.scribeObstacle" value="{{system.scribeObstacle}}" min="0">
+      </div>
+      <div class="field-pair">
+        <label>{{localize "TB2E.Spell.LearnObstacle"}}</label>
+        <input type="number" name="system.learnObstacle" value="{{system.learnObstacle}}" min="0">
+      </div>
+    </div>
+  </fieldset>
+
+  {{!-- Conflict Section (only for skill-swap spells) --}}
+  {{#if isSkillSwap}}
+  <fieldset class="gear-section">
+    <legend>{{localize "TB2E.Spell.Conflict"}}</legend>
+    <div class="field-pair">
+      <label>{{localize "TB2E.Spell.SwapSkill"}}</label>
+      <select name="system.swapSkill">
+        <option value="">—</option>
+        {{#each skillOptions}}
+        <option value="{{key}}"{{#if selected}} selected{{/if}}>{{label}}</option>
+        {{/each}}
+      </select>
+    </div>
+    <div class="spell-conflict-types">
+      <label>{{localize "TB2E.Spell.SwapConflictTypes"}}</label>
+      <div class="conflict-type-checks">
+        {{#each conflictTypeOptions}}
+        <label class="checkbox-field">
+          <input type="checkbox" class="swap-conflict-type" value="{{key}}" {{#if checked}}checked{{/if}}>
+          {{label}}
+        </label>
+        {{/each}}
+      </div>
+    </div>
+    <table class="conflict-bonuses-table">
+      <thead>
+        <tr>
+          <th>{{localize "TB2E.Item.Action"}}</th>
+          <th>{{localize "TB2E.Item.BonusType"}}</th>
+          <th>{{localize "TB2E.Item.BonusValue"}}</th>
+        </tr>
+      </thead>
+      <tbody>
+        {{#each conflictActions}}
+        <tr>
+          <td>{{label}}</td>
+          <td>
+            <select name="system.conflictBonuses.{{action}}.type">
+              <option value="dice"{{#if (eq type "dice")}} selected{{/if}}>Dice</option>
+              <option value="success"{{#if (eq type "success")}} selected{{/if}}>Success</option>
+            </select>
+          </td>
+          <td><input type="number" name="system.conflictBonuses.{{action}}.value" value="{{value}}"></td>
+        </tr>
+        {{/each}}
+      </tbody>
+    </table>
+    {{!-- Qualities --}}
+    <div class="spell-qualities">
+      <label>{{localize "TB2E.Spell.ConflictQualities"}}</label>
+      {{#each qualities}}
+      <div class="quality-row">
+        <input type="text" name="system.conflictQualities.{{index}}.name" value="{{name}}" placeholder="{{localize 'TB2E.Spell.QualityName'}}">
+        <input type="text" name="system.conflictQualities.{{index}}.description" value="{{description}}" placeholder="{{localize 'TB2E.Spell.QualityDescription'}}">
+        <button type="button" data-action="removeQuality" data-index="{{index}}" class="btn-icon"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      {{/each}}
+      <button type="button" data-action="addQuality" class="btn-add btn-sm">
+        <i class="fa-solid fa-plus"></i> {{localize "TB2E.Spell.AddQuality"}}
+      </button>
+    </div>
+  </fieldset>
+  {{/if}}
+
+  {{!-- Special Rules --}}
+  <fieldset class="gear-section">
+    <legend>{{localize "TB2E.Spell.SpecialRules"}}</legend>
+    <div class="editor-wrapper">
+      {{editor system.specialRules target="system.specialRules" button=true editable=true}}
+    </div>
+  </fieldset>
+
+  {{!-- Effect/Description --}}
+  <fieldset class="gear-section">
+    <legend>{{localize "TB2E.Spell.Effect"}}</legend>
+    <div class="editor-wrapper">
+      {{editor system.description target="system.description" button=true editable=true}}
+    </div>
+  </fieldset>
+
+</div>

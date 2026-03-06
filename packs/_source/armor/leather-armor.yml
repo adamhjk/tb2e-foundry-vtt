@@ -6,9 +6,9 @@ system:
   description: "<p>Hardened leather armor worn on the torso. On a hit, roll a d6: on 4-6, the hit is absorbed. Not destroyed when it absorbs a hit.</p>"
   slot: ""
   slotIndex: 0
-  slotsRequired: 1
+  slotOptions:
+    torso: 1
   cost: 2
-  inventoryNotation: "Worn/torso 1"
   damaged: false
   dropped: false
   quantity: 1

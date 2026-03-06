@@ -1,0 +1,54 @@
+_id: a1b2c3d4e5f62004
+name: Flames of the Shroud
+type: spell
+img: icons/magic/light/orb-lightning-blue.webp
+system:
+  description: "<p>No casting roll required. Use Arcanist in place of Fighter for one test in a kill, capture, or drive off conflict.</p>"
+  circle: 2
+  castingType: skillSwap
+  fixedObstacle: 0
+  obstacleNote: ""
+  castingTime: free
+  duration: "One test"
+  factors: []
+  factorNote: ""
+  swapSkill: "fighter"
+  swapConflictTypes:
+    - kill
+    - capture
+    - driveOff
+  versusDefense: ""
+  mightPenalty: false
+  materials: ""
+  focus: "A skinning knife or shears that have never been used"
+  scribeObstacle: 3
+  learnObstacle: 3
+  conflictBonuses:
+    attack:
+      type: dice
+      value: 0
+    defend:
+      type: dice
+      value: 0
+    feint:
+      type: dice
+      value: 0
+    maneuver:
+      type: dice
+      value: 0
+  conflictQualities:
+    - name: "Battery of Fire"
+      description: "After actions are revealed, may convert an independent interaction to a versus test."
+    - name: "Eldritch Rift"
+      description: "May distribute margin of success to one additional target aside from direct opponent."
+    - name: "Powered by Rage"
+      description: "+1D to Attack if the caster has the angry condition."
+    - name: "Aetherial"
+      description: "Mundane armor provides no protection. Magical armor does."
+  specialRules: ""
+  library: false
+  spellbook: false
+  memorized: false
+  cast: false
+  scroll: false
+_key: '!items!a1b2c3d4e5f62004'

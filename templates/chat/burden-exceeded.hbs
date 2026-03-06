@@ -1,0 +1,30 @@
+<div class="tb2e-chat-card card-accent--amber" data-actor-id="{{actorId}}">
+  <div class="card-header">
+    <img class="card-portrait" src="{{actorImg}}" width="32" height="32">
+    <div class="card-info">
+      <span class="card-name">{{actorName}}</span>
+      <span class="card-label">{{cardTitle}}</span>
+    </div>
+  </div>
+
+  {{#if resolved}}
+  <div class="card-body">
+    <p class="burden-text">{{resolvedText}}</p>
+  </div>
+  <div class="card-reference"><i class="fa-solid fa-book"></i> DH pp. 101–102</div>
+  <div class="card-banner banner-amber">
+    <i class="fa-solid fa-check"></i> <span>{{resolvedLabel}}</span>
+  </div>
+  {{else}}
+  <div class="card-body">
+    <p class="burden-text">{{bodyText}}</p>
+    <p class="burden-detail">{{detailText}}</p>
+  </div>
+  <div class="card-reference"><i class="fa-solid fa-book"></i> DH pp. 101–102</div>
+  <div class="card-actions">
+    <button type="button" class="card-btn card-btn--amber burden-roll-health">
+      <i class="fa-solid fa-heart-pulse"></i> {{buttonLabel}}
+    </button>
+  </div>
+  {{/if}}
+</div>

@@ -1,0 +1,43 @@
+_id: a1b2c3d4e5f63005
+name: Devilish Laughter
+type: spell
+img: icons/magic/light/orb-lightning-blue.webp
+system:
+  description: "<p>The magician offers to tell the greatest joke ever heard. Speaking an incantation between teeth locked in a toothy smile, the caster causes victims to be seized with horrible, uncontrollable laughter.</p><p>This spell affects troll and folk type creatures who can hear the caster. All targets who fail to resist rapidly descend into uncontrollable, wheezing guffaws, replete with streaming tears and bulging eyes.</p><p>The horrible laughter incapacitates the targets for one turn, plus one turn per margin of success. For each turn spent laughing after the first, the victim suffers one condition as per the grind.</p><p>Be careful; you can laugh yourself to death.</p>"
+  circle: 3
+  castingType: versus
+  fixedObstacle: 0
+  obstacleNote: ""
+  castingTime: oneTurn
+  duration: "Variable (one turn plus margin of success)"
+  factors: []
+  factorNote: ""
+  swapSkill: ""
+  swapConflictTypes: []
+  versusDefense: "willOrNature"
+  mightPenalty: true
+  materials: "The tongue of a hyena or mockingbird held between the teeth"
+  focus: ""
+  scribeObstacle: 3
+  learnObstacle: 3
+  conflictBonuses:
+    attack:
+      type: dice
+      value: 0
+    defend:
+      type: dice
+      value: 0
+    feint:
+      type: dice
+      value: 0
+    maneuver:
+      type: dice
+      value: 0
+  conflictQualities: []
+  specialRules: ""
+  library: false
+  spellbook: false
+  memorized: false
+  cast: false
+  scroll: false
+_key: '!items!a1b2c3d4e5f63005'

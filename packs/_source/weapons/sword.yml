@@ -6,9 +6,11 @@ system:
   description: "<p>A standard sword, useful in a variety of conflicts. Choose one conflict action per conflict to receive +1D.</p>"
   slot: ""
   slotIndex: 0
-  slotsRequired: 1
+  slotOptions:
+    carried: 1
+    belt: 1
+    pack: 1
   cost: 3
-  inventoryNotation: "Pack 1 or belt 1"
   damaged: false
   dropped: false
   quantity: 1
@@ -27,5 +29,6 @@ system:
     maneuver:
       type: dice
       value: 0
+  skillBonuses: []
   specialRules: "<p>Choose one conflict action per conflict to receive +1D: Attack, Defend, or Maneuver.</p>"
 _key: '!items!026b10bdba9bf1a4'

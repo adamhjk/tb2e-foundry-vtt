@@ -1,0 +1,21 @@
+_id: 8f5b3d7a62c19e04
+name: Pole, 10'
+type: gear
+img: icons/svg/oak.svg
+system:
+  description: "<p>A ten-foot wooden pole, indispensable for prodding, probing, and measuring in the dungeon.</p>"
+  slot: ""
+  slotIndex: 0
+  slotOptions:
+    carried: 2
+  cost: 1
+  damaged: false
+  dropped: false
+  quantity: 1
+  quantityMax: 1
+  skillBonuses:
+    - skill: dungeoneer
+      value: 1
+      condition: "Detecting traps, climbing, measuring"
+  specialRules: ""
+_key: '!items!8f5b3d7a62c19e04'

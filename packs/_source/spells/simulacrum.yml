@@ -1,0 +1,43 @@
+_id: a1b2c3d4e5f6300c
+name: Simulacrum
+type: spell
+img: icons/magic/light/orb-lightning-blue.webp
+system:
+  description: "<p>Speaking reversed words while walking backwards in a Gemini pattern, the magician conjures true horrors: duplicates of themselves.</p><p>Successfully casting this spell conjures one or more mirror images of the caster. Each simulacrum increases by one the magician's hit points in a kill, drive off or capture conflict.</p><p>Margin of success adds additional simulacra and thus an additional hit point.</p><p>Simulacra are knocked out of a fight before any other targets--even if another character is targeted--and cannot be regained by any means.</p><p>Bonus disposition from simulacra does not count as part of the team's disposition for the purpose of determining a compromise.</p>"
+  circle: 3
+  castingType: fixed
+  fixedObstacle: 4
+  obstacleNote: ""
+  castingTime: free
+  duration: "One phase"
+  factors: []
+  factorNote: ""
+  swapSkill: ""
+  swapConflictTypes: []
+  versusDefense: ""
+  mightPenalty: false
+  materials: ""
+  focus: "A mirror [carried 1 or pack 1]"
+  scribeObstacle: 3
+  learnObstacle: 4
+  conflictBonuses:
+    attack:
+      type: dice
+      value: 0
+    defend:
+      type: dice
+      value: 0
+    feint:
+      type: dice
+      value: 0
+    maneuver:
+      type: dice
+      value: 0
+  conflictQualities: []
+  specialRules: ""
+  library: false
+  spellbook: false
+  memorized: false
+  cast: false
+  scroll: false
+_key: '!items!a1b2c3d4e5f6300c'

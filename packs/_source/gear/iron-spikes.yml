@@ -1,0 +1,21 @@
+_id: 3b7c9e1f42a08d56
+name: Iron Spikes
+type: gear
+img: icons/svg/anchor.svg
+system:
+  description: "<p>A set of iron spikes for wedging doors, anchoring ropes, and climbing.</p>"
+  slot: ""
+  slotIndex: 0
+  slotOptions:
+    pack: 1
+  cost: 1
+  damaged: false
+  dropped: false
+  quantity: 1
+  quantityMax: 1
+  skillBonuses:
+    - skill: dungeoneer
+      value: 1
+      condition: "Wedging, climbing, anchoring, prying"
+  specialRules: ""
+_key: '!items!3b7c9e1f42a08d56'

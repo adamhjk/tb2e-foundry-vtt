@@ -1,0 +1,50 @@
+_id: a1b2c3d4e5f6000a
+name: Swarm
+type: spell
+img: icons/magic/light/orb-lightning-blue.webp
+system:
+  description: "<p>The magician pulls a swarm of enraged aetherial hornets across the Shroud of Worlds to harry and harass.</p><p>Use Arcanist to Attack in place of the required skill or ability during a kill, capture or drive off conflict. This includes rolling for or helping with the disposition roll.</p><p>No casting roll is necessary before the conflict.</p>"
+  circle: 1
+  castingType: skillSwap
+  fixedObstacle: 0
+  obstacleNote: ""
+  castingTime: free
+  duration: "One conflict"
+  factors: []
+  factorNote: ""
+  swapSkill: "fighter"
+  swapConflictTypes:
+    - "kill"
+    - "capture"
+    - "driveOff"
+  versusDefense: ""
+  mightPenalty: false
+  materials: "A flowering blossom [worn/head or neck or carried 1]"
+  focus: ""
+  scribeObstacle: 2
+  learnObstacle: 2
+  conflictBonuses:
+    attack:
+      type: dice
+      value: 0
+    defend:
+      type: dice
+      value: 0
+    feint:
+      type: dice
+      value: 0
+    maneuver:
+      type: dice
+      value: 0
+  conflictQualities:
+    - name: "Powered by Rage"
+      description: "+1D to Attack if the caster has the angry condition."
+    - name: "Aetherial"
+      description: "Mundane armor has no effect. Only magical armor and spells provide protection."
+  specialRules: ""
+  library: false
+  spellbook: false
+  memorized: false
+  cast: false
+  scroll: false
+_key: '!items!a1b2c3d4e5f6000a'

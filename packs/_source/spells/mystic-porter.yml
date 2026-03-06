@@ -1,0 +1,67 @@
+_id: a1b2c3d4e5f60008
+name: Mystic Porter
+type: spell
+img: icons/magic/light/orb-lightning-blue.webp
+system:
+  description: "<p>Conjures an invisible force that carries inventory for the caster or another, providing additional carrying capacity for a limited duration.</p>"
+  circle: 1
+  castingType: factors
+  fixedObstacle: 0
+  obstacleNote: ""
+  castingTime: oneTurn
+  duration: "Variable"
+  factors:
+    - name: "Amount"
+      options:
+        - label: "8 inventory slots"
+          value: 1
+        - label: "10 inventory slots"
+          value: 2
+        - label: "12 inventory slots"
+          value: 3
+    - name: "Duration"
+      options:
+        - label: "Four turns"
+          value: 0
+        - label: "Phase"
+          value: 1
+        - label: "Session"
+          value: 2
+        - label: "Adventure"
+          value: 3
+    - name: "Origin"
+      options:
+        - label: "Self"
+          value: 0
+        - label: "Other"
+          value: 1
+  factorNote: ""
+  swapSkill: ""
+  swapConflictTypes: []
+  versusDefense: ""
+  mightPenalty: false
+  materials: ""
+  focus: "A trug woven from strips of beech bark [carried 1]"
+  scribeObstacle: 1
+  learnObstacle: 2
+  conflictBonuses:
+    attack:
+      type: dice
+      value: 0
+    defend:
+      type: dice
+      value: 0
+    feint:
+      type: dice
+      value: 0
+    maneuver:
+      type: dice
+      value: 0
+  conflictQualities: []
+  specialRules: ""
+  library: false
+  spellbook: false
+  memorized: false
+  cast: false
+  scroll: false
+_key: '!items!a1b2c3d4e5f60008'

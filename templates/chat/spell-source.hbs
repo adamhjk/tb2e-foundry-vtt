@@ -1,0 +1,27 @@
+<div class="tb2e-chat-card card-accent--blue" data-actor-id="{{actorId}}">
+  <div class="card-header">
+    <img class="card-portrait" src="{{actorImg}}" width="32" height="32">
+    <div class="card-info">
+      <span class="card-name">{{actorName}}</span>
+      <span class="card-label">{{spellName}}</span>
+    </div>
+  </div>
+
+  {{#if resolved}}
+  <div class="card-body">
+    <p>{{resolvedText}}</p>
+  </div>
+  <div class="card-banner banner-pass">
+    <i class="fa-solid fa-check"></i> <span>{{resolvedLabel}}</span>
+  </div>
+  {{else}}
+  <div class="card-body">
+    <p>{{flavorText}}</p>
+  </div>
+  <div class="card-actions">
+    <button type="button" class="card-btn card-btn--blue spell-source-confirm">
+      <i class="{{buttonIcon}}"></i> {{buttonLabel}}
+    </button>
+  </div>
+  {{/if}}
+</div>

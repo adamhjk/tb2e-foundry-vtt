@@ -5,6 +5,8 @@ import * as applications from "./module/applications/_module.mjs";
 import * as dice from "./module/dice/_module.mjs";
 import { PendingVersusRegistry, resolveVersus, processVersusFinalize, handleTraitBreakTie, handleLevel3TraitBreakTie } from "./module/dice/versus.mjs";
 import { activatePostRollListeners, activateNatureCrisisListeners, activateWiseAdvancementListeners, processSynergyMailbox, processWiseAdvancementMailbox } from "./module/dice/post-roll.mjs";
+import { activateSpellSourceListeners } from "./module/dice/spell-casting.mjs";
+import { activateBurdenListeners } from "./module/dice/invocation-casting.mjs";
 
 Hooks.once("init", function() {
   globalThis.tb2e = game.tb2e = { dice };
@@ -20,6 +22,13 @@ Hooks.once("init", function() {
   CONFIG.Item.dataModels = dataModels.item.config;
   CONFIG.Combat.dataModels = dataModels.combat.config;
   CONFIG.Combatant.dataModels = dataModels.combat.combatantConfig;
+
+  // Register card deck presets.
+  CONFIG.Cards.presets.tb2eConflict = {
+    type: "deck",
+    label: "TB2E.Cards.ConflictActions",
+    src: "systems/tb2e/cards/conflict-actions.json"
+  };
 
   // Configure trackable token bar attributes.
   CONFIG.Actor.trackableAttributes = {
@@ -60,9 +69,19 @@ Hooks.once("init", function() {
   });
   DSC.unregisterSheet(Item, "core", foundry.appv1.sheets.ItemSheet);
   DSC.registerSheet(Item, "tb2e", applications.item.GearSheet, {
-    types: ["weapon", "armor", "container", "gear", "supply"],
+    types: ["weapon", "armor", "container", "gear", "supply", "spellbook", "scroll", "relic"],
     makeDefault: true,
     label: "TB2E.SheetGear"
+  });
+  DSC.registerSheet(Item, "tb2e", applications.item.SpellSheet, {
+    types: ["spell"],
+    makeDefault: true,
+    label: "TB2E.SheetSpell"
+  });
+  DSC.registerSheet(Item, "tb2e", applications.item.InvocationSheet, {
+    types: ["invocation"],
+    makeDefault: true,
+    label: "TB2E.SheetInvocation"
   });
 
   // Preload templates.
@@ -76,7 +95,12 @@ Hooks.once("init", function() {
     "systems/tb2e/templates/chat/nature-crisis.hbs",
     "systems/tb2e/templates/chat/versus-tied.hbs",
     "systems/tb2e/templates/chat/wise-advancement.hbs",
-    "systems/tb2e/templates/items/gear-sheet.hbs"
+    "systems/tb2e/templates/items/gear-sheet.hbs",
+    "systems/tb2e/templates/items/spell-sheet.hbs",
+    "systems/tb2e/templates/items/invocation-sheet.hbs",
+    "systems/tb2e/templates/dice/spell-factors.hbs",
+    "systems/tb2e/templates/chat/spell-source.hbs",
+    "systems/tb2e/templates/chat/burden-exceeded.hbs"
   ]);
 
   console.log("Torchbearer 2E | System initialized.");
@@ -98,6 +122,8 @@ Hooks.on("renderChatMessageHTML", (message, html) => {
   activatePostRollListeners(message, html);
   activateNatureCrisisListeners(message, html);
   activateWiseAdvancementListeners(message, html);
+  activateSpellSourceListeners(message, html);
+  activateBurdenListeners(message, html);
 
   // Versus tied card actions
   const vs = message.getFlag("tb2e", "versus");

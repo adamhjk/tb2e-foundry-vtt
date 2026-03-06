@@ -18,6 +18,19 @@
     </div>
   </div>
 
+  {{#if spellName}}
+  <div class="roll-card-spell">
+    <i class="fa-solid fa-wand-magic-sparkles"></i>
+    <span>{{spellName}}</span>
+  </div>
+  {{/if}}
+  {{#if invocationName}}
+  <div class="roll-card-spell">
+    <i class="fa-solid fa-hands-praying"></i>
+    <span>{{invocationName}}</span>
+  </div>
+  {{/if}}
+
   <div class="roll-card-breakdown">
     <div class="breakdown-line">
       <i class="fa-solid fa-dice"></i>

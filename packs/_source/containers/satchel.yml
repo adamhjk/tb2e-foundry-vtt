@@ -6,9 +6,9 @@ system:
   description: "<p>A small satchel worn over the shoulder. Provides 3 inventory slots.</p>"
   slot: ""
   slotIndex: 0
-  slotsRequired: 1
+  slotOptions:
+    torso: 1
   cost: 1
-  inventoryNotation: "Worn/torso 1"
   damaged: false
   dropped: false
   quantity: 1

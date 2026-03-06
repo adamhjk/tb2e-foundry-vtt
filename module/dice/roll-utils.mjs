@@ -131,7 +131,9 @@ export function buildChatTemplateData({ actor, rollData, tbFlags, isVersus, syne
       : (rollData.isBL
         ? game.i18n.format("TB2E.Roll.BLTest", { ability: abilityLabel })
         : game.i18n.localize("TB2E.Roll.Independent")),
-    pendingLabel: game.i18n.localize("TB2E.Roll.Pending")
+    pendingLabel: game.i18n.localize("TB2E.Roll.Pending"),
+    spellName: tbFlags.testContext?.spellName ?? null,
+    invocationName: tbFlags.testContext?.invocationName ?? null
   };
 }
 

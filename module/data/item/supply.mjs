@@ -11,8 +11,9 @@ export default class SupplyData extends foundry.abstract.TypeDataModel {
         initial: "other",
         choices: ["food", "light", "spellMaterial", "sacramental", "ammunition", "other"]
       }),
-      portions: new fields.NumberField({ initial: 0, integer: true, min: 0 }),
       turnsRemaining: new fields.NumberField({ initial: 0, integer: true, min: 0 }),
+      lit: new fields.BooleanField({ initial: false }),
+      nameSingular: new fields.StringField({ initial: "" }),
       skillBonuses: new fields.ArrayField(new fields.SchemaField({
         skill: new fields.StringField(),
         value: new fields.NumberField({ initial: 1, integer: true }),

@@ -1,0 +1,21 @@
+_id: d0e1f2a3b4c5d6e7
+_key: '!items!d0e1f2a3b4c5d6e7'
+name: Twist of the Skein of Fate
+type: invocation
+img: icons/magic/holy/prayer-hands-glowing-yellow.webp
+system:
+  description: "<p>The Norns smile upon the theurge and intertwine their thread of destiny with that of another.</p><p><strong>Effect:</strong> This invocation allows the theurge to use Ritualist in place of Circles for one test when trying to find someone.</p>"
+  circle: 3
+  castingType: skillSwap
+  swapSkill: circles
+  swapConflictTypes: []
+  invocationTime: 1
+  invocationTimeWithRelic: 0
+  duration: One turn
+  burden: 4
+  burdenWithRelic: 3
+  relic: "Urd's Distaff"
+  relicInventory: carried 1
+  sacramental: "Pure lamb's wool"
+  mightPenalty: true
+  performed: false

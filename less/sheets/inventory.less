@@ -57,6 +57,34 @@
   border-style: dashed;
 }
 
+.tb2e.sheet .inventory-slot-group.cache-group {
+  border-color: var(--tb-text-faint);
+  border-style: dashed;
+}
+
+.tb2e.sheet details.cache-group {
+  > summary {
+    list-style: none;
+    cursor: pointer;
+    &::marker,
+    &::-webkit-details-marker {
+      display: none;
+    }
+    &::before {
+      content: "\f0da"; // fa-caret-right
+      font-family: "Font Awesome 6 Free";
+      font-weight: 900;
+      font-size: 0.75rem;
+      display: inline-block;
+      transition: transform 0.15s;
+      margin-right: 0.2rem;
+    }
+  }
+  &[open] > summary::before {
+    transform: rotate(90deg);
+  }
+}
+
 .tb2e.sheet .slot-heading {
   font-family: var(--tb-font-heading);
   font-size: 0.85rem;
@@ -96,6 +124,10 @@
   transition: border-color 0.15s, background 0.15s;
 }
 
+.tb2e.sheet .inventory-slot.draggable {
+  cursor: grab;
+}
+
 .tb2e.sheet .inventory-slot.empty {
   border-style: dashed;
   background: var(--tb-bg-mid);
@@ -129,6 +161,13 @@
   font-size: 0.85rem;
 }
 
+.tb2e.sheet .slot-sublabel {
+  font-size: 0.7rem;
+  color: var(--tb-text-faint);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
 .tb2e.sheet .slot-item {
   display: flex;
   align-items: center;
@@ -145,13 +184,70 @@
   text-overflow: ellipsis;
 }
 
-.tb2e.sheet .slot-qty {
+.tb2e.sheet .slot-qty,
+.tb2e.sheet .slot-supply-info {
   font-size: 0.7rem;
   color: var(--tb-text-dim);
   background: var(--tb-bg-mid);
   padding: 0 0.3rem;
   border-radius: 3px;
   flex-shrink: 0;
+}
+
+.tb2e.sheet .slot-food-qty,
+.tb2e.sheet .slot-light-qty,
+.tb2e.sheet .slot-liquid-qty {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.15rem;
+  flex-shrink: 0;
+  font-size: 0.8rem;
+  color: var(--tb-text-dim);
+}
+
+.tb2e.sheet .slot-liquid-toggle {
+  all: unset;
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--tb-text-dim);
+  background: var(--tb-bg-mid);
+  padding: 0 0.3rem;
+  border-radius: 3px;
+  cursor: pointer;
+  transition: color 0.15s;
+}
+
+.tb2e.sheet .slot-liquid-toggle:hover {
+  color: var(--tb-blue);
+}
+
+.tb2e.sheet .slot-consume-btn {
+  all: unset;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.2rem;
+  height: 1.2rem;
+  border-radius: 2px;
+  color: var(--tb-text-faint);
+  cursor: pointer;
+  font-size: 0.65rem;
+  transition: color 0.15s;
+}
+
+.tb2e.sheet .slot-consume-btn:hover {
+  color: var(--tb-blue);
+}
+
+.tb2e.sheet .slot-qty-input {
+  width: 1.5rem;
+  text-align: center;
+  font-size: 0.8rem;
+  border: none;
+  background: transparent;
+  color: var(--tb-text-dim);
+  padding: 0;
 }
 
 .tb2e.sheet .slot-badge {
@@ -200,33 +296,24 @@
   color: var(--tb-red);
 }
 
-/* Torso Status */
+/* Slot Heading Checkboxes */
 
-.tb2e.sheet .torso-status {
-  display: flex;
-  gap: 1rem;
-  padding: 0.5rem 0.75rem;
-  background: var(--tb-bg-raised);
-  border: 1px solid var(--tb-border);
-  border-radius: var(--tb-radius-lg);
-}
-
-.tb2e.sheet .torso-status .field-pair {
-  display: flex;
+.tb2e.sheet .slot-checkbox {
+  display: inline-flex;
   align-items: center;
-  gap: 0.4rem;
-}
-
-.tb2e.sheet .torso-status label {
-  font-size: 0.8rem;
+  gap: 0.2rem;
+  margin-left: 0.5rem;
+  font-size: 0.75rem;
+  font-weight: normal;
+  text-transform: none;
+  letter-spacing: normal;
   color: var(--tb-text-dim);
-  white-space: nowrap;
+  cursor: pointer;
 }
 
-.tb2e.sheet .torso-status input[type="number"] {
-  width: 3rem;
-  text-align: center;
-  font-size: 0.85rem;
+.tb2e.sheet .slot-checkbox input[type="checkbox"] {
+  margin: 0;
+  cursor: pointer;
 }
 
 /* Dropped & Unassigned Sections */
@@ -281,4 +368,41 @@
   padding: 0 0.3rem;
   border-radius: 3px;
   flex-shrink: 0;
+}
+
+.tb2e.sheet .slot-notation {
+  font-size: 0.7rem;
+  color: var(--tb-text-faint);
+  font-style: italic;
+  flex-shrink: 0;
+  margin-left: auto;
+}
+
+/* Placement Buttons */
+
+.tb2e.sheet .slot-placements {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2px;
+  flex: 1;
+  min-width: 0;
+}
+
+.tb2e.sheet .slot-placement-btn {
+  all: unset;
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  color: var(--tb-text-dim);
+  background: var(--tb-bg-mid);
+  padding: 0.1rem 0.35rem;
+  border-radius: 3px;
+  cursor: pointer;
+  transition: color 0.15s, background 0.15s;
+  white-space: nowrap;
+}
+
+.tb2e.sheet .slot-placement-btn:hover {
+  color: var(--tb-blue);
+  background: var(--tb-bg-raised);
 }

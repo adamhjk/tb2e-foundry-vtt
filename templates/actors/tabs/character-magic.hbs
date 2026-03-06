@@ -7,34 +7,171 @@
       <thead>
         <tr>
           <th>{{localize "TB2E.Fields.Name"}}</th>
+          <th>{{localize "TB2E.Fields.Circle"}}</th>
           <th>{{localize "TB2E.Fields.Obstacle"}}</th>
           <th title="{{localize 'TB2E.Fields.Library'}}">Lib</th>
           <th title="{{localize 'TB2E.Fields.Spellbook'}}">Sb</th>
           <th title="{{localize 'TB2E.Fields.Memorized'}}">Mem</th>
           <th title="{{localize 'TB2E.Fields.Cast'}}">Cast</th>
           <th title="{{localize 'TB2E.Fields.Scroll'}}">Scr</th>
-          <th>{{localize "TB2E.Fields.Supplies"}}</th>
           <th></th>
         </tr>
       </thead>
       <tbody>
         {{#each spells}}
-        <tr>
-          <td><input type="text" name="system.spells.{{@index}}.name" value="{{name}}"></td>
-          <td><input type="text" name="system.spells.{{@index}}.obstacle" value="{{obstacle}}" class="input-sm"></td>
-          <td><input type="checkbox" name="system.spells.{{@index}}.library" {{#if library}}checked{{/if}}></td>
-          <td><input type="checkbox" name="system.spells.{{@index}}.spellbook" {{#if spellbook}}checked{{/if}}></td>
-          <td><input type="checkbox" name="system.spells.{{@index}}.memorized" {{#if memorized}}checked{{/if}}></td>
-          <td><input type="checkbox" name="system.spells.{{@index}}.cast" {{#if cast}}checked{{/if}}></td>
-          <td><input type="checkbox" name="system.spells.{{@index}}.scroll" {{#if scroll}}checked{{/if}}></td>
-          <td><input type="text" name="system.spells.{{@index}}.supplies" value="{{supplies}}"></td>
-          <td><button type="button" data-action="deleteRow" data-array="spells" data-index="{{@index}}" class="btn-icon" title="{{localize 'TB2E.Action.DeleteRow'}}"><i class="fa-solid fa-trash"></i></button></td>
+        <tr data-item-id="{{itemId}}">
+          <td>
+            <a class="spell-name-link" data-action="editItem" data-item-id="{{itemId}}" title="Open spell sheet">{{name}}</a>
+          </td>
+          <td class="input-sm">{{circle}}</td>
+          <td class="input-sm">{{obstacleDisplay}}</td>
+          <td><input type="checkbox" data-action="toggleSpellField" data-item-id="{{itemId}}" data-field="library" {{#if library}}checked{{/if}}></td>
+          <td>
+            <select class="spellbook-select" data-item-id="{{itemId}}">
+              <option value="">&mdash;</option>
+              {{#each spellbookChoices}}
+              <option value="{{id}}" {{#if selected}}selected{{/if}}>{{name}}</option>
+              {{/each}}
+            </select>
+          </td>
+          <td><input type="checkbox" data-action="toggleSpellField" data-item-id="{{itemId}}" data-field="memorized" {{#if memorized}}checked{{/if}}></td>
+          <td>
+            {{#if cast}}
+            <i class="fa-solid fa-check spell-cast-mark" title="Cast this session"></i>
+            {{/if}}
+          </td>
+          <td>{{#if scrollCount}}<span class="scroll-count">{{scrollCount}}</span>{{/if}}</td>
+          <td class="spell-actions">
+            {{#if canCast}}
+            <button type="button" data-action="castSpell" data-item-id="{{itemId}}" class="btn-icon btn-cast" title="{{localize 'TB2E.Spell.Cast'}}"><i class="fa-solid fa-wand-sparkles"></i></button>
+            {{/if}}
+            <button type="button" data-action="deleteSpell" data-item-id="{{itemId}}" class="btn-icon" title="{{localize 'TB2E.Action.DeleteRow'}}"><i class="fa-solid fa-trash"></i></button>
+          </td>
         </tr>
         {{/each}}
       </tbody>
     </table>
-    <button type="button" data-action="addRow" data-array="spells" class="btn-add">
-      <i class="fa-solid fa-plus"></i> {{localize "TB2E.Action.AddRow"}}
+    <button type="button" data-action="addSpell" class="btn-add">
+      <i class="fa-solid fa-plus"></i> {{localize "TB2E.Spell.AddSpell"}}
+    </button>
+  </fieldset>
+
+  {{!-- Memory Palace --}}
+  <fieldset class="memory-palace-section">
+    <legend><i class="fa-solid fa-brain"></i> {{localize "TB2E.Spell.MemoryPalace"}}</legend>
+    <div class="memory-palace-header">
+      <span class="memory-palace-counter">{{memoryPalace.used}} / {{memoryPalace.total}}</span>
+      <div class="field-pair field-pair-inline">
+        <label>{{localize "TB2E.Spell.MemoryPalaceSlots"}}</label>
+        <input type="number" name="system.memoryPalaceSlots" value="{{memoryPalace.total}}" min="0" class="input-sm">
+      </div>
+    </div>
+    <div class="memory-palace-list">
+      {{#each memoryPalace.spells}}
+      <div class="memory-palace-card">
+        <span class="memory-palace-spell-name">{{name}}</span>
+        <span class="memory-palace-circle-pips">
+          {{#each pips}}<span class="circle-pip filled"></span>{{/each}}
+        </span>
+      </div>
+      {{/each}}
+      {{#if memoryPalace.emptyPips.length}}
+      <div class="memory-palace-empty">
+        {{#each memoryPalace.emptyPips}}<span class="circle-pip empty"></span>{{/each}}
+      </div>
+      {{/if}}
+    </div>
+  </fieldset>
+
+  {{!-- Spell Books --}}
+  <fieldset class="spellbooks-section">
+    <legend><i class="fa-solid fa-book"></i> {{localize "TB2E.Spell.SpellBooks"}}</legend>
+    {{#each spellbooks}}
+    <div class="spellbook-group">
+      <div class="spellbook-header">
+        <input type="text" value="{{name}}" class="spellbook-name-input" data-item-id="{{id}}">
+        <span class="spellbook-counter">{{used}} / {{folios}}</span>
+        {{#unless carried}}<span class="spellbook-not-carried"><i class="fa-solid fa-box-archive"></i> {{localize "TB2E.Spell.NotCarried"}}</span>{{/unless}}
+        <button type="button" data-action="deleteSpellbook" data-item-id="{{id}}" class="btn-icon" title="Delete spellbook"><i class="fa-solid fa-trash"></i></button>
+      </div>
+      <div class="spellbook-list">
+        {{#each spells}}
+        <div class="spellbook-card">
+          <span class="spellbook-spell-name">{{name}}</span>
+          <span class="spellbook-circle-pips">
+            {{#each pips}}<span class="circle-pip filled"></span>{{/each}}
+          </span>
+        </div>
+        {{/each}}
+        {{#if emptyPips.length}}
+        <div class="spellbook-empty">
+          {{#each emptyPips}}<span class="circle-pip empty"></span>{{/each}}
+        </div>
+        {{/if}}
+      </div>
+    </div>
+    {{/each}}
+    <button type="button" data-action="addSpellbook" class="btn-add">
+      <i class="fa-solid fa-plus"></i> {{localize "TB2E.Spell.AddSpellbook"}}
+    </button>
+  </fieldset>
+
+  {{!-- Scrolls --}}
+  <fieldset class="scrolls-section">
+    <legend><i class="fa-solid fa-scroll"></i> {{localize "TB2E.Scroll.Scrolls"}}</legend>
+    {{#each scrolls}}
+    <div class="scroll-card">
+      <span class="scroll-spell-name">{{spellName}}</span>
+      <span class="scroll-circle-pips">
+        {{#each pips}}<span class="circle-pip filled"></span>{{/each}}
+      </span>
+      {{#unless carried}}<span class="scroll-not-carried"><i class="fa-solid fa-box-archive"></i> {{localize "TB2E.Spell.NotCarried"}}</span>{{/unless}}
+      <button type="button" data-action="deleteScroll" data-item-id="{{id}}" class="btn-icon" title="{{localize 'TB2E.Action.DeleteRow'}}"><i class="fa-solid fa-trash"></i></button>
+    </div>
+    {{/each}}
+    <button type="button" data-action="addScroll" class="btn-add">
+      <i class="fa-solid fa-plus"></i> {{localize "TB2E.Scroll.AddScroll"}}
+    </button>
+  </fieldset>
+
+  {{!-- Invocations --}}
+  <fieldset class="invocations-section">
+    <legend><i class="fa-solid fa-hands-praying"></i> {{localize "TB2E.Section.Invocations"}}</legend>
+    <table class="invocations-table">
+      <thead>
+        <tr>
+          <th>{{localize "TB2E.Fields.Name"}}</th>
+          <th>{{localize "TB2E.Fields.Circle"}}</th>
+          <th>{{localize "TB2E.Fields.Obstacle"}}</th>
+          <th title="{{localize 'TB2E.Invocation.Burden'}}">Bdn</th>
+          <th title="{{localize 'TB2E.Invocation.Performed'}}">Perf</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        {{#each invocations}}
+        <tr data-item-id="{{itemId}}">
+          <td>
+            <a class="spell-name-link" data-action="editItem" data-item-id="{{itemId}}" title="Open invocation sheet">{{name}}</a>
+          </td>
+          <td class="input-sm">{{circle}}</td>
+          <td class="input-sm">{{obstacleDisplay}}</td>
+          <td class="input-sm">{{burdenDisplay}}</td>
+          <td>
+            {{#if performed}}
+            <i class="fa-solid fa-check spell-cast-mark" title="Performed this session"></i>
+            {{/if}}
+          </td>
+          <td class="spell-actions">
+            <button type="button" data-action="performInvocation" data-item-id="{{itemId}}" class="btn-icon btn-perform" title="{{localize 'TB2E.Invocation.Perform'}}"><i class="fa-solid fa-hands-praying"></i></button>
+            <button type="button" data-action="deleteInvocation" data-item-id="{{itemId}}" class="btn-icon" title="{{localize 'TB2E.Action.DeleteRow'}}"><i class="fa-solid fa-trash"></i></button>
+          </td>
+        </tr>
+        {{/each}}
+      </tbody>
+    </table>
+    <button type="button" data-action="addInvocation" class="btn-add">
+      <i class="fa-solid fa-plus"></i> {{localize "TB2E.Invocation.AddInvocation"}}
     </button>
   </fieldset>
 
@@ -45,39 +182,58 @@
       <thead>
         <tr>
           <th>{{localize "TB2E.Fields.Name"}}</th>
+          <th>{{localize "TB2E.Relic.TierLabel"}}</th>
+          <th>{{localize "TB2E.Relic.Covers"}}</th>
           <th>{{localize "TB2E.Fields.Inventory"}}</th>
-          <th>{{localize "TB2E.Fields.Invocation"}}</th>
-          <th>{{localize "TB2E.Fields.Circle"}}</th>
           <th></th>
         </tr>
       </thead>
       <tbody>
         {{#each relics}}
-        <tr>
-          <td><input type="text" name="system.relics.{{@index}}.name" value="{{name}}"></td>
-          <td><input type="text" name="system.relics.{{@index}}.inventory" value="{{inventory}}"></td>
-          <td><input type="text" name="system.relics.{{@index}}.invocation" value="{{invocation}}"></td>
-          <td><input type="text" name="system.relics.{{@index}}.circle" value="{{circle}}" class="input-sm"></td>
-          <td><button type="button" data-action="deleteRow" data-array="relics" data-index="{{@index}}" class="btn-icon" title="{{localize 'TB2E.Action.DeleteRow'}}"><i class="fa-solid fa-trash"></i></button></td>
+        <tr data-item-id="{{itemId}}">
+          <td>
+            <a class="spell-name-link" data-action="editItem" data-item-id="{{itemId}}" title="Open relic sheet">{{name}}</a>
+          </td>
+          <td class="input-sm">{{tier}}</td>
+          <td class="input-sm">
+            {{#if linkedCircle}}
+              Circle {{linkedCircle}}
+            {{else}}
+              {{#each linkedInvocations}}{{#if @index}}, {{/if}}{{this}}{{/each}}
+            {{/if}}
+          </td>
+          <td class="input-sm">
+            {{#if isPlaced}}
+            <i class="fa-solid fa-check" title="Placed in inventory"></i>
+            {{else}}
+            <span class="relic-not-placed">{{localize "TB2E.Relic.NotPlaced"}}</span>
+            {{/if}}
+          </td>
+          <td><button type="button" data-action="deleteRelic" data-item-id="{{itemId}}" class="btn-icon" title="{{localize 'TB2E.Action.DeleteRow'}}"><i class="fa-solid fa-trash"></i></button></td>
         </tr>
         {{/each}}
       </tbody>
     </table>
-    <button type="button" data-action="addRow" data-array="relics" class="btn-add">
-      <i class="fa-solid fa-plus"></i> {{localize "TB2E.Action.AddRow"}}
+    <button type="button" data-action="addRelic" class="btn-add">
+      <i class="fa-solid fa-plus"></i> {{localize "TB2E.Relic.AddRelic"}}
     </button>
   </fieldset>
 
   {{!-- Urðr --}}
   <fieldset class="urdr-section">
-    <legend><i class="fa-solid fa-brain"></i> {{localize "TB2E.Section.Urdr"}}</legend>
-    <div class="field-pair">
-      <label>{{localize "TB2E.Fields.Burden"}}</label>
-      <input type="number" name="system.urdr.burden" value="{{system.urdr.burden}}" min="0">
-    </div>
-    <div class="urdr-memory">
-      <label>{{localize "TB2E.Fields.MemoryPalace"}}</label>
-      {{editor system.urdr.memoryPalace target="system.urdr.memoryPalace" button=true editable=true}}
+    <legend><i class="fa-solid fa-scale-balanced"></i> {{localize "TB2E.Section.Urdr"}}</legend>
+    <div class="urdr-stats">
+      <div class="field-pair">
+        <label>{{localize "TB2E.Fields.UrdrCapacity"}}</label>
+        <input type="number" name="system.urdr.capacity" value="{{system.urdr.capacity}}" min="0">
+      </div>
+      <div class="field-pair">
+        <label>{{localize "TB2E.Fields.Burden"}}</label>
+        <input type="number" name="system.urdr.burden" value="{{system.urdr.burden}}" min="0">
+      </div>
+      {{#if urdrExceeded}}
+      <span class="urdr-exceeded"><i class="fa-solid fa-triangle-exclamation"></i> {{localize "TB2E.Invocation.BurdenExceededShort"}} <span class="urdr-ref">(DH pp. 101–102)</span></span>
+      {{/if}}
     </div>
   </fieldset>
 

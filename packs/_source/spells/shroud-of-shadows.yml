@@ -1,0 +1,73 @@
+_id: a1b2c3d4e5f62009
+name: Shroud of Shadows
+type: spell
+img: icons/magic/light/orb-lightning-blue.webp
+system:
+  description: "<p>Dims or extinguishes light sources, plunging an area into shadow or complete darkness.</p>"
+  circle: 2
+  castingType: factors
+  fixedObstacle: 0
+  obstacleNote: ""
+  castingTime: oneTurn
+  duration: "Variable"
+  factors:
+    - name: "Light Source"
+      options:
+        - label: "Candle"
+          value: 1
+        - label: "Torch"
+          value: 2
+        - label: "Lamp"
+          value: 3
+        - label: "Bonfire or blaze"
+          value: 4
+        - label: "Moonlight"
+          value: 5
+        - label: "Twilight or sunrise"
+          value: 6
+        - label: "Daylight"
+          value: 7
+    - name: "Intensity"
+      options:
+        - label: "Dim light"
+          value: 0
+        - label: "Darkness"
+          value: 1
+    - name: "Duration"
+      options:
+        - label: "One turn"
+          value: 0
+        - label: "Phase"
+          value: 1
+        - label: "Adventure"
+          value: 2
+  factorNote: ""
+  swapSkill: ""
+  swapConflictTypes: []
+  versusDefense: ""
+  mightPenalty: false
+  materials: ""
+  focus: "A grave shroud, wrapped about the shoulders [worn/torso 1]"
+  scribeObstacle: 3
+  learnObstacle: 3
+  conflictBonuses:
+    attack:
+      type: dice
+      value: 0
+    defend:
+      type: dice
+      value: 0
+    feint:
+      type: dice
+      value: 0
+    maneuver:
+      type: dice
+      value: 0
+  conflictQualities: []
+  specialRules: ""
+  library: false
+  spellbook: false
+  memorized: false
+  cast: false
+  scroll: false
+_key: '!items!a1b2c3d4e5f62009'

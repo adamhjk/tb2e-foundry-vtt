@@ -1,0 +1,43 @@
+_id: a1b2c3d4e5f63001
+name: Apotropaic Circle
+type: spell
+img: icons/magic/light/orb-lightning-blue.webp
+system:
+  description: "<p>By will and gesture the magician erects a shield against spell and spirit.</p><p>This spell creates a magical circle centered on the caster. The circle reduces the effects of spells cast into it and bars spirits, demons and undead from entry.</p><p>When targeting those within it with spells or magical effects, apply a -1s modifier to the effect, increased by one per the margin of success of the spell.</p><p>Spirits, demons and undead of Might equal to or greater than the caster's must pass a versus test against the caster's Arcanist skill to physically interact with anyone protected by the circle. Creatures of lesser Might may not cross it.</p><p>An Apotropaic Circle presents a featureless barrier to the Eye of the Overworld spell; the Eye cannot see through the barrier and will be disrupted if it attempts to pass through it.</p><p>The circle protects a number of characters equal to half the caster's level (rounded up). The magician may extend the protection to additional people using margin of success (instead of applying it to reducing spell effects).</p><p>In order to benefit from the circle's protection, the magician and all those protected within must take care not to break the circle. Therefore, those within suffer a -1D penalty to all tests.</p>"
+  circle: 3
+  castingType: fixed
+  fixedObstacle: 3
+  obstacleNote: ""
+  castingTime: oneTurn
+  duration: "One turn"
+  factors: []
+  factorNote: ""
+  swapSkill: ""
+  swapConflictTypes: []
+  versusDefense: ""
+  mightPenalty: false
+  materials: "A mixture of salt and iron filings strewn in a circle"
+  focus: ""
+  scribeObstacle: 3
+  learnObstacle: 4
+  conflictBonuses:
+    attack:
+      type: dice
+      value: 0
+    defend:
+      type: dice
+      value: 0
+    feint:
+      type: dice
+      value: 0
+    maneuver:
+      type: dice
+      value: 0
+  conflictQualities: []
+  specialRules: ""
+  library: false
+  spellbook: false
+  memorized: false
+  cast: false
+  scroll: false
+_key: '!items!a1b2c3d4e5f63001'

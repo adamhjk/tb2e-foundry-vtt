@@ -1,0 +1,43 @@
+_id: a1b2c3d4e5f60004
+name: Celestial Music
+type: spell
+img: icons/magic/light/orb-lightning-blue.webp
+system:
+  description: "<p>Produces an entrancing celestial melody that captivates listeners, contested against their Will or Nature.</p>"
+  circle: 1
+  castingType: versus
+  fixedObstacle: 0
+  obstacleNote: ""
+  castingTime: oneTurn
+  duration: "Variable"
+  factors: []
+  factorNote: ""
+  swapSkill: ""
+  swapConflictTypes: []
+  versusDefense: "willOrNature"
+  mightPenalty: true
+  materials: ""
+  focus: "A tuning fork or a crystal goblet [pack 1]"
+  scribeObstacle: 2
+  learnObstacle: 2
+  conflictBonuses:
+    attack:
+      type: dice
+      value: 0
+    defend:
+      type: dice
+      value: 0
+    feint:
+      type: dice
+      value: 0
+    maneuver:
+      type: dice
+      value: 0
+  conflictQualities: []
+  specialRules: ""
+  library: false
+  spellbook: false
+  memorized: false
+  cast: false
+  scroll: false
+_key: '!items!a1b2c3d4e5f60004'

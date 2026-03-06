@@ -1,0 +1,67 @@
+_id: a1b2c3d4e5f63007
+name: Eye of the Overworld
+type: spell
+img: icons/magic/light/orb-lightning-blue.webp
+system:
+  description: "<p>This spell summons a great, floating luminous eye to fly before you and spy out the way.</p><p>Roughly the size of a human head, the eye obeys telepathic commands and allows the magician to see through it. By default, the eye is visible and sheds dim light. The caster may choose to make the eye invisible when casting, though it can be seen by spells like Supernal Vision or invocations like Vision of the Lords of Chaos and Law.</p><p>The magician can project the eye into an area adjacent to their current location. It travels at the speed of thought but cannot pass through walls or other solid objects. It can, however, squeeze through gaps of at least one inch in diameter.</p><p>That said, the eye is fragile. A handful of salt, an enchanted weapon or an attacking spell or invocation will disrupt it and end the spell.</p>"
+  circle: 3
+  castingType: factors
+  fixedObstacle: 0
+  obstacleNote: ""
+  castingTime: oneTurn
+  duration: "Variable"
+  factors:
+    - name: "Vision"
+      options:
+        - label: "Mundane"
+          value: 1
+        - label: "See in dim light"
+          value: 2
+        - label: "See in darkness"
+          value: 3
+        - label: "See with Supernal Vision"
+          value: 4
+    - name: "Visibility"
+      options:
+        - label: "Visible eye"
+          value: 0
+        - label: "Invisible eye"
+          value: 1
+    - name: "Duration"
+      options:
+        - label: "One turn"
+          value: 1
+        - label: "Two turns"
+          value: 2
+        - label: "Phase"
+          value: 3
+  factorNote: ""
+  swapSkill: ""
+  swapConflictTypes: []
+  versusDefense: ""
+  mightPenalty: false
+  materials: ""
+  focus: "Spectacles with rose quartz lenses [worn/head]"
+  scribeObstacle: 3
+  learnObstacle: 4
+  conflictBonuses:
+    attack:
+      type: dice
+      value: 0
+    defend:
+      type: dice
+      value: 0
+    feint:
+      type: dice
+      value: 0
+    maneuver:
+      type: dice
+      value: 0
+  conflictQualities: []
+  specialRules: ""
+  library: false
+  spellbook: false
+  memorized: false
+  cast: false
+  scroll: false
+_key: '!items!a1b2c3d4e5f63007'

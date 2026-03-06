@@ -1,0 +1,61 @@
+_id: a1b2c3d4e5f60002
+name: Aetherial Premonition
+type: spell
+img: icons/magic/light/orb-lightning-blue.webp
+system:
+  description: "<p>Senses the danger level of a camp location before settling in.</p>"
+  circle: 1
+  castingType: factors
+  fixedObstacle: 0
+  obstacleNote: ""
+  castingTime: free
+  duration: "One phase"
+  factors:
+    - name: "Camp Type"
+      options:
+        - label: "Dangerous"
+          value: 1
+        - label: "Unsafe"
+          value: 2
+        - label: "Typical"
+          value: 3
+    - name: "Area"
+      options:
+        - label: "Near town"
+          value: 0
+        - label: "Natural caves"
+          value: 1
+        - label: "Wilderness or dungeons"
+          value: 2
+        - label: "Ancient ruins or squatting in town"
+          value: 3
+  factorNote: ""
+  swapSkill: ""
+  swapConflictTypes: []
+  versusDefense: ""
+  mightPenalty: false
+  materials: ""
+  focus: "A silver bell [carried 1 or worn/neck]"
+  scribeObstacle: 2
+  learnObstacle: 2
+  conflictBonuses:
+    attack:
+      type: dice
+      value: 0
+    defend:
+      type: dice
+      value: 0
+    feint:
+      type: dice
+      value: 0
+    maneuver:
+      type: dice
+      value: 0
+  conflictQualities: []
+  specialRules: ""
+  library: false
+  spellbook: false
+  memorized: false
+  cast: false
+  scroll: false
+_key: '!items!a1b2c3d4e5f60002'

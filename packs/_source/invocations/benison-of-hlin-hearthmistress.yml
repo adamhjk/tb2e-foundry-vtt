@@ -1,0 +1,34 @@
+_id: c9d0e1f2a3b4c5d6
+_key: '!items!c9d0e1f2a3b4c5d6'
+name: Benison of Hlin Hearthmistress
+type: invocation
+img: icons/magic/holy/prayer-hands-glowing-yellow.webp
+system:
+  description: "<p>The clouds part and light shines from the heavens as the Hearthmistress lays her hand upon a settlement and eases its ills.</p><p><strong>Effect:</strong> This invocation eases a disaster that has befallen a settlement. Rains snuff raging fires, rage and frustration drain out of rioters, warring factions lay down their arms, fields sprout, orchards bloom. Ameliorate one current town events disaster or one ongoing -1 penalty to town events.</p>"
+  circle: 4
+  castingType: factors
+  factors:
+    - name: Settlement Type
+      options:
+        - label: Steading
+          value: 1
+        - label: Borderland fortress or wizard's tower
+          value: 2
+        - label: Remote village, religious bastion or shire
+          value: 3
+        - label: Busy crossroads or walled town
+          value: 4
+        - label: Dilapidated port
+          value: 5
+        - label: Bustling metropolis
+          value: 6
+  invocationTime: 3
+  invocationTimeWithRelic: 2
+  duration: Instantaneous
+  burden: 5
+  burdenWithRelic: 4
+  relic: Hlin Hearthmistress's Ring of Keys
+  relicInventory: belt 1
+  sacramental: Sheaves of the first grains of the harvest
+  mightPenalty: true
+  performed: false

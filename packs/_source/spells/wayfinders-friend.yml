@@ -1,0 +1,63 @@
+_id: a1b2c3d4e5f6000c
+name: "Wayfinder's Friend"
+type: spell
+img: icons/magic/light/orb-lightning-blue.webp
+system:
+  description: "<p>The magician summons guidance from the spirits of land and sea.</p><p>If the magician is lost in the wilderness, successfully casting the Wayfinder's Friend will grant them a revelation as to their current location in relation to their desired destination. The spirits of the air, sun and moon will emerge and report!</p><p>To have the spirits guide them to a destination, the magician may use the Arcanist skill in place of Pathfinder or Sailor (for navigational tests only). This spell doesn't work underground.</p>"
+  circle: 1
+  castingType: factors
+  fixedObstacle: 0
+  obstacleNote: ""
+  castingTime: free
+  duration: "One turn"
+  factors:
+    - name: "Weather"
+      options:
+        - label: "Overcast"
+          value: 1
+        - label: "Light snow or rain"
+          value: 2
+        - label: "Squall"
+          value: 3
+        - label: "Storm"
+          value: 4
+    - name: "Terrain"
+      options:
+        - label: "Roads or rivers"
+          value: 0
+        - label: "Fields or streams"
+          value: 1
+        - label: "Forests or hills"
+          value: 2
+        - label: "Mountains or broken terrain"
+          value: 3
+  factorNote: "For wayfinding, use Arcanist in place of Pathfinder or Sailor (navigational tests only). Compass uses factors below."
+  swapSkill: ""
+  swapConflictTypes: []
+  versusDefense: ""
+  mightPenalty: false
+  materials: ""
+  focus: "A sunstone [pack 1]"
+  scribeObstacle: 2
+  learnObstacle: 2
+  conflictBonuses:
+    attack:
+      type: dice
+      value: 0
+    defend:
+      type: dice
+      value: 0
+    feint:
+      type: dice
+      value: 0
+    maneuver:
+      type: dice
+      value: 0
+  conflictQualities: []
+  specialRules: ""
+  library: false
+  spellbook: false
+  memorized: false
+  cast: false
+  scroll: false
+_key: '!items!a1b2c3d4e5f6000c'

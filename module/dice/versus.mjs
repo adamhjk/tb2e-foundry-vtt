@@ -228,6 +228,17 @@ async function _executeVersusResolution(initiatorMessage, opponentMessage) {
     wiseAiders: opponentMessage.flags.tb2e.wiseAiders || [],
     pass: !initiatorWins, checkWiseAdvancement: _checkWiseAdvancement
   });
+
+  // Process spell casting state changes (memory/scroll consumed on success)
+  const { processSpellCast } = await import("./spell-casting.mjs");
+  const iTestContext = initiatorMessage.flags.tb2e.testContext;
+  const oTestContext = opponentMessage.flags.tb2e.testContext;
+  if ( initiatorActor && iTestContext?.spellId ) {
+    await processSpellCast(initiatorActor, iTestContext, initiatorWins);
+  }
+  if ( opponentActor && oTestContext?.spellId ) {
+    await processSpellCast(opponentActor, oTestContext, !initiatorWins);
+  }
 }
 
 /* -------------------------------------------- */
@@ -562,5 +573,20 @@ async function _resolveFromTied(tiedMessage, vs, winnerId, loserId, traitName, t
       wiseAiders: opponentMsg.flags.tb2e.wiseAiders || [],
       pass: !initiatorWins, checkWiseAdvancement: _checkWiseAdvancement
     });
+  }
+
+  // Process spell casting state changes (memory/scroll consumed on success)
+  const { processSpellCast } = await import("./spell-casting.mjs");
+  if ( initiatorMsg ) {
+    const iTestContext = initiatorMsg.flags.tb2e.testContext;
+    if ( initiatorActor && iTestContext?.spellId ) {
+      await processSpellCast(initiatorActor, iTestContext, initiatorWins);
+    }
+  }
+  if ( opponentMsg ) {
+    const oTestContext = opponentMsg.flags.tb2e.testContext;
+    if ( opponentActor && oTestContext?.spellId ) {
+      await processSpellCast(opponentActor, oTestContext, !initiatorWins);
+    }
   }
 }

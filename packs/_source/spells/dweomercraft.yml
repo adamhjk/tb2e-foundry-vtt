@@ -1,0 +1,77 @@
+_id: a1b2c3d4e5f60006
+name: Dweomercraft
+type: spell
+img: icons/magic/light/orb-lightning-blue.webp
+system:
+  description: "<p>Conjures tools or materials from raw aether. Can create mundane tools for a limited duration or conjure supplies for various skills.</p>"
+  circle: 1
+  castingType: factors
+  fixedObstacle: 0
+  obstacleNote: ""
+  castingTime: oneTurn
+  duration: "Variable"
+  factors:
+    - name: "Creating Tools"
+      options:
+        - label: "Needle/lever/oar"
+          value: 1
+        - label: "Hook/spade/tongs"
+          value: 2
+        - label: "Calipers/pulley/loom"
+          value: 3
+        - label: "Alchemical/ritualistic/sorcerous"
+          value: 4
+    - name: "Tool Duration"
+      options:
+        - label: "Phase"
+          value: 0
+        - label: "Adventure"
+          value: 1
+        - label: "Permanent"
+          value: 2
+    - name: "Conjuring Supplies"
+      options:
+        - label: "Craft skill"
+          value: 1
+        - label: "Scholarly"
+          value: 2
+        - label: "Spell materials"
+          value: 3
+    - name: "Supply Amount"
+      options:
+        - label: "One use"
+          value: 0
+        - label: "Two uses"
+          value: 2
+        - label: "Three uses"
+          value: 4
+  factorNote: "Dweomercraft has two separate factor sets: Creating Tools and Conjuring Materials"
+  swapSkill: ""
+  swapConflictTypes: []
+  versusDefense: ""
+  mightPenalty: false
+  materials: ""
+  focus: "Dogwood stick shuttle [carried 1 or pack 1]"
+  scribeObstacle: 3
+  learnObstacle: 3
+  conflictBonuses:
+    attack:
+      type: dice
+      value: 0
+    defend:
+      type: dice
+      value: 0
+    feint:
+      type: dice
+      value: 0
+    maneuver:
+      type: dice
+      value: 0
+  conflictQualities: []
+  specialRules: ""
+  library: false
+  spellbook: false
+  memorized: false
+  cast: false
+  scroll: false
+_key: '!items!a1b2c3d4e5f60006'

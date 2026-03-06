@@ -16,6 +16,8 @@
 
 .tb2e.sheet,
 .tb2e.gear-sheet,
+.tb2e.spell-sheet,
+.tb2e.invocation-sheet,
 .tb2e-chat-card,
 .tb2e-conflict-header,
 .tb2e-conflict-body,
@@ -32,14 +34,14 @@
 body.theme-light :is(
   .tb2e, .tb2e-chat-card, .tb2e-conflict-header, .tb2e-conflict-body,
   .tb2e-conflict-footer, .conflict-window-content,
-  .character-conflict-panel, .tb2e.gear-sheet) {
+  .character-conflict-panel, .tb2e.gear-sheet, .tb2e.spell-sheet, .tb2e.invocation-sheet) {
   .mixin-theme-light();
 }
 
 body.theme-dark :is(
   .tb2e, .tb2e-chat-card, .tb2e-conflict-header, .tb2e-conflict-body,
   .tb2e-conflict-footer, .conflict-window-content,
-  .character-conflict-panel, .tb2e.gear-sheet) {
+  .character-conflict-panel, .tb2e.gear-sheet, .tb2e.spell-sheet, .tb2e.invocation-sheet) {
   .mixin-theme-dark();
 }
 
@@ -51,7 +53,7 @@ body.theme-dark :is(
 .themed.theme-light :is(
   .tb2e-chat-card, .tb2e-conflict-header, .tb2e-conflict-body,
   .tb2e-conflict-footer, .conflict-window-content,
-  .character-conflict-panel, .tb2e.gear-sheet) {
+  .character-conflict-panel, .tb2e.gear-sheet, .tb2e.spell-sheet, .tb2e.invocation-sheet) {
   .mixin-theme-light();
 }
 
@@ -59,7 +61,7 @@ body.theme-dark :is(
 .themed.theme-dark :is(
   .tb2e-chat-card, .tb2e-conflict-header, .tb2e-conflict-body,
   .tb2e-conflict-footer, .conflict-window-content,
-  .character-conflict-panel, .tb2e.gear-sheet) {
+  .character-conflict-panel, .tb2e.gear-sheet, .tb2e.spell-sheet, .tb2e.invocation-sheet) {
   .mixin-theme-dark();
 }
 
@@ -79,6 +81,8 @@ body.theme-dark :is(
 @import "sheets/biography.less";
 @import "sheets/rollable.less";
 @import "sheets/gear-sheet.less";
+@import "sheets/spell-sheet.less";
+@import "sheets/invocation-sheet.less";
 
 // Dice dialogs
 @import "dice/roll-dialog.less";
@@ -91,6 +95,7 @@ body.theme-dark :is(
 @import "chat/versus-card.less";
 @import "chat/nature-crisis.less";
 @import "chat/wise-advancement.less";
+@import "chat/burden-card.less";
 
 // Conflict system
 @import "conflict/tracker.less";

@@ -1,0 +1,21 @@
+_id: c1e94d8b53f206a7
+name: Tinderbox
+type: gear
+img: icons/svg/fire.svg
+system:
+  description: "<p>Flint, steel, and dry tinder for starting fires.</p>"
+  slot: ""
+  slotIndex: 0
+  slotOptions:
+    pack: 1
+  cost: 1
+  damaged: false
+  dropped: false
+  quantity: 1
+  quantityMax: 1
+  skillBonuses:
+    - skill: survivalist
+      value: 1
+      condition: "Starting fires in bad conditions"
+  specialRules: ""
+_key: '!items!c1e94d8b53f206a7'

@@ -1,0 +1,61 @@
+_id: a1b2c3d4e5f6000d
+name: Wisdom of the Sages
+type: spell
+img: icons/magic/light/orb-lightning-blue.webp
+system:
+  description: "<p>Intoning their true names, the magician summons long-dead sages from beyond the Shroud of Worlds to whisper the translation of spoken or written words.</p><p>Possessed by ghosts, the caster may read, speak or comprehend a foreign or alien tongue. No Scholar test required.</p>"
+  circle: 1
+  castingType: factors
+  fixedObstacle: 0
+  obstacleNote: ""
+  castingTime: oneTurn
+  duration: "Variable"
+  factors:
+    - name: "Language"
+      options:
+        - label: "Similar to known language"
+          value: 1
+        - label: "Unknown language"
+          value: 2
+        - label: "Archaic or dead language"
+          value: 3
+        - label: "Arcane or divine language"
+          value: 4
+    - name: "Duration"
+      options:
+        - label: "One turn"
+          value: 0
+        - label: "Phase"
+          value: 1
+        - label: "Session"
+          value: 2
+  factorNote: ""
+  swapSkill: ""
+  swapConflictTypes: []
+  versusDefense: ""
+  mightPenalty: false
+  materials: "A scrip inscribed with the true name of a sage"
+  focus: ""
+  scribeObstacle: 2
+  learnObstacle: 2
+  conflictBonuses:
+    attack:
+      type: dice
+      value: 0
+    defend:
+      type: dice
+      value: 0
+    feint:
+      type: dice
+      value: 0
+    maneuver:
+      type: dice
+      value: 0
+  conflictQualities: []
+  specialRules: ""
+  library: false
+  spellbook: false
+  memorized: false
+  cast: false
+  scroll: false
+_key: '!items!a1b2c3d4e5f6000d'

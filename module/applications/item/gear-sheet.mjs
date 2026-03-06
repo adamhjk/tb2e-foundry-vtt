@@ -1,3 +1,5 @@
+import { SLOT_OPTION_KEYS, formatSlotOptions } from "../../data/item/_fields.mjs";
+
 const { HandlebarsApplicationMixin } = foundry.applications.api;
 const { ItemSheetV2 } = foundry.applications.sheets;
 
@@ -8,7 +10,9 @@ export default class GearSheet extends HandlebarsApplicationMixin(ItemSheetV2) {
     position: { width: 480, height: 400 },
     actions: {
       addSkillBonus: GearSheet.#onAddSkillBonus,
-      removeSkillBonus: GearSheet.#onRemoveSkillBonus
+      removeSkillBonus: GearSheet.#onRemoveSkillBonus,
+      addLinkedInvocation: GearSheet.#onAddLinkedInvocation,
+      removeLinkedInvocation: GearSheet.#onRemoveLinkedInvocation
     },
     form: { submitOnChange: true },
     window: { resizable: true }
@@ -17,7 +21,7 @@ export default class GearSheet extends HandlebarsApplicationMixin(ItemSheetV2) {
   static PARTS = {
     body: {
       template: "systems/tb2e/templates/items/gear-sheet.hbs",
-      scrollable: [""]
+      scrollable: [".gear-sheet-form"]
     }
   };
 
@@ -38,6 +42,21 @@ export default class GearSheet extends HandlebarsApplicationMixin(ItemSheetV2) {
     context.isContainer = item.type === "container";
     context.isGear = item.type === "gear";
     context.isSupply = item.type === "supply";
+    context.isRelic = item.type === "relic";
+
+    // Slot options editor for all item types.
+    const slotLabels = {
+      head: "TB2E.SlotOption.Head", neck: "TB2E.SlotOption.Neck", wornHand: "TB2E.SlotOption.WornHand",
+      carried: "TB2E.SlotOption.Carried", torso: "TB2E.SlotOption.Torso", belt: "TB2E.SlotOption.Belt",
+      feet: "TB2E.SlotOption.Feet", pack: "TB2E.SlotOption.Pack", pocket: "TB2E.SlotOption.Pocket"
+    };
+    context.slotOptionFields = SLOT_OPTION_KEYS.map(key => ({
+      key,
+      label: game.i18n.localize(slotLabels[key]),
+      value: item.system.slotOptions[key] ?? 1,
+      enabled: item.system.slotOptions[key] != null
+    }));
+    context.slotOptionsNotation = formatSlotOptions(item.system.slotOptions);
 
     // Config enums for selects.
     if ( context.isArmor ) {
@@ -45,6 +64,10 @@ export default class GearSheet extends HandlebarsApplicationMixin(ItemSheetV2) {
     }
     if ( context.isContainer ) {
       context.containerTypeOptions = this.#buildOptions(CONFIG.TB2E.containerTypes, item.system.containerType);
+      context.isLiquidContainer = !!CONFIG.TB2E.containerTypes[item.system.containerType]?.liquid;
+      if ( context.isLiquidContainer ) {
+        context.liquidTypeOptions = this.#buildOptions(CONFIG.TB2E.liquidTypes, item.system.liquidType);
+      }
     }
     if ( context.isSupply ) {
       context.supplyTypeOptions = this.#buildOptions(CONFIG.TB2E.supplyTypes, item.system.supplyType);
@@ -53,17 +76,35 @@ export default class GearSheet extends HandlebarsApplicationMixin(ItemSheetV2) {
       context.wieldOptions = this.#buildOptions(CONFIG.TB2E.wieldTypes, String(item.system.wield));
     }
 
-    // Skill options for bonuses.
-    if ( context.isGear || context.isSupply ) {
-      context.skillOptions = Object.entries(CONFIG.TB2E.skills).map(([key, cfg]) => ({
-        key,
-        label: game.i18n.localize(cfg.label)
+    // Relic fields
+    if ( context.isRelic ) {
+      context.relicTierOptions = this.#buildOptions(CONFIG.TB2E.relicTiers, item.system.relicTier);
+      context.circleOptions = [1, 2, 3, 4].map(n => ({
+        key: String(n),
+        label: game.i18n.localize(CONFIG.TB2E.invocationCircles[n]?.label),
+        selected: item.system.linkedCircle === n
       }));
+      context.linkedInvocations = (item.system.linkedInvocations || []).map((name, i) => ({
+        name, index: i
+      }));
+      context.isGreatRelic = item.system.relicTier === "great";
+    }
+
+    // Skill/ability options for bonuses (gear, supply, and weapon items).
+    if ( context.isGear || context.isSupply || context.isWeapon ) {
+      const abilityEntries = Object.entries(CONFIG.TB2E.abilities)
+        .filter(([, cfg]) => cfg.group === "raw")
+        .map(([key, cfg]) => ({ key, label: game.i18n.localize(cfg.label) }));
+      const skillEntries = Object.entries(CONFIG.TB2E.skills)
+        .map(([key, cfg]) => ({ key, label: game.i18n.localize(cfg.label) }));
+      context.skillOptions = [...abilityEntries, ...skillEntries];
+
+      const allLabels = { ...CONFIG.TB2E.abilities, ...CONFIG.TB2E.skills };
       context.skillBonuses = (item.system.skillBonuses || []).map((b, i) => ({
         ...b,
         index: i,
-        skillLabel: CONFIG.TB2E.skills[b.skill]?.label
-          ? game.i18n.localize(CONFIG.TB2E.skills[b.skill].label) : b.skill
+        skillLabel: allLabels[b.skill]?.label
+          ? game.i18n.localize(allLabels[b.skill].label) : b.skill
       }));
     }
 
@@ -92,6 +133,24 @@ export default class GearSheet extends HandlebarsApplicationMixin(ItemSheetV2) {
   }
 
   /* -------------------------------------------- */
+  /*  Render                                      */
+  /* -------------------------------------------- */
+
+  _onRender(context, options) {
+    super._onRender(context, options);
+    // Wire up slot option checkboxes to toggle null/value on the number input.
+    for ( const cb of this.element.querySelectorAll(".slot-option-toggle") ) {
+      cb.addEventListener("change", (ev) => {
+        const key = ev.currentTarget.dataset.key;
+        const enabled = ev.currentTarget.checked;
+        this.document.update({
+          [`system.slotOptions.${key}`]: enabled ? 1 : null
+        });
+      });
+    }
+  }
+
+  /* -------------------------------------------- */
   /*  Actions                                     */
   /* -------------------------------------------- */
 
@@ -106,5 +165,18 @@ export default class GearSheet extends HandlebarsApplicationMixin(ItemSheetV2) {
     const current = foundry.utils.deepClone(this.document.system.skillBonuses || []);
     current.splice(index, 1);
     this.document.update({ "system.skillBonuses": current });
+  }
+
+  static #onAddLinkedInvocation(event, target) {
+    const current = foundry.utils.deepClone(this.document.system.linkedInvocations || []);
+    current.push("");
+    this.document.update({ "system.linkedInvocations": current });
+  }
+
+  static #onRemoveLinkedInvocation(event, target) {
+    const index = Number(target.dataset.index);
+    const current = foundry.utils.deepClone(this.document.system.linkedInvocations || []);
+    current.splice(index, 1);
+    this.document.update({ "system.linkedInvocations": current });
   }
 }

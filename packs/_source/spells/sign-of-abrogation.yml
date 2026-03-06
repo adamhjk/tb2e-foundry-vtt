@@ -1,0 +1,43 @@
+_id: a1b2c3d4e5f6300a
+name: Sign of Abrogation
+type: spell
+img: icons/magic/light/orb-lightning-blue.webp
+system:
+  description: "<p>Make the authoritative Sign of Abrogation to dispel offending magics.</p><p>This spell destroys or cancels a spell that has already been cast.</p>"
+  circle: 3
+  castingType: fixed
+  fixedObstacle: 0
+  obstacleNote: "1 + circle of the spell or invocation to be dispelled"
+  castingTime: oneTurn
+  duration: "Instantaneous"
+  factors: []
+  factorNote: ""
+  swapSkill: ""
+  swapConflictTypes: []
+  versusDefense: ""
+  mightPenalty: false
+  materials: "A handful of coarse salt"
+  focus: ""
+  scribeObstacle: 3
+  learnObstacle: 3
+  conflictBonuses:
+    attack:
+      type: dice
+      value: 0
+    defend:
+      type: dice
+      value: 0
+    feint:
+      type: dice
+      value: 0
+    maneuver:
+      type: dice
+      value: 0
+  conflictQualities: []
+  specialRules: ""
+  library: false
+  spellbook: false
+  memorized: false
+  cast: false
+  scroll: false
+_key: '!items!a1b2c3d4e5f6300a'

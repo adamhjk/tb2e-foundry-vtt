@@ -1,0 +1,18 @@
+_id: e3a16fbd75c428d9
+name: Wolfsbane
+type: gear
+img: icons/svg/herb.svg
+system:
+  description: "<p>A bundle of dried wolfsbane, a potent herb reputed to ward off lycanthropes.</p>"
+  slot: ""
+  slotIndex: 0
+  slotOptions:
+    pack: 1
+  cost: 2
+  damaged: false
+  dropped: false
+  quantity: 1
+  quantityMax: 1
+  skillBonuses: []
+  specialRules: "<p>+1D to drive off or defend against lycanthropes.</p>"
+_key: '!items!e3a16fbd75c428d9'

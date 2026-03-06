@@ -484,6 +484,18 @@ async function _handleFinalize(message) {
     checkWiseAdvancement: _checkWiseAdvancement
   });
 
+  // Process spell casting state changes (memory/scroll consumed on success)
+  if ( actor && tbFlags.testContext?.spellId ) {
+    const { processSpellCast } = await import("./spell-casting.mjs");
+    await processSpellCast(actor, tbFlags.testContext, rollData.pass);
+  }
+
+  // Process invocation state changes (burden added on completion)
+  if ( actor && tbFlags.testContext?.invocationId ) {
+    const { processInvocationPerformed } = await import("./invocation-casting.mjs");
+    await processInvocationPerformed(actor, tbFlags.testContext, rollData.pass);
+  }
+
   // Re-render to remove action buttons
   await _reRenderChatCard(message);
 }

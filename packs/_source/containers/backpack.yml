@@ -6,9 +6,9 @@ system:
   description: "<p>A sturdy backpack. Provides 6 inventory slots but adds +1 factor to Fighter and Dungeoneer tests.</p>"
   slot: ""
   slotIndex: 0
-  slotsRequired: 2
+  slotOptions:
+    torso: 2
   cost: 2
-  inventoryNotation: "Worn/torso 2"
   damaged: false
   dropped: false
   quantity: 1

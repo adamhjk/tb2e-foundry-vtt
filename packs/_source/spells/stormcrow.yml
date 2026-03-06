@@ -1,0 +1,61 @@
+_id: a1b2c3d4e5f6300d
+name: Stormcrow
+type: spell
+img: icons/magic/light/orb-lightning-blue.webp
+system:
+  description: "<p>The magician plucks at a thread in the Skein of Destiny, delicately sending a whisper of power along its length to set it thrumming. So long as the power lasts, even those who do not wish to hear what the magician says will listen and consider.</p><p>Increase your Precedence by 1 for one conflict. Cast this spell when equipping weapons for a conflict.</p>"
+  circle: 3
+  castingType: factors
+  fixedObstacle: 0
+  obstacleNote: ""
+  castingTime: free
+  duration: "One conflict"
+  factors:
+    - name: "Type of Conflict"
+      options:
+        - label: "Haggle"
+          value: 1
+        - label: "Convince"
+          value: 2
+        - label: "Trick or Riddle"
+          value: 3
+        - label: "Convince Crowd"
+          value: 4
+    - name: "Breadth"
+      options:
+        - label: "Self"
+          value: 1
+        - label: "Other"
+          value: 2
+        - label: "Group"
+          value: 3
+  factorNote: ""
+  swapSkill: ""
+  swapConflictTypes: []
+  versusDefense: ""
+  mightPenalty: false
+  materials: "The feather of a white crow"
+  focus: ""
+  scribeObstacle: 3
+  learnObstacle: 4
+  conflictBonuses:
+    attack:
+      type: dice
+      value: 0
+    defend:
+      type: dice
+      value: 0
+    feint:
+      type: dice
+      value: 0
+    maneuver:
+      type: dice
+      value: 0
+  conflictQualities: []
+  specialRules: ""
+  library: false
+  spellbook: false
+  memorized: false
+  cast: false
+  scroll: false
+_key: '!items!a1b2c3d4e5f6300d'

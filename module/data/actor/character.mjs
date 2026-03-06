@@ -125,30 +125,16 @@ export default class CharacterData extends foundry.abstract.TypeDataModel {
 
       // ---- Inventory config ----
       inventory: new fields.SchemaField({
-        torsoDamage: new fields.NumberField({ initial: 0, integer: true, min: 0 }),
-        torsoWeariness: new fields.NumberField({ initial: 0, integer: true, min: 0 })
+        headDamage: new fields.BooleanField({ initial: false }),
+        torsoDamage: new fields.BooleanField({ initial: false }),
+        torsoWeariness: new fields.BooleanField({ initial: false })
       }),
 
       // ---- Magic ----
-      spells: new fields.ArrayField(new fields.SchemaField({
-        name: new fields.StringField(),
-        obstacle: new fields.StringField(),
-        library: new fields.BooleanField({ initial: false }),
-        spellbook: new fields.BooleanField({ initial: false }),
-        memorized: new fields.BooleanField({ initial: false }),
-        cast: new fields.BooleanField({ initial: false }),
-        scroll: new fields.BooleanField({ initial: false }),
-        supplies: new fields.StringField()
-      })),
-      relics: new fields.ArrayField(new fields.SchemaField({
-        name: new fields.StringField(),
-        inventory: new fields.StringField(),
-        invocation: new fields.StringField(),
-        circle: new fields.StringField()
-      })),
+      memoryPalaceSlots: new fields.NumberField({ initial: 4, integer: true, min: 0 }),
       urdr: new fields.SchemaField({
-        burden: new fields.NumberField({ initial: 0, integer: true, min: 0 }),
-        memoryPalace: new fields.HTMLField()
+        capacity: new fields.NumberField({ initial: 0, integer: true, min: 0 }),
+        burden: new fields.NumberField({ initial: 0, integer: true, min: 0 })
       }),
 
       // ---- Conflict ----

@@ -1,0 +1,63 @@
+_id: a1b2c3d4e5f60010
+name: Wyrd Lights
+type: spell
+img: icons/magic/light/orb-lightning-blue.webp
+system:
+  description: "<p>With whispered words, the magician calls forth dancing flames from the aetherial plane.</p><p>The magician summons a number of lights that dance and whirl about the head. Each wisp provides light equivalent to a candle and is unaffected by wind and weather. They can even give light when submerged in water.</p><p>With a thought, the caster may send the lights down corridors or around corners, giving the appearance of a party of adventurers carrying candles. The caster may also command each light to hover in a different place or follow a different person. The magician may choose to end the spell at any time.</p>"
+  circle: 1
+  castingType: factors
+  fixedObstacle: 0
+  obstacleNote: ""
+  castingTime: oneTurn
+  duration: "Variable"
+  factors:
+    - name: "Number"
+      options:
+        - label: "One light"
+          value: 1
+        - label: "Two lights"
+          value: 2
+        - label: "Three lights"
+          value: 3
+        - label: "Four lights"
+          value: 4
+    - name: "Duration"
+      options:
+        - label: "Two turns"
+          value: 0
+        - label: "Three turns"
+          value: 1
+        - label: "Four turns"
+          value: 2
+        - label: "Phase"
+          value: 3
+  factorNote: ""
+  swapSkill: ""
+  swapConflictTypes: []
+  versusDefense: ""
+  mightPenalty: false
+  materials: "A pinch of brimstone blown from the fingertips [pocket]"
+  focus: ""
+  scribeObstacle: 2
+  learnObstacle: 2
+  conflictBonuses:
+    attack:
+      type: dice
+      value: 0
+    defend:
+      type: dice
+      value: 0
+    feint:
+      type: dice
+      value: 0
+    maneuver:
+      type: dice
+      value: 0
+  conflictQualities: []
+  specialRules: ""
+  library: false
+  spellbook: false
+  memorized: false
+  cast: false
+  scroll: false
+_key: '!items!a1b2c3d4e5f60010'

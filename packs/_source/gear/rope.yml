@@ -6,9 +6,10 @@ system:
   description: "<p>A length of sturdy rope, useful for climbing, binding, and hauling.</p>"
   slot: ""
   slotIndex: 0
-  slotsRequired: 1
+  slotOptions:
+    torso: 1
+    pack: 2
   cost: 2
-  inventoryNotation: "Torso 1 or pack 2"
   damaged: false
   dropped: false
   quantity: 1

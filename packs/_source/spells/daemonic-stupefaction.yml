@@ -1,0 +1,69 @@
+_id: a1b2c3d4e5f60005
+name: "D\xE6monic Stupefaction"
+type: spell
+img: icons/magic/light/orb-lightning-blue.webp
+system:
+  description: "<p>Renders written language incomprehensible to readers, obscuring texts and inscriptions.</p>"
+  circle: 1
+  castingType: factors
+  fixedObstacle: 0
+  obstacleNote: ""
+  castingTime: free
+  duration: "Variable"
+  factors:
+    - name: "Language Obscured"
+      options:
+        - label: "Arcane or ritual"
+          value: 1
+        - label: "Dead or archaic"
+          value: 2
+        - label: "Contemporary"
+          value: 3
+    - name: "Breadth"
+      options:
+        - label: "One person"
+          value: 0
+        - label: "Small group"
+          value: 1
+        - label: "Two groups"
+          value: 2
+        - label: "Large crowd"
+          value: 3
+    - name: "Duration"
+      options:
+        - label: "One turn"
+          value: 0
+        - label: "Conflict"
+          value: 1
+        - label: "Phase"
+          value: 2
+  factorNote: ""
+  swapSkill: ""
+  swapConflictTypes: []
+  versusDefense: ""
+  mightPenalty: false
+  materials: "A collection of teeth or a draught of alcoholic spirits"
+  focus: ""
+  scribeObstacle: 2
+  learnObstacle: 3
+  conflictBonuses:
+    attack:
+      type: dice
+      value: 0
+    defend:
+      type: dice
+      value: 0
+    feint:
+      type: dice
+      value: 0
+    maneuver:
+      type: dice
+      value: 0
+  conflictQualities: []
+  specialRules: ""
+  library: false
+  spellbook: false
+  memorized: false
+  cast: false
+  scroll: false
+_key: '!items!a1b2c3d4e5f60005'

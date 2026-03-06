@@ -6,6 +6,9 @@
   flex-direction: column;
   gap: 0.75rem;
   padding: 0.5rem;
+  overflow-y: auto;
+  flex: 1;
+  min-height: 0;
 }
 
 .tb2e.gear-sheet .gear-header {
@@ -219,6 +222,42 @@
   font-size: 0.8rem;
   color: var(--tb-text-dim);
   margin: 0 0 0.3rem;
+}
+
+/* Slot Options Editor */
+
+.tb2e.gear-sheet .slot-options-notation {
+  font-size: 0.8rem;
+  font-style: italic;
+  color: var(--tb-text-dim);
+  margin: 0 0 0.5rem;
+}
+
+.tb2e.gear-sheet .slot-options-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 0.3rem 0.75rem;
+}
+
+.tb2e.gear-sheet .slot-option-row {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.tb2e.gear-sheet .slot-option-row .checkbox-field {
+  flex: 1;
+  font-size: 0.8rem;
+}
+
+.tb2e.gear-sheet .slot-option-cost {
+  width: 3rem;
+  text-align: center;
+  font-size: 0.85rem;
+}
+
+.tb2e.gear-sheet .slot-option-cost:disabled {
+  opacity: 0.35;
 }
 
 /* Editor */

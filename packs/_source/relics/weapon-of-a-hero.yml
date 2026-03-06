@@ -1,0 +1,22 @@
+_id: e06a2b3c4d5e6f7a
+name: Weapon of a Hero or Immortal
+type: relic
+img: icons/sundries/misc/gem-faceted-round-white.webp
+system:
+  description: "<p>A weapon once wielded by a hero or Immortal, channeling the power of the Lords of Battle.</p>"
+  slot: ""
+  slotIndex: 0
+  slotOptions:
+    carried: 1
+  cost: 0
+  damaged: false
+  dropped: false
+  quantity: 1
+  quantityMax: 1
+  relicTier: minor
+  linkedInvocations:
+    - Evocation of the Lords of Battle
+  linkedCircle: null
+  immortal: Lords of Battle
+  lore: ""
+_key: '!items!e06a2b3c4d5e6f7a'

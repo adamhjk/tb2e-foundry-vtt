@@ -6,9 +6,9 @@ system:
   description: "<p>Chain mail armor worn on the torso. Automatically absorbs 1 hit. Roll d6 after absorbing: 1-3 damaged, 4-6 intact.</p>"
   slot: ""
   slotIndex: 0
-  slotsRequired: 1
+  slotOptions:
+    torso: 1
   cost: 3
-  inventoryNotation: "Worn/torso 1"
   damaged: false
   dropped: false
   quantity: 1

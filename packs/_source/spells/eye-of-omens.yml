@@ -1,0 +1,73 @@
+_id: a1b2c3d4e5f62002
+name: Eye of Omens
+type: spell
+img: icons/magic/light/orb-lightning-blue.webp
+system:
+  description: "<p>Grants the caster supernatural insight to sense the true nature of creatures, read thoughts, or perceive events across time. The caster must declare the intended effect when casting.</p>"
+  circle: 2
+  castingType: factors
+  fixedObstacle: 0
+  obstacleNote: ""
+  castingTime: oneTurn
+  duration: "One turn"
+  factors:
+    - name: "Sense"
+      options:
+        - label: "Dead or of another plane"
+          value: 1
+        - label: "Possessed"
+          value: 2
+        - label: "Recent event"
+          value: 3
+        - label: "Distant past"
+          value: 4
+        - label: "The future"
+          value: 5
+    - name: "True Nature"
+      options:
+        - label: "Level 3 traits"
+          value: 1
+        - label: "Nature descriptors"
+          value: 2
+        - label: "Level 2 traits"
+          value: 3
+        - label: "Level 1 traits"
+          value: 4
+    - name: "Read Thoughts"
+      options:
+        - label: "Intent"
+          value: 1
+        - label: "Instinct"
+          value: 2
+        - label: "Belief or creed"
+          value: 3
+  factorNote: "Three separate factor sets: Sense True Nature, Read Thoughts. Declare intended effect when casting."
+  swapSkill: ""
+  swapConflictTypes: []
+  versusDefense: ""
+  mightPenalty: false
+  materials: "The preserved eye of a raven"
+  focus: ""
+  scribeObstacle: 3
+  learnObstacle: 4
+  conflictBonuses:
+    attack:
+      type: dice
+      value: 0
+    defend:
+      type: dice
+      value: 0
+    feint:
+      type: dice
+      value: 0
+    maneuver:
+      type: dice
+      value: 0
+  conflictQualities: []
+  specialRules: ""
+  library: false
+  spellbook: false
+  memorized: false
+  cast: false
+  scroll: false
+_key: '!items!a1b2c3d4e5f62002'

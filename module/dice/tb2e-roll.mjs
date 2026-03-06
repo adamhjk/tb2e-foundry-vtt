@@ -12,7 +12,7 @@ import { buildChatTemplateData, mapHelpersForFlags, mapWiseAidersForFlags } from
  * Create a standardized roll modifier.
  * @param {object} data
  * @param {string} data.label - Human-readable label.
- * @param {"dice"|"success"} [data.type="dice"] - Whether it modifies dice or successes.
+ * @param {"dice"|"success"|"obstacle"} [data.type="dice"] - Whether it modifies dice, successes, or obstacle.
  * @param {number} data.value - Signed value (+1, -1, etc.).
  * @param {string} [data.source="manual"] - Origin: condition, help, trait, persona, nature, manual.
  * @param {string} [data.icon="fa-solid fa-circle"] - FontAwesome icon class.
@@ -25,7 +25,7 @@ export function createModifier({
   icon = "fa-solid fa-circle", color = "--tb-text-dim", timing = "pre"
 }) {
   const sign = value > 0 ? "+" : "\u2212";
-  const unit = type === "dice" ? "D" : "s";
+  const unit = type === "dice" ? "D" : type === "obstacle" ? "Ob" : "s";
   return { label, type, value, source, icon, color, timing, display: `${sign}${Math.abs(value)}${unit}` };
 }
 
@@ -245,31 +245,49 @@ async function _postSkillOpenedCard(actor, key) {
 /* -------------------------------------------- */
 
 /**
- * Gather gear and supply items that can provide skill bonuses for a test.
+ * Gather gear, weapon, and supply items that can provide bonuses for a test.
  * @param {Actor} actor
- * @param {string} skillKey - The skill being tested.
+ * @param {string} testKey - The skill or ability being tested.
  * @returns {{ gearItems: object[], supplyItems: object[] }}
  */
-export function _gatherGearModifiers(actor, skillKey) {
-  if ( !skillKey || actor.type !== "character" ) return { gearItems: [], supplyItems: [] };
+export function _gatherGearModifiers(actor, testKey) {
+  if ( !testKey || actor.type !== "character" ) return { gearItems: [], supplyItems: [] };
 
   const gearItems = [];
+
+  // Scan gear items for matching skillBonuses.
   for ( const item of (actor.itemTypes.gear || []) ) {
-    if ( item.system.dropped || !item.system.slot ) continue;
+    if ( item.system.dropped || item.system.damaged || !item.system.slot ) continue;
     for ( const bonus of (item.system.skillBonuses || []) ) {
-      if ( bonus.skill === skillKey && bonus.value > 0 ) {
+      if ( bonus.skill === testKey && bonus.value > 0 ) {
         gearItems.push({ itemId: item.id, name: item.name, value: bonus.value, condition: bonus.condition });
         break;
       }
     }
   }
 
+  // Scan weapons: auto +1D Fighter for any weapon, plus weapon-specific skillBonuses.
+  for ( const item of (actor.itemTypes.weapon || []) ) {
+    if ( item.system.dropped || item.system.damaged || !item.system.slot ) continue;
+    if ( testKey === "fighter" ) {
+      gearItems.push({ itemId: item.id, name: item.name, value: 1, condition: "" });
+      continue;
+    }
+    for ( const bonus of (item.system.skillBonuses || []) ) {
+      if ( bonus.skill === testKey && bonus.value > 0 ) {
+        gearItems.push({ itemId: item.id, name: item.name, value: bonus.value, condition: bonus.condition });
+        break;
+      }
+    }
+  }
+
+  // Scan supply items for matching skillBonuses.
   const supplyItems = [];
   for ( const item of (actor.itemTypes.supply || []) ) {
-    if ( item.system.dropped || !item.system.slot ) continue;
+    if ( item.system.dropped || item.system.damaged || !item.system.slot ) continue;
     if ( (item.system.quantity ?? 0) <= 0 ) continue;
     for ( const bonus of (item.system.skillBonuses || []) ) {
-      if ( bonus.skill === skillKey && bonus.value > 0 ) {
+      if ( bonus.skill === testKey && bonus.value > 0 ) {
         supplyItems.push({
           itemId: item.id, name: item.name, value: bonus.value,
           condition: bonus.condition, quantity: item.system.quantity
@@ -385,10 +403,10 @@ async function _showRollDialog({
   const wiseAiders = !isAfraid && !disposition ? availableWiseAiders : [];
   const hasWiseAiders = wiseAiders.length > 0;
 
-  // Gear & supply modifiers for skill tests
-  const skillKey = type === "skill" ? key : null;
-  const { gearItems, supplyItems } = isCharacter && skillKey && !disposition
-    ? _gatherGearModifiers(actor, skillKey) : { gearItems: [], supplyItems: [] };
+  // Gear & supply modifiers for skill and ability tests
+  const testKey = (type === "skill" || type === "ability") ? key : null;
+  const { gearItems, supplyItems } = isCharacter && testKey && !disposition
+    ? _gatherGearModifiers(actor, testKey) : { gearItems: [], supplyItems: [] };
   const hasGearSupplies = gearItems.length > 0 || supplyItems.length > 0;
 
   const content = await foundry.applications.handlebars.renderTemplate(
@@ -438,6 +456,11 @@ async function _showRollDialog({
       const form = dialog.element.querySelector("form");
       const summary = form.querySelector(".roll-dialog-summary-text");
       const modContainer = form.querySelector(".roll-dialog-modifiers");
+
+      // Pre-set obstacle from testContext (e.g., spell casting)
+      if ( testContext.obstacle != null && form.elements.obstacle ) {
+        form.elements.obstacle.value = testContext.obstacle;
+      }
 
       /* ------ Modifier List Rendering ------ */
       function renderModifierList() {
@@ -767,6 +790,7 @@ async function _showRollDialog({
             <select class="manual-type">
               <option value="dice">D</option>
               <option value="success">s</option>
+              <option value="obstacle">Ob</option>
             </select>
             <input type="number" class="manual-value" value="1" min="-10" max="10">
             <button type="button" class="manual-confirm"><i class="fa-solid fa-check"></i></button>
@@ -819,11 +843,24 @@ async function _showRollDialog({
         const challengeField = form.querySelector(".roll-dialog-challenge");
         const challengeSelect = form.elements.challengeMessageId;
 
+        // Pre-set versus mode from testContext (e.g., spell casting)
+        if ( testContext.isVersus ) {
+          modeInput.value = "versus";
+          modeLabel.textContent = game.i18n.localize("TB2E.Roll.Versus");
+          obstacleField.classList.add("hidden");
+          challengeField.classList.remove("hidden");
+          for ( const btn of form.querySelectorAll(".trait-btn-versus") ) {
+            btn.classList.remove("hidden");
+          }
+        }
+
         updateSummary = () => {
           const allMods = _collectAllModifiers();
           const diceBonus = allMods.filter(m => m.timing === "pre" && m.type === "dice").reduce((s, m) => s + m.value, 0);
           const successBonus = allMods.filter(m => m.timing === "post" && m.type === "success").reduce((s, m) => s + m.value, 0);
           const pool = Number(form.elements.poolSize.value) + diceBonus;
+
+          const obBonus = allMods.filter(m => m.type === "obstacle").reduce((s, m) => s + m.value, 0);
 
           let summaryText;
           if ( modeInput.value === "versus" ) {
@@ -832,7 +869,7 @@ async function _showRollDialog({
               ? `${pool}D vs ${sel.dataset.actorName ?? "?"}`
               : `${pool}D Versus`;
           } else {
-            const ob = form.elements.obstacle.value;
+            const ob = Number(form.elements.obstacle.value) + obBonus;
             summaryText = `${pool}D vs Ob ${ob}`;
           }
           if ( successBonus > 0 ) summaryText += ` (+${successBonus}s on pass)`;
@@ -964,10 +1001,15 @@ async function _showRollDialog({
           const activeSupplyBtn = form.querySelector(".supply-bonus-toggle.active");
           const supplyItemId = activeSupplyBtn ? activeSupplyBtn.dataset.itemId : null;
 
+          const obMods = allMods.filter(m => m.type === "obstacle");
+          const obBonus = obMods.reduce((s, m) => s + m.value, 0);
+          const baseObstacle = form.elements.obstacle.valueAsNumber;
+
           return {
             baseDice,
             poolSize: baseDice + totalDiceBonus,
-            obstacle: form.elements.obstacle.valueAsNumber,
+            obstacle: baseObstacle + obBonus,
+            baseObstacle,
             logAdvancement: form.elements.logAdvancement.checked,
             mode: form.elements.mode.value,
             challengeMessageId: form.elements.challengeMessageId.value,
@@ -993,7 +1035,8 @@ async function _showRollDialog({
 
   if ( !result || result === "cancel" ) return null;
 
-  // Patch in the dialog state that was stored on the element
+  // Attach testContext for downstream flag storage
+  result.testContext = testContext;
   return result;
 }
 
@@ -1089,15 +1132,18 @@ export async function rollTest({ actor, type, key, testContext = {} }) {
 
   // Gather modifiers
   const conditionModifiers = gatherConditionModifiers(actor, testContext);
-  const contextModifiers = (testContext.modifiers || []).map(m => createModifier(m));
+  const contextModifiers = [
+    ...(testContext.modifiers || []).map(m => createModifier(m)),
+    ...(testContext.contextModifiers || [])
+  ];
   const availableHelpers = getEligibleHelpers({ actor, type, key, testContext });
   const availableWiseAiders = getEligibleWiseAiders({ actor, testContext });
 
   // Backpack factor: +1 Ob for Fighter/Dungeoneer when carrying a backpack
   if ( type === "skill" && (key === "fighter" || key === "dungeoneer") && _checkBackpackEquipped(actor) ) {
     contextModifiers.push(createModifier({
-      label: "Backpack (+1 Ob)",
-      type: "dice", value: 0, source: "context",
+      label: game.i18n.localize("TB2E.Roll.BackpackFactor"),
+      type: "obstacle", value: 1, source: "context",
       icon: "fa-solid fa-bag-shopping", color: "--tb-amber", timing: "pre"
     }));
   }
@@ -1240,7 +1286,8 @@ function _buildRollFlags({ actor, type, key, label, baseDice, poolSize, successe
       diceResults: diceResults.map(d => ({ ...d })),
       modifiers: allModifiers.map(m => ({ ...m })),
       isBL: !!blInfo,
-      blAbilityKey: blInfo?.blAbilityKey ?? null
+      blAbilityKey: blInfo?.blAbilityKey ?? null,
+      baseObstacle: config.baseObstacle ?? null
     },
     trait: config.traitState?.itemId ? (() => {
       const item = actor.items.get(config.traitState.itemId);
@@ -1265,7 +1312,17 @@ function _buildRollFlags({ actor, type, key, label, baseDice, poolSize, successe
     postSuccessMods: postSuccessMods.map(m => ({ ...m })),
     luckUsed: false,
     deeperUsed: false,
-    ofCourseUsed: false
+    ofCourseUsed: false,
+    testContext: config.testContext ? {
+      spellId: config.testContext.spellId ?? null,
+      spellName: config.testContext.spellName ?? null,
+      castingSource: config.testContext.castingSource ?? null,
+      scrollItemId: config.testContext.scrollItemId ?? null,
+      invocationId: config.testContext.invocationId ?? null,
+      invocationName: config.testContext.invocationName ?? null,
+      hasRelic: config.testContext.hasRelic ?? null,
+      burdenAmount: config.testContext.burdenAmount ?? null
+    } : null
   };
 }
 

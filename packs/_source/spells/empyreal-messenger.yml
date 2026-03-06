@@ -1,0 +1,69 @@
+_id: a1b2c3d4e5f63006
+name: Empyreal Messenger
+type: spell
+img: icons/magic/light/orb-lightning-blue.webp
+system:
+  description: "<p>The magician summons a wizened, grizzled raven with glossy feathers and knowing eyes to bear a message to a distant place.</p><p>The raven will carry a written message in its claw, or will memorize and repeat a spoken message. Spoken messages can be no more than a sentence in length.</p><p>The raven delivers messages to nearby destinations in a timely manner according to the distance traveled.</p>"
+  circle: 3
+  castingType: factors
+  fixedObstacle: 0
+  obstacleNote: ""
+  castingTime: oneTurn
+  duration: "Variable"
+  factors:
+    - name: "Recipient"
+      options:
+        - label: "Parent or adventurer"
+          value: 1
+        - label: "Enemy or friend"
+          value: 2
+        - label: "Mentor"
+          value: 3
+        - label: "Acquaintance"
+          value: 4
+    - name: "Message"
+      options:
+        - label: "Written"
+          value: 0
+        - label: "Spoken"
+          value: 1
+    - name: "Distance"
+      options:
+        - label: "Nearby [next phase]"
+          value: 1
+        - label: "Settlement [next town phase]"
+          value: 2
+        - label: "Distant land [next respite]"
+          value: 3
+        - label: "Far off metropolis [next respite]"
+          value: 4
+  factorNote: ""
+  swapSkill: ""
+  swapConflictTypes: []
+  versusDefense: ""
+  mightPenalty: false
+  materials: "A mouse or gobbet of flesh"
+  focus: ""
+  scribeObstacle: 3
+  learnObstacle: 4
+  conflictBonuses:
+    attack:
+      type: dice
+      value: 0
+    defend:
+      type: dice
+      value: 0
+    feint:
+      type: dice
+      value: 0
+    maneuver:
+      type: dice
+      value: 0
+  conflictQualities: []
+  specialRules: ""
+  library: false
+  spellbook: false
+  memorized: false
+  cast: false
+  scroll: false
+_key: '!items!a1b2c3d4e5f63006'

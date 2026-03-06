@@ -1,0 +1,43 @@
+_id: a1b2c3d4e5f62008
+name: Somnific Trance
+type: spell
+img: icons/magic/light/orb-lightning-blue.webp
+system:
+  description: "<p>Sends the target into a deep magical sleep, contested against their Will or Nature. The target sleeps until roused or for one phase. Does not affect undead, spirits, automatons, or creatures of Might 6 or higher.</p>"
+  circle: 2
+  castingType: versus
+  fixedObstacle: 0
+  obstacleNote: ""
+  castingTime: free
+  duration: "Variable (until roused or one phase)"
+  factors: []
+  factorNote: ""
+  swapSkill: ""
+  swapConflictTypes: []
+  versusDefense: "willOrNature"
+  mightPenalty: true
+  materials: "Pollen of the papaver blossom [pack 1]"
+  focus: ""
+  scribeObstacle: 4
+  learnObstacle: 4
+  conflictBonuses:
+    attack:
+      type: dice
+      value: 0
+    defend:
+      type: dice
+      value: 0
+    feint:
+      type: dice
+      value: 0
+    maneuver:
+      type: dice
+      value: 0
+  conflictQualities: []
+  specialRules: ""
+  library: false
+  spellbook: false
+  memorized: false
+  cast: false
+  scroll: false
+_key: '!items!a1b2c3d4e5f62008'

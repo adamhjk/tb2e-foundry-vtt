@@ -6,9 +6,10 @@ system:
   description: "<p>A versatile polearm. Provides +1D to Maneuver in kill, capture, and drive off conflicts. +1D to Defend in narrow spaces. Bypasses leather armor.</p>"
   slot: ""
   slotIndex: 0
-  slotsRequired: 1
+  slotOptions:
+    carried: 1
+    pack: 2
   cost: 1
-  inventoryNotation: "Carried 1 or pack 2"
   damaged: false
   dropped: false
   quantity: 1
@@ -27,5 +28,6 @@ system:
     maneuver:
       type: dice
       value: 1
+  skillBonuses: []
   specialRules: "<p>+1D Defend in narrow spaces. Bypasses leather armor.</p>"
 _key: '!items!1a154536a3254361'

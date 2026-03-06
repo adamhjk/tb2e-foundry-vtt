@@ -1,0 +1,50 @@
+_id: a1b2c3d4e5f6000e
+name: "Wizard's \xC6gis"
+type: spell
+img: icons/magic/light/orb-lightning-blue.webp
+system:
+  description: "<p>The magician summons a luminescent shield of aether bearing their sigil.</p><p>Use the Arcanist skill to Defend in place of the required skill or ability during a kill, capture or drive off conflict. This includes rolling for or helping with the disposition roll.</p><p>No casting roll necessary before the conflict.</p>"
+  circle: 1
+  castingType: skillSwap
+  fixedObstacle: 0
+  obstacleNote: ""
+  castingTime: free
+  duration: "One conflict"
+  factors: []
+  factorNote: ""
+  swapSkill: "fighter"
+  swapConflictTypes:
+    - "kill"
+    - "capture"
+    - "driveOff"
+  versusDefense: ""
+  mightPenalty: false
+  materials: ""
+  focus: "A chrysoprase ring or pendant [worn/hand or neck]"
+  scribeObstacle: 1
+  learnObstacle: 2
+  conflictBonuses:
+    attack:
+      type: dice
+      value: 0
+    defend:
+      type: success
+      value: 2
+    feint:
+      type: dice
+      value: 0
+    maneuver:
+      type: dice
+      value: 0
+  conflictQualities:
+    - name: "Indestructible"
+      description: "+2s to Defend"
+    - name: "Arcane Surge"
+      description: "If your Defend action is successful, the opposing team suffers -1D to its next action."
+  specialRules: ""
+  library: false
+  spellbook: false
+  memorized: false
+  cast: false
+  scroll: false
+_key: '!items!a1b2c3d4e5f6000e'

@@ -19,6 +19,11 @@ export default class WeaponData extends foundry.abstract.TypeDataModel {
         feint: bonusField(),
         maneuver: bonusField()
       }),
+      skillBonuses: new fields.ArrayField(new fields.SchemaField({
+        skill: new fields.StringField(),
+        value: new fields.NumberField({ initial: 1, integer: true }),
+        condition: new fields.StringField()
+      })),
       specialRules: new fields.HTMLField()
     };
   }

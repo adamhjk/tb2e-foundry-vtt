@@ -1,0 +1,26 @@
+_id: f4b27ace86d539ea
+name: Cloak
+type: gear
+img: icons/svg/cloth.svg
+system:
+  description: "<p>A heavy traveling cloak, useful for staying warm and dry in harsh weather.</p>"
+  slot: ""
+  slotIndex: 0
+  slotOptions:
+    torso: 1
+    carried: 1
+    pack: 2
+  cost: 2
+  damaged: false
+  dropped: false
+  quantity: 1
+  quantityMax: 1
+  skillBonuses:
+    - skill: survivalist
+      value: 1
+      condition: "Staying warm or dry"
+    - skill: health
+      value: 1
+      condition: "Staying warm or dry"
+  specialRules: ""
+_key: '!items!f4b27ace86d539ea'

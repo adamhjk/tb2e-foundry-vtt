@@ -1,0 +1,43 @@
+_id: a1b2c3d4e5f6200c
+name: "Wizard's Bane"
+type: spell
+img: icons/magic/light/orb-lightning-blue.webp
+system:
+  description: "<p>Causes the target to permanently forget the past few moments, contested against their Will or Nature. If used against a magician who has recently memorized a spell, it triggers a temerarious discharge.</p>"
+  circle: 2
+  castingType: versus
+  fixedObstacle: 0
+  obstacleNote: ""
+  castingTime: free
+  duration: "Permanent"
+  factors: []
+  factorNote: ""
+  swapSkill: ""
+  swapConflictTypes: []
+  versusDefense: "willOrNature"
+  mightPenalty: true
+  materials: "A tuft of gray hair"
+  focus: ""
+  scribeObstacle: 3
+  learnObstacle: 4
+  conflictBonuses:
+    attack:
+      type: dice
+      value: 0
+    defend:
+      type: dice
+      value: 0
+    feint:
+      type: dice
+      value: 0
+    maneuver:
+      type: dice
+      value: 0
+  conflictQualities: []
+  specialRules: ""
+  library: false
+  spellbook: false
+  memorized: false
+  cast: false
+  scroll: false
+_key: '!items!a1b2c3d4e5f6200c'

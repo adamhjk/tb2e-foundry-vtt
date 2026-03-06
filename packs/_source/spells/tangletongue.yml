@@ -1,0 +1,43 @@
+_id: a1b2c3d4e5f6300e
+name: Tangletongue
+type: spell
+img: icons/magic/light/orb-lightning-blue.webp
+system:
+  description: "<p>With a gesture and a whispered word, the magician draws a web of aether around a victim's lips and tongue forbidding them from speaking a word about a certain subject.</p><p>Those subject to the Tangletongue curse are forbidden to speak or otherwise communicate about a particular topic selected by the magician. If they attempt to speak, write or gesture about that topic, their tongue leaps into their throat and suffocates them until they stop trying or they fall unconscious.</p><p>This spell does not affect undead or creatures of Might 6 or greater.</p><p>Record the margin of success when the spell is cast. At the beginning of each following phase, the victim rolls its Will or Nature. They are granted +1D for each rank by which their Might exceeds that of the caster, and +1D per phase after the first. The obstacle is equal to the margin of success when the spell was originally cast. Success frees the victim from the spell.</p>"
+  circle: 3
+  castingType: versus
+  fixedObstacle: 0
+  obstacleNote: ""
+  castingTime: oneTurn
+  duration: "Variable"
+  factors: []
+  factorNote: ""
+  swapSkill: ""
+  swapConflictTypes: []
+  versusDefense: "willOrNature"
+  mightPenalty: true
+  materials: "A belonging important to the victim"
+  focus: ""
+  scribeObstacle: 3
+  learnObstacle: 4
+  conflictBonuses:
+    attack:
+      type: dice
+      value: 0
+    defend:
+      type: dice
+      value: 0
+    feint:
+      type: dice
+      value: 0
+    maneuver:
+      type: dice
+      value: 0
+  conflictQualities: []
+  specialRules: ""
+  library: false
+  spellbook: false
+  memorized: false
+  cast: false
+  scroll: false
+_key: '!items!a1b2c3d4e5f6300e'

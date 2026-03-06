@@ -1,0 +1,43 @@
+_id: a1b2c3d4e5f60001
+name: Aetheric Appendage
+type: spell
+img: icons/magic/light/orb-lightning-blue.webp
+system:
+  description: "<p>Extrudes tentacles of aether to manipulate objects at distance for one turn.</p>"
+  circle: 1
+  castingType: fixed
+  fixedObstacle: 2
+  obstacleNote: ""
+  castingTime: free
+  duration: "One turn"
+  factors: []
+  factorNote: ""
+  swapSkill: ""
+  swapConflictTypes: []
+  versusDefense: ""
+  mightPenalty: false
+  materials: "A dried cephalopod"
+  focus: ""
+  scribeObstacle: 2
+  learnObstacle: 3
+  conflictBonuses:
+    attack:
+      type: dice
+      value: 0
+    defend:
+      type: dice
+      value: 0
+    feint:
+      type: dice
+      value: 0
+    maneuver:
+      type: dice
+      value: 0
+  conflictQualities: []
+  specialRules: ""
+  library: false
+  spellbook: false
+  memorized: false
+  cast: false
+  scroll: false
+_key: '!items!a1b2c3d4e5f60001'

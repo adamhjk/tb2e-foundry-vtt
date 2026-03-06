@@ -108,7 +108,21 @@ export const containerTypes = {
   largeSack: { label: "TB2E.Container.LargeSack", slots: 6, occupies: "carried", occupiesSlots: 2 },
   smallSack: { label: "TB2E.Container.SmallSack", slots: 2, occupies: "pack", occupiesSlots: 1 },
   pouch: { label: "TB2E.Container.Pouch", slots: 1, occupies: "belt", occupiesSlots: 1 },
-  quiver: { label: "TB2E.Container.Quiver", slots: 3, occupies: "worn", occupiesSlots: 1 }
+  quiver: { label: "TB2E.Container.Quiver", slots: 3, occupies: "worn", occupiesSlots: 1 },
+  waterskin: { label: "TB2E.Container.Waterskin", slots: 0, liquid: true },
+  bottle: { label: "TB2E.Container.Bottle", slots: 0, liquid: true },
+  jug: { label: "TB2E.Container.Jug", slots: 0, liquid: true }
+};
+
+/**
+ * Liquid type definitions for liquid containers.
+ * @enum {object}
+ */
+export const liquidTypes = {
+  water: { label: "TB2E.Liquid.Water" },
+  wine: { label: "TB2E.Liquid.Wine" },
+  oil: { label: "TB2E.Liquid.Oil" },
+  holyWater: { label: "TB2E.Liquid.HolyWater" }
 };
 
 /**
@@ -373,8 +387,64 @@ export const stockDescriptors = {
   Halfling: ["Sneaking", "Riddling", "Merrymaking"]
 };
 
+/**
+ * Spell circle definitions.
+ * @enum {object}
+ */
+export const spellCircles = {
+  1: { label: "TB2E.Spell.Circle.First" },
+  2: { label: "TB2E.Spell.Circle.Second" },
+  3: { label: "TB2E.Spell.Circle.Third" },
+  4: { label: "TB2E.Spell.Circle.Fourth" },
+  5: { label: "TB2E.Spell.Circle.Fifth" }
+};
+
+/**
+ * Spell casting type definitions.
+ * @enum {object}
+ */
+export const castingTypes = {
+  fixed: { label: "TB2E.Spell.CastingType.Fixed" },
+  factors: { label: "TB2E.Spell.CastingType.Factors" },
+  versus: { label: "TB2E.Spell.CastingType.Versus" },
+  skillSwap: { label: "TB2E.Spell.CastingType.SkillSwap" }
+};
+
+/**
+ * Relic tier definitions.
+ * @enum {object}
+ */
+export const relicTiers = {
+  minor: { label: "TB2E.Relic.TierMinor" },
+  named: { label: "TB2E.Relic.TierNamed" },
+  great: { label: "TB2E.Relic.TierGreat" }
+};
+
+/**
+ * Invocation circle definitions (1-4).
+ * @enum {object}
+ */
+export const invocationCircles = {
+  1: { label: "TB2E.Invocation.Circle.First" },
+  2: { label: "TB2E.Invocation.Circle.Second" },
+  3: { label: "TB2E.Invocation.Circle.Third" },
+  4: { label: "TB2E.Invocation.Circle.Fourth" }
+};
+
+/**
+ * Spell casting time definitions.
+ * @enum {object}
+ */
+export const castingTimes = {
+  free: { label: "TB2E.Spell.CastingTime.Free" },
+  oneTurn: { label: "TB2E.Spell.CastingTime.OneTurn" },
+  twoTurns: { label: "TB2E.Spell.CastingTime.TwoTurns" },
+  special: { label: "TB2E.Spell.CastingTime.Special" }
+};
+
 export default {
   conditions, abilities, skills, advancementNeeded, levelRequirements,
   conflictTypes, conflictActions, conflictInteractions, conflictObstacles, maneuverEffects,
-  stockDescriptors, armorTypes, containerTypes, supplyTypes, wieldTypes
+  stockDescriptors, armorTypes, containerTypes, liquidTypes, supplyTypes, wieldTypes,
+  spellCircles, castingTypes, castingTimes, invocationCircles, relicTiers
 };

@@ -1,4 +1,4 @@
-<form class="gear-sheet-form" autocomplete="off">
+<div class="gear-sheet-form">
 
   {{!-- Header: Name + Type --}}
   <div class="gear-header">
@@ -15,19 +15,28 @@
       <label>{{localize "TB2E.Item.Cost"}}</label>
       <input type="number" name="system.cost" value="{{system.cost}}" min="0">
     </div>
-    <div class="field-pair">
-      <label>{{localize "TB2E.Item.SlotsRequired"}}</label>
-      <input type="number" name="system.slotsRequired" value="{{system.slotsRequired}}" min="1">
-    </div>
-    <div class="field-pair">
-      <label>{{localize "TB2E.Item.Notation"}}</label>
-      <input type="text" name="system.inventoryNotation" value="{{system.inventoryNotation}}">
-    </div>
     <label class="checkbox-field">
       <input type="checkbox" name="system.damaged" {{#if system.damaged}}checked{{/if}}>
       {{localize "TB2E.Item.Damaged"}}
     </label>
   </div>
+
+  {{!-- Slot Options (per-location slot costs) --}}
+  <fieldset class="gear-section">
+    <legend>{{localize "TB2E.Item.SlotOptions"}}</legend>
+    <p class="slot-options-notation">{{slotOptionsNotation}}</p>
+    <div class="slot-options-grid">
+      {{#each slotOptionFields}}
+      <div class="slot-option-row">
+        <label class="checkbox-field">
+          <input type="checkbox" class="slot-option-toggle" data-key="{{key}}" {{#if enabled}}checked{{/if}}>
+          {{label}}
+        </label>
+        <input type="number" name="system.slotOptions.{{key}}" value="{{value}}" min="1" {{#unless enabled}}disabled{{/unless}} class="slot-option-cost">
+      </div>
+      {{/each}}
+    </div>
+  </fieldset>
 
   {{!-- Quantity (for bundled items) --}}
   <div class="gear-fields">
@@ -123,6 +132,16 @@
           {{/each}}
         </select>
       </div>
+      {{#if isLiquidContainer}}
+      <div class="field-pair">
+        <label>{{localize "TB2E.Item.LiquidType"}}</label>
+        <select name="system.liquidType">
+          {{#each liquidTypeOptions}}
+          <option value="{{key}}"{{#if selected}} selected{{/if}}>{{label}}</option>
+          {{/each}}
+        </select>
+      </div>
+      {{else}}
       <div class="field-pair">
         <label>{{localize "TB2E.Item.ContainerSlots"}}</label>
         <input type="number" name="system.containerSlots" value="{{system.containerSlots}}" min="0">
@@ -131,12 +150,13 @@
         <label>{{localize "TB2E.Item.ContainerKey"}}</label>
         <input type="text" name="system.containerKey" value="{{system.containerKey}}" placeholder="pack, sack-1, etc.">
       </div>
+      {{/if}}
     </div>
   </fieldset>
   {{/if}}
 
-  {{!-- Gear Fields --}}
-  {{#if isGear}}
+  {{!-- Gear / Weapon Skill Bonuses --}}
+  {{#if (or isGear isWeapon)}}
   <fieldset class="gear-section">
     <legend>{{localize "TB2E.Item.SkillBonuses"}}</legend>
     {{#each skillBonuses}}
@@ -153,10 +173,12 @@
     </div>
     {{/each}}
     <button type="button" data-action="addSkillBonus" class="add-bonus-btn"><i class="fa-solid fa-plus"></i> {{localize "TB2E.Item.AddSkillBonus"}}</button>
+    {{#unless isWeapon}}
     <div class="field-pair full-width">
       <label>{{localize "TB2E.Item.SpecialRules"}}</label>
       <textarea name="system.specialRules">{{system.specialRules}}</textarea>
     </div>
+    {{/unless}}
   </fieldset>
   {{/if}}
 
@@ -174,13 +196,19 @@
         </select>
       </div>
       <div class="field-pair">
-        <label>{{localize "TB2E.Item.Portions"}}</label>
-        <input type="number" name="system.portions" value="{{system.portions}}" min="0">
-      </div>
-      <div class="field-pair">
         <label>{{localize "TB2E.Item.TurnsRemaining"}}</label>
         <input type="number" name="system.turnsRemaining" value="{{system.turnsRemaining}}" min="0">
       </div>
+    </div>
+    <div class="gear-fields">
+      <div class="field-pair">
+        <label>{{localize "TB2E.Item.NameSingular"}}</label>
+        <input type="text" name="system.nameSingular" value="{{system.nameSingular}}" placeholder="e.g. Torch">
+      </div>
+      <label class="checkbox-field">
+        <input type="checkbox" name="system.lit" {{#if system.lit}}checked{{/if}}>
+        {{localize "TB2E.Item.Lit"}}
+      </label>
     </div>
     {{!-- Supply skill bonuses --}}
     <div class="skill-bonuses-section">
@@ -203,6 +231,51 @@
   </fieldset>
   {{/if}}
 
+  {{!-- Relic Fields --}}
+  {{#if isRelic}}
+  <fieldset class="gear-section">
+    <legend>{{localize "TB2E.Relic.Details"}}</legend>
+    <div class="gear-fields">
+      <div class="field-pair">
+        <label>{{localize "TB2E.Relic.TierLabel"}}</label>
+        <select name="system.relicTier">
+          {{#each relicTierOptions}}
+          <option value="{{key}}"{{#if selected}} selected{{/if}}>{{label}}</option>
+          {{/each}}
+        </select>
+      </div>
+      <div class="field-pair">
+        <label>{{localize "TB2E.Relic.Immortal"}}</label>
+        <input type="text" name="system.immortal" value="{{system.immortal}}" placeholder="e.g. Sigtyr, Lords of Battle">
+      </div>
+    </div>
+    {{#if isGreatRelic}}
+    <div class="gear-fields">
+      <div class="field-pair">
+        <label>{{localize "TB2E.Relic.LinkedCircle"}}</label>
+        <select name="system.linkedCircle">
+          <option value="">&mdash;</option>
+          {{#each circleOptions}}
+          <option value="{{key}}"{{#if selected}} selected{{/if}}>{{label}}</option>
+          {{/each}}
+        </select>
+      </div>
+    </div>
+    {{else}}
+    <div class="linked-invocations-section">
+      <h4>{{localize "TB2E.Relic.LinkedInvocations"}}</h4>
+      {{#each linkedInvocations}}
+      <div class="skill-bonus-row">
+        <input type="text" name="system.linkedInvocations.{{index}}" value="{{name}}" placeholder="Invocation name">
+        <button type="button" data-action="removeLinkedInvocation" data-index="{{index}}" class="remove-bonus-btn"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      {{/each}}
+      <button type="button" data-action="addLinkedInvocation" class="add-bonus-btn"><i class="fa-solid fa-plus"></i> {{localize "TB2E.Relic.AddLinkedInvocation"}}</button>
+    </div>
+    {{/if}}
+  </fieldset>
+  {{/if}}
+
   {{!-- Description --}}
   <fieldset class="gear-section">
     <legend>{{localize "TB2E.Item.Description"}}</legend>
@@ -211,4 +284,4 @@
     </div>
   </fieldset>
 
-</form>
+</div>

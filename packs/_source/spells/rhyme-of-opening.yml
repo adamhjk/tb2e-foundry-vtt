@@ -1,0 +1,61 @@
+_id: a1b2c3d4e5f62007
+name: Rhyme of Opening
+type: spell
+img: icons/magic/light/orb-lightning-blue.webp
+system:
+  description: "<p>Opens locks, doors, chains, and other physical barriers through an incantation.</p>"
+  circle: 2
+  castingType: factors
+  fixedObstacle: 0
+  obstacleNote: ""
+  castingTime: oneTurn
+  duration: "Instantaneous"
+  factors:
+    - name: "Materials to be Opened"
+      options:
+        - label: "Ropes or stuck doors"
+          value: 1
+        - label: "Chains/locked doors/chests"
+          value: 2
+        - label: "Steel bands/portcullises/iron gates"
+          value: 3
+    - name: "Provenance"
+      options:
+        - label: "Mundane"
+          value: 0
+        - label: "Magical"
+          value: 1
+        - label: "Elven"
+          value: 2
+        - label: "Dwarven"
+          value: 3
+  factorNote: ""
+  swapSkill: ""
+  swapConflictTypes: []
+  versusDefense: ""
+  mightPenalty: false
+  materials: ""
+  focus: "A broken chain link [carried 1 or worn/neck]"
+  scribeObstacle: 2
+  learnObstacle: 3
+  conflictBonuses:
+    attack:
+      type: dice
+      value: 0
+    defend:
+      type: dice
+      value: 0
+    feint:
+      type: dice
+      value: 0
+    maneuver:
+      type: dice
+      value: 0
+  conflictQualities: []
+  specialRules: ""
+  library: false
+  spellbook: false
+  memorized: false
+  cast: false
+  scroll: false
+_key: '!items!a1b2c3d4e5f62007'

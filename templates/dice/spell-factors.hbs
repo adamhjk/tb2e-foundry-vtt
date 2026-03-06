@@ -1,0 +1,26 @@
+<div class="spell-factors-dialog">
+  <h3>{{spellName}}</h3>
+  <p class="factors-instruction">{{localize "TB2E.Spell.SelectFactors"}}</p>
+
+  {{#each factors}}
+  <fieldset class="factor-group-select">
+    <legend>{{name}}</legend>
+    {{#each options}}
+    <label class="factor-radio">
+      <input type="radio" name="factor-{{../groupIndex}}" value="{{value}}" data-group="{{../groupIndex}}" {{#if @first}}checked{{/if}}>
+      <span class="factor-label">{{label}}</span>
+      <span class="factor-value">{{#if value}}+{{value}}{{else}}+0{{/if}}</span>
+    </label>
+    {{/each}}
+  </fieldset>
+  {{/each}}
+
+  {{#if factorNote}}
+  <p class="factor-note"><em>{{factorNote}}</em></p>
+  {{/if}}
+
+  <div class="factor-total">
+    <span class="factor-total-label">{{localize "TB2E.Spell.FactorTotal"}}:</span>
+    <span class="factor-total-value">0</span>
+  </div>
+</div>

@@ -1,0 +1,52 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 280">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0.2" y2="1">
+      <stop offset="0%" stop-color="#f5f3ff"/>
+      <stop offset="40%" stop-color="#f5f7fa"/>
+    </linearGradient>
+  </defs>
+  <!-- Card body -->
+  <rect x="0" y="0" width="200" height="280" rx="12" ry="12" fill="url(#bg)" stroke="#ddd6fe" stroke-width="1"/>
+  <!-- Inner frame -->
+  <rect x="4" y="4" width="192" height="272" rx="8" ry="8" fill="none" stroke="#ddd6fe" stroke-width="1" opacity="0.25"/>
+  <!-- Watermark circle -->
+  <circle cx="100" cy="130" r="40" fill="#7c3aed" opacity="0.06"/>
+  <!-- Mask icon -->
+  <g transform="translate(100,128)" fill="none" stroke="#7c3aed" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+    <!-- Mask outline -->
+    <path d="M-32 -8 Q-32 -28 0 -28 Q32 -28 32 -8 Q32 10 20 16 L12 18 Q4 14 0 14 Q-4 14 -12 18 L-20 16 Q-32 10 -32 -8 Z"
+          fill="#7c3aed" fill-opacity="0.08"/>
+    <path d="M-32 -8 Q-32 -28 0 -28 Q32 -28 32 -8 Q32 10 20 16 L12 18 Q4 14 0 14 Q-4 14 -12 18 L-20 16 Q-32 10 -32 -8 Z"/>
+    <!-- Left eye -->
+    <ellipse cx="-14" cy="-8" rx="8" ry="6" fill="#7c3aed" fill-opacity="0.15"/>
+    <ellipse cx="-14" cy="-8" rx="8" ry="6"/>
+    <!-- Right eye -->
+    <ellipse cx="14" cy="-8" rx="8" ry="6" fill="#7c3aed" fill-opacity="0.15"/>
+    <ellipse cx="14" cy="-8" rx="8" ry="6"/>
+    <!-- Nose bridge -->
+    <path d="M-3 -2 Q0 4 3 -2" stroke-width="1.5"/>
+    <!-- Decorative brow flourishes -->
+    <path d="M-26 -18 Q-14 -24 -6 -16" stroke-width="1.5" fill="none"/>
+    <path d="M26 -18 Q14 -24 6 -16" stroke-width="1.5" fill="none"/>
+  </g>
+  <!-- Label -->
+  <text x="100" y="195" text-anchor="middle" font-family="serif" font-size="14" font-weight="600"
+        fill="#7c3aed" letter-spacing="0.1em" style="text-transform:uppercase">FEINT</text>
+  <!-- Top-left pip -->
+  <g fill="#7c3aed" opacity="0.6">
+    <text x="16" y="26" font-family="serif" font-size="16" font-weight="700" text-anchor="middle">F</text>
+    <!-- Mini mask -->
+    <path d="M10 34 Q10 30 16 30 Q22 30 22 34 Q22 38 19 39 L16 38 L13 39 Q10 38 10 34 Z"
+          fill="none" stroke="#7c3aed" stroke-width="1"/>
+    <ellipse cx="13.5" cy="34" rx="2" ry="1.5" fill="none" stroke="#7c3aed" stroke-width="0.8"/>
+    <ellipse cx="18.5" cy="34" rx="2" ry="1.5" fill="none" stroke="#7c3aed" stroke-width="0.8"/>
+  </g>
+  <!-- Bottom-right pip (rotated) -->
+  <g fill="#7c3aed" opacity="0.6" transform="rotate(180 100 140)">
+    <text x="16" y="26" font-family="serif" font-size="16" font-weight="700" text-anchor="middle">F</text>
+    <path d="M10 34 Q10 30 16 30 Q22 30 22 34 Q22 38 19 39 L16 38 L13 39 Q10 38 10 34 Z"
+          fill="none" stroke="#7c3aed" stroke-width="1"/>
+    <ellipse cx="13.5" cy="34" rx="2" ry="1.5" fill="none" stroke="#7c3aed" stroke-width="0.8"/>
+    <ellipse cx="18.5" cy="34" rx="2" ry="1.5" fill="none" stroke="#7c3aed" stroke-width="0.8"/>
+  </g>
+</svg>

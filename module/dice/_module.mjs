@@ -11,3 +11,5 @@ export {
   getInteraction, buildResolutionContext, calculateMargin,
   resolveActionEffect, compromiseLevel
 } from "./conflict-roll.mjs";
+export { castSpell, processSpellCast, activateSpellSourceListeners } from "./spell-casting.mjs";
+export { performInvocation, processInvocationPerformed, activateBurdenListeners } from "./invocation-casting.mjs";

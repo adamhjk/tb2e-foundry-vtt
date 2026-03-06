@@ -1,0 +1,22 @@
+_id: e01a2b3c4d5e6f7a
+name: Wooden Toy Oxen
+type: relic
+img: icons/sundries/misc/gem-faceted-round-white.webp
+system:
+  description: "<p>A pair of wooden toy oxen fitted with a yoke, sacred to the Lord of Labor.</p>"
+  slot: ""
+  slotIndex: 0
+  slotOptions:
+    pack: 1
+  cost: 0
+  damaged: false
+  dropped: false
+  quantity: 1
+  quantityMax: 1
+  relicTier: minor
+  linkedInvocations:
+    - Blessing of the Lord of Labor
+  linkedCircle: null
+  immortal: Lord of Labor
+  lore: ""
+_key: '!items!e01a2b3c4d5e6f7a'

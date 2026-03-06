@@ -6,15 +6,14 @@ system:
   description: "<p>Preserved food rations. Can be eaten during the camp phase to recover from the Hungry and Thirsty condition.</p>"
   slot: ""
   slotIndex: 0
-  slotsRequired: 1
+  slotOptions:
+    pack: 1
   cost: 2
-  inventoryNotation: "Pack 1"
   damaged: false
   dropped: false
   quantity: 3
   quantityMax: 3
   supplyType: food
-  portions: 3
   turnsRemaining: 0
   skillBonuses: []
 _key: '!items!5e178a861b9877e9'

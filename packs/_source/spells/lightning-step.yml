@@ -1,0 +1,59 @@
+_id: a1b2c3d4e5f63009
+name: Lightning Step
+type: spell
+img: icons/magic/light/orb-lightning-blue.webp
+system:
+  description: "<p>This spell energizes the magician and their companions with an electric jolt that hastens their movements.</p><p>Characters subject to this spell may take two tests per turn rather than one. A conflict counts as a single test for this purpose.</p><p>Lightning Step grants +2D to Maneuver actions in kill, capture, drive off, and flee and pursue conflicts.</p>"
+  circle: 3
+  castingType: factors
+  fixedObstacle: 0
+  obstacleNote: ""
+  castingTime: oneTurn
+  duration: "Variable"
+  factors:
+    - name: "Breadth"
+      options:
+        - label: "Self"
+          value: 1
+        - label: "Other"
+          value: 2
+        - label: "Small group"
+          value: 4
+    - name: "Duration"
+      options:
+        - label: "One turn"
+          value: 2
+        - label: "Two turns"
+          value: 3
+        - label: "Three turns"
+          value: 4
+  factorNote: ""
+  swapSkill: ""
+  swapConflictTypes: []
+  versusDefense: ""
+  mightPenalty: false
+  materials: "A tincture of cinnabar applied to the hands and feet"
+  focus: ""
+  scribeObstacle: 3
+  learnObstacle: 4
+  conflictBonuses:
+    attack:
+      type: dice
+      value: 0
+    defend:
+      type: dice
+      value: 0
+    feint:
+      type: dice
+      value: 0
+    maneuver:
+      type: dice
+      value: 2
+  conflictQualities: []
+  specialRules: ""
+  library: false
+  spellbook: false
+  memorized: false
+  cast: false
+  scroll: false
+_key: '!items!a1b2c3d4e5f63009'

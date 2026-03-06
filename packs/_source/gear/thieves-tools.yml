@@ -6,9 +6,9 @@ system:
   description: "<p>A set of lockpicks, probes, and other tools for bypassing locks and disarming traps.</p>"
   slot: ""
   slotIndex: 0
-  slotsRequired: 1
+  slotOptions:
+    pack: 1
   cost: 4
-  inventoryNotation: "Pack 1"
   damaged: false
   dropped: false
   quantity: 1

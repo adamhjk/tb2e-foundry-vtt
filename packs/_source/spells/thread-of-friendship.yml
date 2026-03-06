@@ -1,0 +1,43 @@
+_id: a1b2c3d4e5f6000b
+name: Thread of Friendship
+type: spell
+img: icons/magic/light/orb-lightning-blue.webp
+system:
+  description: "<p>With fingers like hooks, the magician reaches into the Skein of Destiny and plucks one thread, turning an enemy into a friend.</p><p>This spell must be spoken to the victim in a normal voice. Passing the test converts the victim into a friend for the duration of the spell, with all the benefits that entails. This spell does not affect undead or creatures Might of 6 or greater.</p><p>A creature must have the capacity for language to be targeted by this spell. While it's not necessary to speak the same language as the target, making your wishes known could be difficult if you don't. If your new friend does not understand you, they will still seek to help you if they can.</p><p>Success temporarily makes the target equivalent to a Town Friend or Adventuring Friend as appropriate. They retain their own beliefs and values, so you will have to use Persuader to get your new friend to do something against those beliefs or values.</p><p>Record the margin of success when the spell is cast. At the beginning of each following phase, the victim rolls its Will or Nature. They are granted +1D for each rank by which their Might exceeds that of the caster, and +1D per phase after the first. The obstacle is equal to the margin of success when the spell was originally cast. Success frees the victim from the spell.</p>"
+  circle: 1
+  castingType: versus
+  fixedObstacle: 0
+  obstacleNote: ""
+  castingTime: oneTurn
+  duration: "Variable"
+  factors: []
+  factorNote: ""
+  swapSkill: ""
+  swapConflictTypes: []
+  versusDefense: "willOrNature"
+  mightPenalty: true
+  materials: "A drop of pure honey smeared on the caster's lips"
+  focus: "Strands of thread with the victim's name whispered over them and woven into a ring [worn/hands]"
+  scribeObstacle: 2
+  learnObstacle: 3
+  conflictBonuses:
+    attack:
+      type: dice
+      value: 0
+    defend:
+      type: dice
+      value: 0
+    feint:
+      type: dice
+      value: 0
+    maneuver:
+      type: dice
+      value: 0
+  conflictQualities: []
+  specialRules: ""
+  library: false
+  spellbook: false
+  memorized: false
+  cast: false
+  scroll: false
+_key: '!items!a1b2c3d4e5f6000b'

@@ -1,0 +1,69 @@
+_id: a1b2c3d4e5f62005
+name: Numinous Sigil
+type: spell
+img: icons/magic/light/orb-lightning-blue.webp
+system:
+  description: "<p>Inscribes a magical sigil that stores a spell, releasing it when triggered.</p>"
+  circle: 2
+  castingType: factors
+  fixedObstacle: 0
+  obstacleNote: ""
+  castingTime: oneTurn
+  duration: "Until triggered"
+  factors:
+    - name: "Material Inscribed"
+      options:
+        - label: "Wood"
+          value: 1
+        - label: "Stone/glass/metal"
+          value: 2
+        - label: "Living flesh"
+          value: 3
+    - name: "Spell Circle"
+      options:
+        - label: "1st Circle"
+          value: 1
+        - label: "2nd Circle"
+          value: 2
+        - label: "3rd Circle"
+          value: 3
+        - label: "4th Circle"
+          value: 4
+        - label: "5th Circle"
+          value: 5
+    - name: "Visibility"
+      options:
+        - label: "Visible"
+          value: 0
+        - label: "Invisible"
+          value: 1
+  factorNote: ""
+  swapSkill: ""
+  swapConflictTypes: []
+  versusDefense: ""
+  mightPenalty: false
+  materials: "A drop of the caster's blood and a fresh quill"
+  focus: ""
+  scribeObstacle: 2
+  learnObstacle: 4
+  conflictBonuses:
+    attack:
+      type: dice
+      value: 0
+    defend:
+      type: dice
+      value: 0
+    feint:
+      type: dice
+      value: 0
+    maneuver:
+      type: dice
+      value: 0
+  conflictQualities: []
+  specialRules: ""
+  library: false
+  spellbook: false
+  memorized: false
+  cast: false
+  scroll: false
+_key: '!items!a1b2c3d4e5f62005'

@@ -1,5 +1,6 @@
 import { advancementNeeded, conditions, abilities, skills, levelRequirements, stockDescriptors, containerTypes } from "../../config.mjs";
-import { rollTest, showAdvancementDialog } from "../../dice/_module.mjs";
+import { resolveSlotOptionKey, getSlotCost, getMinSlotCost, getCacheCost, formatSlotOptions } from "../../data/item/_fields.mjs";
+import { rollTest, showAdvancementDialog, castSpell, performInvocation } from "../../dice/_module.mjs";
 import { rollDisposition, evaluateRoll, gatherHelpModifiers } from "../../dice/tb2e-roll.mjs";
 import { getEligibleHelpers } from "../../dice/help.mjs";
 import { _checkWiseAdvancement } from "../../dice/post-roll.mjs";
@@ -39,10 +40,28 @@ export default class CharacterSheet extends HandlebarsApplicationMixin(ActorShee
       pickUpItem: CharacterSheet.#onPickUpItem,
       toggleDamaged: CharacterSheet.#onToggleDamaged,
       consumePortion: CharacterSheet.#onConsumePortion,
+      drinkDraught: CharacterSheet.#onDrinkDraught,
       consumeLight: CharacterSheet.#onConsumeLight,
+      lightSource: CharacterSheet.#onLightSource,
+      moveToHand: CharacterSheet.#onMoveToHand,
+      placeItem: CharacterSheet.#onPlaceItem,
       editItem: CharacterSheet.#onEditItem,
       deleteItem: CharacterSheet.#onDeleteItem,
-      createItem: CharacterSheet.#onCreateItem
+      createItem: CharacterSheet.#onCreateItem,
+      toggleLiquidType: CharacterSheet.#onToggleLiquidType,
+      toggleSpellField: CharacterSheet.#onToggleSpellField,
+      addSpell: CharacterSheet.#onAddSpell,
+      deleteSpell: CharacterSheet.#onDeleteSpell,
+      castSpell: CharacterSheet.#onCastSpell,
+      addSpellbook: CharacterSheet.#onAddSpellbook,
+      deleteSpellbook: CharacterSheet.#onDeleteSpellbook,
+      addScroll: CharacterSheet.#onAddScroll,
+      deleteScroll: CharacterSheet.#onDeleteScroll,
+      addInvocation: CharacterSheet.#onAddInvocation,
+      deleteInvocation: CharacterSheet.#onDeleteInvocation,
+      performInvocation: CharacterSheet.#onPerformInvocation,
+      addRelic: CharacterSheet.#onAddRelic,
+      deleteRelic: CharacterSheet.#onDeleteRelic
     },
     form: { submitOnChange: true },
     window: { resizable: true }
@@ -211,8 +230,7 @@ export default class CharacterSheet extends HandlebarsApplicationMixin(ActorShee
         this.#prepareInventoryContext(partContext);
         break;
       case "magic":
-        partContext.spells = context.system.spells;
-        partContext.relics = context.system.relics;
+        this.#prepareMagicContext(partContext);
         break;
       case "biography":
         this.#prepareBiographyContext(partContext);
@@ -369,7 +387,8 @@ export default class CharacterSheet extends HandlebarsApplicationMixin(ActorShee
     // Gather all inventory items (everything except traits).
     const allItems = [...(actor.itemTypes.weapon || []), ...(actor.itemTypes.armor || []),
       ...(actor.itemTypes.container || []), ...(actor.itemTypes.gear || []),
-      ...(actor.itemTypes.supply || [])];
+      ...(actor.itemTypes.supply || []), ...(actor.itemTypes.spellbook || []),
+      ...(actor.itemTypes.scroll || []), ...(actor.itemTypes.relic || [])];
 
     // Build fixed body slot groups.
     const fixedSlots = [
@@ -378,7 +397,7 @@ export default class CharacterSheet extends HandlebarsApplicationMixin(ActorShee
       { key: "hand-L",  label: "TB2E.Inventory.HandL",   count: 2, column: "left", sublabels: ["TB2E.Inventory.Worn", "TB2E.Inventory.Carried"] },
       { key: "hand-R",  label: "TB2E.Inventory.HandR",   count: 2, column: "left", sublabels: ["TB2E.Inventory.Worn", "TB2E.Inventory.Carried"] },
       { key: "feet",    label: "TB2E.Inventory.Feet",    count: 1, column: "left" },
-      { key: "pocket",  label: "TB2E.Inventory.Pocket",  count: 2, column: "left" },
+      { key: "pocket",  label: "TB2E.Inventory.Pocket",  count: 1, column: "left" },
       { key: "torso",   label: "TB2E.Inventory.Torso",   count: 3, column: "right" },
       { key: "belt",    label: "TB2E.Inventory.Belt",    count: 3, column: "right" }
     ];
@@ -387,6 +406,9 @@ export default class CharacterSheet extends HandlebarsApplicationMixin(ActorShee
     const containerGroups = [];
     const containers = (actor.itemTypes.container || []).filter(c => c.system.slot && !c.system.dropped && !c.system.lost);
     for ( const c of containers ) {
+      // Liquid containers don't provide inventory slot groups.
+      const cType = CONFIG.TB2E.containerTypes[c.system.containerType];
+      if ( cType?.liquid ) continue;
       const cKey = c.system.containerKey || `container-${c.id}`;
       containerGroups.push({
         key: cKey,
@@ -399,12 +421,22 @@ export default class CharacterSheet extends HandlebarsApplicationMixin(ActorShee
       });
     }
 
+    // Append cache slot group (12 slots, pack costs).
+    const cacheOccupants = this.document.items.filter(i => i.system.slot === "cache").length;
+    containerGroups.push({
+      key: "cache", label: "TB2E.Inventory.Cache", count: 12, column: "right", isCache: true, occupiedCount: cacheOccupants
+    });
+
     // Combine all slot groups.
     const allSlotDefs = [...fixedSlots, ...containerGroups];
 
     // Index items by slot.
     const slotMap = new Map();
     for ( const def of allSlotDefs ) slotMap.set(def.key, []);
+
+    // Build a lookup from slot key to slot group definition.
+    const slotDefMap = new Map();
+    for ( const def of allSlotDefs ) slotDefMap.set(def.key, def);
 
     const unassigned = [];
     const dropped = [];
@@ -418,7 +450,8 @@ export default class CharacterSheet extends HandlebarsApplicationMixin(ActorShee
         continue;
       }
       const bucket = slotMap.get(item.system.slot);
-      if ( bucket ) bucket.push(this.#itemSummary(item));
+      const def = slotDefMap.get(item.system.slot);
+      if ( bucket ) bucket.push(this.#itemSummary(item, def));
       else unassigned.push(this.#itemSummary(item));
     }
 
@@ -431,7 +464,7 @@ export default class CharacterSheet extends HandlebarsApplicationMixin(ActorShee
       const slots = Array.from({ length: def.count }, (_, i) => {
         const item = items.find(it => it.slotIndex === i);
         if ( item ) return { occupied: true, ...item, isSpanStart: true };
-        const spanning = items.find(it => i > it.slotIndex && i < it.slotIndex + it.slotsRequired);
+        const spanning = items.find(it => i > it.slotIndex && i < it.slotIndex + it.resolvedSlotCost);
         if ( spanning ) return { occupied: true, ...spanning, isSpanContinuation: true };
         return { occupied: false, index: i };
       });
@@ -441,11 +474,23 @@ export default class CharacterSheet extends HandlebarsApplicationMixin(ActorShee
         count: def.count,
         slots,
         isContainer: def.isContainer || false,
+        isCache: def.isCache || false,
         containerId: def.containerId || null,
-        sublabels: def.sublabels?.map(l => game.i18n.localize(l)) || null
+        sublabels: def.sublabels?.map(l => game.i18n.localize(l)) || null,
+        occupiedCount: def.occupiedCount ?? null
       };
       if ( def.column === "left" ) leftSlots.push(group);
       else rightSlots.push(group);
+    }
+
+    // Enrich unassigned and dropped items with placement buttons.
+    for ( const summary of unassigned ) {
+      const item = actor.items.get(summary.itemId);
+      summary.placements = item ? this.#getAvailablePlacements(item) : [];
+    }
+    for ( const summary of dropped ) {
+      const item = actor.items.get(summary.itemId);
+      summary.placements = item ? this.#getAvailablePlacements(item) : [];
     }
 
     context.leftSlots = leftSlots;
@@ -454,8 +499,16 @@ export default class CharacterSheet extends HandlebarsApplicationMixin(ActorShee
     context.dropped = dropped;
     context.hasDropped = dropped.length > 0;
     context.hasUnassigned = unassigned.length > 0;
-    context.torsoDamage = sys.inventory.torsoDamage;
-    context.torsoWeariness = sys.inventory.torsoWeariness;
+    // Attach checkbox values to relevant slot groups
+    for ( const group of leftSlots ) {
+      if ( group.key === "head" ) group.headDamage = sys.inventory.headDamage;
+    }
+    for ( const group of rightSlots ) {
+      if ( group.key === "torso" ) {
+        group.torsoDamage = sys.inventory.torsoDamage;
+        group.torsoWeariness = sys.inventory.torsoWeariness;
+      }
+    }
   }
 
   /**
@@ -463,20 +516,42 @@ export default class CharacterSheet extends HandlebarsApplicationMixin(ActorShee
    * @param {Item} item
    * @returns {object}
    */
-  #itemSummary(item) {
+  #itemSummary(item, slotGroupDef = null) {
+    const so = item.system.slotOptions;
+    // Resolve the slot cost for the item's current position.
+    let resolvedSlotCost = getMinSlotCost(so);
+    if ( item.system.slot && slotGroupDef ) {
+      const optKey = resolveSlotOptionKey(slotGroupDef.key, item.system.slotIndex ?? 0, slotGroupDef.isContainer || false);
+      resolvedSlotCost = getSlotCost(so, optKey) ?? resolvedSlotCost;
+    }
+    const notation = formatSlotOptions(so);
+    const canCarry = so?.carried != null;
+    const isInHand = (item.system.slot === "hand-L" || item.system.slot === "hand-R")
+      && (item.system.slotIndex ?? 0) === 1;
     return {
       itemId: item.id,
       name: item.name,
       type: item.type,
       img: item.img,
       slotIndex: item.system.slotIndex ?? 0,
-      slotsRequired: item.system.slotsRequired ?? 1,
+      resolvedSlotCost,
+      notation,
+      canCarry,
+      isInHand,
       damaged: item.system.damaged ?? false,
       dropped: item.system.dropped ?? false,
       quantity: item.system.quantity ?? 1,
       quantityMax: item.system.quantityMax ?? 1,
       isContainer: item.type === "container",
+      isLiquidContainer: item.type === "container" && !!CONFIG.TB2E.containerTypes[item.system.containerType]?.liquid,
+      liquidType: item.system.liquidType ?? "water",
+      liquidTypeLabel: game.i18n.localize(CONFIG.TB2E.liquidTypes[item.system.liquidType]?.label ?? "TB2E.Liquid.Water"),
       isSupply: item.type === "supply",
+      isLight: item.type === "supply" && item.system.supplyType === "light",
+      isFood: item.type === "supply" && item.system.supplyType === "food",
+      lit: item.type === "supply" && item.system.supplyType === "light" && item.system.lit,
+      nameSingular: item.system.nameSingular || "",
+      turnsRemaining: item.system.turnsRemaining ?? 0,
       hasQuantity: (item.system.quantityMax ?? 1) > 1
     };
   }
@@ -514,6 +589,161 @@ export default class CharacterSheet extends HandlebarsApplicationMixin(ActorShee
         isNextTarget: level === nextTarget
       };
     });
+  }
+
+  /* -------------------------------------------- */
+
+  #prepareMagicContext(context) {
+    const actor = this.document;
+    const sys = actor.system;
+
+    // Gather spell, spellbook, and scroll items
+    const spellItems = actor.itemTypes.spell || [];
+    const spellbookItems = actor.itemTypes.spellbook || [];
+    const scrollItems = actor.itemTypes.scroll || [];
+
+    // Build spellbook choices for the spell table dropdown
+    const spellbookChoices = spellbookItems.map(b => ({ id: b.id, name: b.name }));
+
+    context.spells = spellItems.map(item => {
+      let obstacleDisplay;
+      switch ( item.system.castingType ) {
+        case "fixed":
+          obstacleDisplay = item.system.obstacleNote || String(item.system.fixedObstacle);
+          break;
+        case "factors":
+          obstacleDisplay = game.i18n.localize("TB2E.Spell.ObFactors");
+          break;
+        case "versus":
+          obstacleDisplay = game.i18n.localize("TB2E.Spell.ObVs");
+          break;
+        case "skillSwap":
+          obstacleDisplay = game.i18n.localize("TB2E.Spell.ObSwap");
+          break;
+        default:
+          obstacleDisplay = "?";
+      }
+      const scrollCount = scrollItems.filter(s => s.system.spellId === item.id).length;
+      const inSpellbook = !!item.system.spellbookId;
+      const canCast = item.system.castingType === "skillSwap"
+        || item.system.memorized || scrollCount > 0 || inSpellbook;
+      return {
+        itemId: item.id,
+        name: item.name,
+        circle: item.system.circle,
+        obstacleDisplay,
+        library: item.system.library,
+        spellbookId: item.system.spellbookId,
+        spellbookChoices: spellbookChoices.map(b => ({
+          ...b,
+          selected: b.id === item.system.spellbookId
+        })),
+        memorized: item.system.memorized,
+        cast: item.system.cast,
+        scrollCount,
+        canCast,
+        castingType: item.system.castingType
+      };
+    });
+
+    // Memory palace
+    const memorizedSpells = spellItems.filter(i => i.system.memorized);
+    const memoryUsed = memorizedSpells.reduce((sum, i) => sum + i.system.circle, 0);
+    const memoryTotal = sys.memoryPalaceSlots;
+    const memorySpells = memorizedSpells.map(spell => ({
+      name: spell.name,
+      circle: spell.system.circle,
+      pips: Array(spell.system.circle).fill(true),
+      id: spell.id
+    }));
+    const emptySlots = Math.max(0, memoryTotal - memoryUsed);
+    context.memoryPalace = {
+      used: memoryUsed,
+      total: memoryTotal,
+      spells: memorySpells,
+      emptyPips: Array(emptySlots).fill(true)
+    };
+
+    // Spellbooks
+    context.spellbooks = spellbookItems.map(book => {
+      const spells = spellItems.filter(s => s.system.spellbookId === book.id);
+      const used = spells.reduce((sum, s) => sum + s.system.circle, 0);
+      const empty = Math.max(0, book.system.folios - used);
+      return {
+        id: book.id,
+        name: book.name,
+        folios: book.system.folios,
+        used,
+        carried: !!book.system.slot,
+        spells: spells.map(s => ({
+          name: s.name,
+          circle: s.system.circle,
+          pips: Array(s.system.circle).fill(true),
+          id: s.id
+        })),
+        emptyPips: Array(empty).fill(true)
+      };
+    });
+
+    // Scrolls
+    context.scrolls = scrollItems.map(scroll => {
+      const spell = spellItems.find(s => s.id === scroll.system.spellId);
+      return {
+        id: scroll.id,
+        name: scroll.name,
+        spellName: spell?.name ?? "Unknown",
+        circle: spell?.system.circle ?? 0,
+        pips: Array(spell?.system.circle ?? 0).fill(true),
+        carried: !!scroll.system.slot
+      };
+    });
+
+    // Invocations
+    const invocationItems = actor.itemTypes.invocation || [];
+    context.invocations = invocationItems.map(item => {
+      let obstacleDisplay;
+      switch ( item.system.castingType ) {
+        case "fixed":
+          obstacleDisplay = item.system.obstacleNote || String(item.system.fixedObstacle);
+          break;
+        case "factors":
+          obstacleDisplay = game.i18n.localize("TB2E.Spell.ObFactors");
+          break;
+        case "versus":
+          obstacleDisplay = game.i18n.localize("TB2E.Spell.ObVs");
+          break;
+        case "skillSwap":
+          obstacleDisplay = game.i18n.localize("TB2E.Spell.ObSwap");
+          break;
+        default:
+          obstacleDisplay = "?";
+      }
+      const burdenDisplay = item.system.burdenWithRelic
+        ? `${item.system.burdenWithRelic}/${item.system.burden}`
+        : String(item.system.burden);
+      return {
+        itemId: item.id,
+        name: item.name,
+        circle: item.system.circle,
+        obstacleDisplay,
+        burdenDisplay,
+        performed: item.system.performed,
+        castingType: item.system.castingType
+      };
+    });
+
+    // Urðr exceeded check
+    context.urdrExceeded = sys.urdr.burden > sys.urdr.capacity && sys.urdr.capacity > 0;
+
+    // Relic items
+    context.relics = (actor.itemTypes.relic || []).map(item => ({
+      itemId: item.id,
+      name: item.name,
+      tier: game.i18n.localize(CONFIG.TB2E.relicTiers[item.system.relicTier]?.label ?? ""),
+      linkedInvocations: item.system.linkedInvocations,
+      linkedCircle: item.system.linkedCircle,
+      isPlaced: !!item.system.slot
+    }));
   }
 
   /* -------------------------------------------- */
@@ -681,8 +911,23 @@ export default class CharacterSheet extends HandlebarsApplicationMixin(ActorShee
   /*  Render Hook                                 */
   /* -------------------------------------------- */
 
+  async _preRender(context, options) {
+    await super._preRender(context, options);
+    // Preserve open/closed state of <details> elements across re-renders.
+    this._detailsOpen = {};
+    for ( const details of this.element?.querySelectorAll("details[data-slot-group]") ?? [] ) {
+      this._detailsOpen[details.dataset.slotGroup] = details.open;
+    }
+  }
+
   _onRender(context, options) {
     super._onRender(context, options);
+    // Restore <details> open state saved in _preRender.
+    if ( this._detailsOpen ) {
+      for ( const details of this.element.querySelectorAll("details[data-slot-group]") ) {
+        if ( this._detailsOpen[details.dataset.slotGroup] ) details.open = true;
+      }
+    }
 
     // Reference bar hover behavior.
     const bar = this.element.querySelector(".reference-bar-text");
@@ -722,6 +967,27 @@ export default class CharacterSheet extends HandlebarsApplicationMixin(ActorShee
         const itemId = input.closest("[data-item-id]")?.dataset.itemId;
         const item = this.document.items.get(itemId);
         if ( item ) item.update({ "system.checks": Number(input.value) || 0 });
+      });
+    }
+
+    // Spellbook name input change handlers (Item updates).
+    for ( const input of this.element.querySelectorAll(".spellbook-name-input") ) {
+      input.addEventListener("change", () => {
+        const itemId = input.dataset.itemId;
+        const item = this.document.items.get(itemId);
+        if ( item ) item.update({ name: input.value });
+      });
+    }
+
+    // Food quantity input change handlers (Item updates).
+    for ( const input of this.element.querySelectorAll(".slot-qty-input") ) {
+      input.addEventListener("change", async () => {
+        const itemId = input.dataset.itemId;
+        const field = input.dataset.field; // "quantity" or "quantityMax"
+        const item = this.document.items.get(itemId);
+        if ( !item ) return;
+        const value = Math.max(field === "quantityMax" ? 1 : 0, parseInt(input.value) || 0);
+        await item.update({ [`system.${field}`]: value });
       });
     }
 
@@ -765,6 +1031,29 @@ export default class CharacterSheet extends HandlebarsApplicationMixin(ActorShee
         input.addEventListener("change", updateRemaining);
         input.addEventListener("input", updateRemaining);
       }
+    }
+
+    // Spellbook assignment selects (change event, not click action).
+    for ( const select of this.element.querySelectorAll(".spellbook-select") ) {
+      select.addEventListener("change", async () => {
+        const itemId = select.dataset.itemId;
+        const item = this.document.items.get(itemId);
+        if ( !item ) return;
+        const newBookId = select.value || "";
+        if ( newBookId ) {
+          const book = this.document.items.get(newBookId);
+          if ( !book ) return;
+          const currentUsed = (this.document.itemTypes.spell || [])
+            .filter(s => s.system.spellbookId === newBookId && s.id !== itemId)
+            .reduce((sum, s) => sum + s.system.circle, 0);
+          if ( currentUsed + item.system.circle > book.system.folios ) {
+            ui.notifications.warn(game.i18n.localize("TB2E.Spell.SpellbookFull"));
+            select.value = item.system.spellbookId || "";
+            return;
+          }
+        }
+        await item.update({ "system.spellbookId": newBookId });
+      });
     }
   }
 
@@ -1076,6 +1365,220 @@ export default class CharacterSheet extends HandlebarsApplicationMixin(ActorShee
   }
 
   /* -------------------------------------------- */
+  /*  Spell Action Handlers                       */
+  /* -------------------------------------------- */
+
+  /**
+   * Toggle a boolean field on a spell item (library, spellbook, memorized).
+   */
+  static async #onToggleSpellField(event, target) {
+    event.preventDefault();
+    event.stopPropagation();
+    const itemId = target.dataset.itemId;
+    const field = target.dataset.field;
+    const item = this.document.items.get(itemId);
+    if ( !item ) return;
+
+    const newValue = !item.system[field];
+
+    // Capacity check for memorized
+    if ( field === "memorized" && newValue ) {
+      const sys = this.document.system;
+      const currentUsed = (this.document.itemTypes.spell || [])
+        .filter(s => s.system.memorized && s.id !== itemId)
+        .reduce((sum, s) => sum + s.system.circle, 0);
+      if ( currentUsed + item.system.circle > sys.memoryPalaceSlots ) {
+        ui.notifications.warn(game.i18n.localize("TB2E.Spell.MemoryFull"));
+        return;
+      }
+    }
+
+    await item.update({ [`system.${field}`]: newValue });
+  }
+
+  /**
+   * Add a new blank spell item to the actor.
+   */
+  static async #onAddSpell(event, target) {
+    await Item.create({
+      name: "New Spell",
+      type: "spell",
+      img: "icons/magic/light/orb-lightning-blue.webp"
+    }, { parent: this.document });
+  }
+
+  /**
+   * Delete a spell item from the actor.
+   */
+  static async #onDeleteSpell(event, target) {
+    const itemId = target.dataset.itemId;
+    const item = this.document.items.get(itemId);
+    if ( item ) await item.delete();
+  }
+
+  /**
+   * Create a new spellbook item on the actor.
+   */
+  static async #onAddSpellbook(event, target) {
+    await Item.create({
+      name: "Spell Book",
+      type: "spellbook",
+      img: "icons/sundries/books/book-worn-brown.webp",
+      system: {
+        folios: 5,
+        cost: 1,
+        slotOptions: { pack: 2 }
+      }
+    }, { parent: this.document });
+  }
+
+  /**
+   * Delete a spellbook item and clear spellbookId from any referencing spells.
+   */
+  static async #onDeleteSpellbook(event, target) {
+    const itemId = target.dataset.itemId;
+    const item = this.document.items.get(itemId);
+    if ( !item ) return;
+
+    // Clear spellbookId on any spells referencing this spellbook
+    const updates = [];
+    for ( const spell of (this.document.itemTypes.spell || []) ) {
+      if ( spell.system.spellbookId === itemId ) {
+        updates.push({ _id: spell.id, "system.spellbookId": "" });
+      }
+    }
+    if ( updates.length ) await this.document.updateEmbeddedDocuments("Item", updates);
+    await item.delete();
+  }
+
+  /**
+   * Add a new scroll item to the actor. Shows a dialog to pick which spell to scribe.
+   */
+  static async #onAddScroll(event, target) {
+    const spellItems = this.document.itemTypes.spell || [];
+    if ( !spellItems.length ) {
+      ui.notifications.warn(game.i18n.localize("TB2E.Scroll.NoSpells"));
+      return;
+    }
+    const options = spellItems.map(s => `<option value="${s.id}">${s.name}</option>`).join("");
+    const content = `<form><div class="form-group"><label>${game.i18n.localize("TB2E.Scroll.ChooseSpell")}</label><select name="spellId">${options}</select></div></form>`;
+    const spellId = await foundry.applications.api.DialogV2.prompt({
+      window: { title: game.i18n.localize("TB2E.Scroll.AddScroll") },
+      content,
+      ok: {
+        label: game.i18n.localize("TB2E.Scroll.AddScroll"),
+        icon: "fa-solid fa-scroll",
+        callback: (event, button, dialog) => button.form?.elements.spellId?.value
+      }
+    });
+    if ( !spellId ) return;
+    const spell = this.document.items.get(spellId);
+    if ( !spell ) return;
+    await Item.create({
+      name: `Scroll of ${spell.name}`,
+      type: "scroll",
+      img: "icons/sundries/scrolls/scroll-bound-ruby-red.webp",
+      system: { spellId: spell.id, cost: 1, slotOptions: { pack: 1, carried: 1 } }
+    }, { parent: this.document });
+  }
+
+  /**
+   * Delete a scroll item from the actor.
+   */
+  static async #onDeleteScroll(event, target) {
+    const itemId = target.dataset.itemId;
+    const item = this.document.items.get(itemId);
+    if ( item ) await item.delete();
+  }
+
+  /**
+   * Add a new blank invocation item to the actor.
+   */
+  static async #onAddInvocation(event, target) {
+    await Item.create({
+      name: "New Invocation",
+      type: "invocation",
+      img: "icons/magic/holy/prayer-hands-glowing-yellow.webp"
+    }, { parent: this.document });
+  }
+
+  /**
+   * Delete an invocation item from the actor.
+   */
+  static async #onDeleteInvocation(event, target) {
+    const itemId = target.dataset.itemId;
+    const item = this.document.items.get(itemId);
+    if ( item ) await item.delete();
+  }
+
+  /**
+   * Perform an invocation. Delegates to the invocation-casting flow.
+   */
+  static async #onPerformInvocation(event, target) {
+    const itemId = target.dataset.itemId;
+    const item = this.document.items.get(itemId);
+    if ( !item ) return;
+    return performInvocation(this.document, item);
+  }
+
+  static async #onAddRelic(event, target) {
+    await Item.create({
+      name: "New Relic",
+      type: "relic",
+      img: "icons/sundries/misc/gem-faceted-round-white.webp"
+    }, { parent: this.document });
+  }
+
+  static async #onDeleteRelic(event, target) {
+    const itemId = target.dataset.itemId;
+    const item = this.document.items.get(itemId);
+    if ( item ) await item.delete();
+  }
+
+  /**
+   * Cast a spell. Determines casting source and delegates to the casting flow.
+   */
+  static async #onCastSpell(event, target) {
+    const itemId = target.dataset.itemId;
+    const item = this.document.items.get(itemId);
+    if ( !item ) return;
+
+    // Skill-swap spells don't consume a source
+    if ( item.system.castingType === "skillSwap" ) {
+      return castSpell(this.document, item, "memory");
+    }
+
+    // Determine available sources
+    const sources = [];
+    if ( item.system.memorized ) sources.push({ action: "memory", label: game.i18n.localize("TB2E.Spell.CastFromMemory"), icon: "fa-solid fa-brain" });
+    if ( item.system.spellbookId ) sources.push({ action: "spellbook", label: game.i18n.localize("TB2E.Spell.CastFromSpellbook"), icon: "fa-solid fa-book" });
+    const scrollsForSpell = (this.document.itemTypes.scroll || []).filter(s => s.system.spellId === item.id);
+    if ( scrollsForSpell.length ) sources.push({ action: "scroll", label: game.i18n.localize("TB2E.Spell.CastFromScroll"), icon: "fa-solid fa-scroll" });
+
+    if ( sources.length === 0 ) {
+      ui.notifications.warn(game.i18n.localize("TB2E.Spell.NotMemorizedOrScroll"));
+      return;
+    }
+
+    let source;
+    if ( sources.length === 1 ) {
+      source = sources[0].action;
+    } else {
+      source = await foundry.applications.api.DialogV2.wait({
+        window: { title: game.i18n.localize("TB2E.Spell.CastSource") },
+        content: `<p>${game.i18n.localize("TB2E.Spell.CastSourcePrompt")}</p>`,
+        buttons: sources.map(s => ({ action: s.action, label: s.label, icon: s.icon })),
+        close: () => null
+      });
+      if ( !source ) return;
+    }
+
+    const opts = {};
+    if ( source === "scroll" && scrollsForSpell.length ) opts.scrollItemId = scrollsForSpell[0].id;
+    return castSpell(this.document, item, source, opts);
+  }
+
+  /* -------------------------------------------- */
   /*  Inventory Action Handlers                   */
   /* -------------------------------------------- */
 
@@ -1150,18 +1653,175 @@ export default class CharacterSheet extends HandlebarsApplicationMixin(ActorShee
   static async #onConsumePortion(event, target) {
     const itemId = target.dataset.itemId;
     const item = this.document.items.get(itemId);
-    if ( !item || item.system.portions <= 0 ) return;
-    await item.update({ "system.portions": item.system.portions - 1 });
+    if ( !item || item.system.quantity <= 0 ) return;
+    await item.update({ "system.quantity": item.system.quantity - 1 });
+    // Clear Hungry & Thirsty if active
+    if ( this.document.system.conditions.hungry ) {
+      await this.document.update({ "system.conditions.hungry": false });
+    }
   }
 
   /**
-   * Consume a turn of a light source.
+   * Drink a draught from a liquid container.
+   */
+  static async #onDrinkDraught(event, target) {
+    const itemId = target.dataset.itemId;
+    const item = this.document.items.get(itemId);
+    if ( !item || item.system.quantity <= 0 ) return;
+
+    const liquidType = item.system.liquidType ?? "water";
+
+    // Oil and holy water: just decrement, no condition effect
+    if ( liquidType === "oil" || liquidType === "holyWater" ) {
+      await item.update({ "system.quantity": item.system.quantity - 1 });
+      return;
+    }
+
+    // Wine: present a choice dialog
+    if ( liquidType === "wine" ) {
+      const choice = await foundry.applications.api.DialogV2.wait({
+        window: { title: game.i18n.localize("TB2E.Liquid.DrinkWineTitle") },
+        content: `<p>${game.i18n.localize("TB2E.Liquid.DrinkWineContent")}</p>`,
+        buttons: [
+          {
+            action: "quench",
+            label: game.i18n.localize("TB2E.Liquid.QuenchThirst"),
+            icon: "fa-solid fa-droplet"
+          },
+          {
+            action: "bolster",
+            label: game.i18n.localize("TB2E.Liquid.BolsterSpirit"),
+            icon: "fa-solid fa-wine-glass"
+          }
+        ],
+        close: () => null
+      });
+      if ( !choice ) return;
+      await item.update({ "system.quantity": item.system.quantity - 1 });
+      if ( choice === "quench" ) {
+        if ( this.document.system.conditions.hungry ) {
+          await this.document.update({ "system.conditions.hungry": false });
+        }
+      } else if ( choice === "bolster" ) {
+        await this.document.setFlag("tb2e", "wineBolster", true);
+        ui.notifications.info(`${this.document.name} is bolstered by wine (+1D to recover from Angry or Afraid).`);
+      }
+      return;
+    }
+
+    // Water (default): clear Hungry & Thirsty
+    await item.update({ "system.quantity": item.system.quantity - 1 });
+    if ( this.document.system.conditions.hungry ) {
+      await this.document.update({ "system.conditions.hungry": false });
+    }
+  }
+
+  /**
+   * Toggle the liquid type of a container between water and wine.
+   */
+  static async #onToggleLiquidType(event, target) {
+    const itemId = target.dataset.itemId;
+    const item = this.document.items.get(itemId);
+    if ( !item ) return;
+    const current = item.system.liquidType ?? "water";
+    const next = current === "water" ? "wine" : "water";
+    await item.update({ "system.liquidType": next });
+  }
+
+  /**
+   * Consume a turn of a lit light source.
    */
   static async #onConsumeLight(event, target) {
     const itemId = target.dataset.itemId;
     const item = this.document.items.get(itemId);
     if ( !item || item.system.turnsRemaining <= 0 ) return;
     await item.update({ "system.turnsRemaining": item.system.turnsRemaining - 1 });
+  }
+
+  /**
+   * Light a source from a bundle: decrement bundle quantity, create a lit item, auto-place in hand.
+   */
+  static async #onLightSource(event, target) {
+    const itemId = target.dataset.itemId;
+    const item = this.document.items.get(itemId);
+    if ( !item || item.system.quantity <= 0 ) return;
+
+    // Decrement bundle quantity
+    await item.update({ "system.quantity": item.system.quantity - 1 });
+
+    // Create lit item
+    const singularName = item.system.nameSingular || item.name;
+    const [created] = await Item.create([{
+      name: singularName,
+      type: "supply",
+      img: item.img,
+      system: {
+        description: item.system.description,
+        slotOptions: { carried: 1 },
+        cost: 0,
+        quantity: 1, quantityMax: 1,
+        supplyType: "light",
+        turnsRemaining: item.system.turnsRemaining,
+        lit: true,
+        nameSingular: singularName,
+        skillBonuses: []
+      }
+    }], { parent: this.document });
+
+    // Try to auto-place in a hand carried slot
+    const carriedCost = getSlotCost(created.system.slotOptions, "carried");
+    if ( carriedCost !== null ) {
+      for ( const handKey of ["hand-L", "hand-R"] ) {
+        const occupants = this.document.items.filter(i =>
+          i.system.slot === handKey && i.id !== created.id
+        );
+        const blocked = occupants.some(i => {
+          const start = i.system.slotIndex ?? 0;
+          const optKey = resolveSlotOptionKey(handKey, start, false);
+          const cost = getSlotCost(i.system.slotOptions, optKey) ?? 1;
+          return start < 1 + carriedCost && start + cost > 1;
+        });
+        if ( !blocked ) {
+          await this.#assignSlot(created, handKey, 1);
+          return;
+        }
+      }
+    }
+    ui.notifications.info(`${singularName} is lit but both hands are full.`);
+  }
+
+  /**
+   * Move an item to the first available hand carried slot.
+   */
+  static async #onMoveToHand(event, target) {
+    const itemId = target.dataset.itemId;
+    const item = this.document.items.get(itemId);
+    if ( !item ) return;
+
+    // Check item can be carried.
+    if ( getSlotCost(item.system.slotOptions, "carried") === null ) {
+      ui.notifications.warn("This item cannot be carried in hand.");
+      return;
+    }
+
+    // Try each hand — check if index 1 is free (no item starts at or spans over it).
+    const carriedCost = getSlotCost(item.system.slotOptions, "carried");
+    for ( const handKey of ["hand-L", "hand-R"] ) {
+      const occupants = this.document.items.filter(i =>
+        i.system.slot === handKey && i.id !== item.id
+      );
+      const blocked = occupants.some(i => {
+        const start = i.system.slotIndex ?? 0;
+        const optKey = resolveSlotOptionKey(handKey, start, false);
+        const cost = getSlotCost(i.system.slotOptions, optKey) ?? 1;
+        return start < 1 + carriedCost && start + cost > 1;
+      });
+      if ( !blocked ) {
+        await this.#assignSlot(item, handKey, 1);
+        return;
+      }
+    }
+    ui.notifications.warn("Both hands are full.");
   }
 
   /**
@@ -1201,12 +1861,162 @@ export default class CharacterSheet extends HandlebarsApplicationMixin(ActorShee
   /* -------------------------------------------- */
 
   /**
+   * Place an unassigned or dropped item into a specific slot via click.
+   */
+  static async #onPlaceItem(event, target) {
+    const itemId = target.dataset.itemId;
+    const item = this.document.items.get(itemId);
+    if ( !item ) return;
+    const slotKey = target.dataset.slotKey;
+    const slotIndex = Number(target.dataset.slotIndex);
+    await this.#assignSlot(item, slotKey, slotIndex);
+  }
+
+  /* -------------------------------------------- */
+
+  /**
+   * Compute available placement targets for an item.
+   * Returns an array of { slotKey, slotIndex, label } objects.
+   * @param {Item} item
+   * @returns {object[]}
+   */
+  #getAvailablePlacements(item) {
+    const so = item.system.slotOptions;
+    const placements = [];
+
+    // Map each SLOT_OPTION_KEY to concrete slot keys.
+    const optionToSlots = {
+      head: ["head"],
+      neck: ["neck"],
+      wornHand: [{ key: "hand-L", index: 0 }, { key: "hand-R", index: 0 }],
+      carried: [{ key: "hand-L", index: 1 }, { key: "hand-R", index: 1 }],
+      torso: ["torso"],
+      belt: ["belt"],
+      feet: ["feet"],
+      pocket: ["pocket"]
+    };
+
+    // Check fixed slots.
+    for ( const [optKey, targets] of Object.entries(optionToSlots) ) {
+      const cost = getSlotCost(so, optKey);
+      if ( cost === null ) continue;
+
+      // Belt restriction: no bundled items.
+      if ( optKey === "belt" && (item.system.quantityMax ?? 1) > 1 ) continue;
+
+      for ( const target of targets ) {
+        const slotKey = typeof target === "string" ? target : target.key;
+        const fixedIndex = typeof target === "string" ? null : target.index;
+        const slotIndex = fixedIndex ?? this.#findFirstFit(item, slotKey, cost);
+        if ( slotIndex === null ) continue;
+        placements.push({ slotKey, slotIndex, label: this.#slotLabel(slotKey, fixedIndex), cost });
+      }
+    }
+
+    // Check pack slots (containers only — not cache).
+    const packCost = getSlotCost(so, "pack");
+    if ( packCost !== null ) {
+      // Equipped containers.
+      const containers = (this.document.itemTypes.container || []).filter(c =>
+        c.system.slot && !c.system.dropped && !c.system.lost
+      );
+      for ( const c of containers ) {
+        const cType = CONFIG.TB2E.containerTypes[c.system.containerType];
+        if ( cType?.liquid ) continue;
+        const cKey = c.system.containerKey || `container-${c.id}`;
+        const slotIndex = this.#findFirstFit(item, cKey, packCost);
+        if ( slotIndex !== null ) {
+          placements.push({ slotKey: cKey, slotIndex, label: c.name, cost: packCost });
+        }
+      }
+    }
+
+    // Cache — any item can be stashed.
+    const cacheCost = getCacheCost(so);
+    const cacheIndex = this.#findFirstFit(item, "cache", cacheCost);
+    if ( cacheIndex !== null ) {
+      placements.push({ slotKey: "cache", slotIndex: cacheIndex, label: "Cache", cost: cacheCost });
+    }
+
+    return placements;
+  }
+
+  /**
+   * Find the first slot index in a group where an item of the given cost fits.
+   * @param {Item} item - The item to place (excluded from occupant checks).
+   * @param {string} slotKey - The slot group key.
+   * @param {number} cost - Number of slots needed.
+   * @returns {number|null} The first valid slot index, or null if none fits.
+   */
+  #findFirstFit(item, slotKey, cost) {
+    const capacity = this.#getSlotCapacity(slotKey);
+    if ( capacity === null ) return null;
+    const isContainer = !["head", "neck", "hand-L", "hand-R", "torso", "belt", "feet", "pocket"].includes(slotKey)
+      && slotKey !== "cache";
+
+    const occupants = this.document.items.filter(i =>
+      i.system.slot === slotKey && i.id !== item.id
+    );
+
+    // Build an occupied-ranges array.
+    const occupied = occupants.map(i => {
+      const start = i.system.slotIndex ?? 0;
+      const occOptKey = resolveSlotOptionKey(slotKey, start, isContainer);
+      const occCost = getSlotCost(i.system.slotOptions, occOptKey) ?? 1;
+      return { start, end: start + occCost };
+    });
+
+    for ( let idx = 0; idx + cost <= capacity; idx++ ) {
+      const end = idx + cost;
+      const blocked = occupied.some(o => idx < o.end && end > o.start);
+      if ( !blocked ) return idx;
+    }
+    return null;
+  }
+
+  /**
+   * Human-readable label for a concrete slot key.
+   * @param {string} slotKey
+   * @param {number|null} fixedIndex - If provided, refines the label (e.g. worn vs carried).
+   * @returns {string}
+   */
+  #slotLabel(slotKey, fixedIndex = null) {
+    if ( slotKey === "hand-L" ) return fixedIndex === 0 ? "Worn L" : "L Hand";
+    if ( slotKey === "hand-R" ) return fixedIndex === 0 ? "Worn R" : "R Hand";
+    const fixed = {
+      head: "Head", neck: "Neck", torso: "Torso",
+      belt: "Belt", feet: "Feet", pocket: "Pocket", cache: "Cache"
+    };
+    if ( fixed[slotKey] ) return fixed[slotKey];
+    const container = this.document.items.find(i =>
+      i.type === "container" && (i.system.containerKey || `container-${i.id}`) === slotKey
+    );
+    return container?.name ?? slotKey;
+  }
+
+  /* -------------------------------------------- */
+
+  /**
    * Assign an item to a slot. Validates capacity.
    * @param {Item} item
    * @param {string} slotKey
    * @param {number} slotIndex
    */
   async #assignSlot(item, slotKey, slotIndex) {
+    // Determine whether this is a container slot.
+    const isContainer = !["head", "neck", "hand-L", "hand-R", "torso", "belt", "feet", "pocket"].includes(slotKey);
+
+    // Resolve which slotOptions key applies and check placement is allowed.
+    const optionKey = resolveSlotOptionKey(slotKey, slotIndex, isContainer);
+    let needed = getSlotCost(item.system.slotOptions, optionKey);
+    if ( needed === null && slotKey === "cache" ) {
+      needed = getCacheCost(item.system.slotOptions);
+    }
+    if ( needed === null ) {
+      ui.notifications.warn(`This item cannot be placed in ${slotKey}.`);
+      return;
+    }
+
     // Find how many slots are already occupied in this group.
     const occupants = this.document.items.filter(i =>
       i.system.slot === slotKey && i.id !== item.id
@@ -1216,9 +2026,11 @@ export default class CharacterSheet extends HandlebarsApplicationMixin(ActorShee
     const groupCapacity = this.#getSlotCapacity(slotKey);
     if ( groupCapacity === null ) return;
 
-    // Check available space.
-    const usedSlots = occupants.reduce((sum, i) => sum + (i.system.slotsRequired ?? 1), 0);
-    const needed = item.system.slotsRequired ?? 1;
+    // Check available space — resolve each occupant's cost at this location.
+    const usedSlots = occupants.reduce((sum, i) => {
+      const occOptKey = resolveSlotOptionKey(slotKey, i.system.slotIndex ?? 0, isContainer);
+      return sum + (getSlotCost(i.system.slotOptions, occOptKey) ?? 1);
+    }, 0);
     if ( usedSlots + needed > groupCapacity ) {
       ui.notifications.warn("Not enough room in that slot.");
       return;
@@ -1233,7 +2045,8 @@ export default class CharacterSheet extends HandlebarsApplicationMixin(ActorShee
     // Check positional fit: item must not overlap with existing occupants.
     for ( const occ of occupants ) {
       const occStart = occ.system.slotIndex ?? 0;
-      const occEnd = occStart + (occ.system.slotsRequired ?? 1);
+      const occOptKey = resolveSlotOptionKey(slotKey, occStart, isContainer);
+      const occEnd = occStart + (getSlotCost(occ.system.slotOptions, occOptKey) ?? 1);
       if ( slotIndex < occEnd && slotIndex + needed > occStart ) {
         ui.notifications.warn("Not enough room at that position.");
         return;
@@ -1261,7 +2074,7 @@ export default class CharacterSheet extends HandlebarsApplicationMixin(ActorShee
   #getSlotCapacity(slotKey) {
     const fixedCapacities = {
       head: 1, neck: 1, "hand-L": 2, "hand-R": 2,
-      torso: 3, belt: 3, feet: 1, pocket: 2
+      torso: 3, belt: 3, feet: 1, pocket: 1, cache: 12
     };
     if ( slotKey in fixedCapacities ) return fixedCapacities[slotKey];
 
@@ -1279,51 +2092,27 @@ export default class CharacterSheet extends HandlebarsApplicationMixin(ActorShee
   /* -------------------------------------------- */
 
   /** @override */
-  _onDragStart(event) {
-    const target = event.currentTarget;
-    const itemId = target.dataset.itemId;
-    if ( itemId ) {
-      event.dataTransfer.setData("text/plain", JSON.stringify({
-        type: "Item",
-        uuid: this.document.items.get(itemId)?.uuid
-      }));
-    } else {
-      super._onDragStart(event);
-    }
-  }
-
-  /** @override */
-  async _onDrop(event) {
-    const data = TextEditor.implementation.getDragEventData(event);
-    if ( !data ) return super._onDrop(event);
-
+  async _onDropItem(event, item) {
     // Find the drop target slot.
     const dropTarget = event.target.closest("[data-slot-key]");
 
-    if ( data.type === "Item" ) {
-      // Item from sidebar/compendium or from within the sheet.
-      const item = await fromUuid(data.uuid);
-      if ( !item ) return;
-
-      // If the item is from another source, create it on this actor first.
-      let ownedItem;
-      if ( item.parent?.id === this.document.id ) {
-        ownedItem = item;
-      } else {
-        const created = await this.document.createEmbeddedDocuments("Item", [item.toObject()]);
-        ownedItem = created[0];
-      }
-
-      // If dropped onto a slot, assign it.
-      if ( dropTarget ) {
-        const slotKey = dropTarget.dataset.slotKey;
-        const slotIndex = Number(dropTarget.dataset.slotIndex ?? 0);
-        await this.#assignSlot(ownedItem, slotKey, slotIndex);
-      }
-      return;
+    // If the item is from another source, create it on this actor first.
+    let ownedItem;
+    if ( this.actor.uuid === item.parent?.uuid ) {
+      ownedItem = item;
+    } else {
+      const result = await super._onDropItem(event, item);
+      ownedItem = result;
     }
+    if ( !ownedItem ) return null;
 
-    return super._onDrop(event);
+    // If dropped onto a slot, assign it.
+    if ( dropTarget ) {
+      const slotKey = dropTarget.dataset.slotKey;
+      const slotIndex = Number(dropTarget.dataset.slotIndex ?? 0);
+      await this.#assignSlot(ownedItem, slotKey, slotIndex);
+    }
+    return ownedItem;
   }
 
   /* -------------------------------------------- */

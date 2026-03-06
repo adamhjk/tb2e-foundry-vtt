@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 280">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0.2" y2="1">
+      <stop offset="0%" stop-color="#fff1f2"/>
+      <stop offset="40%" stop-color="#f5f7fa"/>
+    </linearGradient>
+  </defs>
+  <!-- Card body -->
+  <rect x="0" y="0" width="200" height="280" rx="12" ry="12" fill="url(#bg)" stroke="#fecdd3" stroke-width="1"/>
+  <!-- Inner frame -->
+  <rect x="4" y="4" width="192" height="272" rx="8" ry="8" fill="none" stroke="#fecdd3" stroke-width="1" opacity="0.25"/>
+  <!-- Watermark circle -->
+  <circle cx="100" cy="132" r="40" fill="#be123c" opacity="0.06"/>
+  <!-- Sword icon -->
+  <g transform="translate(100,130)" fill="none" stroke="#be123c" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+    <!-- Blade -->
+    <line x1="0" y1="-40" x2="0" y2="18"/>
+    <!-- Blade tip -->
+    <path d="M-5 -35 L0 -45 L5 -35"/>
+    <!-- Crossguard -->
+    <line x1="-16" y1="14" x2="16" y2="14"/>
+    <!-- Crossguard ends -->
+    <circle cx="-16" cy="14" r="2.5" fill="#be123c"/>
+    <circle cx="16" cy="14" r="2.5" fill="#be123c"/>
+    <!-- Grip -->
+    <line x1="0" y1="18" x2="0" y2="32"/>
+    <!-- Pommel -->
+    <circle cx="0" cy="35" r="4" fill="#be123c"/>
+  </g>
+  <!-- Label -->
+  <text x="100" y="195" text-anchor="middle" font-family="serif" font-size="14" font-weight="600"
+        fill="#be123c" letter-spacing="0.1em" style="text-transform:uppercase">ATTACK</text>
+  <!-- Top-left pip -->
+  <g fill="#be123c" opacity="0.6">
+    <text x="16" y="26" font-family="serif" font-size="16" font-weight="700" text-anchor="middle">A</text>
+    <!-- Mini sword -->
+    <line x1="16" y1="30" x2="16" y2="44" stroke="#be123c" stroke-width="1.5" stroke-linecap="round"/>
+    <line x1="12" y1="38" x2="20" y2="38" stroke="#be123c" stroke-width="1.5" stroke-linecap="round"/>
+  </g>
+  <!-- Bottom-right pip (rotated) -->
+  <g fill="#be123c" opacity="0.6" transform="rotate(180 100 140)">
+    <text x="16" y="26" font-family="serif" font-size="16" font-weight="700" text-anchor="middle">A</text>
+    <line x1="16" y1="30" x2="16" y2="44" stroke="#be123c" stroke-width="1.5" stroke-linecap="round"/>
+    <line x1="12" y1="38" x2="20" y2="38" stroke="#be123c" stroke-width="1.5" stroke-linecap="round"/>
+  </g>
+</svg>

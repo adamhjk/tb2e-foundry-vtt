@@ -1,0 +1,43 @@
+_id: a1b2c3d4e5f63003
+name: Beast Cloak
+type: spell
+img: icons/magic/light/orb-lightning-blue.webp
+system:
+  description: "<p>Whispering their own secret name in the language of spirits, the magician pulls a cloak of aether about themselves and assumes a new form.</p><p>This spell transforms the magician into a falcon, mouse, cat or eel (choose one when the spell is learned; if you have the Middarmark Gazetteer, they transform into their fylgja).</p><p>When transformed, the magician replaces their Nature descriptors with the beast's and gains a level 1 trait. The magician keeps their own mental faculties and skills, but may only perform skills of which their new form is capable.</p><p>Falcon: Seeing, Flying, Hunting. Trait: Agile (in flight).</p><p>Mouse: Hiding, Foraging, Climbing. Trait: Meek.</p><p>Cat: Pouncing, Stalking, Climbing. Trait: Sensual.</p><p>Eel: Burrowing, Escaping, Swimming. Trait: Slippery.</p>"
+  circle: 3
+  castingType: fixed
+  fixedObstacle: 3
+  obstacleNote: ""
+  castingTime: free
+  duration: "Variable (one turn plus margin of success)"
+  factors: []
+  factorNote: ""
+  swapSkill: ""
+  swapConflictTypes: []
+  versusDefense: ""
+  mightPenalty: false
+  materials: ""
+  focus: "A cloak made from the skins of your chosen beast [worn/torso 1]"
+  scribeObstacle: 2
+  learnObstacle: 3
+  conflictBonuses:
+    attack:
+      type: dice
+      value: 0
+    defend:
+      type: dice
+      value: 0
+    feint:
+      type: dice
+      value: 0
+    maneuver:
+      type: dice
+      value: 0
+  conflictQualities: []
+  specialRules: ""
+  library: false
+  spellbook: false
+  memorized: false
+  cast: false
+  scroll: false
+_key: '!items!a1b2c3d4e5f63003'

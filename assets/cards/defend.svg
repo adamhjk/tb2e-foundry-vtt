@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 280">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0.2" y2="1">
+      <stop offset="0%" stop-color="#eff6ff"/>
+      <stop offset="40%" stop-color="#f5f7fa"/>
+    </linearGradient>
+  </defs>
+  <!-- Card body -->
+  <rect x="0" y="0" width="200" height="280" rx="12" ry="12" fill="url(#bg)" stroke="#bfdbfe" stroke-width="1"/>
+  <!-- Inner frame -->
+  <rect x="4" y="4" width="192" height="272" rx="8" ry="8" fill="none" stroke="#bfdbfe" stroke-width="1" opacity="0.25"/>
+  <!-- Watermark circle -->
+  <circle cx="100" cy="130" r="40" fill="#1d4ed8" opacity="0.06"/>
+  <!-- Shield icon -->
+  <g transform="translate(100,128)" fill="none" stroke="#1d4ed8" stroke-width="3" stroke-linejoin="round">
+    <path d="M0 -38 L28 -24 L28 4 Q28 28 0 42 Q-28 28 -28 4 L-28 -24 Z" fill="#1d4ed8" fill-opacity="0.08"/>
+    <path d="M0 -38 L28 -24 L28 4 Q28 28 0 42 Q-28 28 -28 4 L-28 -24 Z"/>
+    <!-- Shield cross -->
+    <line x1="0" y1="-28" x2="0" y2="32" stroke="#1d4ed8" stroke-width="2" opacity="0.3"/>
+    <line x1="-20" y1="0" x2="20" y2="0" stroke="#1d4ed8" stroke-width="2" opacity="0.3"/>
+  </g>
+  <!-- Label -->
+  <text x="100" y="195" text-anchor="middle" font-family="serif" font-size="14" font-weight="600"
+        fill="#1d4ed8" letter-spacing="0.1em" style="text-transform:uppercase">DEFEND</text>
+  <!-- Top-left pip -->
+  <g fill="#1d4ed8" opacity="0.6">
+    <text x="16" y="26" font-family="serif" font-size="16" font-weight="700" text-anchor="middle">D</text>
+    <!-- Mini shield -->
+    <path d="M16 30 L22 33 L22 39 Q22 44 16 47 Q10 44 10 39 L10 33 Z"
+          fill="none" stroke="#1d4ed8" stroke-width="1.2"/>
+  </g>
+  <!-- Bottom-right pip (rotated) -->
+  <g fill="#1d4ed8" opacity="0.6" transform="rotate(180 100 140)">
+    <text x="16" y="26" font-family="serif" font-size="16" font-weight="700" text-anchor="middle">D</text>
+    <path d="M16 30 L22 33 L22 39 Q22 44 16 47 Q10 44 10 39 L10 33 Z"
+          fill="none" stroke="#1d4ed8" stroke-width="1.2"/>
+  </g>
+</svg>

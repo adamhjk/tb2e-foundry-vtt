@@ -16,18 +16,44 @@
     <div class="inventory-column inventory-column-left">
       {{#each leftSlots}}
       <div class="inventory-slot-group" data-slot-group="{{key}}">
-        <h3 class="slot-heading">{{label}} <span class="slot-count">({{count}})</span></h3>
+        <h3 class="slot-heading">
+          {{label}} <span class="slot-count">({{count}})</span>
+          {{#if (eq key "head")}}
+          <label class="slot-checkbox"><input type="checkbox" name="system.inventory.headDamage" {{checked headDamage}}> {{localize "TB2E.Inventory.HeadDamage"}}</label>
+          {{/if}}
+        </h3>
         <div class="slot-list">
           {{#each slots}}
-          <div class="inventory-slot{{#unless occupied}} empty{{/unless}}{{#if damaged}} damaged{{/if}}{{#if isSpanContinuation}} span-continuation{{/if}}" data-slot-key="{{../key}}" data-slot-index="{{@index}}" draggable="{{#if isSpanStart}}true{{else}}{{#unless occupied}}false{{else}}false{{/unless}}{{/if}}"{{#if occupied}} data-item-id="{{itemId}}"{{/if}}>
+          <div class="inventory-slot{{#unless occupied}} empty{{/unless}}{{#if damaged}} damaged{{/if}}{{#if isSpanContinuation}} span-continuation{{/if}}{{#if isSpanStart}} draggable{{/if}}" data-slot-key="{{../key}}" data-slot-index="{{@index}}"{{#if occupied}} data-item-id="{{itemId}}"{{/if}}>
             {{#if isSpanContinuation}}
             <span class="slot-item span-connector">
               <span class="slot-item-name continuation-label">{{name}}</span>
             </span>
             {{else if occupied}}
-            <span class="slot-item">
-              <span class="slot-item-name">{{name}}</span>
-              {{#if hasQuantity}}<span class="slot-qty">{{quantity}}/{{quantityMax}}</span>{{/if}}
+            <span class="slot-item" title="{{notation}}">
+              <span class="slot-item-name">{{#if lit}}{{#if nameSingular}}{{nameSingular}}{{else}}{{name}}{{/if}}{{else}}{{name}}{{/if}}</span>
+              {{#if isFood}}
+              <span class="slot-food-qty">
+                <button type="button" class="slot-consume-btn" data-action="consumePortion" data-item-id="{{itemId}}" title="Eat"><i class="fa-solid fa-utensils"></i></button>
+                <input type="number" class="slot-qty-input" value="{{quantity}}" min="0" max="{{quantityMax}}" data-action="updateFoodQty" data-item-id="{{itemId}}" data-field="quantity">/<input type="number" class="slot-qty-input" value="{{quantityMax}}" min="1" data-action="updateFoodQty" data-item-id="{{itemId}}" data-field="quantityMax">
+              </span>
+              {{else if isLight}}
+              <span class="slot-light-qty">
+                {{#if lit}}
+                <button type="button" class="slot-consume-btn" data-action="consumeLight" data-item-id="{{itemId}}" title="Use 1 turn"><i class="fa-solid fa-fire"></i></button>
+                <input type="number" class="slot-qty-input" value="{{turnsRemaining}}" min="0" data-item-id="{{itemId}}" data-field="turnsRemaining">t
+                {{else}}
+                <button type="button" class="slot-consume-btn" data-action="lightSource" data-item-id="{{itemId}}" title="Light"><i class="fa-solid fa-fire"></i></button>
+                <input type="number" class="slot-qty-input" value="{{quantity}}" min="0" max="{{quantityMax}}" data-item-id="{{itemId}}" data-field="quantity">/<input type="number" class="slot-qty-input" value="{{quantityMax}}" min="1" data-item-id="{{itemId}}" data-field="quantityMax">
+                {{/if}}
+              </span>
+              {{else if isLiquidContainer}}
+              <span class="slot-liquid-qty">
+                <button type="button" class="slot-liquid-toggle" data-action="toggleLiquidType" data-item-id="{{itemId}}" title="Toggle liquid type">{{liquidTypeLabel}}</button>
+                <button type="button" class="slot-consume-btn" data-action="drinkDraught" data-item-id="{{itemId}}" title="Drink"><i class="fa-solid fa-droplet"></i></button>
+                <input type="number" class="slot-qty-input" value="{{quantity}}" min="0" max="{{quantityMax}}" data-item-id="{{itemId}}" data-field="quantity">/<input type="number" class="slot-qty-input" value="{{quantityMax}}" min="1" data-item-id="{{itemId}}" data-field="quantityMax">
+              </span>
+              {{else if hasQuantity}}<span class="slot-qty">{{quantity}}/{{quantityMax}}</span>{{/if}}
               {{#if damaged}}<i class="fa-solid fa-heart-crack slot-badge damaged-badge" title="Damaged"></i>{{/if}}
             </span>
             <span class="slot-actions">
@@ -35,7 +61,11 @@
               <button type="button" class="slot-action-btn" data-action="removeFromSlot" data-item-id="{{itemId}}" title="Remove"><i class="fa-solid fa-xmark"></i></button>
             </span>
             {{else}}
+            {{#if (lookup ../sublabels @index)}}
+            <span class="slot-sublabel">{{lookup ../sublabels @index}}</span>
+            {{else}}
             <span class="slot-empty">&mdash;</span>
+            {{/if}}
             {{/if}}
           </div>
           {{/each}}
@@ -47,24 +77,43 @@
     {{!-- Right Column: Storage Slots --}}
     <div class="inventory-column inventory-column-right">
       {{#each rightSlots}}
-      <div class="inventory-slot-group{{#if isContainer}} container-group{{/if}}" data-slot-group="{{key}}">
-        <h3 class="slot-heading">
-          {{label}} <span class="slot-count">({{count}})</span>
-          {{#if isContainer}}
-          <button type="button" class="slot-action-btn container-remove-btn" data-action="removeFromSlot" data-item-id="{{containerId}}" title="Remove container"><i class="fa-solid fa-xmark"></i></button>
-          {{/if}}
-        </h3>
+      {{#if isCache}}
+      <details class="inventory-slot-group cache-group" data-slot-group="{{key}}">
+        <summary class="slot-heading cache-heading">
+          {{label}} <span class="slot-count">({{occupiedCount}}/{{count}})</span>
+        </summary>
         <div class="slot-list">
           {{#each slots}}
-          <div class="inventory-slot{{#unless occupied}} empty{{/unless}}{{#if damaged}} damaged{{/if}}{{#if isSpanContinuation}} span-continuation{{/if}}" data-slot-key="{{../key}}" data-slot-index="{{@index}}" draggable="{{#if isSpanStart}}true{{else}}{{#unless occupied}}false{{else}}false{{/unless}}{{/if}}"{{#if occupied}} data-item-id="{{itemId}}"{{/if}}>
+          <div class="inventory-slot{{#unless occupied}} empty{{/unless}}{{#if damaged}} damaged{{/if}}{{#if isSpanContinuation}} span-continuation{{/if}}{{#if isSpanStart}} draggable{{/if}}" data-slot-key="{{../key}}" data-slot-index="{{@index}}"{{#if occupied}} data-item-id="{{itemId}}"{{/if}}>
             {{#if isSpanContinuation}}
             <span class="slot-item span-connector">
               <span class="slot-item-name continuation-label">{{name}}</span>
             </span>
             {{else if occupied}}
-            <span class="slot-item">
-              <span class="slot-item-name">{{name}}</span>
-              {{#if hasQuantity}}<span class="slot-qty">{{quantity}}/{{quantityMax}}</span>{{/if}}
+            <span class="slot-item" title="{{notation}}">
+              <span class="slot-item-name">{{#if lit}}{{#if nameSingular}}{{nameSingular}}{{else}}{{name}}{{/if}}{{else}}{{name}}{{/if}}</span>
+              {{#if isFood}}
+              <span class="slot-food-qty">
+                <button type="button" class="slot-consume-btn" data-action="consumePortion" data-item-id="{{itemId}}" title="Eat"><i class="fa-solid fa-utensils"></i></button>
+                <input type="number" class="slot-qty-input" value="{{quantity}}" min="0" max="{{quantityMax}}" data-action="updateFoodQty" data-item-id="{{itemId}}" data-field="quantity">/<input type="number" class="slot-qty-input" value="{{quantityMax}}" min="1" data-action="updateFoodQty" data-item-id="{{itemId}}" data-field="quantityMax">
+              </span>
+              {{else if isLight}}
+              <span class="slot-light-qty">
+                {{#if lit}}
+                <button type="button" class="slot-consume-btn" data-action="consumeLight" data-item-id="{{itemId}}" title="Use 1 turn"><i class="fa-solid fa-fire"></i></button>
+                <input type="number" class="slot-qty-input" value="{{turnsRemaining}}" min="0" data-item-id="{{itemId}}" data-field="turnsRemaining">t
+                {{else}}
+                <button type="button" class="slot-consume-btn" data-action="lightSource" data-item-id="{{itemId}}" title="Light"><i class="fa-solid fa-fire"></i></button>
+                <input type="number" class="slot-qty-input" value="{{quantity}}" min="0" max="{{quantityMax}}" data-item-id="{{itemId}}" data-field="quantity">/<input type="number" class="slot-qty-input" value="{{quantityMax}}" min="1" data-item-id="{{itemId}}" data-field="quantityMax">
+                {{/if}}
+              </span>
+              {{else if isLiquidContainer}}
+              <span class="slot-liquid-qty">
+                <button type="button" class="slot-liquid-toggle" data-action="toggleLiquidType" data-item-id="{{itemId}}" title="Toggle liquid type">{{liquidTypeLabel}}</button>
+                <button type="button" class="slot-consume-btn" data-action="drinkDraught" data-item-id="{{itemId}}" title="Drink"><i class="fa-solid fa-droplet"></i></button>
+                <input type="number" class="slot-qty-input" value="{{quantity}}" min="0" max="{{quantityMax}}" data-item-id="{{itemId}}" data-field="quantity">/<input type="number" class="slot-qty-input" value="{{quantityMax}}" min="1" data-item-id="{{itemId}}" data-field="quantityMax">
+              </span>
+              {{else if hasQuantity}}<span class="slot-qty">{{quantity}}/{{quantityMax}}</span>{{/if}}
               {{#if damaged}}<i class="fa-solid fa-heart-crack slot-badge damaged-badge" title="Damaged"></i>{{/if}}
             </span>
             <span class="slot-actions">
@@ -72,25 +121,80 @@
               <button type="button" class="slot-action-btn" data-action="removeFromSlot" data-item-id="{{itemId}}" title="Remove"><i class="fa-solid fa-xmark"></i></button>
             </span>
             {{else}}
+            {{#if (lookup ../sublabels @index)}}
+            <span class="slot-sublabel">{{lookup ../sublabels @index}}</span>
+            {{else}}
             <span class="slot-empty">&mdash;</span>
+            {{/if}}
+            {{/if}}
+          </div>
+          {{/each}}
+        </div>
+      </details>
+      {{else}}
+      <div class="inventory-slot-group{{#if isContainer}} container-group{{/if}}" data-slot-group="{{key}}">
+        <h3 class="slot-heading">
+          {{label}} <span class="slot-count">({{count}})</span>
+          {{#if (eq key "torso")}}
+          <label class="slot-checkbox"><input type="checkbox" name="system.inventory.torsoDamage" {{checked torsoDamage}}> {{localize "TB2E.Inventory.TorsoDamage"}}</label>
+          <label class="slot-checkbox"><input type="checkbox" name="system.inventory.torsoWeariness" {{checked torsoWeariness}}> {{localize "TB2E.Inventory.TorsoWeariness"}}</label>
+          {{/if}}
+          {{#if isContainer}}
+          <button type="button" class="slot-action-btn container-remove-btn" data-action="removeFromSlot" data-item-id="{{containerId}}" title="Remove container"><i class="fa-solid fa-xmark"></i></button>
+          {{/if}}
+        </h3>
+        <div class="slot-list">
+          {{#each slots}}
+          <div class="inventory-slot{{#unless occupied}} empty{{/unless}}{{#if damaged}} damaged{{/if}}{{#if isSpanContinuation}} span-continuation{{/if}}{{#if isSpanStart}} draggable{{/if}}" data-slot-key="{{../key}}" data-slot-index="{{@index}}"{{#if occupied}} data-item-id="{{itemId}}"{{/if}}>
+            {{#if isSpanContinuation}}
+            <span class="slot-item span-connector">
+              <span class="slot-item-name continuation-label">{{name}}</span>
+            </span>
+            {{else if occupied}}
+            <span class="slot-item" title="{{notation}}">
+              <span class="slot-item-name">{{#if lit}}{{#if nameSingular}}{{nameSingular}}{{else}}{{name}}{{/if}}{{else}}{{name}}{{/if}}</span>
+              {{#if isFood}}
+              <span class="slot-food-qty">
+                <button type="button" class="slot-consume-btn" data-action="consumePortion" data-item-id="{{itemId}}" title="Eat"><i class="fa-solid fa-utensils"></i></button>
+                <input type="number" class="slot-qty-input" value="{{quantity}}" min="0" max="{{quantityMax}}" data-action="updateFoodQty" data-item-id="{{itemId}}" data-field="quantity">/<input type="number" class="slot-qty-input" value="{{quantityMax}}" min="1" data-action="updateFoodQty" data-item-id="{{itemId}}" data-field="quantityMax">
+              </span>
+              {{else if isLight}}
+              <span class="slot-light-qty">
+                {{#if lit}}
+                <button type="button" class="slot-consume-btn" data-action="consumeLight" data-item-id="{{itemId}}" title="Use 1 turn"><i class="fa-solid fa-fire"></i></button>
+                <input type="number" class="slot-qty-input" value="{{turnsRemaining}}" min="0" data-item-id="{{itemId}}" data-field="turnsRemaining">t
+                {{else}}
+                <button type="button" class="slot-consume-btn" data-action="lightSource" data-item-id="{{itemId}}" title="Light"><i class="fa-solid fa-fire"></i></button>
+                <input type="number" class="slot-qty-input" value="{{quantity}}" min="0" max="{{quantityMax}}" data-item-id="{{itemId}}" data-field="quantity">/<input type="number" class="slot-qty-input" value="{{quantityMax}}" min="1" data-item-id="{{itemId}}" data-field="quantityMax">
+                {{/if}}
+              </span>
+              {{else if isLiquidContainer}}
+              <span class="slot-liquid-qty">
+                <button type="button" class="slot-liquid-toggle" data-action="toggleLiquidType" data-item-id="{{itemId}}" title="Toggle liquid type">{{liquidTypeLabel}}</button>
+                <button type="button" class="slot-consume-btn" data-action="drinkDraught" data-item-id="{{itemId}}" title="Drink"><i class="fa-solid fa-droplet"></i></button>
+                <input type="number" class="slot-qty-input" value="{{quantity}}" min="0" max="{{quantityMax}}" data-item-id="{{itemId}}" data-field="quantity">/<input type="number" class="slot-qty-input" value="{{quantityMax}}" min="1" data-item-id="{{itemId}}" data-field="quantityMax">
+              </span>
+              {{else if hasQuantity}}<span class="slot-qty">{{quantity}}/{{quantityMax}}</span>{{/if}}
+              {{#if damaged}}<i class="fa-solid fa-heart-crack slot-badge damaged-badge" title="Damaged"></i>{{/if}}
+            </span>
+            <span class="slot-actions">
+              <button type="button" class="slot-action-btn" data-action="editItem" data-item-id="{{itemId}}" title="Edit"><i class="fa-solid fa-pen-to-square"></i></button>
+              <button type="button" class="slot-action-btn" data-action="removeFromSlot" data-item-id="{{itemId}}" title="Remove"><i class="fa-solid fa-xmark"></i></button>
+            </span>
+            {{else}}
+            {{#if (lookup ../sublabels @index)}}
+            <span class="slot-sublabel">{{lookup ../sublabels @index}}</span>
+            {{else}}
+            <span class="slot-empty">&mdash;</span>
+            {{/if}}
             {{/if}}
           </div>
           {{/each}}
         </div>
       </div>
+      {{/if}}
       {{/each}}
 
-      {{!-- Torso Damage/Weariness --}}
-      <div class="torso-status">
-        <div class="field-pair">
-          <label>{{localize "TB2E.Inventory.TorsoDamage"}}</label>
-          <input type="number" name="system.inventory.torsoDamage" value="{{torsoDamage}}" min="0">
-        </div>
-        <div class="field-pair">
-          <label>{{localize "TB2E.Inventory.TorsoWeariness"}}</label>
-          <input type="number" name="system.inventory.torsoWeariness" value="{{torsoWeariness}}" min="0">
-        </div>
-      </div>
     </div>
   </div>
 
@@ -100,8 +204,15 @@
     <h3 class="slot-heading dropped-heading"><i class="fa-solid fa-arrow-down"></i> {{localize "TB2E.Inventory.Dropped"}}</h3>
     <div class="dropped-list">
       {{#each dropped}}
-      <div class="inventory-item dropped-item" data-item-id="{{itemId}}" draggable="true">
+      <div class="inventory-item dropped-item draggable" data-item-id="{{itemId}}">
         <span class="slot-item-name">{{name}}</span>
+        <span class="slot-placements">
+          {{#each placements}}
+          <button type="button" class="slot-placement-btn" data-action="placeItem"
+            data-item-id="{{../itemId}}" data-slot-key="{{slotKey}}" data-slot-index="{{slotIndex}}"
+            title="Place in {{label}}">{{label}} {{cost}}</button>
+          {{/each}}
+        </span>
         <span class="slot-actions">
           <button type="button" class="slot-action-btn" data-action="pickUpItem" data-item-id="{{itemId}}" title="Pick up"><i class="fa-solid fa-hand"></i></button>
           <button type="button" class="slot-action-btn" data-action="deleteItem" data-item-id="{{itemId}}" title="Delete"><i class="fa-solid fa-trash"></i></button>
@@ -118,9 +229,15 @@
     <h3 class="slot-heading unassigned-heading"><i class="fa-solid fa-box-open"></i> {{localize "TB2E.Inventory.Unassigned"}}</h3>
     <div class="unassigned-list">
       {{#each unassigned}}
-      <div class="inventory-item unassigned-item" data-item-id="{{itemId}}" draggable="true">
+      <div class="inventory-item unassigned-item draggable" data-item-id="{{itemId}}">
         <span class="slot-item-name">{{name}}</span>
-        <span class="item-type-badge">{{type}}</span>
+        <span class="slot-placements">
+          {{#each placements}}
+          <button type="button" class="slot-placement-btn" data-action="placeItem"
+            data-item-id="{{../itemId}}" data-slot-key="{{slotKey}}" data-slot-index="{{slotIndex}}"
+            title="Place in {{label}}">{{label}} {{cost}}</button>
+          {{/each}}
+        </span>
         <span class="slot-actions">
           <button type="button" class="slot-action-btn" data-action="editItem" data-item-id="{{itemId}}" title="Edit"><i class="fa-solid fa-pen-to-square"></i></button>
           <button type="button" class="slot-action-btn" data-action="dropItem" data-item-id="{{itemId}}" title="Drop"><i class="fa-solid fa-arrow-down"></i></button>
