@@ -20,7 +20,7 @@
 }
 
 .conflict-panel-title {
-  font-family: var(--tb-font-logo);
+  font-family: var(--tb-font-heading);
   font-size: 0.85rem;
   font-weight: bold;
   color: var(--tb-blue-dim);
@@ -103,7 +103,7 @@
 }
 
 .conflict-section-label {
-  font-family: var(--tb-font-logo);
+  font-family: var(--tb-font-heading);
   font-size: 0.75rem;
   color: var(--tb-blue-dim);
   text-transform: uppercase;
@@ -272,6 +272,57 @@
 .conflict-panel-weapon-display i {
   color: var(--tb-text-dim);
   margin-right: 0.2rem;
+}
+
+.conflict-panel-weapon-display.weapon-unarmed {
+  color: var(--tb-red);
+}
+
+.conflict-panel-weapon-display.weapon-unarmed i {
+  color: var(--tb-red);
+}
+
+.weapon-penalty-badge {
+  display: inline-block;
+  padding: 0 0.3rem;
+  margin-left: 0.3rem;
+  border-radius: 8px;
+  background: var(--tb-red-dim);
+  color: var(--tb-red);
+  font-size: 0.65rem;
+  font-weight: 700;
+  font-style: normal;
+  vertical-align: middle;
+}
+
+.conflict-weapon-select {
+  flex: 1;
+  padding: 0.3rem 0.5rem;
+  border: 1px solid var(--tb-border-light);
+  border-radius: 4px;
+  font-size: 0.8rem;
+  background: var(--tb-bg-white);
+}
+
+.conflict-weapon-select:focus {
+  border-color: var(--tb-blue);
+  outline: none;
+  box-shadow: 0 0 0 2px var(--tb-blue-glow);
+}
+
+.conflict-weapon-improvised-input {
+  flex: 0 1 40%;
+  padding: 0.3rem 0.5rem;
+  border: 1px solid var(--tb-border-light);
+  border-radius: 4px;
+  font-size: 0.8rem;
+  background: var(--tb-bg-white);
+}
+
+.conflict-weapon-improvised-input:focus {
+  border-color: var(--tb-blue);
+  outline: none;
+  box-shadow: 0 0 0 2px var(--tb-blue-glow);
 }
 
 /* Tracker: weapon indicator */

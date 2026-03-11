@@ -1,11 +1,11 @@
-import ConflictWindow from "./conflict-window.mjs";
+import ConflictPanel from "./conflict-panel.mjs";
 
 const CombatTracker = foundry.applications.sidebar.tabs.CombatTracker;
 
 /**
- * Simplified sidebar tracker for Torchbearer 2E conflicts.
- * Acts as a read-only status dashboard with GM phase-advancement buttons.
- * Interactive controls (disposition rolling, distribution, weapons) live on character sheets.
+ * Slim read-only scoreboard sidebar for Torchbearer 2E conflicts.
+ * Shows team disposition bars and combatant HP at a glance.
+ * All interactive conflict management (disposition, scripting, etc.) lives in the ConflictPanel.
  */
 export default class ConflictTracker extends CombatTracker {
 
@@ -16,12 +16,10 @@ export default class ConflictTracker extends CombatTracker {
   static DEFAULT_OPTIONS = {
     actions: {
       createConflict: ConflictTracker.#onCreateConflict,
-      beginRolling: ConflictTracker.#onBeginRolling,
-      beginScripting: ConflictTracker.#onBeginScripting,
       endConflict: ConflictTracker.#onEndConflict,
+      openPanel: ConflictTracker.#onOpenPanel,
       setCaptain: ConflictTracker.#onSetCaptain,
-      removeCombatant: ConflictTracker.#onRemoveCombatant,
-      openConflictWindow: ConflictTracker.#onOpenConflictWindow
+      removeCombatant: ConflictTracker.#onRemoveCombatant
     }
   };
 
@@ -87,29 +85,14 @@ export default class ConflictTracker extends CombatTracker {
     context.hasCombat = combat !== null;
 
     if ( isConflict ) {
-      const conflictCfg = CONFIG.TB2E.conflictTypes[combat.system.conflictType];
+      const conflictCfg = combat.getEffectiveConflictConfig();
       context.conflictTypeLabel = game.i18n.localize(conflictCfg?.label ?? "TB2E.Conflict.Title");
       context.phase = combat.system.phase;
       context.isSetup = combat.system.phase === "setup";
-      context.isRolling = combat.system.phase === "rolling";
-      context.isDistribution = combat.system.phase === "distribution";
-      context.isWeapons = combat.system.phase === "weapons";
-      context.isScripting = combat.system.phase === "scripting";
-      context.isActive = combat.system.phase === "active";
-      context.isWeaponsOrLater = ["weapons", "scripting", "active"].includes(combat.system.phase);
-      context.isScriptingOrActive = ["scripting", "active"].includes(combat.system.phase);
-      context.currentRound = combat.system.currentRound || 0;
     } else {
       context.conflictTypeLabel = "";
       context.phase = null;
       context.isSetup = false;
-      context.isRolling = false;
-      context.isDistribution = false;
-      context.isWeapons = false;
-      context.isScripting = false;
-      context.isActive = false;
-      context.isWeaponsOrLater = false;
-      context.isScriptingOrActive = false;
     }
 
     switch ( partId ) {
@@ -175,12 +158,10 @@ export default class ConflictTracker extends CombatTracker {
         name: group.name,
         combatants,
         captainId: groupData.captainId || null,
-        rolled: groupData.rolled ?? null,
-        hasRolled: groupData.rolled != null,
-        distributed: !!groupData.distributed,
         hasDisposition,
         currentDisposition: currentDisp,
         maxDisposition: maxDisp,
+        dispPercent: maxDisp > 0 ? Math.round((currentDisp / maxDisp) * 100) : 0,
         canSetCaptain: context.isGM && context.isSetup
       });
     }
@@ -198,21 +179,7 @@ export default class ConflictTracker extends CombatTracker {
    * Prepare footer context with phase-appropriate controls.
    */
   #prepareFooterContext(context) {
-    if ( !context.hasCombat ) {
-      context.conflictTypes = Object.entries(CONFIG.TB2E.conflictTypes).map(([key, cfg]) => ({
-        key,
-        label: game.i18n.localize(cfg.label)
-      }));
-      return;
-    }
-
-    const combat = this.viewed;
-    if ( !combat?.isConflict ) return;
-
-    const gd = combat.system.groupDispositions || {};
-    const groups = Array.from(combat.groups);
-    const allHaveCaptains = groups.every(g => gd[g.id]?.captainId);
-    context.canBeginRolling = context.isSetup && allHaveCaptains;
+    // No additional context needed — conflict type is set in the playbook.
   }
 
   /* -------------------------------------------- */
@@ -291,10 +258,7 @@ export default class ConflictTracker extends CombatTracker {
    * @this {ConflictTracker}
    */
   static async #onCreateConflict(event, target) {
-    const select = this.element.querySelector(".conflict-type-select");
-    const conflictType = select?.value || "kill";
-    const combat = await Combat.implementation.createConflict(conflictType);
-    combat.activate({ render: false });
+    await Combat.implementation.createConflict();
   }
 
   /* -------------------------------------------- */
@@ -326,30 +290,6 @@ export default class ConflictTracker extends CombatTracker {
   /* -------------------------------------------- */
 
   /**
-   * Transition to the rolling phase.
-   * @this {ConflictTracker}
-   */
-  static async #onBeginRolling() {
-    const combat = this.viewed;
-    if ( !combat?.isConflict ) return;
-    await combat.beginRolling();
-  }
-
-  /* -------------------------------------------- */
-
-  /**
-   * Transition from weapons to scripting phase.
-   * @this {ConflictTracker}
-   */
-  static async #onBeginScripting() {
-    const combat = this.viewed;
-    if ( !combat?.isConflict ) return;
-    await combat.startConflictRound();
-  }
-
-  /* -------------------------------------------- */
-
-  /**
    * End the current conflict.
    * @this {ConflictTracker}
    */
@@ -369,11 +309,11 @@ export default class ConflictTracker extends CombatTracker {
   /* -------------------------------------------- */
 
   /**
-   * Open the conflict resolution window.
+   * Open the Conflict Panel (playbook).
    * @this {ConflictTracker}
    */
-  static async #onOpenConflictWindow() {
-    await ConflictWindow.open();
+  static async #onOpenPanel() {
+    ConflictPanel.getInstance().render({ force: true });
   }
 
   /* -------------------------------------------- */
@@ -406,14 +346,26 @@ export default class ConflictTracker extends CombatTracker {
     const actor = game.actors.get(actorId);
     if ( !actor ) return;
 
+    // Prevent duplicates (matches the check in #onDropActor).
+    if ( combat.combatants.find(c => c.actorId === actor.id) ) {
+      ui.notifications.warn(game.i18n.localize("TB2E.Conflict.AlreadyInConflict"));
+      select.value = "";
+      return;
+    }
+
     const targetGroup = this.#resolveGroupForActor(combat, actor) ?? groupId;
+
+    // Link the token so Foundry's token HUD toggle stays in sync.
+    const token = canvas.scene?.tokens.find(t => t.actorId === actor.id);
 
     await combat.createEmbeddedDocuments("Combatant", [{
       actorId: actor.id,
       name: actor.name,
       img: actor.img,
       group: targetGroup,
-      type: "conflict"
+      type: "conflict",
+      tokenId: token?.id ?? null,
+      sceneId: token?.parent?.id ?? null
     }]);
 
     select.value = "";
@@ -449,12 +401,17 @@ export default class ConflictTracker extends CombatTracker {
 
     const targetGroup = this.#resolveGroupForActor(combat, actor) ?? groupId;
 
+    // Link the token so Foundry's token HUD toggle stays in sync.
+    const token = canvas.scene?.tokens.find(t => t.actorId === actor.id);
+
     await combat.createEmbeddedDocuments("Combatant", [{
       actorId: actor.id,
       name: actor.name,
       img: actor.img,
       group: targetGroup,
-      type: "conflict"
+      type: "conflict",
+      tokenId: token?.id ?? null,
+      sceneId: token?.parent?.id ?? null
     }]);
   }
 }

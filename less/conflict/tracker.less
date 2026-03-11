@@ -16,7 +16,7 @@
   display: flex;
   align-items: center;
   gap: 0.4rem;
-  font-family: var(--tb-font-logo);
+  font-family: var(--tb-font-heading);
   font-size: 1.1rem;
   font-weight: bold;
   color: var(--tb-text-body);
@@ -65,12 +65,12 @@
   padding: 0.35rem 0.6rem;
   background: linear-gradient(135deg, var(--tb-bg-dark), var(--tb-bg-darkest));
   border-bottom: 1px solid var(--tb-border);
-  font-family: var(--tb-font-logo);
+  font-family: var(--tb-font-heading);
   font-size: 0.85rem;
   font-weight: bold;
   color: var(--tb-steel-bright);
   text-transform: uppercase;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.06em;
 }
 
 .conflict-group .group-disposition {
@@ -78,6 +78,20 @@
   font-size: 0.75rem;
   font-weight: normal;
   color: var(--tb-blue);
+}
+
+/* Group disposition bar */
+
+.conflict-group .group-disposition-bar {
+  height: 6px;
+  background: var(--tb-border);
+  overflow: hidden;
+}
+
+.conflict-group .group-disposition-bar .disposition-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--tb-blue), var(--tb-blue-bright));
+  transition: width 0.3s ease;
 }
 
 /* Combatant list */
@@ -139,11 +153,21 @@
   color: var(--tb-amber);
 }
 
+.conflict-group .combatant-weapon {
+  font-size: 0.65rem;
+  color: var(--tb-text-dim);
+  flex-shrink: 0;
+}
+
 .conflict-group .combatant-disposition {
   font-size: 0.75rem;
   font-weight: 600;
   color: var(--tb-blue);
   flex-shrink: 0;
+}
+
+.conflict-group .combatant.knocked-out {
+  opacity: 0.5;
 }
 
 /* Disposition bar */
@@ -197,7 +221,6 @@
   border-radius: 6px;
   background: linear-gradient(135deg, var(--tb-blue), var(--tb-blue-dim));
   color: var(--tb-bg-white);
-  font-family: var(--tb-font-logo);
   font-size: 0.9rem;
   cursor: pointer;
   transition: background 0.2s;
@@ -227,12 +250,8 @@
   gap: 0.4rem;
 }
 
-.tb2e-conflict-footer .conflict-type-select {
-  width: 100%;
-  font-size: 0.85rem;
-  padding: 0.4rem 0.5rem;
-  border: 1px solid var(--tb-border-light);
-  border-radius: 4px;
-  background: var(--tb-bg-raised);
-  color: var(--tb-text-body);
+.tb2e-conflict-footer .conflict-active-controls {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
 }

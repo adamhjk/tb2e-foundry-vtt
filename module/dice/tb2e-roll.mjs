@@ -364,35 +364,36 @@ function _buildTraitData(actor, isAngry) {
  */
 async function _showRollDialog({
   label, dice, conditionModifiers = [], contextModifiers = [], actorId, actor,
-  disposition = false, availableHelpers = [], availableWiseAiders = [], blInfo = null,
+  availableHelpers = [], availableWiseAiders = [], blInfo = null,
   type, key, testContext = {}
 }) {
+  const disposition = !!testContext.isDisposition;
   const isCharacter = actor?.type === "character";
   const isAfraid = actor?.system?.conditions?.afraid ?? false;
   const isAngry = isCharacter && actor.system.conditions.angry;
 
   // Build character-specific data
-  const traitData = isCharacter && !disposition ? _buildTraitData(actor, isAngry) : [];
+  const traitData = isCharacter ? _buildTraitData(actor, isAngry) : [];
   const hasTraits = traitData.length > 0;
 
-  const wiseData = isCharacter && !disposition ? (actor.system.wises || []).filter(w => w.name) : [];
+  const wiseData = isCharacter ? (actor.system.wises || []).filter(w => w.name) : [];
   const hasWises = wiseData.length > 0 && !isAngry;
 
   const isResourcesOrCircles = type === "ability" && (key === "resources" || key === "circles");
-  const showPersona = isCharacter && !disposition && !isResourcesOrCircles;
+  const showPersona = isCharacter && !isResourcesOrCircles;
   const personaAvailable = showPersona ? actor.system.persona.current : 0;
   const hideChannelNature = !showPersona;
   const natureRating = isCharacter ? actor.system.abilities.nature.rating : 0;
 
   // Direct nature test: show within/outside descriptors toggle
-  const isDirectNatureTest = isCharacter && !disposition && type === "ability" && key === "nature";
+  const isDirectNatureTest = isCharacter && type === "ability" && key === "nature";
   const natureDescriptors = isDirectNatureTest ? (actor.system.natureDescriptors || []) : [];
   // Also provide descriptors as reference when channel nature is available
-  const channelNatureDescriptors = (isCharacter && !disposition && !isResourcesOrCircles)
+  const channelNatureDescriptors = (isCharacter && !isResourcesOrCircles)
     ? (actor.system.natureDescriptors || []) : [];
 
   // Open challenges for versus mode
-  const openChallenges = disposition ? [] : PendingVersusRegistry.getOpenChallenges(actorId);
+  const openChallenges = PendingVersusRegistry.getOpenChallenges(actorId);
 
   // Helper lists
   const pcHelpers = availableHelpers.filter(h => !h.isNPC);
@@ -400,18 +401,33 @@ async function _showRollDialog({
   const hasHelpers = !isAfraid && (pcHelpers.length > 0 || npcHelpers.length > 0);
 
   // Wise aiders (I Am Wise)
-  const wiseAiders = !isAfraid && !disposition ? availableWiseAiders : [];
+  const wiseAiders = !isAfraid ? availableWiseAiders : [];
   const hasWiseAiders = wiseAiders.length > 0;
 
-  // Gear & supply modifiers for skill and ability tests
+  // Gear & supply modifiers for skill and ability tests (not applicable for disposition)
   const testKey = (type === "skill" || type === "ability") ? key : null;
   const { gearItems, supplyItems } = isCharacter && testKey && !disposition
     ? _gatherGearModifiers(actor, testKey) : { gearItems: [], supplyItems: [] };
   const hasGearSupplies = gearItems.length > 0 || supplyItems.length > 0;
 
+  // Ability choices for disposition mode
+  const abilityChoices = isCharacter ? ["health", "will", "nature"]
+    .filter(k => abilities[k] && actor.system.abilities[k])
+    .map(k => ({
+      key: k,
+      label: game.i18n.localize(abilities[k].label),
+      rating: actor.system.abilities[k]?.rating ?? 0,
+      selected: k === (testContext.dispositionAbility || "health")
+    })) : [];
+
   const content = await foundry.applications.handlebars.renderTemplate(
     "systems/tb2e/templates/dice/roll-dialog.hbs", {
-      label, dice, disposition,
+      label, dice,
+      isDisposition: disposition,
+      dispositionLocked: !!testContext.dispositionAbility,
+      abilityChoices,
+      dispositionLabel: game.i18n.localize("TB2E.Roll.Disposition"),
+      dispositionAbilityLabel: game.i18n.localize("TB2E.Roll.DispositionAbility"),
       conditionModifiers, contextModifiers,
       hasHelpers, pcHelpers, npcHelpers,
       hasWiseAiders, wiseAiders,
@@ -440,6 +456,10 @@ async function _showRollDialog({
   const dialogTitle = disposition
     ? game.i18n.localize("TB2E.Conflict.DispositionPool")
     : game.i18n.format("TB2E.Roll.DialogTitle", { name: label });
+
+  // If disposition mode via testContext with a pre-set obstacle, clear it
+  // (disposition has no obstacle concept)
+  if ( disposition && testContext.obstacle != null ) delete testContext.obstacle;
 
   /* ------ Dialog State ------ */
   // Mutable state objects — mutated in place so the roll callback always sees current values
@@ -824,110 +844,115 @@ async function _showRollDialog({
         });
       }
 
-      /* ------ Summary Update ------ */
+      /* ------ Summary Update & Mode Toggle ------ */
       let updateSummary;
 
-      if ( disposition ) {
-        updateSummary = () => {
-          const allMods = _collectAllModifiers();
-          const diceBonus = allMods.filter(m => m.timing === "pre" && m.type === "dice").reduce((s, m) => s + m.value, 0);
-          const pool = Number(form.elements.poolSize.value) + diceBonus;
-          summary.textContent = `${pool}D`;
-        };
-        form.elements.poolSize.addEventListener("input", updateSummary);
-      } else {
-        const modeInput = form.querySelector("input[name='mode']");
-        const modeToggle = form.querySelector(".roll-dialog-mode-toggle");
-        const modeLabel = modeToggle.querySelector(".mode-label");
-        const obstacleField = form.querySelector(".roll-field-obstacle");
-        const challengeField = form.querySelector(".roll-dialog-challenge");
-        const challengeSelect = form.elements.challengeMessageId;
+      const modeInput = form.querySelector("input[name='mode']");
+      const modeToggle = form.querySelector(".roll-dialog-mode-toggle");
+      const modeLabel = modeToggle.querySelector(".mode-label");
+      const obstacleField = form.querySelector(".roll-field-obstacle");
+      const abilityField = form.querySelector(".roll-field-ability");
+      const challengeField = form.querySelector(".roll-dialog-challenge");
+      const challengeSelect = form.elements.challengeMessageId;
+      const advancementField = form.querySelector(".roll-dialog-options");
+      const abilitySelect = form.elements.dispositionAbility;
 
-        // Pre-set versus mode from testContext (e.g., spell casting)
-        if ( testContext.isVersus ) {
-          modeInput.value = "versus";
-          modeLabel.textContent = game.i18n.localize("TB2E.Roll.Versus");
-          obstacleField.classList.add("hidden");
-          challengeField.classList.remove("hidden");
-          for ( const btn of form.querySelectorAll(".trait-btn-versus") ) {
-            btn.classList.remove("hidden");
+      // Pre-set versus mode from testContext (e.g., spell casting)
+      if ( testContext.isVersus ) {
+        modeInput.value = "versus";
+        modeLabel.textContent = game.i18n.localize("TB2E.Roll.Versus");
+        obstacleField.classList.add("hidden");
+        challengeField.classList.remove("hidden");
+        for ( const btn of form.querySelectorAll(".trait-btn-versus") ) {
+          btn.classList.remove("hidden");
+        }
+      }
+
+      updateSummary = () => {
+        const allMods = _collectAllModifiers();
+        const diceBonus = allMods.filter(m => m.timing === "pre" && m.type === "dice").reduce((s, m) => s + m.value, 0);
+        const successBonus = allMods.filter(m => m.timing === "post" && m.type === "success").reduce((s, m) => s + m.value, 0);
+        const pool = Number(form.elements.poolSize.value) + diceBonus;
+
+        const obBonus = allMods.filter(m => m.type === "obstacle").reduce((s, m) => s + m.value, 0);
+
+        let summaryText;
+        if ( modeInput.value === "disposition" ) {
+          const selected = abilitySelect?.options[abilitySelect.selectedIndex];
+          summaryText = `${pool}D + ${selected?.textContent || "?"}`;
+        } else if ( modeInput.value === "versus" ) {
+          const sel = challengeSelect.options[challengeSelect.selectedIndex];
+          summaryText = sel?.value
+            ? `${pool}D vs ${sel.dataset.actorName ?? "?"}`
+            : `${pool}D Versus`;
+        } else {
+          const ob = Number(form.elements.obstacle.value) + obBonus;
+          summaryText = `${pool}D vs Ob ${ob}`;
+        }
+        if ( successBonus > 0 ) summaryText += ` (+${successBonus}s on pass)`;
+        summary.textContent = summaryText;
+      };
+
+      // Mode toggle handler — 3-state cycle
+      modeToggle.addEventListener("click", () => {
+        const current = modeInput.value;
+        let newMode;
+        if ( current === "independent" ) newMode = "versus";
+        else if ( current === "versus" ) newMode = "disposition";
+        else newMode = "independent";
+
+        modeInput.value = newMode;
+        modeLabel.textContent = game.i18n.localize(
+          newMode === "versus" ? "TB2E.Roll.Versus"
+            : newMode === "disposition" ? "TB2E.Roll.Disposition"
+            : "TB2E.Roll.Independent"
+        );
+
+        // Show/hide fields based on mode
+        obstacleField.classList.toggle("hidden", newMode !== "independent");
+        challengeField.classList.toggle("hidden", newMode !== "versus");
+        if ( abilityField ) abilityField.classList.toggle("hidden", newMode !== "disposition");
+        if ( advancementField ) advancementField.classList.toggle("hidden", newMode === "disposition");
+
+        // Show/hide +2D opponent buttons based on versus mode
+        for ( const btn of form.querySelectorAll(".trait-btn-versus") ) {
+          btn.classList.toggle("hidden", newMode !== "versus");
+        }
+        // Clear trait against selection if switching away from versus and opponent-bonus was selected
+        if ( newMode !== "versus" && traitState.againstType === "opponent-bonus" ) {
+          traitState.itemId = null;
+          traitState.mode = "none";
+          traitState.againstType = null;
+          for ( const b of form.querySelectorAll(".trait-btn") ) b.classList.remove("active");
+          renderModifierList();
+        }
+        updateSummary();
+      });
+
+      form.elements.poolSize.addEventListener("input", updateSummary);
+      form.elements.obstacle.addEventListener("input", updateSummary);
+      if ( abilitySelect ) abilitySelect.addEventListener("change", updateSummary);
+      challengeSelect.addEventListener("change", () => {
+        // Check if selected challenge has a trait opponent bonus for us
+        const selectedMsgId = challengeSelect.value;
+        // Remove any existing opponent-bonus context modifier
+        const existingIdx = contextModifiers.findIndex(m => m.source === "trait-opponent");
+        if ( existingIdx >= 0 ) contextModifiers.splice(existingIdx, 1);
+
+        if ( selectedMsgId ) {
+          const initMsg = game.messages.get(selectedMsgId);
+          const bonus = initMsg?.getFlag("tb2e", "traitOpponentBonus");
+          if ( bonus?.value ) {
+            contextModifiers.push(createModifier({
+              label: `${bonus.traitName} (opponent's trait)`,
+              type: "dice", value: bonus.value, source: "trait-opponent",
+              icon: "fa-solid fa-fingerprint", color: "--tb-cond-angry", timing: "pre"
+            }));
           }
         }
-
-        updateSummary = () => {
-          const allMods = _collectAllModifiers();
-          const diceBonus = allMods.filter(m => m.timing === "pre" && m.type === "dice").reduce((s, m) => s + m.value, 0);
-          const successBonus = allMods.filter(m => m.timing === "post" && m.type === "success").reduce((s, m) => s + m.value, 0);
-          const pool = Number(form.elements.poolSize.value) + diceBonus;
-
-          const obBonus = allMods.filter(m => m.type === "obstacle").reduce((s, m) => s + m.value, 0);
-
-          let summaryText;
-          if ( modeInput.value === "versus" ) {
-            const sel = challengeSelect.options[challengeSelect.selectedIndex];
-            summaryText = sel?.value
-              ? `${pool}D vs ${sel.dataset.actorName ?? "?"}`
-              : `${pool}D Versus`;
-          } else {
-            const ob = Number(form.elements.obstacle.value) + obBonus;
-            summaryText = `${pool}D vs Ob ${ob}`;
-          }
-          if ( successBonus > 0 ) summaryText += ` (+${successBonus}s on pass)`;
-          summary.textContent = summaryText;
-        };
-
-        // Mode toggle handler
-        modeToggle.addEventListener("click", () => {
-          const newMode = modeInput.value === "independent" ? "versus" : "independent";
-          modeInput.value = newMode;
-          if ( newMode === "versus" ) {
-            modeLabel.textContent = game.i18n.localize("TB2E.Roll.Versus");
-            obstacleField.classList.add("hidden");
-            challengeField.classList.remove("hidden");
-          } else {
-            modeLabel.textContent = game.i18n.localize("TB2E.Roll.Independent");
-            obstacleField.classList.remove("hidden");
-            challengeField.classList.add("hidden");
-          }
-          // Show/hide +2D opponent buttons based on versus mode
-          for ( const btn of form.querySelectorAll(".trait-btn-versus") ) {
-            btn.classList.toggle("hidden", newMode !== "versus");
-          }
-          // Clear trait against selection if switching away from versus and opponent-bonus was selected
-          if ( newMode !== "versus" && traitState.againstType === "opponent-bonus" ) {
-            traitState.itemId = null;
-            traitState.mode = "none";
-            traitState.againstType = null;
-            for ( const b of form.querySelectorAll(".trait-btn") ) b.classList.remove("active");
-            renderModifierList();
-          }
-          updateSummary();
-        });
-
-        form.elements.poolSize.addEventListener("input", updateSummary);
-        form.elements.obstacle.addEventListener("input", updateSummary);
-        challengeSelect.addEventListener("change", () => {
-          // Check if selected challenge has a trait opponent bonus for us
-          const selectedMsgId = challengeSelect.value;
-          // Remove any existing opponent-bonus context modifier
-          const existingIdx = contextModifiers.findIndex(m => m.source === "trait-opponent");
-          if ( existingIdx >= 0 ) contextModifiers.splice(existingIdx, 1);
-
-          if ( selectedMsgId ) {
-            const initMsg = game.messages.get(selectedMsgId);
-            const bonus = initMsg?.getFlag("tb2e", "traitOpponentBonus");
-            if ( bonus?.value ) {
-              contextModifiers.push(createModifier({
-                label: `${bonus.traitName} (opponent's trait)`,
-                type: "dice", value: bonus.value, source: "trait-opponent",
-                icon: "fa-solid fa-fingerprint", color: "--tb-cond-angry", timing: "pre"
-              }));
-            }
-          }
-          renderModifierList();
-          updateSummary();
-        });
-      }
+        renderModifierList();
+        updateSummary();
+      });
 
       // Expose state to the roll button callback via dialog element
       dialog.element.__tb2eCollectModifiers = _collectAllModifiers;
@@ -989,12 +1014,21 @@ async function _showRollDialog({
 
           const baseDice = form.elements.poolSize.valueAsNumber;
 
-          if ( disposition ) {
+          const mode = form.elements.mode.value;
+          if ( mode === "disposition" ) {
             return {
               baseDice,
               poolSize: baseDice + totalDiceBonus,
+              mode: "disposition",
+              dispositionAbilityKey: form.elements.dispositionAbility?.value || null,
               selectedHelpers,
-              modifiers: allMods
+              selectedWiseAiders,
+              modifiers: allMods,
+              traitState: traitInfo,
+              personaState: personaInfo,
+              natureState: natureInfo,
+              wiseIndex,
+              logAdvancement: false
             };
           }
           // Supply item ID for consumption after roll
@@ -1063,48 +1097,6 @@ export async function evaluateRoll(poolSize) {
   return { roll, successes, diceResults };
 }
 
-/**
- * Show the disposition roll dialog for a conflict captain.
- * @param {object} options
- * @param {Actor} options.actor
- * @param {string} options.skillKey
- * @param {string} options.abilityKey
- * @param {object[]} [options.availableHelpers=[]]
- * @returns {Promise<object|null>}
- */
-export async function rollDisposition({ actor, skillKey, abilityKey, availableHelpers = [] }) {
-  const skillCfg = skills[skillKey];
-  const abilityCfg = abilities[abilityKey];
-  const skillLabel = game.i18n.localize(skillCfg.label);
-  const abilityLabel = game.i18n.localize(abilityCfg.label);
-
-  const skillRating = actor.system.skills[skillKey]?.rating || 0;
-  const abilityRating = actor.system.abilities[abilityKey]?.rating || 0;
-
-  const conditionModifiers = [...gatherConditionModifiers(actor)];
-
-  const result = await _showRollDialog({
-    label: skillLabel,
-    dice: skillRating,
-    conditionModifiers,
-    actor,
-    actorId: actor.id,
-    disposition: true,
-    availableHelpers
-  });
-  if ( !result ) return null;
-  return {
-    baseDice: result.baseDice,
-    poolSize: result.poolSize,
-    selectedHelpers: result.selectedHelpers,
-    label: skillLabel,
-    modifiers: conditionModifiers,
-    skillLabel,
-    abilityLabel,
-    abilityRating
-  };
-}
-
 /* -------------------------------------------- */
 /*  Main Roll Entry Point                       */
 /* -------------------------------------------- */
@@ -1136,11 +1128,11 @@ export async function rollTest({ actor, type, key, testContext = {} }) {
     ...(testContext.modifiers || []).map(m => createModifier(m)),
     ...(testContext.contextModifiers || [])
   ];
-  const availableHelpers = getEligibleHelpers({ actor, type, key, testContext });
+  const availableHelpers = getEligibleHelpers({ actor, type, key, testContext, candidates: testContext.candidates });
   const availableWiseAiders = getEligibleWiseAiders({ actor, testContext });
 
-  // Backpack factor: +1 Ob for Fighter/Dungeoneer when carrying a backpack
-  if ( type === "skill" && (key === "fighter" || key === "dungeoneer") && _checkBackpackEquipped(actor) ) {
+  // Backpack factor: +1 Ob for Fighter/Dungeoneer when carrying a backpack (not for disposition — no obstacle)
+  if ( type === "skill" && (key === "fighter" || key === "dungeoneer") && !testContext.isDisposition && _checkBackpackEquipped(actor) ) {
     contextModifiers.push(createModifier({
       label: game.i18n.localize("TB2E.Roll.BackpackFactor"),
       type: "obstacle", value: 1, source: "context",
@@ -1196,7 +1188,12 @@ export async function rollTest({ actor, type, key, testContext = {} }) {
     diceResults, allModifiers, config, blInfo, postSuccessMods
   });
 
-  if ( config.mode === "versus" ) {
+  if ( config.mode === "disposition" ) {
+    await _handleDispositionRoll({
+      actor, type, key, label, baseDice: config.baseDice, poolSize, successes,
+      roll, diceResults, modifiers: allModifiers, config, rollFlags, postSuccessMods
+    });
+  } else if ( config.mode === "versus" ) {
     await _handleVersusRoll({
       actor, type, key, label, baseDice: config.baseDice, poolSize, successes,
       roll, diceResults, modifiers: allModifiers, logAdvancement: config.logAdvancement,
@@ -1496,4 +1493,84 @@ async function _handleVersusRoll({ actor, type, key, label, baseDice, poolSize, 
 
     PendingVersusRegistry.register(message.id);
   }
+}
+
+/* -------------------------------------------- */
+/*  Disposition Roll Handler                    */
+/* -------------------------------------------- */
+
+async function _handleDispositionRoll({ actor, type, key, label, baseDice, poolSize, successes,
+  roll, diceResults, modifiers, config, rollFlags, postSuccessMods }) {
+
+  // Look up ability rating from actor
+  const abilityKey = config.dispositionAbilityKey || "health";
+  const abilityCfg = abilities[abilityKey];
+  const abilityRating = actor.system.abilities[abilityKey]?.rating || 0;
+  const abilityLabel = abilityCfg ? game.i18n.localize(abilityCfg.label) : abilityKey;
+
+  // Store raw successes (no obstacle for disposition)
+  rollFlags.roll.successes = successes;
+  rollFlags.roll.obstacle = null;
+  rollFlags.roll.pass = null;
+
+  // Apply post-success modifiers
+  const successBonus = postSuccessMods.reduce((s, m) => s + m.value, 0);
+  const finalSuccesses = Math.max(successes + successBonus, 0);
+  rollFlags.roll.finalSuccesses = finalSuccesses;
+
+  // Calculate disposition (successes + ability, minimum 1)
+  const disposition = Math.max(finalSuccesses + abilityRating, 1);
+
+  // Store disposition metadata in testContext
+  rollFlags.testContext = {
+    ...(rollFlags.testContext || {}),
+    isDisposition: true,
+    dispositionAbilityKey: abilityKey,
+    dispositionAbilityRating: abilityRating,
+    dispositionAbilityLabel: abilityLabel,
+    conflictGroupId: config.testContext?.conflictGroupId ?? null,
+    combatId: config.testContext?.combatId ?? null,
+    conflictTypeLabel: config.testContext?.conflictTypeLabel ?? null,
+    groupName: config.testContext?.groupName ?? null
+  };
+
+  // Build template data
+  const tbFlagsForTemplate = { ...rollFlags, resolved: false };
+  const templateData = buildChatTemplateData({
+    actor, rollData: rollFlags.roll, tbFlags: tbFlagsForTemplate, isVersus: false,
+    synergyHelpers: _buildSynergyHelpers(config.selectedHelpers)
+  });
+
+  // Override with disposition-specific data
+  Object.assign(templateData, {
+    isDisposition: true,
+    disposition,
+    abilityLabel,
+    abilityRating,
+    dispositionLabel: game.i18n.localize("TB2E.Conflict.Disposition"),
+    obstacle: null,
+    pass: null,
+    conflictTypeLabel: config.testContext?.conflictTypeLabel ?? null,
+    conflictTitle: config.testContext?.conflictTypeLabel
+      ? game.i18n.localize("TB2E.Conflict.Title") : null,
+    groupName: config.testContext?.groupName ?? null
+  });
+
+  const chatContent = await foundry.applications.handlebars.renderTemplate(
+    "systems/tb2e/templates/chat/roll-result.hbs", templateData
+  );
+
+  await ChatMessage.create({
+    speaker: ChatMessage.getSpeaker({ actor }),
+    content: chatContent,
+    rolls: [roll],
+    type: CONST.CHAT_MESSAGE_STYLES.OTHER,
+    flags: {
+      tb2e: {
+        ...rollFlags,
+        helpers: mapHelpersForFlags(config.selectedHelpers),
+        wiseAiders: mapWiseAidersForFlags(config.selectedWiseAiders)
+      }
+    }
+  });
 }

@@ -1,0 +1,25 @@
+{{!-- Conflict Compromise Chat Card --}}
+<div class="tb2e-chat-card conflict-compromise-card">
+  <div class="card-header">
+    <i class="fa-solid fa-flag-checkered"></i>
+    <span class="card-title">{{localize "TB2E.Conflict.EndConflict"}}</span>
+  </div>
+  <div class="card-result">
+    <div class="card-winner">
+      <strong>{{winnerName}}</strong>
+    </div>
+    {{#if compromise}}
+    <div class="card-compromise compromise-{{compromise.level}}">
+      {{compromise.label}}
+    </div>
+    {{/if}}
+  </div>
+  <div class="card-final-dispositions">
+    {{#each teams}}
+    <div class="card-final-team">
+      <span class="card-final-team-name">{{this.name}}</span>
+      <span class="card-final-team-hp">{{this.remaining}}/{{this.starting}}</span>
+    </div>
+    {{/each}}
+  </div>
+</div>

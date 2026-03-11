@@ -1,500 +1,231 @@
 /* ============================================ */
-/*  Playing Cards — Core                        */
-/* -------------------------------------------- */
+/*  Conflict Action Cards — Shared Styles       */
+/* ============================================ */
 
-.cw-card-row {
-  display: flex;
-  gap: 6px;
-  align-items: flex-start;
+/* Action accent color aliases (from :root) */
+.tb2e-conflict-body {
+  --attack-hue: var(--tb-attack-hue);
+  --attack-light: var(--tb-attack-light);
+  --attack-bg: var(--tb-attack-bg);
+  --defend-hue: var(--tb-defend-hue);
+  --defend-light: var(--tb-defend-light);
+  --defend-bg: var(--tb-defend-bg);
+  --feint-hue: var(--tb-feint-hue);
+  --feint-light: var(--tb-feint-light);
+  --feint-bg: var(--tb-feint-bg);
+  --maneuver-hue: var(--tb-maneuver-hue);
+  --maneuver-light: var(--tb-maneuver-light);
+  --maneuver-bg: var(--tb-maneuver-bg);
 }
 
-/* Base card shape */
-.cw-card {
-  width: var(--card-w);
-  height: var(--card-h);
-  border-radius: var(--card-radius);
-  position: relative;
-  cursor: pointer;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+/* -------------------------------------------- */
+/*  Volley Status List (in Conflict Tracker)    */
+/* -------------------------------------------- */
+
+.volley-status-list {
+  padding: 0.35rem 0.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  border-top: 1px solid var(--tb-border-light);
+}
+
+.volley-status {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.15rem 0.25rem;
+  font-size: 0.72rem;
+  color: var(--tb-text-dim);
+  border-radius: 3px;
+}
+
+.volley-status.ready {
+  color: var(--tb-green);
+}
+
+.volley-status.locked {
+  color: var(--tb-text-faint);
+}
+
+.volley-status.revealed {
+  color: var(--tb-text-body);
+}
+
+.volley-status-badge {
+  font-family: var(--tb-font-heading);
+  font-size: 0.6rem;
+  font-weight: bold;
+  color: var(--tb-bg-white);
+  background: var(--tb-blue);
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   flex-shrink: 0;
-  box-shadow:
-    0 1px 2px rgba(0,0,0,0.1),
-    0 3px 6px rgba(0,0,0,0.06);
 }
 
-.cw-card:hover {
-  transform: translateY(-3px);
-  box-shadow:
-    0 3px 6px rgba(0,0,0,0.12),
-    0 6px 16px rgba(0,0,0,0.08);
+.volley-status-action {
+  font-size: 0.68rem;
+  font-weight: 600;
 }
 
-/* -------------------------------------------- */
-/*  Playing Cards — Face Up                     */
-/* -------------------------------------------- */
-
-.cw-card-face {
-  width: 100%;
-  height: 100%;
-  border-radius: var(--card-radius);
-  background: var(--tb-bg-raised);
-  border: 1px solid var(--tb-border-light);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  position: relative;
-  overflow: hidden;
-}
-
-/* Inner decorative frame */
-.cw-card-face::before {
-  content: '';
-  position: absolute;
-  inset: 3px;
-  border: 1px solid;
-  border-color: inherit;
-  border-radius: 3px;
-  opacity: 0.25;
-  pointer-events: none;
-}
-
-/* Decorative watermark behind icon */
-.cw-card-face::after {
-  content: '';
-  position: absolute;
-  width: 50px;
-  height: 50px;
-  border-radius: 50%;
-  opacity: 0.06;
-  pointer-events: none;
-}
-
-/* Corner pips */
-.cw-card-pip {
-  position: absolute;
-  font-size: 0.5rem;
-  font-family: "MedievalSharp", cursive;
-  line-height: 1;
-  opacity: 0.6;
-}
-
-.cw-card-pip.top-left {
-  top: 5px;
-  left: 6px;
-  text-align: center;
-}
-
-.cw-card-pip.bottom-right {
-  bottom: 5px;
-  right: 6px;
-  text-align: center;
-  transform: rotate(180deg);
-}
-
-.cw-card-pip i {
-  display: block;
-  font-size: 0.45rem;
-  margin-top: 1px;
-}
-
-/* Center icon */
-.cw-card-icon {
-  font-size: 1.5rem;
-  margin-bottom: 0.2rem;
-  position: relative;
-  z-index: 1;
-}
-
-/* Card label */
-.cw-card-label {
-  font-family: "MedievalSharp", cursive;
-  font-size: 0.55rem;
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
-  position: relative;
-  z-index: 1;
-}
-
-/* -------------------------------------------- */
-/*  Card Color Variants                         */
-/* -------------------------------------------- */
-
-/* Attack — Crimson */
-.cw-card[data-action-key="attack"] .cw-card-face {
-  border-color: var(--attack-light);
-  background: linear-gradient(170deg, var(--attack-bg) 0%, var(--tb-bg-raised) 40%);
-  color: var(--attack-hue);
-}
-.cw-card[data-action-key="attack"] .cw-card-face::after {
-  background: var(--attack-hue);
-}
-
-/* Defend — Steel Blue */
-.cw-card[data-action-key="defend"] .cw-card-face {
-  border-color: var(--defend-light);
-  background: linear-gradient(170deg, var(--defend-bg) 0%, var(--tb-bg-raised) 40%);
-  color: var(--defend-hue);
-}
-.cw-card[data-action-key="defend"] .cw-card-face::after {
-  background: var(--defend-hue);
-}
-
-/* Feint — Amethyst */
-.cw-card[data-action-key="feint"] .cw-card-face {
-  border-color: var(--feint-light);
-  background: linear-gradient(170deg, var(--feint-bg) 0%, var(--tb-bg-raised) 40%);
-  color: var(--feint-hue);
-}
-.cw-card[data-action-key="feint"] .cw-card-face::after {
-  background: var(--feint-hue);
-}
-
-/* Maneuver — Forest */
-.cw-card[data-action-key="maneuver"] .cw-card-face {
-  border-color: var(--maneuver-light);
-  background: linear-gradient(170deg, var(--maneuver-bg) 0%, var(--tb-bg-raised) 40%);
-  color: var(--maneuver-hue);
-}
-.cw-card[data-action-key="maneuver"] .cw-card-face::after {
-  background: var(--maneuver-hue);
-}
-
-/* -------------------------------------------- */
-/*  Card States                                 */
-/* -------------------------------------------- */
-
-/* Selected state — lift + glow ring */
-.cw-card.selected {
-  transform: translateY(-5px);
-  box-shadow:
-    0 0 0 2px var(--tb-blue),
-    0 4px 8px var(--tb-blue-glow-strong),
-    0 8px 20px var(--tb-blue-glow);
-}
-
-.cw-card.selected .cw-card-face {
-  border-color: var(--tb-blue);
-}
-
-/* Locked own card — subtle dim */
-.cw-card.own-locked {
-  opacity: 0.75;
-  cursor: default;
-}
-
-.cw-card.own-locked:hover {
-  transform: none;
-  box-shadow:
-    0 1px 2px rgba(0,0,0,0.1),
-    0 3px 6px rgba(0,0,0,0.06);
-}
-
-/* -------------------------------------------- */
-/*  Playing Cards — Face Down (Card Back)       */
-/* -------------------------------------------- */
-
-.cw-card.face-down {
-  cursor: default;
-}
-
-.cw-card.face-down:hover {
-  transform: none;
-  box-shadow:
-    0 1px 2px rgba(0,0,0,0.1),
-    0 3px 6px rgba(0,0,0,0.06);
-}
-
-.cw-card-back {
-  width: 100%;
-  height: 100%;
-  border-radius: var(--card-radius);
-  border: 1px solid var(--tb-card-back-border);
-  background: linear-gradient(145deg, var(--tb-card-back-from), var(--tb-card-back-to));
-  position: relative;
-  overflow: hidden;
-}
-
-/* Inner frame */
-.cw-card-back::before {
-  content: '';
-  position: absolute;
-  inset: 3px;
-  border: 1px solid rgba(255,255,255,0.25);
-  border-radius: 3px;
-}
-
-/* Diamond cross-hatch pattern */
-.cw-card-back-pattern {
-  position: absolute;
-  inset: 6px;
-  background:
-    linear-gradient(45deg, rgba(255,255,255,0.08) 25%, transparent 25%),
-    linear-gradient(-45deg, rgba(255,255,255,0.08) 25%, transparent 25%),
-    linear-gradient(45deg, transparent 75%, rgba(255,255,255,0.08) 75%),
-    linear-gradient(-45deg, transparent 75%, rgba(255,255,255,0.08) 75%);
-  background-size: 10px 10px;
-  background-position: 0 0, 0 5px, 5px -5px, -5px 0;
-}
-
-/* Center medallion on card back */
-.cw-card-back-emblem {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 28px;
-  height: 28px;
-  border-radius: 50%;
-  border: 1.5px solid rgba(255,255,255,0.35);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: rgba(0,0,0,0.12);
-  z-index: 1;
-}
-
-.cw-card-back-emblem i {
-  font-size: 0.7rem;
-  color: rgba(255,255,255,0.5);
-}
-
-/* -------------------------------------------- */
-/*  Card Reveal Animation                       */
-/* -------------------------------------------- */
-
-@keyframes cardReveal {
-  0%   { transform: rotateY(90deg); opacity: 0.5; }
-  100% { transform: rotateY(0deg);  opacity: 1; }
-}
-
-.cw-card.just-revealed .cw-card-face {
-  animation: cardReveal 0.4s ease-out;
-}
-
-/* -------------------------------------------- */
-/*  Volley Actions Layout                       */
-/* -------------------------------------------- */
-
-.cw-volley-actions {
-  display: flex;
-  align-items: flex-start;
-  gap: 0.4rem;
-}
-
-.cw-volley-actions .cw-card-row {
+.volley-status-combatant {
+  font-size: 0.68rem;
+  font-style: italic;
   flex: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
-.cw-volley-side {
+.volley-status-empty {
+  color: var(--tb-text-faint);
+  font-size: 0.65rem;
+}
+
+.volley-status-locked {
+  color: var(--tb-green);
+}
+
+.volley-lock-btn {
   display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 0.15rem;
-  padding-top: 0.25rem;
-}
-
-/* Roll button */
-
-.cw-roll-btn {
-  display: inline-flex;
   align-items: center;
-  gap: 0.3rem;
-  padding: 0.25rem 0.55rem;
+  justify-content: center;
+  gap: 0.25rem;
+  padding: 0.25rem 0.5rem;
+  margin-top: 0.25rem;
   border: none;
   border-radius: 4px;
   background: linear-gradient(135deg, var(--tb-blue), var(--tb-blue-dim));
   color: var(--tb-bg-white);
-  font-family: var(--tb-font-logo);
-  font-size: 0.68rem;
-  cursor: pointer;
-  transition: all 0.2s;
-  box-shadow: 0 1px 3px var(--tb-blue-glow-strong);
-  align-self: flex-start;
-}
-
-.cw-roll-btn:hover {
-  background: linear-gradient(135deg, var(--tb-blue-bright), var(--tb-blue));
-  transform: translateY(-1px);
-  box-shadow: 0 2px 6px var(--tb-blue-glow-strong);
-}
-
-/* Result badge */
-
-.cw-result-badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.2rem;
-  font-size: 0.68rem;
-  color: var(--tb-green);
-  font-weight: 600;
-}
-
-/* Reveal column */
-
-.cw-reveal-column {
-  display: grid;
-  grid-template-rows: subgrid;
-  grid-row: 1 / -1;
-  grid-column: 2;
-  width: 40px;
-  background: var(--tb-overlay-white-mid);
-  border-left: 1px solid var(--tb-border);
-  border-right: 1px solid var(--tb-border);
-}
-
-.cw-reveal-cell {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-bottom: 1px solid var(--tb-bg-mid);
-}
-
-.cw-reveal-cell:last-child {
-  border-bottom: none;
-}
-
-.cw-reveal-btn {
-  width: 28px;
-  height: 28px;
-  padding: 0;
-  border: 1.5px solid var(--tb-border-light);
-  border-radius: 50%;
-  background: var(--tb-bg-white);
-  color: var(--tb-blue);
-  font-size: 0.7rem;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: all 0.2s;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.08);
-}
-
-.cw-reveal-btn:hover {
-  background: var(--tb-frost);
-  border-color: var(--tb-blue);
-  transform: scale(1.1);
-  box-shadow: 0 2px 6px var(--tb-blue-glow);
-}
-
-.cw-revealed-icon {
-  color: var(--tb-green);
-  font-size: 0.8rem;
-}
-
-.cw-waiting-icon {
-  color: var(--tb-border-light);
-  font-size: 0.7rem;
-}
-
-/* Team footer (lock button) */
-
-.cw-team-footer {
-  padding: 0.5rem 0.65rem;
-  border-top: 1px solid var(--tb-border);
-  text-align: center;
-  background: var(--tb-overlay-white-mid);
-}
-
-.cw-lock-btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.35rem;
-  padding: 0.4rem 0.9rem;
-  border: none;
-  border-radius: 5px;
-  background: linear-gradient(135deg, var(--tb-blue), var(--tb-blue-dim));
-  color: var(--tb-bg-white);
-  font-family: var(--tb-font-logo);
-  font-size: 0.8rem;
-  cursor: pointer;
-  transition: all 0.2s;
-  box-shadow: 0 2px 4px var(--tb-blue-glow-strong);
-}
-
-.cw-lock-btn:hover {
-  background: linear-gradient(135deg, var(--tb-blue-bright), var(--tb-blue));
-  transform: translateY(-1px);
-  box-shadow: 0 3px 8px var(--tb-blue-glow-strong);
-}
-
-.cw-locked-badge {
   font-size: 0.72rem;
-  color: var(--tb-green);
-  font-weight: 600;
-}
-
-.cw-locked-badge i {
-  margin-right: 0.2rem;
-}
-
-/* Peek button */
-
-.cw-peek-btn {
-  width: 22px;
-  height: 22px;
-  padding: 0;
-  border: 1px solid var(--tb-border-light);
-  border-radius: 50%;
-  background: transparent;
-  color: var(--tb-text-dim);
-  font-size: 0.65rem;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-left: 0.5rem;
-  transition: all 0.15s ease;
-}
-
-.cw-peek-btn:hover {
-  color: var(--tb-blue);
-  border-color: var(--tb-blue);
-  background: var(--tb-blue-glow);
-}
-
-/* Footer (new round button) */
-
-.cw-footer {
-  padding: 0.6rem;
-  border-top: 1px solid var(--tb-border-light);
-  text-align: center;
-  background: linear-gradient(180deg, var(--tb-bg-dark), var(--tb-bg-darkest));
-}
-
-.cw-new-round-btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.4rem;
-  padding: 0.45rem 1.2rem;
-  border: none;
-  border-radius: 6px;
-  background: linear-gradient(135deg, var(--tb-blue), var(--tb-blue-dim));
-  color: var(--tb-bg-white);
-  font-family: var(--tb-font-logo);
-  font-size: 0.9rem;
   cursor: pointer;
   transition: all 0.2s;
-  box-shadow: 0 2px 6px var(--tb-blue-glow-strong);
 }
 
-.cw-new-round-btn:hover {
+.volley-lock-btn:hover {
   background: linear-gradient(135deg, var(--tb-blue-bright), var(--tb-blue));
-  transform: translateY(-1px);
 }
 
-/* Empty state */
-
-.cw-empty {
+.volley-locked-badge {
+  font-size: 0.68rem;
+  color: var(--tb-green);
+  font-weight: 600;
   text-align: center;
-  color: var(--tb-text-faint);
-  padding: 2rem;
-  font-style: italic;
+  padding: 0.2rem 0;
 }
 
 /* -------------------------------------------- */
-/*  Team Toggle Switch                          */
+/*  Volley Matchup Section (Tracker Body)       */
+/* -------------------------------------------- */
+
+.volley-matchup {
+  padding: 0.4rem 0.5rem;
+  border-top: 1px solid var(--tb-border);
+  background: var(--tb-bg-raised);
+}
+
+.volley-matchup-header {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  margin-bottom: 0.25rem;
+}
+
+.volley-matchup-badge {
+  font-family: var(--tb-font-heading);
+  font-size: 0.72rem;
+  font-weight: bold;
+  color: var(--tb-steel-bright);
+  text-transform: uppercase;
+}
+
+.volley-matchup-resolved {
+  color: var(--tb-green);
+  font-size: 0.68rem;
+}
+
+.volley-matchup-sides {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.volley-matchup-side {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.1rem;
+  flex: 1;
+}
+
+.volley-matchup-actor {
+  font-size: 0.72rem;
+  font-weight: 600;
+}
+
+.volley-matchup-action {
+  font-family: var(--tb-font-heading);
+  font-size: 0.72rem;
+  font-weight: bold;
+  text-transform: uppercase;
+  padding: 0.1rem 0.35rem;
+  border-radius: 3px;
+}
+
+.action-attack { color: var(--tb-attack-hue); background: var(--tb-attack-bg); }
+.action-defend { color: var(--tb-defend-hue); background: var(--tb-defend-bg); }
+.action-feint { color: var(--tb-feint-hue); background: var(--tb-feint-bg); }
+.action-maneuver { color: var(--tb-maneuver-hue); background: var(--tb-maneuver-bg); }
+
+.volley-matchup-interaction {
+  font-size: 0.6rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  padding: 0.05rem 0.25rem;
+  border-radius: 2px;
+}
+
+.interaction-independent { color: var(--tb-interaction-independent); background: var(--tb-interaction-independent-bg); }
+.interaction-versus { color: var(--tb-interaction-versus); background: var(--tb-interaction-versus-bg); }
+.interaction-none { color: var(--tb-interaction-none); background: var(--tb-interaction-none-bg); }
+
+.volley-matchup-vs {
+  font-family: var(--tb-font-heading);
+  font-size: 0.75rem;
+  font-weight: bold;
+  color: var(--tb-text-faint);
+  text-transform: uppercase;
+}
+
+.volley-roll-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.25rem;
+  width: 100%;
+  padding: 0.25rem 0.5rem;
+  margin-top: 0.25rem;
+  border: none;
+  border-radius: 4px;
+  background: linear-gradient(135deg, var(--tb-blue), var(--tb-blue-dim));
+  color: var(--tb-bg-white);
+  font-size: 0.72rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.volley-roll-btn:hover {
+  background: linear-gradient(135deg, var(--tb-blue-bright), var(--tb-blue));
+}
+
+/* -------------------------------------------- */
+/*  Team Toggle Switch (Character Sheet)        */
 /* -------------------------------------------- */
 
 .tb2e.sheet .team-switch {

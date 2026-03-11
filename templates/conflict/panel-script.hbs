@@ -1,0 +1,111 @@
+{{!-- Script Tab --}}
+<div class="panel-tab-content script-tab">
+
+  {{#each scriptGroups}}
+  <div class="script-group" data-group-id="{{this.id}}">
+    <div class="script-group-header {{#if this.isLocked}}clickable{{/if}}"
+         {{#if this.isLocked}}data-collapse-toggle{{/if}}>
+      <span>{{this.name}}</span>
+      {{#if this.isLocked}}
+      <span class="script-locked-badge">
+        <i class="fa-solid fa-lock"></i> {{localize "TB2E.Conflict.ActionsLocked"}}
+        <i class="fa-solid fa-chevron-{{#if this.isCollapsed}}down{{else}}up{{/if}} script-collapse-icon"></i>
+      </span>
+      {{/if}}
+    </div>
+
+    {{#unless this.isLocked}}
+
+    {{!-- Last-round reference strip --}}
+    {{#if this.lastRoundSummary}}
+    <div class="last-round-strip">
+      <span class="last-round-label">{{localize "TB2E.Conflict.LastRoundSlots"}}:</span>
+      {{#each this.lastRoundSummary}}
+      <span class="last-round-entry">{{this.name}}: {{this.actedSlots}}</span>
+      {{/each}}
+    </div>
+    {{/if}}
+
+    <div class="script-slots">
+      {{#each this.slots}}
+      <div class="script-slot" data-slot-index="{{this.index}}">
+        <div class="script-slot-header">
+          <span class="script-slot-num">{{this.volleyNum}}</span>
+          {{#if ../isSolo}}
+          <span class="script-slot-combatant-name">{{../combatantChoices.0.name}}</span>
+          {{else}}
+          <select class="combatant-select" {{#unless ../canScript}}disabled{{/unless}}>
+            <option value="">— {{localize "TB2E.Conflict.SelectActor"}} —</option>
+            {{#each ../combatantChoices}}
+            <option value="{{this.id}}" {{#if this.knockedOut}}disabled{{/if}} {{#if (eq this.id ../combatantId)}}selected{{/if}}>
+              {{this.name}}{{#if this.knockedOut}} {{localize "TB2E.Conflict.KnockedOutLabel"}}{{/if}}
+            </option>
+            {{/each}}
+          </select>
+          {{!-- Must-act badges --}}
+          {{#each ../combatantChoices}}
+          {{#if this.mustActFirst}}
+          {{#if (eq this.id ../../combatantId)}}
+          <span class="must-act-badge" title="{{localize 'TB2E.Conflict.MustAct'}}"><i class="fa-solid fa-crown"></i></span>
+          {{/if}}
+          {{/if}}
+          {{/each}}
+          {{/if}}
+        </div>
+        <input type="hidden" class="action-select" value="{{this.action}}">
+        <div class="action-card-row">
+          {{#each ../actionChoices}}
+          <button type="button" class="action-card action-card-{{this.key}} {{#if (eq this.key ../action)}}selected{{/if}}"
+                  data-action-key="{{this.key}}"
+                  {{#unless ../../canScript}}disabled{{/unless}}>
+            <i class="{{this.icon}}"></i>
+            <span class="action-card-label">{{this.label}}</span>
+          </button>
+          {{/each}}
+        </div>
+      </div>
+      {{/each}}
+    </div>
+
+    {{#if this.canLock}}
+    <button type="button" class="panel-action-btn" data-action="lockActions">
+      <i class="fa-solid fa-lock"></i> {{localize "TB2E.Conflict.LockActions"}}
+    </button>
+    {{/if}}
+    {{else}}
+
+    {{!-- Locked view: card-back with flip-on-hover --}}
+    <div class="script-slots locked {{#if this.isCollapsed}}collapsed{{/if}}">
+      {{#each this.slots}}
+      <div class="script-slot locked" data-slot-index="{{this.index}}">
+        <div class="script-card-flip {{#if ../canViewActions}}can-flip{{/if}}">
+          <div class="script-card-face script-card-back">
+            <span class="script-slot-num">{{this.volleyNum}}</span>
+            <i class="fa-solid fa-lock"></i>
+          </div>
+          {{#if ../canViewActions}}
+          <div class="script-card-face script-card-front {{this.actionColorClass}}">
+            <span class="script-slot-num">{{this.volleyNum}}</span>
+            <i class="{{this.actionIcon}}"></i>
+            <span class="script-card-action-label">{{this.actionLabel}}</span>
+            <span class="script-card-combatant">{{this.combatantName}}</span>
+          </div>
+          {{/if}}
+        </div>
+      </div>
+      {{/each}}
+    </div>
+    {{/unless}}
+  </div>
+  {{/each}}
+
+  {{!-- Begin Resolution --}}
+  {{#if isGM}}
+  <button type="button" class="setup-next-btn" data-action="beginResolve"
+          {{#unless canBeginResolve}}disabled{{/unless}}>
+    <span class="setup-next-label">{{localize "TB2E.Conflict.BeginResolve"}}</span>
+    <i class="fa-solid fa-arrow-right"></i>
+  </button>
+  {{/if}}
+
+</div>

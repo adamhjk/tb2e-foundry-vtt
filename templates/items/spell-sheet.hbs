@@ -18,7 +18,7 @@
     <legend>{{localize "TB2E.Spell.Casting"}}</legend>
     <div class="gear-fields">
       <div class="field-pair">
-        <label>{{localize "TB2E.Spell.CastingType"}}</label>
+        <label>{{localize "TB2E.Spell.CastingTypeLabel"}}</label>
         <select name="system.castingType">
           {{#each castingTypeOptions}}
           <option value="{{key}}"{{#if selected}} selected{{/if}}>{{label}}</option>
@@ -26,7 +26,7 @@
         </select>
       </div>
       <div class="field-pair">
-        <label>{{localize "TB2E.Spell.CastingTime"}}</label>
+        <label>{{localize "TB2E.Spell.CastingTimeLabel"}}</label>
         <select name="system.castingTime">
           {{#each castingTimeOptions}}
           <option value="{{key}}"{{#if selected}} selected{{/if}}>{{label}}</option>

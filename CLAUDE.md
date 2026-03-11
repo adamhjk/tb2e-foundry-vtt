@@ -122,6 +122,28 @@ Foundry VTT restricts document updates to owners. The mailbox pattern works as f
 | Synergy | `flags.tb2e.pendingSynergy` | Actor | `updateActor` (in `tb2e.mjs`) |
 | Wise advancement | `flags.tb2e.pendingWiseAdvancement` | Actor | `updateActor` (in `tb2e.mjs`) |
 | Versus finalize | `flags.tb2e.pendingVersusFinalize` | Actor | `updateActor` (in `tb2e.mjs`) |
+| Conflict HP | `flags.tb2e.pendingConflictHP` | Actor | `updateActor` (in `tb2e.mjs`) |
+
+## Localization (lang/en.json)
+
+Foundry VTT's i18n system builds a **nested object** from the flat JSON keys using `.` as a separator. This means a key like `"TB2E.Foo.Bar"` creates `{ TB2E: { Foo: { Bar: "value" } } }`.
+
+**Never define a key that is both a leaf value and a parent prefix.** If `"TB2E.Foo.Bar": "some string"` exists, you cannot also define `"TB2E.Foo.Bar.Baz": "another string"` — the first key sets `Bar` to a string, so Foundry cannot add `.Baz` as a child property. This silently breaks the entire language file.
+
+```jsonc
+// WRONG — "TestType" is both a string and a parent
+"TB2E.Conflict.TestType": "Test Type",
+"TB2E.Conflict.TestType.ability": "Ability",  // breaks lang loading
+
+// CORRECT — use flat sibling keys instead
+"TB2E.Conflict.TestTypeAbility": "Ability",
+"TB2E.Conflict.TestTypeSkill": "Skill",
+
+// ALSO CORRECT — use only children, no parent leaf
+"TB2E.Conflict.TestType.ability": "Ability",
+"TB2E.Conflict.TestType.skill": "Skill",
+// (just don't also define "TB2E.Conflict.TestType" as a plain value)
+```
 
 ## Styles (LESS → CSS)
 

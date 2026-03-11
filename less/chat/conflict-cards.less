@@ -1,0 +1,285 @@
+/* ============================================ */
+/*  Chat — Conflict Cards                      */
+/*  Declaration, Action Reveal, Compromise,    */
+/*  Round Summary                              */
+/* ============================================ */
+
+/* -------------------------------------------- */
+/*  Shared: Card Title in Headers               */
+/* -------------------------------------------- */
+
+.conflict-declaration-card .card-header,
+.conflict-reveal-card .card-header,
+.conflict-compromise-card .card-header,
+.conflict-summary-card .card-header {
+  gap: 0.4rem;
+}
+
+.conflict-declaration-card .card-header > i,
+.conflict-reveal-card .card-header > i,
+.conflict-compromise-card .card-header > i,
+.conflict-summary-card .card-header > i {
+  color: var(--tb-blue);
+  font-size: 0.85rem;
+  flex-shrink: 0;
+}
+
+.conflict-declaration-card .card-title,
+.conflict-reveal-card .card-title,
+.conflict-compromise-card .card-title,
+.conflict-summary-card .card-title {
+  font-family: var(--tb-font-heading);
+  font-size: 0.95rem;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--tb-text-bright);
+}
+
+/* -------------------------------------------- */
+/*  Declaration Card                            */
+/* -------------------------------------------- */
+
+.conflict-declaration-card .card-subtitle {
+  font-family: var(--tb-font-heading);
+  font-size: 0.8rem;
+  color: var(--tb-text-dim);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  margin-left: auto;
+}
+
+.conflict-declaration-card .card-teams {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.conflict-declaration-card .card-team {
+  padding: 0.4rem 0.75rem;
+  border-top: 1px solid var(--tb-border);
+}
+
+.conflict-declaration-card .card-team-name {
+  display: block;
+  font-family: var(--tb-font-heading);
+  font-size: 0.8rem;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--tb-steel-bright);
+  margin-bottom: 0.15rem;
+}
+
+.conflict-declaration-card .card-team-members {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+
+.conflict-declaration-card .card-team-members li {
+  font-size: 0.8rem;
+  color: var(--tb-text-body);
+  padding: 0.1rem 0;
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+
+.conflict-declaration-card .card-team-members li i.fa-crown {
+  color: var(--tb-amber);
+  font-size: 0.7rem;
+}
+
+/* -------------------------------------------- */
+/*  Action Reveal Card                          */
+/* -------------------------------------------- */
+
+.conflict-reveal-card .card-matchup {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.5rem 0.75rem;
+}
+
+.conflict-reveal-card .card-matchup-side {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.2rem;
+  text-align: center;
+}
+
+.conflict-reveal-card .card-matchup-actor {
+  font-size: 0.8rem;
+  font-weight: bold;
+  color: var(--tb-text-bright);
+}
+
+.conflict-reveal-card .card-matchup-action {
+  font-family: var(--tb-font-heading);
+  font-size: 0.75rem;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  padding: 0.15rem 0.4rem;
+  border-radius: 3px;
+}
+
+.conflict-reveal-card .card-matchup-vs {
+  font-family: var(--tb-font-heading);
+  font-size: 0.85rem;
+  font-weight: bold;
+  color: var(--tb-text-faint);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  flex-shrink: 0;
+}
+
+.conflict-reveal-card .card-interaction {
+  font-size: 0.7rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  text-align: center;
+  padding: 0.25rem 0.5rem;
+  border-top: 1px solid var(--tb-border);
+}
+
+/* -------------------------------------------- */
+/*  Compromise Card                             */
+/* -------------------------------------------- */
+
+.conflict-compromise-card .card-result {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.5rem 0.75rem;
+  border-top: 1px solid var(--tb-border);
+}
+
+.conflict-compromise-card .card-winner {
+  font-family: var(--tb-font-heading);
+  font-size: 1rem;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--tb-blue);
+}
+
+.conflict-compromise-card .card-compromise {
+  font-family: var(--tb-font-heading);
+  font-size: 0.8rem;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  padding: 0.1rem 0.5rem;
+  border-radius: 3px;
+}
+
+.conflict-compromise-card .compromise-minor {
+  color: var(--tb-amber-dim);
+  background: var(--tb-amber-glow);
+}
+
+.conflict-compromise-card .compromise-half {
+  color: var(--tb-red);
+  background: rgba(239, 68, 68, 0.12);
+}
+
+.conflict-compromise-card .compromise-major {
+  color: var(--tb-red-bright);
+  background: rgba(239, 68, 68, 0.18);
+}
+
+.conflict-compromise-card .card-final-dispositions {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  border-top: 1px solid var(--tb-border);
+}
+
+.conflict-compromise-card .card-final-team {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.3rem 0.75rem;
+  font-size: 0.8rem;
+}
+
+.conflict-compromise-card .card-final-team + .card-final-team {
+  border-top: 1px solid var(--tb-border);
+}
+
+.conflict-compromise-card .card-final-team-name {
+  font-weight: 600;
+  color: var(--tb-text-body);
+}
+
+.conflict-compromise-card .card-final-team-hp {
+  font-weight: bold;
+  color: var(--tb-steel);
+  font-family: var(--tb-font-heading);
+  font-size: 0.85rem;
+  letter-spacing: 0.02em;
+}
+
+/* -------------------------------------------- */
+/*  Round Summary Card                          */
+/* -------------------------------------------- */
+
+.conflict-summary-card .card-summary-action {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.3rem 0.75rem;
+  border-top: 1px solid var(--tb-border);
+  font-size: 0.8rem;
+}
+
+.conflict-summary-card .card-summary-num {
+  font-family: var(--tb-font-heading);
+  font-size: 0.7rem;
+  font-weight: bold;
+  color: var(--tb-bg-white);
+  background: var(--tb-blue);
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.conflict-summary-card .card-summary-side {
+  font-family: var(--tb-font-heading);
+  font-size: 0.72rem;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  padding: 0.1rem 0.35rem;
+  border-radius: 3px;
+}
+
+.conflict-summary-card .card-summary-changes {
+  border-top: 1px dashed var(--tb-border);
+  padding: 0.3rem 0.75rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+
+.conflict-summary-card .card-summary-change {
+  font-size: 0.8rem;
+  color: var(--tb-steel);
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+}

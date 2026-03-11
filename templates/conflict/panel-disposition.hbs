@@ -1,0 +1,103 @@
+{{!-- Disposition Tab --}}
+<div class="panel-tab-content disposition-tab">
+
+  {{#each dispGroups}}
+  <div class="disp-group" data-group-id="{{this.id}}">
+    <div class="disp-group-header">
+      <span class="disp-group-name">{{this.name}}</span>
+      <span class="disp-group-captain">
+        <i class="fa-solid fa-star"></i> {{this.captainName}}
+      </span>
+    </div>
+
+    {{!-- Skill Choice (multiple disposition skills) --}}
+    {{#if this.needsSkillChoice}}
+      {{#if this.canChooseSkill}}
+      <div class="disp-skill-choice">
+        <span class="disp-label">{{localize "TB2E.Conflict.ChooseSkillPrompt"}}</span>
+        <div class="disp-skill-buttons">
+          {{#each this.skillOptions}}
+          <button type="button" class="disp-skill-btn" data-action="chooseSkill" data-skill="{{this.key}}">
+            {{this.label}} ({{this.rating}})
+          </button>
+          {{/each}}
+        </div>
+      </div>
+      {{/if}}
+    {{/if}}
+
+    {{!-- Roll Area --}}
+    {{#unless this.hasRolled}}
+      {{#if this.chosenSkill}}
+      <div class="disp-roll-area">
+        <span class="disp-roll-info">
+          {{this.skillLabel}} + {{this.abilityLabel}}
+        </span>
+        {{#if this.canRoll}}
+        <button type="button" class="panel-action-btn" data-action="rollDisposition">
+          <i class="fa-solid fa-dice"></i> {{localize "TB2E.Conflict.Roll"}}
+        </button>
+        {{/if}}
+      </div>
+      {{/if}}
+      {{#if @root.isGM}}
+      <div class="disp-gm-flat">
+        <label>{{localize "TB2E.Conflict.SetFlat"}}</label>
+        <input type="number" class="gm-disposition-input" data-group-id="{{this.id}}"
+               min="1" placeholder="—">
+      </div>
+      {{/if}}
+    {{else}}
+
+    {{!-- Rolled Result --}}
+    <div class="disp-rolled">
+      <span class="disp-rolled-label">{{localize "TB2E.Conflict.Disposition"}}:</span>
+      <span class="disp-rolled-value">{{this.rolled}}</span>
+    </div>
+
+    {{!-- Distribution --}}
+    {{#unless this.hasDistributed}}
+    <div class="distribution-section" data-total="{{this.dispositionTotal}}">
+      <div class="dist-summary">
+        <span>{{localize "TB2E.Conflict.Total"}}: <strong>{{this.dispositionTotal}}</strong></span>
+        <span>{{localize "TB2E.Conflict.Remaining"}}: <strong class="dist-remaining">0</strong></span>
+      </div>
+      <ul class="dist-list">
+        {{#each this.distributionRows}}
+        <li class="dist-row">
+          <span class="dist-name">
+            {{#if this.isCaptain}}<i class="fa-solid fa-star"></i>{{/if}}
+            {{this.name}}
+          </span>
+          <input type="number" name="disp-{{this.id}}" value="{{this.suggested}}"
+                 min="1" max="{{../dispositionTotal}}" step="1"
+                 class="dist-value">
+        </li>
+        {{/each}}
+      </ul>
+      {{#if this.canDistribute}}
+      <button type="button" class="panel-action-btn" data-action="distribute">
+        <i class="fa-solid fa-check"></i> {{localize "TB2E.Conflict.Distribute"}}
+      </button>
+      {{/if}}
+    </div>
+    {{else}}
+    <div class="disp-distributed-badge">
+      <i class="fa-solid fa-check"></i> {{localize "TB2E.Conflict.Distributed"}}
+    </div>
+    {{/unless}}
+
+    {{/unless}}
+  </div>
+  {{/each}}
+
+  {{!-- Next Button --}}
+  {{#if isGM}}
+  <button type="button" class="setup-next-btn" data-action="beginWeapons"
+          {{#unless allDistributed}}disabled{{/unless}}>
+    <span class="setup-next-label">{{localize "TB2E.Conflict.Next"}}</span>
+    <i class="fa-solid fa-arrow-right"></i>
+  </button>
+  {{/if}}
+
+</div>

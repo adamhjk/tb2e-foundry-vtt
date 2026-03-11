@@ -1,0 +1,125 @@
+{{!-- Setup Tab --}}
+<div class="panel-tab-content setup-tab">
+
+  {{!-- Conflict Type --}}
+  {{#if isGM}}
+  <div class="setup-field">
+    <label class="setup-label">{{localize "TB2E.Conflict.Title"}}</label>
+    <select class="conflict-type-select">
+      {{#each conflictTypes}}
+      <option value="{{this.key}}" {{#if this.selected}}selected{{/if}}>{{this.label}}</option>
+      {{/each}}
+    </select>
+  </div>
+  {{/if}}
+
+  {{!-- Conflict Name --}}
+  <div class="setup-field">
+    <label class="setup-label">{{localize "TB2E.Conflict.ConflictName"}}</label>
+    <input type="text" class="conflict-name-input" value="{{conflictName}}"
+           placeholder="{{localize 'TB2E.Conflict.ConflictNamePlaceholder'}}">
+  </div>
+
+  {{!-- Manual Conflict Configuration --}}
+  {{#if isManual}}
+  {{#if isGM}}
+  <div class="setup-manual-config">
+    <div class="setup-label">{{localize "TB2E.Conflict.ManualSkills"}}</div>
+
+    <div class="manual-config-row">
+      <label class="manual-config-label">{{localize "TB2E.Conflict.DispositionAbility"}}</label>
+      <select class="manual-disp-ability">
+        {{#each abilityOptions}}
+        <option value="{{this.key}}" {{#if this.selected}}selected{{/if}}>{{this.label}}</option>
+        {{/each}}
+      </select>
+    </div>
+
+    <div class="manual-config-row">
+      <label class="manual-config-label">{{localize "TB2E.Conflict.DispositionSkills"}}</label>
+      <select class="manual-disp-skill">
+        <option value=""></option>
+        {{#each skillOptions}}
+        <option value="{{this.key}}" {{#if this.selected}}selected{{/if}}>{{this.label}}</option>
+        {{/each}}
+      </select>
+    </div>
+
+    <div class="manual-actions-header">{{localize "TB2E.Conflict.ActionConfig"}}</div>
+    {{#each manualActionRows}}
+    <div class="manual-action-row" data-action-key="{{this.key}}">
+      <span class="manual-action-label">{{this.label}}</span>
+      <select class="manual-action-type" data-action-key="{{this.key}}">
+        <option value="ability" {{#if this.isAbility}}selected{{/if}}>{{localize "TB2E.Conflict.TestTypeAbility"}}</option>
+        <option value="skill" {{#if this.isSkill}}selected{{/if}}>{{localize "TB2E.Conflict.TestTypeSkill"}}</option>
+      </select>
+      <select class="manual-action-key" data-action-key="{{this.key}}">
+        {{#each this.keyOptions}}
+        <option value="{{this.key}}" {{#if this.selected}}selected{{/if}}>{{this.label}}</option>
+        {{/each}}
+      </select>
+    </div>
+    {{/each}}
+  </div>
+  {{/if}}
+  {{/if}}
+
+  {{!-- Team Rosters with Captain Assignment --}}
+  {{#each setupGroups}}
+  <div class="setup-group" data-group-id="{{this.id}}">
+    <div class="setup-group-header">{{this.name}}</div>
+    <ul class="setup-combatant-list">
+      {{#each this.combatants}}
+      <li class="setup-combatant {{#if this.isCaptain}}is-captain{{/if}}" data-combatant-id="{{this.id}}">
+        <img class="setup-combatant-img" src="{{this.img}}" alt="{{this.name}}">
+        <span class="setup-combatant-name">{{this.name}}</span>
+        {{#if @root.isGM}}
+        <button type="button" class="setup-captain-btn {{#if this.isCaptain}}active{{/if}}"
+                data-action="setCaptain" data-combatant-id="{{this.id}}"
+                title="{{localize 'TB2E.Conflict.SetCaptain'}}">
+          <i class="fa-solid fa-crown"></i>
+        </button>
+        <button type="button" class="setup-remove-btn"
+                data-action="removeCombatant" data-combatant-id="{{this.id}}"
+                title="{{localize 'TB2E.Conflict.Remove'}}">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+        {{else if this.isCaptain}}
+        <span class="setup-captain-badge"><i class="fa-solid fa-crown"></i></span>
+        {{/if}}
+      </li>
+      {{/each}}
+    </ul>
+
+    {{!-- Captain Guidance --}}
+    {{#unless this.hasCaptain}}
+    <div class="setup-captain-hint">
+      <i class="fa-solid fa-crown"></i>
+      {{localize "TB2E.Conflict.CaptainHint"}}
+    </div>
+    {{/unless}}
+
+    {{!-- Add Combatant (GM only, setup phase) --}}
+    {{#if @root.isGM}}
+    <div class="setup-add-combatant">
+      <select class="add-combatant-select" data-group-id="{{this.id}}">
+        <option value="">{{localize "TB2E.Conflict.AddActor"}}</option>
+        {{#each @root.availableActors}}
+        <option value="{{this.id}}">{{this.name}}</option>
+        {{/each}}
+      </select>
+    </div>
+    {{/if}}
+  </div>
+  {{/each}}
+
+  {{!-- Next Button --}}
+  {{#if isGM}}
+  <button type="button" class="setup-next-btn" data-action="beginDisposition"
+          {{#unless canBeginDisposition}}disabled{{/unless}}>
+    <span class="setup-next-label">{{localize "TB2E.Conflict.Next"}}</span>
+    <i class="fa-solid fa-arrow-right"></i>
+  </button>
+  {{/if}}
+
+</div>

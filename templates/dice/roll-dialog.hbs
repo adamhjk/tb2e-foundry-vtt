@@ -1,12 +1,10 @@
 <div class="tb2e-roll-dialog-form">
   <div class="roll-dialog-header">
-    {{#unless disposition}}
     <button type="button" class="roll-dialog-badge roll-dialog-mode-toggle">
-      <span class="mode-label">{{independentLabel}}</span>
+      <span class="mode-label">{{#if isDisposition}}{{dispositionLabel}}{{else}}{{independentLabel}}{{/if}}</span>
       <i class="fa-solid fa-caret-down mode-caret"></i>
     </button>
-    <input type="hidden" name="mode" value="independent">
-    {{/unless}}
+    <input type="hidden" name="mode" value="{{#if isDisposition}}disposition{{else}}independent{{/if}}">
     {{#if blInfo}}
     <span class="roll-dialog-badge bl-badge">
       <i class="fa-solid fa-graduation-cap"></i> BL: {{blInfo.blAbilityLabel}}
@@ -20,15 +18,20 @@
       <label for="poolSize">{{dicePoolLabel}}</label>
       <input type="number" name="poolSize" id="poolSize" value="{{dice}}" min="0" max="20" autofocus>
     </div>
-    {{#unless disposition}}
-    <div class="roll-field roll-field-obstacle">
+    <div class="roll-field roll-field-obstacle {{#if isDisposition}}hidden{{/if}}">
       <label for="obstacle">{{obstacleLabel}}</label>
       <input type="number" name="obstacle" id="obstacle" value="1" min="0" max="20">
     </div>
-    {{/unless}}
+    <div class="roll-field roll-field-ability {{#unless isDisposition}}hidden{{/unless}}">
+      <label for="dispositionAbility">{{dispositionAbilityLabel}}</label>
+      <select name="dispositionAbility" id="dispositionAbility" {{#if dispositionLocked}}disabled{{/if}}>
+        {{#each abilityChoices}}
+        <option value="{{key}}" {{#if selected}}selected{{/if}}>{{label}} ({{rating}})</option>
+        {{/each}}
+      </select>
+    </div>
   </div>
 
-  {{#unless disposition}}
   <div class="roll-dialog-challenge hidden">
     <label>{{challengeLabel}}</label>
     <select name="challengeMessageId">
@@ -38,7 +41,6 @@
       {{/each}}
     </select>
   </div>
-  {{/unless}}
 
   {{! Unified Modifier List — dynamically populated by JS }}
   <div class="roll-dialog-modifiers"></div>
@@ -247,22 +249,18 @@
   {{/if}}
 
   {{! Manual Modifier Add }}
-  {{#unless disposition}}
   <div class="roll-dialog-manual">
     <button type="button" class="add-modifier-btn">
       <i class="fa-solid fa-plus"></i> Add Modifier
     </button>
   </div>
-  {{/unless}}
 
-  {{#unless disposition}}
-  <div class="roll-dialog-options">
+  <div class="roll-dialog-options {{#if isDisposition}}hidden{{/if}}">
     <label class="roll-option">
       <input type="checkbox" name="logAdvancement" checked>
       <span>{{advancementLabel}}</span>
     </label>
   </div>
-  {{/unless}}
 
   <div class="roll-dialog-summary">
     <i class="fa-solid fa-dice"></i>

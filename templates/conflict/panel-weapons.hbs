@@ -1,0 +1,50 @@
+{{!-- Weapons Tab --}}
+<div class="panel-tab-content weapons-tab">
+
+  {{#each weaponGroups}}
+  <div class="weapon-group" data-group-id="{{this.id}}">
+    <div class="weapon-group-header">{{this.name}}</div>
+    <ul class="weapon-list">
+      {{#each this.combatants}}
+      <li class="weapon-row {{#if this.knockedOut}}knocked-out{{/if}}">
+        <img class="weapon-combatant-img" src="{{this.img}}" alt="{{this.name}}">
+        <span class="weapon-combatant-name">{{this.name}}</span>
+        {{#if this.knockedOut}}
+        <span class="weapon-ko"><i class="fa-solid fa-skull"></i></span>
+        {{else if this.canEdit}}
+          {{#if @root.usesGear}}
+          <select class="weapon-select" data-combatant-id="{{this.id}}">
+            <option value="">{{localize "TB2E.Conflict.WeaponChoose"}}</option>
+            {{#each this.weaponChoices}}
+            <option value="{{this.id}}" {{#if this.selected}}selected{{/if}}>{{this.name}}</option>
+            {{/each}}
+          </select>
+          <input type="text" class="weapon-improvised-input {{#unless this.isImprovised}}hidden{{/unless}}"
+                 value="{{#if this.isImprovised}}{{this.weapon}}{{/if}}"
+                 data-combatant-id="{{this.id}}"
+                 placeholder="{{localize 'TB2E.Conflict.WeaponImprovisedPlaceholder'}}">
+          {{else}}
+          <input type="text" class="weapon-input" value="{{this.weapon}}"
+                 data-combatant-id="{{this.id}}"
+                 placeholder="{{localize 'TB2E.Conflict.WeaponPlaceholder'}}">
+          {{/if}}
+        {{else}}
+          {{#if this.isUnarmed}}
+          <span class="weapon-display weapon-unarmed"><i class="fa-solid fa-hand-fist"></i> {{localize "TB2E.Conflict.WeaponUnarmed"}}</span>
+          {{else}}
+          <span class="weapon-display">{{this.weapon}}</span>
+          {{/if}}
+        {{/if}}
+      </li>
+      {{/each}}
+    </ul>
+  </div>
+  {{/each}}
+
+  <button type="button" class="setup-next-btn" data-action="beginScripting"
+          {{#unless canBeginScripting}}disabled{{/unless}}>
+    <span class="setup-next-label">{{localize "TB2E.Conflict.Next"}}</span>
+    <i class="fa-solid fa-arrow-right"></i>
+  </button>
+
+</div>

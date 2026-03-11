@@ -13,23 +13,79 @@ export default class TB2ECombat extends Combat {
   /* -------------------------------------------- */
 
   /**
+   * Override create to ensure all Combat creation paths produce a properly initialized conflict.
+   * This handles both our "Create Conflict" button and Foundry's token "Toggle Combat State".
+   * @override
+   */
+  static async create(data = {}, operation = {}) {
+    if ( Array.isArray(data) ) return super.create(data, operation);
+    data.type ??= "conflict";
+    if ( data.type === "conflict" ) {
+      if ( !data.system ) data.system = {};
+      data.system.conflictType ??= "manual";
+      data.system.phase ??= "setup";
+      if ( !data.groups?.length ) {
+        data.groups = [
+          { name: game.i18n.localize("TB2E.Conflict.PCTeam") },
+          { name: game.i18n.localize("TB2E.Conflict.NPCTeam") }
+        ];
+      }
+    }
+    return super.create(data, operation);
+  }
+
+  /**
    * Create a new conflict with two default groups.
-   * @param {string} [type="capture"]  The conflict type key.
+   * @param {string} [type="manual"]  The conflict type key.
    * @returns {Promise<TB2ECombat>}
    */
-  static async createConflict(type = "capture") {
-    const combat = await this.create({
+  static async createConflict(type = "manual") {
+    return this.create({
       type: "conflict",
+      active: true,
       system: { conflictType: type, phase: "setup" }
     });
+  }
 
-    // Create PC and NPC team groups.
-    await combat.createEmbeddedDocuments("CombatantGroup", [
-      { name: game.i18n.localize("TB2E.Conflict.PCTeam") },
-      { name: game.i18n.localize("TB2E.Conflict.NPCTeam") }
-    ]);
+  /**
+   * Ensure combatants created inside a conflict always use the "conflict" type.
+   * This avoids schema validation issues when changing type via updateSource after construction.
+   * @override
+   */
+  async createEmbeddedDocuments(embeddedName, data = [], operation = {}) {
+    if ( this.isConflict && embeddedName === "Combatant" ) {
+      data = data.map(d => ({ type: "conflict", ...d }));
+    }
+    return super.createEmbeddedDocuments(embeddedName, data, operation);
+  }
 
-    return combat;
+  /* -------------------------------------------- */
+  /*  Conflict Configuration                       */
+  /* -------------------------------------------- */
+
+  /**
+   * Get the effective conflict config, resolving manual overrides when applicable.
+   * @returns {object} The conflict type configuration.
+   */
+  getEffectiveConflictConfig() {
+    const baseCfg = CONFIG.TB2E.conflictTypes[this.system.conflictType];
+    if ( !baseCfg || this.system.conflictType !== "manual" ) return baseCfg;
+
+    const manual = this.system;
+    const actions = {};
+    for ( const key of Object.keys(baseCfg.actions) ) {
+      actions[key] = manual.manualActions?.[key]?.type
+        ? manual.manualActions[key]
+        : baseCfg.actions[key];
+    }
+    return {
+      ...baseCfg,
+      dispositionSkills: manual.manualDispositionSkills?.length
+        ? manual.manualDispositionSkills
+        : baseCfg.dispositionSkills,
+      dispositionAbility: manual.manualDispositionAbility || baseCfg.dispositionAbility,
+      actions
+    };
   }
 
   /* -------------------------------------------- */
@@ -50,12 +106,11 @@ export default class TB2ECombat extends Combat {
   }
 
   /**
-   * Transition from setup to rolling phase.
+   * Transition from setup to disposition phase.
    * Validates that all groups have captains assigned.
-   * If a conflict type has only one disposition skill, auto-sets chosenSkill on each captain's combatant.
    * @returns {Promise<TB2ECombat>}
    */
-  async beginRolling() {
+  async beginDisposition() {
     const gd = foundry.utils.deepClone(this.system.groupDispositions || {});
     const groups = Array.from(this.groups);
 
@@ -67,38 +122,24 @@ export default class TB2ECombat extends Combat {
       }
     }
 
-    // If the conflict type has only one disposition skill, auto-set it on each captain's combatant.
-    const conflictType = CONFIG.TB2E.conflictTypes[this.system.conflictType];
+    // If the conflict type has only one disposition skill, auto-set it.
+    const conflictType = this.getEffectiveConflictConfig();
     if ( conflictType?.dispositionSkills.length === 1 ) {
       const skillKey = conflictType.dispositionSkills[0];
       const combatantUpdates = [];
       for ( const group of groups ) {
         const captainId = gd[group.id]?.captainId;
         if ( captainId ) {
-          combatantUpdates.push({ _id: captainId, "system.chosenSkill": skillKey });
+          // Store chosen skill in group disposition data instead of combatant.
+          gd[group.id].chosenSkill = skillKey;
         }
-      }
-      if ( combatantUpdates.length ) {
-        await this.updateEmbeddedDocuments("Combatant", combatantUpdates);
       }
     }
 
-    return this.update({ "system.phase": "rolling" });
-  }
-
-  /**
-   * Set the chosen disposition skill on the captain's combatant.
-   * @param {string} groupId    The CombatantGroup ID.
-   * @param {string} skillKey   The skill key chosen by the captain.
-   * @returns {Promise<Combatant>}
-   */
-  async chooseSkill(groupId, skillKey) {
-    const gd = this.system.groupDispositions || {};
-    const captainId = gd[groupId]?.captainId;
-    if ( !captainId ) return;
-    const captain = this.combatants.get(captainId);
-    if ( !captain ) return;
-    return captain.update({ "system.chosenSkill": skillKey });
+    return this.update({
+      "system.phase": "disposition",
+      "system.groupDispositions": gd
+    });
   }
 
   /**
@@ -118,7 +159,7 @@ export default class TB2ECombat extends Combat {
 
   /**
    * Store pre-computed disposition roll results for a group.
-   * Auto-transitions to distribution phase when all groups have rolled.
+   * Auto-transitions to distribution sub-state when all groups have rolled.
    * @param {string} groupId                     The CombatantGroup ID.
    * @param {object} options
    * @param {number} options.rolled               Final disposition total (successes + ability).
@@ -133,10 +174,7 @@ export default class TB2ECombat extends Combat {
     groupData.diceResults = diceResults;
     groupData.cardHtml = cardHtml;
 
-    const groups = Array.from(this.groups);
-    const allRolled = groups.every(g => gd[g.id]?.rolled != null);
     const updateData = { "system.groupDispositions": gd };
-    if ( allRolled ) updateData["system.phase"] = "distribution";
     return this.update(updateData);
   }
 
@@ -171,14 +209,21 @@ export default class TB2ECombat extends Combat {
     if ( !gd[groupId] ) gd[groupId] = {};
     gd[groupId].distributed = true;
 
-    // Check if all groups have been distributed.
+    const updateData = { "system.groupDispositions": gd };
+    return this.update(updateData);
+  }
+
+  /**
+   * Transition from disposition to weapons phase.
+   * Requires all groups to have distributed their disposition.
+   * @returns {Promise<TB2ECombat>}
+   */
+  async beginWeapons() {
+    const gd = this.system.groupDispositions || {};
     const groups = Array.from(this.groups);
     const allDistributed = groups.every(g => gd[g.id]?.distributed);
-
-    const updateData = { "system.groupDispositions": gd };
-    if ( allDistributed ) updateData["system.phase"] = "weapons";
-
-    return this.update(updateData);
+    if ( !allDistributed ) return;
+    return this.update({ "system.phase": "weapons" });
   }
 
   /* -------------------------------------------- */
@@ -188,26 +233,55 @@ export default class TB2ECombat extends Combat {
   /**
    * Set the weapon for a combatant (persists to both combatant and actor).
    * @param {string} combatantId   The Combatant ID.
-   * @param {string} weaponName    The weapon name (free text).
+   * @param {string} weaponName    The weapon display name.
+   * @param {string} [weaponId=""] The weapon item ID or sentinel ("__unarmed__", "__improvised__").
    * @returns {Promise<void>}
    */
-  async setWeapon(combatantId, weaponName) {
+  async setWeapon(combatantId, weaponName, weaponId = "") {
     const combatant = this.combatants.get(combatantId);
     if ( !combatant ) return;
-    await combatant.update({ "system.weapon": weaponName });
+    await combatant.update({ "system.weapon": weaponName, "system.weaponId": weaponId });
     if ( combatant.actorId ) {
       const actor = game.actors.get(combatant.actorId);
-      if ( actor ) await actor.update({ "system.conflict.weapon": weaponName });
+      if ( actor ) await actor.update({ "system.conflict.weapon": weaponName, "system.conflict.weaponId": weaponId });
     }
   }
 
   /**
    * Transition from weapons to scripting phase.
-   * Validates all non-knocked-out combatants have weapons set.
+   * Initializes the first round data structure.
    * @returns {Promise<TB2ECombat>}
    */
   async beginScripting() {
-    return this.update({ "system.phase": "scripting" });
+    const nextRound = (this.system.currentRound || 0) + 1;
+    const rounds = foundry.utils.deepClone(this.system.rounds || {});
+
+    const actions = {};
+    const locked = {};
+    for ( const group of this.groups ) {
+      actions[group.id] = [null, null, null];
+      locked[group.id] = false;
+    }
+
+    rounds[nextRound] = {
+      actions,
+      locked,
+      volleys: [
+        { revealed: false, result: null },
+        { revealed: false, result: null },
+        { revealed: false, result: null }
+      ],
+      effects: {
+        impede: {},
+        position: {}
+      }
+    };
+
+    return this.update({
+      "system.currentRound": nextRound,
+      "system.rounds": rounds,
+      "system.phase": "scripting"
+    });
   }
 
   /* -------------------------------------------- */
@@ -248,6 +322,59 @@ export default class TB2ECombat extends Combat {
     this.#applyLockActions(groupId);
   }
 
+  /**
+   * Transition from scripting to resolve phase.
+   * Validates both teams are locked, sets currentAction to 0.
+   * @returns {Promise<TB2ECombat>}
+   */
+  async beginResolve() {
+    const roundNum = this.system.currentRound;
+    if ( !roundNum ) return;
+    const round = this.system.rounds?.[roundNum];
+    if ( !round ) return;
+
+    const allLocked = Object.values(round.locked).every(v => v);
+    if ( !allLocked ) {
+      ui.notifications.warn(game.i18n.localize("TB2E.Conflict.WaitingForLock"));
+      return;
+    }
+
+    return this.update({
+      "system.phase": "resolve",
+      "system.currentAction": 0
+    });
+  }
+
+  /**
+   * Set a per-side interaction override for a volley.
+   * @param {number} volleyIndex  The volley index (0-2).
+   * @param {string} groupId      The CombatantGroup ID.
+   * @param {string} interaction   The interaction type ("versus", "independent", "none"), or falsy to clear.
+   * @returns {Promise<TB2ECombat>}
+   */
+  async setInteractionOverride(volleyIndex, groupId, interaction) {
+    if ( !game.user.isGM ) return;
+    const roundNum = this.system.currentRound;
+    const rounds = foundry.utils.deepClone(this.system.rounds || {});
+    const round = rounds[roundNum];
+    if ( !round ) return;
+    const volley = round.volleys[volleyIndex];
+    if ( !volley ) return;
+    if ( !volley.interactionOverrides ) volley.interactionOverrides = {};
+    volley.interactionOverrides[groupId] = interaction || null;
+    return this.update({ "system.rounds": rounds });
+  }
+
+  /**
+   * Increment currentAction (0→1→2).
+   * @returns {Promise<TB2ECombat>}
+   */
+  async nextAction() {
+    const next = (this.system.currentAction || 0) + 1;
+    if ( next > 2 ) return;
+    return this.update({ "system.currentAction": next });
+  }
+
   /* -------------------------------------------- */
   /*  Mailbox Processing (GM only)                */
   /* -------------------------------------------- */
@@ -279,11 +406,8 @@ export default class TB2ECombat extends Combat {
       }
     }
 
-    // Auto-transition: weapons → scripting when all combatants have declared weapons.
-    if ( this.system.phase === "weapons" && changes.some(c => "weapon" in (c.system ?? {})) ) {
-      const allArmed = this.combatants.every(c => c.system.knockedOut || c.system.weapon);
-      if ( allArmed ) this.startConflictRound();
-    }
+    // Re-render the panel when weapons change (GM sees updated "Begin Scripting" button state).
+    // No auto-transition — the GM manually clicks "Begin Scripting" when ready.
   }
 
   /**
@@ -392,6 +516,7 @@ export default class TB2ECombat extends Combat {
 
     if ( volleyIndex < 0 || volleyIndex > 2 ) return;
     round.volleys[volleyIndex].revealed = true;
+
     return this.update({ "system.rounds": rounds });
   }
 
@@ -436,10 +561,33 @@ export default class TB2ECombat extends Combat {
 
   /**
    * Advance to the next round after all 3 volleys are resolved.
-   * Returns to the weapons phase for a new round.
+   * Records actedLastRound on each combatant before resetting.
    * @returns {Promise<TB2ECombat>}
    */
   async advanceRound() {
+    // Record which action slots each combatant acted in this round.
+    const roundNum = this.system.currentRound;
+    const round = this.system.rounds?.[roundNum];
+    if ( round ) {
+      const combatantSlots = {};
+      for ( const [groupId, groupActions] of Object.entries(round.actions) ) {
+        for ( let i = 0; i < (groupActions?.length || 0); i++ ) {
+          const entry = groupActions[i];
+          if ( entry?.combatantId ) {
+            if ( !combatantSlots[entry.combatantId] ) combatantSlots[entry.combatantId] = [];
+            combatantSlots[entry.combatantId].push(i);
+          }
+        }
+      }
+      const combatantUpdates = [];
+      for ( const [cId, slots] of Object.entries(combatantSlots) ) {
+        combatantUpdates.push({ _id: cId, "system.actedLastRound": slots });
+      }
+      if ( combatantUpdates.length ) {
+        await this.updateEmbeddedDocuments("Combatant", combatantUpdates);
+      }
+    }
+
     const nextRound = (this.system.currentRound || 0) + 1;
     const rounds = foundry.utils.deepClone(this.system.rounds || {});
 
@@ -478,42 +626,6 @@ export default class TB2ECombat extends Combat {
       "system.currentRound": nextRound,
       "system.rounds": rounds,
       "system.phase": "weapons"
-    });
-  }
-
-  /**
-   * Start the first conflict round (called when entering scripting for the first time).
-   * @returns {Promise<TB2ECombat>}
-   */
-  async startConflictRound() {
-    const nextRound = (this.system.currentRound || 0) + 1;
-    const rounds = foundry.utils.deepClone(this.system.rounds || {});
-
-    const actions = {};
-    const locked = {};
-    for ( const group of this.groups ) {
-      actions[group.id] = [null, null, null];
-      locked[group.id] = false;
-    }
-
-    rounds[nextRound] = {
-      actions,
-      locked,
-      volleys: [
-        { revealed: false, result: null },
-        { revealed: false, result: null },
-        { revealed: false, result: null }
-      ],
-      effects: {
-        impede: {},
-        position: {}
-      }
-    };
-
-    return this.update({
-      "system.currentRound": nextRound,
-      "system.rounds": rounds,
-      "system.phase": "scripting"
     });
   }
 
@@ -569,7 +681,7 @@ export default class TB2ECombat extends Combat {
   }
 
   /**
-   * End the conflict, resetting all actor dispositions and deleting the combat.
+   * End the conflict, resetting dispositions and deleting the combat.
    * @returns {Promise<void>}
    */
   async endConflict() {
@@ -580,7 +692,8 @@ export default class TB2ECombat extends Combat {
         _id: combatant.actorId,
         "system.conflict.hp.value": 0,
         "system.conflict.hp.max": 0,
-        "system.conflict.weapon": ""
+        "system.conflict.weapon": "",
+        "system.conflict.weaponId": ""
       });
     }
     if ( updates.length ) await Actor.updateDocuments(updates);

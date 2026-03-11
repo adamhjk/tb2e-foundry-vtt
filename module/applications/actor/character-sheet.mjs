@@ -1,7 +1,7 @@
 import { advancementNeeded, conditions, abilities, skills, levelRequirements, stockDescriptors, containerTypes } from "../../config.mjs";
 import { resolveSlotOptionKey, getSlotCost, getMinSlotCost, getCacheCost, formatSlotOptions } from "../../data/item/_fields.mjs";
 import { rollTest, showAdvancementDialog, castSpell, performInvocation } from "../../dice/_module.mjs";
-import { rollDisposition, evaluateRoll, gatherHelpModifiers } from "../../dice/tb2e-roll.mjs";
+import { evaluateRoll, gatherHelpModifiers } from "../../dice/tb2e-roll.mjs";
 import { getEligibleHelpers } from "../../dice/help.mjs";
 import { _checkWiseAdvancement } from "../../dice/post-roll.mjs";
 import { resetTraitsForSession } from "../../session.mjs";
@@ -25,10 +25,6 @@ export default class CharacterSheet extends HandlebarsApplicationMixin(ActorShee
       rollTest: CharacterSheet.#onRollTest,
       advance: CharacterSheet.#onAdvance,
       toggleTeam: CharacterSheet.#onToggleTeam,
-      conflictChooseSkill: CharacterSheet.#onConflictChooseSkill,
-      conflictRollDisposition: CharacterSheet.#onConflictRollDisposition,
-      conflictDistribute: CharacterSheet.#onConflictDistribute,
-      conflictDeclareWeapon: CharacterSheet.#onConflictDeclareWeapon,
       conserveNature: CharacterSheet.#onConserveNature,
       recoverNature: CharacterSheet.#onRecoverNature,
       addDescriptor: CharacterSheet.#onAddDescriptor,
@@ -824,11 +820,16 @@ export default class CharacterSheet extends HandlebarsApplicationMixin(ActorShee
     const gd = combat.system.groupDispositions || {};
     const groupData = gd[groupId] || {};
     const phase = combat.system.phase;
-    const conflictCfg = CONFIG.TB2E.conflictTypes[combat.system.conflictType];
+    const conflictCfg = combat.getEffectiveConflictConfig();
     const isCaptain = groupData.captainId === combatant.id;
     const disp = actor.system.conflict.hp;
 
-    const conflictData = {
+    const weaponId = combatant.system.weaponId || actor.system.conflict.weaponId || "";
+    const usesGear = !!conflictCfg?.usesGear;
+    const isUnarmed = weaponId === "__unarmed__";
+    const isImprovised = weaponId === "__improvised__";
+
+    const conflictCtx = {
       active: true,
       combatId: combat.id,
       groupId,
@@ -839,57 +840,26 @@ export default class CharacterSheet extends HandlebarsApplicationMixin(ActorShee
       hp: disp,
       hpPercent: disp.max > 0 ? Math.round((disp.value / disp.max) * 100) : 0,
       weapon: combatant.system.weapon || actor.system.conflict.weapon || "",
-      isRolling: phase === "rolling",
-      isDistribution: phase === "distribution",
+      weaponId,
+      usesGear,
+      isUnarmed,
+      isImprovised,
+      isDisposition: phase === "disposition",
       isWeapons: phase === "weapons",
-      isScriptingOrActive: phase === "scripting" || phase === "active",
-      hasRolled: groupData.rolled != null,
-      hasDistributed: !!groupData.distributed
+      isScriptingOrResolve: phase === "scripting" || phase === "resolve"
     };
 
-    // Rolling phase data.
-    if ( phase === "rolling" && isCaptain && !groupData.rolled ) {
-      const captain = combat.combatants.get(groupData.captainId);
-      const chosenSkill = captain?.system.chosenSkill || null;
-      conflictData.needsSkillChoice = !chosenSkill && (conflictCfg?.dispositionSkills?.length > 1);
-
-      if ( conflictData.needsSkillChoice ) {
-        conflictData.skillOptions = (conflictCfg.dispositionSkills || []).map(k => ({
-          key: k,
-          label: game.i18n.localize(CONFIG.TB2E.skills[k]?.label || k),
-          rating: actor.system.skills[k]?.rating || 0
-        }));
-      } else {
-        const skill = chosenSkill || conflictCfg?.dispositionSkills?.[0];
-        conflictData.chosenSkillLabel = skill ? game.i18n.localize(CONFIG.TB2E.skills[skill]?.label || skill) : "";
-        conflictData.rollPool = actor.system.skills[skill]?.rating || 0;
-        conflictData.abilityLabel = game.i18n.localize(
-          CONFIG.TB2E.abilities[conflictCfg.dispositionAbility]?.label || conflictCfg.dispositionAbility
-        );
-        conflictData.abilityRating = actor.system.abilities[conflictCfg.dispositionAbility]?.rating || 0;
-      }
+    // During weapons phase for gear conflicts, provide weapon choices from inventory.
+    if ( phase === "weapons" && usesGear ) {
+      const weapons = (actor.itemTypes.weapon || []).filter(w => !w.system.dropped);
+      conflictCtx.weaponChoices = [
+        { id: "__unarmed__", name: game.i18n.localize("TB2E.Conflict.WeaponUnarmed"), selected: weaponId === "__unarmed__" },
+        ...weapons.map(w => ({ id: w.id, name: w.name, selected: weaponId === w.id })),
+        { id: "__improvised__", name: game.i18n.localize("TB2E.Conflict.WeaponImprovised"), selected: weaponId === "__improvised__" }
+      ];
     }
 
-    // Distribution phase data.
-    if ( phase === "distribution" && isCaptain && !groupData.distributed && groupData.rolled != null ) {
-      const total = groupData.rolled;
-      const members = combat.combatants.filter(c => c._source.group === groupId);
-      const base = Math.floor(total / (members.length || 1));
-      let remainder = total - (base * (members.length || 1));
-      conflictData.dispositionTotal = total;
-      conflictData.distributionRows = members.map(c => {
-        const suggested = base + (remainder > 0 ? 1 : 0);
-        if ( remainder > 0 ) remainder--;
-        return {
-          id: c.id,
-          name: c.name,
-          isCaptain: groupData.captainId === c.id,
-          suggested
-        };
-      });
-    }
-
-    context.conflict = conflictData;
+    context.conflict = conflictCtx;
   }
 
   /* -------------------------------------------- */
@@ -1014,23 +984,59 @@ export default class CharacterSheet extends HandlebarsApplicationMixin(ActorShee
       });
     }
 
-    // Conflict distribution live validation.
-    const distSection = this.element.querySelector(".conflict-distribution");
-    if ( distSection ) {
-      const inputs = distSection.querySelectorAll(".conflict-dist-value");
-      const remainingEl = distSection.querySelector(".conflict-dist-remaining");
-      const total = parseInt(distSection.dataset.total) || 0;
-      function updateRemaining() {
-        let sum = 0;
-        for ( const input of inputs ) sum += parseInt(input.value) || 0;
-        const remaining = total - sum;
-        remainingEl.textContent = remaining;
-        remainingEl.classList.toggle("invalid", remaining !== 0);
-      }
-      for ( const input of inputs ) {
-        input.addEventListener("change", updateRemaining);
-        input.addEventListener("input", updateRemaining);
-      }
+    // Conflict weapon select (gear conflicts on character sheet).
+    const conflictWeaponSelect = this.element.querySelector(".conflict-weapon-select");
+    if ( conflictWeaponSelect ) {
+      conflictWeaponSelect.addEventListener("change", (event) => {
+        const combat = game.combats?.find(c =>
+          c.isConflict && c.combatants.some(cb => cb.actorId === this.document.id)
+        );
+        if ( !combat ) return;
+        const combatant = combat.combatants.find(c => c.actorId === this.document.id);
+        if ( !combatant ) return;
+        const weaponId = event.target.value;
+        const improvisedInput = this.element.querySelector(".conflict-weapon-improvised-input");
+
+        if ( weaponId === "__improvised__" ) {
+          improvisedInput?.classList.remove("hidden");
+          const name = improvisedInput?.value.trim() || game.i18n.localize("TB2E.Conflict.WeaponImprovised");
+          combat.setWeapon(combatant.id, name, "__improvised__");
+        } else {
+          improvisedInput?.classList.add("hidden");
+          const selectedOption = event.target.options[event.target.selectedIndex];
+          const name = weaponId ? selectedOption.text : "";
+          combat.setWeapon(combatant.id, name, weaponId);
+        }
+      });
+    }
+
+    // Conflict improvised weapon name input (gear conflicts on character sheet).
+    const conflictImprovisedInput = this.element.querySelector(".conflict-weapon-improvised-input");
+    if ( conflictImprovisedInput ) {
+      conflictImprovisedInput.addEventListener("change", (event) => {
+        const combat = game.combats?.find(c =>
+          c.isConflict && c.combatants.some(cb => cb.actorId === this.document.id)
+        );
+        if ( !combat ) return;
+        const combatant = combat.combatants.find(c => c.actorId === this.document.id);
+        if ( !combatant ) return;
+        const name = event.target.value.trim() || game.i18n.localize("TB2E.Conflict.WeaponImprovised");
+        combat.setWeapon(combatant.id, name, "__improvised__");
+      });
+    }
+
+    // Conflict weapon text input (non-gear conflicts on character sheet).
+    const conflictWeaponInput = this.element.querySelector(".conflict-weapon-input");
+    if ( conflictWeaponInput ) {
+      conflictWeaponInput.addEventListener("change", (event) => {
+        const combat = game.combats?.find(c =>
+          c.isConflict && c.combatants.some(cb => cb.actorId === this.document.id)
+        );
+        if ( !combat ) return;
+        const combatant = combat.combatants.find(c => c.actorId === this.document.id);
+        if ( !combatant ) return;
+        combat.setWeapon(combatant.id, event.target.value.trim());
+      });
     }
 
     // Spellbook assignment selects (change event, not click action).
@@ -1205,163 +1211,6 @@ export default class CharacterSheet extends HandlebarsApplicationMixin(ActorShee
   static #onToggleTeam(event, target) {
     const current = this.document.system.conflict.team || "party";
     this.document.update({ "system.conflict.team": current === "party" ? "gm" : "party" });
-  }
-
-  /* -------------------------------------------- */
-  /*  Conflict Action Handlers                    */
-  /* -------------------------------------------- */
-
-  /**
-   * Find the active conflict containing this actor.
-   * @returns {{ combat: Combat, combatant: Combatant, groupId: string }|null}
-   */
-  #findConflict() {
-    const actor = this.document;
-    const combat = game.combats?.find(c =>
-      c.isConflict && c.combatants.some(cb => cb.actorId === actor.id)
-    );
-    if ( !combat ) return null;
-    const combatant = combat.combatants.find(c => c.actorId === actor.id);
-    if ( !combatant ) return null;
-    return { combat, combatant, groupId: combatant._source.group };
-  }
-
-  /**
-   * Choose a disposition skill (captain only, rolling phase).
-   */
-  static async #onConflictChooseSkill(event, target) {
-    const info = this.#findConflict();
-    if ( !info ) return;
-    const skillKey = target.dataset.skill;
-    if ( skillKey ) await info.combat.chooseSkill(info.groupId, skillKey);
-  }
-
-  /**
-   * Roll disposition from the character sheet (captain only).
-   */
-  static async #onConflictRollDisposition(event, target) {
-    const info = this.#findConflict();
-    if ( !info ) return;
-    const { combat, combatant, groupId } = info;
-
-    const gd = combat.system.groupDispositions?.[groupId];
-    if ( !gd?.captainId || gd.captainId !== combatant.id ) return;
-
-    const captain = combat.combatants.get(gd.captainId);
-    const chosenSkill = captain?.system.chosenSkill;
-    if ( !chosenSkill ) return;
-
-    const conflictCfg = CONFIG.TB2E.conflictTypes[combat.system.conflictType];
-    const actor = this.document;
-
-    // Build available helpers.
-    const members = combat.combatants.filter(c => c._source.group === groupId);
-    const memberActors = members
-      .filter(c => c.id !== gd.captainId)
-      .map(c => game.actors.get(c.actorId))
-      .filter(Boolean);
-    const eligible = getEligibleHelpers({
-      actor,
-      type: "skill",
-      key: chosenSkill,
-      testContext: { isConflict: true },
-      candidates: memberActors
-    });
-    const availableHelpers = eligible.map(h => {
-      const cbt = members.find(c => c.actorId === h.id);
-      return {
-        id: cbt?.id ?? h.id,
-        name: h.name,
-        helpVia: h.helpVia,
-        helpViaLabel: h.helpViaLabel,
-        warnings: h.warnings
-      };
-    });
-
-    const result = await rollDisposition({
-      actor,
-      skillKey: chosenSkill,
-      abilityKey: conflictCfg.dispositionAbility,
-      availableHelpers
-    });
-    if ( !result ) return;
-
-    // Roll the dice.
-    const { roll, successes, diceResults } = await evaluateRoll(result.poolSize);
-    const disposition = successes + result.abilityRating;
-
-    // Build modifiers for card display.
-    const helpMods = gatherHelpModifiers(result.selectedHelpers || []);
-    const allModifiers = [...result.modifiers, ...helpMods];
-
-    // Render roll card.
-    const group = combat.groups.get(groupId);
-    const cardHtml = await foundry.applications.handlebars.renderTemplate(
-      "systems/tb2e/templates/chat/roll-result.hbs", {
-        actorName: actor.name, actorImg: actor.img,
-        label: result.label, baseDice: result.baseDice, poolSize: result.poolSize,
-        successes, modifiers: allModifiers, diceResults,
-        isDisposition: true, disposition,
-        abilityLabel: result.abilityLabel, abilityRating: result.abilityRating,
-        conflictTypeLabel: game.i18n.localize(conflictCfg.label),
-        conflictTitle: game.i18n.localize("TB2E.Conflict.Title"),
-        groupName: group?.name ?? "",
-        successesLabel: game.i18n.localize("TB2E.Roll.Successes"),
-        testLabel: game.i18n.localize("TB2E.Roll.Test"),
-        testTypeLabel: game.i18n.localize("TB2E.Conflict.Disposition"),
-        dispositionLabel: game.i18n.localize("TB2E.Conflict.Disposition")
-      }
-    );
-
-    await ChatMessage.create({
-      speaker: ChatMessage.getSpeaker({ actor }),
-      content: cardHtml, rolls: [roll],
-      type: CONST.CHAT_MESSAGE_STYLES.OTHER
-    });
-
-    await combat.requestStoreDispositionRoll(groupId, { rolled: disposition, diceResults, cardHtml });
-  }
-
-  /**
-   * Distribute disposition from the character sheet (captain only).
-   */
-  static async #onConflictDistribute(event, target) {
-    const info = this.#findConflict();
-    if ( !info ) return;
-    const { combat, groupId } = info;
-
-    const gd = combat.system.groupDispositions?.[groupId];
-    if ( !gd?.rolled ) return;
-    const total = gd.rolled;
-
-    // Read distribution from inputs.
-    const section = target.closest(".conflict-distribution");
-    const distribution = {};
-    const inputs = section.querySelectorAll(".conflict-dist-value");
-    for ( const input of inputs ) {
-      distribution[input.name.replace("disp-", "")] = parseInt(input.value) || 0;
-    }
-
-    const sum = Object.values(distribution).reduce((a, b) => a + b, 0);
-    if ( sum !== total ) {
-      ui.notifications.warn(game.i18n.format("TB2E.Conflict.DistributionMismatch", { total, sum }));
-      return;
-    }
-
-    await combat.distributeDisposition(groupId, distribution);
-  }
-
-  /**
-   * Declare weapon from the character sheet (weapons phase).
-   */
-  static async #onConflictDeclareWeapon(event, target) {
-    const info = this.#findConflict();
-    if ( !info ) return;
-
-    const section = target.closest(".conflict-weapon-area");
-    const input = section?.querySelector(".conflict-weapon-input");
-    const weaponName = input?.value?.trim() || "";
-    await info.combat.setWeapon(info.combatant.id, weaponName);
   }
 
   /* -------------------------------------------- */

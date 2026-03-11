@@ -171,8 +171,20 @@ export const levelRequirements = {
  * @enum {object}
  */
 export const conflictTypes = {
+  manual: {
+    label: "TB2E.Conflict.Type.Manual",
+    dispositionSkills: [],
+    dispositionAbility: "will",
+    actions: {
+      attack:   { type: "ability", keys: ["health"] },
+      defend:   { type: "ability", keys: ["will"] },
+      feint:    { type: "ability", keys: ["health"] },
+      maneuver: { type: "ability", keys: ["will"] }
+    }
+  },
   kill: {
     label: "TB2E.Conflict.Type.Kill",
+    usesGear: true,
     dispositionSkills: ["fighter"],
     dispositionAbility: "health",
     actions: {
@@ -184,6 +196,7 @@ export const conflictTypes = {
   },
   capture: {
     label: "TB2E.Conflict.Type.Capture",
+    usesGear: true,
     dispositionSkills: ["fighter", "hunter"],
     dispositionAbility: "will",
     actions: {
@@ -206,6 +219,7 @@ export const conflictTypes = {
   },
   driveOff: {
     label: "TB2E.Conflict.Type.DriveOff",
+    usesGear: true,
     dispositionSkills: ["fighter"],
     dispositionAbility: "health",
     actions: {

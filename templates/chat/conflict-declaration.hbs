@@ -1,0 +1,23 @@
+{{!-- Conflict Declaration Chat Card --}}
+<div class="tb2e-chat-card conflict-declaration-card">
+  <div class="card-header">
+    <i class="fa-solid fa-shield-halved"></i>
+    <span class="card-title">{{#if conflictName}}{{conflictName}}{{else}}{{localize "TB2E.Conflict.Declaration"}}{{/if}}</span>
+    <span class="card-subtitle">({{conflictTypeLabel}})</span>
+  </div>
+  <div class="card-teams">
+    {{#each teams}}
+    <div class="card-team">
+      <span class="card-team-name">{{this.name}}</span>
+      <ul class="card-team-members">
+        {{#each this.members}}
+        <li>
+          {{#if this.isCaptain}}<i class="fa-solid fa-crown"></i>{{/if}}
+          {{this.name}}
+        </li>
+        {{/each}}
+      </ul>
+    </div>
+    {{/each}}
+  </div>
+</div>

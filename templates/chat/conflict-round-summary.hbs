@@ -1,0 +1,26 @@
+{{!-- Conflict Round Summary Chat Card --}}
+<div class="tb2e-chat-card conflict-summary-card">
+  <div class="card-header">
+    <i class="fa-solid fa-scroll"></i>
+    <span class="card-title">{{localize "TB2E.Conflict.Round"}} {{round}} — {{localize "TB2E.Conflict.Summary"}}</span>
+  </div>
+  {{#each actions}}
+  <div class="card-summary-action">
+    <span class="card-summary-num">{{this.actionNum}}</span>
+    {{#each this.sides}}
+    <span class="card-summary-side action-{{this.action}}">
+      {{this.combatantName}}: {{this.actionLabel}}
+    </span>
+    {{/each}}
+  </div>
+  {{/each}}
+  {{#if dispositionChanges}}
+  <div class="card-summary-changes">
+    {{#each dispositionChanges}}
+    <div class="card-summary-change">
+      <span>{{this.groupName}}: {{this.current}}/{{this.max}}</span>
+    </div>
+    {{/each}}
+  </div>
+  {{/if}}
+</div>

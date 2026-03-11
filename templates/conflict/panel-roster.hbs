@@ -1,0 +1,29 @@
+{{!-- Roster Strip --}}
+<div class="panel-roster">
+  {{#each roster}}
+  <div class="roster-entry {{#if this.knockedOut}}knocked-out{{/if}}">
+    <img class="roster-img" src="{{this.img}}" alt="{{this.name}}">
+    <span class="roster-name">{{this.name}}</span>
+    {{#if this.weapon}}
+    <span class="roster-weapon" title="{{this.weapon}}"><i class="fa-solid fa-sword"></i></span>
+    {{/if}}
+    {{#if this.mustAct}}
+    <span class="must-act-badge" title="{{localize 'TB2E.Conflict.MustAct'}}"><i class="fa-solid fa-crown"></i></span>
+    {{/if}}
+    {{#if this.hasHP}}
+      {{#if this.canEditHP}}
+      <input type="number" class="roster-hp-input" value="{{this.hp.value}}"
+             min="0" max="{{this.hp.max}}"
+             data-actor-id="{{this.actorId}}" data-group-id="{{this.groupId}}">
+      <span class="roster-hp-max">/{{this.hp.max}}</span>
+      {{else}}
+      <span class="roster-hp">{{this.hp.value}}/{{this.hp.max}}</span>
+      {{/if}}
+      <div class="roster-hp-bar">
+        <div class="roster-hp-fill" style="width: {{this.hpPercent}}%"></div>
+      </div>
+    {{/if}}
+    <span class="roster-acted" title="{{localize 'TB2E.Conflict.LastRoundSlots'}}">{{this.actedLastRoundLabel}}</span>
+  </div>
+  {{/each}}
+</div>

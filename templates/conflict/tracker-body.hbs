@@ -1,4 +1,4 @@
-{{!-- Conflict Tracker Body — Status Dashboard --}}
+{{!-- Conflict Tracker Body — Read-Only Scoreboard --}}
 <div class="tb2e-conflict-body">
 
   {{#if hasCombat}}
@@ -11,108 +11,24 @@
         <span class="group-disposition">
           {{group.currentDisposition}}/{{group.maxDisposition}}
         </span>
-        {{else if group.hasRolled}}
-        <span class="group-disposition">
-          {{localize "TB2E.Conflict.Disposition"}}: {{group.rolled}}
-        </span>
         {{/if}}
       </header>
 
-      {{!-- ===== SETUP PHASE ===== --}}
-      {{#if ../isSetup}}
-      <ol class="group-combatants">
-        {{#each group.combatants as |c|}}
-        <li class="combatant {{#if c.isCaptain}}is-captain{{/if}}" data-combatant-id="{{c.id}}">
-          <div class="combatant-info">
-            <img class="combatant-img" src="{{c.img}}" alt="{{c.name}}">
-            <span class="combatant-name">
-              <i class="{{#if c.isCaptain}}fa-solid{{else}}fa-regular{{/if}} fa-star captain-icon"
-                 title="{{localize 'TB2E.Conflict.SetCaptain'}}"
-                 {{#if ../canSetCaptain}}data-action="setCaptain"{{/if}}></i>
-              {{c.name}}
-            </span>
-          </div>
-        </li>
-        {{/each}}
-      </ol>
-
-      {{#if ../isGM}}
-      <div class="group-controls">
-        <select class="add-combatant-select" data-group-id="{{group.id}}">
-          <option value="">{{localize "TB2E.Conflict.AddActor"}}</option>
-          {{#each ../availableActors as |a|}}
-          <option value="{{a.id}}">{{a.name}}</option>
-          {{/each}}
-        </select>
+      {{#if group.hasDisposition}}
+      <div class="group-disposition-bar">
+        <div class="disposition-fill" style="width: {{group.dispPercent}}%"></div>
       </div>
       {{/if}}
-      {{/if}}
 
-      {{!-- ===== ROLLING PHASE ===== --}}
-      {{#if ../isRolling}}
-      <ol class="group-combatants compact">
-        {{#each group.combatants as |c|}}
-        <li class="combatant {{#if c.isCaptain}}is-captain{{/if}}" data-combatant-id="{{c.id}}">
-          <div class="combatant-info">
-            <img class="combatant-img" src="{{c.img}}" alt="{{c.name}}">
-            <span class="combatant-name">
-              {{#if c.isCaptain}}<span class="captain-badge">{{localize "TB2E.Conflict.Captain"}}</span>{{/if}}
-              {{c.name}}
-            </span>
-          </div>
-        </li>
-        {{/each}}
-      </ol>
-      {{#if group.hasRolled}}
-      <div class="tracker-roll-card">
-        {{{group.cardHtml}}}
-      </div>
-      {{else}}
-      <div class="waiting-indicator">
-        <i class="fa-solid fa-hourglass-half"></i>
-        {{localize "TB2E.Conflict.Phase.Rolling"}}
-      </div>
-      {{/if}}
-      {{/if}}
-
-      {{!-- ===== DISTRIBUTION PHASE ===== --}}
-      {{#if ../isDistribution}}
-        {{#if group.distributed}}
-        <ol class="group-combatants">
-          {{#each group.combatants as |c|}}
-          <li class="combatant {{#if c.isCaptain}}is-captain{{/if}}" data-combatant-id="{{c.id}}">
-            <div class="combatant-info">
-              <img class="combatant-img" src="{{c.img}}" alt="{{c.name}}">
-              <span class="combatant-name">
-                {{#if c.isCaptain}}<i class="fa-solid fa-star captain-icon"></i>{{/if}}
-                {{c.name}}
-              </span>
-              {{#if c.hasHP}}
-              <span class="combatant-disposition">{{c.hp.value}}/{{c.hp.max}}</span>
-              {{/if}}
-            </div>
-          </li>
-          {{/each}}
-        </ol>
-        {{else}}
-        <div class="waiting-indicator">
-          <i class="fa-solid fa-scale-balanced"></i>
-          {{localize "TB2E.Conflict.Phase.Distribution"}}
-        </div>
-        {{/if}}
-      {{/if}}
-
-      {{!-- ===== WEAPONS / SCRIPTING / ACTIVE PHASES ===== --}}
-      {{#if ../isWeaponsOrLater}}
       <ol class="group-combatants">
         {{#each group.combatants as |c|}}
         <li class="combatant {{#if c.isCaptain}}is-captain{{/if}} {{#if c.knockedOut}}knocked-out{{/if}}" data-combatant-id="{{c.id}}">
           <div class="combatant-info">
             <img class="combatant-img" src="{{c.img}}" alt="{{c.name}}">
-            <span class="combatant-name">
-              {{#if c.isCaptain}}<i class="fa-solid fa-star captain-icon"></i>{{/if}}
-              {{c.name}}
-            </span>
+            <i class="fa-solid fa-crown captain-icon"
+               title="{{localize 'TB2E.Conflict.SetCaptain'}}"
+               {{#if ../canSetCaptain}}data-action="setCaptain"{{/if}}></i>
+            <span class="combatant-name">{{c.name}}</span>
             {{#if c.weapon}}
             <span class="combatant-weapon" title="{{c.weapon}}">
               <i class="fa-solid fa-sword"></i>
@@ -131,6 +47,18 @@
         </li>
         {{/each}}
       </ol>
+
+      {{#if ../isSetup}}
+      {{#if ../isGM}}
+      <div class="group-controls">
+        <select class="add-combatant-select" data-group-id="{{group.id}}">
+          <option value="">{{localize "TB2E.Conflict.AddActor"}}</option>
+          {{#each ../availableActors as |a|}}
+          <option value="{{a.id}}">{{a.name}}</option>
+          {{/each}}
+        </select>
+      </div>
+      {{/if}}
       {{/if}}
 
     </section>

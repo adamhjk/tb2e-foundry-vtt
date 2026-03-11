@@ -9,7 +9,7 @@ import { activateSpellSourceListeners } from "./module/dice/spell-casting.mjs";
 import { activateBurdenListeners } from "./module/dice/invocation-casting.mjs";
 
 Hooks.once("init", function() {
-  globalThis.tb2e = game.tb2e = { dice };
+  globalThis.tb2e = game.tb2e = { dice, conflictPanel: null };
 
   CONFIG.TB2E = TB2E;
 
@@ -22,13 +22,6 @@ Hooks.once("init", function() {
   CONFIG.Item.dataModels = dataModels.item.config;
   CONFIG.Combat.dataModels = dataModels.combat.config;
   CONFIG.Combatant.dataModels = dataModels.combat.combatantConfig;
-
-  // Register card deck presets.
-  CONFIG.Cards.presets.tb2eConflict = {
-    type: "deck",
-    label: "TB2E.Cards.ConflictActions",
-    src: "systems/tb2e/cards/conflict-actions.json"
-  };
 
   // Configure trackable token bar attributes.
   CONFIG.Actor.trackableAttributes = {
@@ -91,7 +84,6 @@ Hooks.once("init", function() {
     "systems/tb2e/templates/chat/versus-pending.hbs",
     "systems/tb2e/templates/chat/versus-resolution.hbs",
     "systems/tb2e/templates/chat/advancement-result.hbs",
-    "systems/tb2e/templates/conflict/conflict-window.hbs",
     "systems/tb2e/templates/chat/nature-crisis.hbs",
     "systems/tb2e/templates/chat/versus-tied.hbs",
     "systems/tb2e/templates/chat/wise-advancement.hbs",
@@ -100,7 +92,11 @@ Hooks.once("init", function() {
     "systems/tb2e/templates/items/invocation-sheet.hbs",
     "systems/tb2e/templates/dice/spell-factors.hbs",
     "systems/tb2e/templates/chat/spell-source.hbs",
-    "systems/tb2e/templates/chat/burden-exceeded.hbs"
+    "systems/tb2e/templates/chat/burden-exceeded.hbs",
+    "systems/tb2e/templates/chat/conflict-declaration.hbs",
+    "systems/tb2e/templates/chat/conflict-action-reveal.hbs",
+    "systems/tb2e/templates/chat/conflict-round-summary.hbs",
+    "systems/tb2e/templates/chat/conflict-compromise.hbs"
   ]);
 
   console.log("Torchbearer 2E | System initialized.");
@@ -153,12 +149,77 @@ Hooks.on("updateActor", (actor, changes, options, userId) => {
   if ( pendingWise?.field ) processWiseAdvancementMailbox(actor, pendingWise);
   const pendingVersus = changes.flags?.tb2e?.pendingVersusFinalize;
   if ( pendingVersus?.messageId ) processVersusFinalize(actor, pendingVersus);
+  const pendingHP = changes.flags?.tb2e?.pendingConflictHP;
+  if ( pendingHP?.newValue != null ) {
+    const max = actor.system.conflict?.hp?.max || 0;
+    const newVal = Math.max(0, Math.min(pendingHP.newValue, max));
+    actor.update({ "system.conflict.hp.value": newVal }).then(() => {
+      actor.unsetFlag("tb2e", "pendingConflictHP");
+    });
+  }
+
+  // Auto-check conflict end when an actor's conflict HP changes.
+  if ( changes.system?.conflict?.hp != null ) {
+    const combat = game.combats?.find(c => c.isConflict && c.combatants.some(cb => cb.actorId === actor.id));
+    if ( combat && combat.system.phase === "resolve" ) {
+      const endState = combat.checkConflictEnd();
+      if ( endState.ended ) {
+        // Post compromise card and end conflict.
+        (async () => {
+          const groups = Array.from(combat.groups);
+          let winnerName = "";
+          let compromise = null;
+          if ( endState.tie ) {
+            winnerName = game.i18n.localize("TB2E.Roll.Tied");
+          } else if ( endState.winnerGroupId ) {
+            const winnerGroup = combat.groups.get(endState.winnerGroupId);
+            winnerName = winnerGroup?.name || "???";
+            const comp = combat.calculateCompromise(endState.winnerGroupId);
+            const levelKey = comp.level.charAt(0).toUpperCase() + comp.level.slice(1);
+            compromise = { level: comp.level, label: game.i18n.localize(`TB2E.Conflict.Compromise.${levelKey}`) };
+          }
+          const teams = groups.map(g => {
+            const members = combat.combatants.filter(c => c._source.group === g.id);
+            let remaining = 0, starting = 0;
+            for ( const c of members ) {
+              const a = game.actors.get(c.actorId);
+              remaining += a?.system.conflict?.hp?.value || 0;
+              starting += a?.system.conflict?.hp?.max || 0;
+            }
+            return { name: g.name, remaining, starting };
+          });
+          const cardHtml = await foundry.applications.handlebars.renderTemplate(
+            "systems/tb2e/templates/chat/conflict-compromise.hbs",
+            { winnerName, compromise, teams }
+          );
+          await ChatMessage.create({ content: cardHtml, type: CONST.CHAT_MESSAGE_STYLES.OTHER });
+          await combat.endConflict();
+          const panel = game.tb2e?.conflictPanel;
+          if ( panel?.rendered ) panel.close();
+        })();
+      }
+    }
+  }
+});
+
+// Auto-open ConflictPanel when conflict transitions to disposition phase.
+Hooks.on("updateCombat", (combat, changes) => {
+  if ( !combat.isConflict ) return;
+  if ( changes.system?.phase === "disposition" ) {
+    const panel = applications.conflict.ConflictPanel.getInstance();
+    if ( !panel.rendered ) panel.render({ force: true });
+  }
 });
 
 // Auto-assign combatants to the correct team group when added to a conflict.
 Hooks.on("preCreateCombatant", (combatant, data, options, userId) => {
   const combat = combatant.parent;
   if ( !combat?.isConflict ) return;
+
+  // Prevent duplicate combatants for the same actor (safety net for all creation paths).
+  if ( data.actorId && combat.combatants.find(c => c.actorId === data.actorId) ) {
+    return false;
+  }
 
   // If a group is already set, keep it.
   if ( data.group ) return;

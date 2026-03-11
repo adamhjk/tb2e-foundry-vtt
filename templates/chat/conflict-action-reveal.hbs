@@ -1,0 +1,19 @@
+{{!-- Conflict Action Reveal Chat Card --}}
+<div class="tb2e-chat-card conflict-reveal-card">
+  <div class="card-header">
+    <i class="fa-solid fa-eye"></i>
+    <span class="card-title">{{localize "TB2E.Conflict.ActionLabel"}} {{actionNum}} — {{localize "TB2E.Conflict.Round"}} {{round}}</span>
+  </div>
+  <div class="card-matchup">
+    {{#each sides}}
+    <div class="card-matchup-side">
+      <span class="card-matchup-actor">{{this.combatantName}}</span>
+      <span class="card-matchup-action action-{{this.action}}">{{this.actionLabel}}</span>
+    </div>
+    {{#unless @last}}<span class="card-matchup-vs">vs</span>{{/unless}}
+    {{/each}}
+  </div>
+  <div class="card-interaction interaction-{{interaction}}">
+    {{interactionLabel}}
+  </div>
+</div>

@@ -1,0 +1,127 @@
+{{!-- Resolve Tab --}}
+<div class="panel-tab-content resolve-tab">
+
+  {{#each resolveActions}}
+  <div class="resolve-action {{#if this.isCurrent}}current{{/if}} {{#if this.isPast}}past{{/if}} {{#if this.isFuture}}future{{/if}}">
+    <div class="resolve-action-header">
+      <span class="resolve-action-num">{{localize "TB2E.Conflict.ActionLabel"}} {{this.actionNum}}</span>
+      {{#if this.hasResult}}
+      <span class="resolve-action-status resolved"><i class="fa-solid fa-check"></i> {{localize "TB2E.Conflict.Resolved"}}</span>
+      {{else if this.isRevealed}}
+      <span class="resolve-action-status revealed"><i class="fa-solid fa-eye"></i></span>
+      {{/if}}
+    </div>
+
+    {{#if this.isCurrent}}
+    <div class="resolve-action-body">
+
+      {{!-- Not yet revealed --}}
+      {{#unless this.isRevealed}}
+        {{#if @root.isGM}}
+        <button type="button" class="panel-action-btn" data-action="revealAction">
+          <i class="fa-solid fa-eye"></i> {{localize "TB2E.Conflict.Reveal"}} {{this.actionNum}}
+        </button>
+        {{else}}
+        <div class="resolve-waiting">
+          <i class="fa-solid fa-hourglass-half"></i>
+          {{localize "TB2E.Conflict.WaitingForReveal"}}
+        </div>
+        {{/if}}
+      {{else}}
+
+      {{!-- Revealed: show matchup with styled action cards --}}
+      <div class="resolve-matchup">
+        {{#each this.sides}}
+        <div class="resolve-side">
+          <span class="resolve-side-actor">{{this.combatantName}}</span>
+          <div class="resolve-action-card action-card-{{this.action}}">
+            <i class="{{this.actionIcon}}"></i>
+            <span class="action-card-label">{{this.actionLabel}}</span>
+          </div>
+          <span class="resolve-side-test">{{this.testLabel}}</span>
+          {{!-- Per-side interaction --}}
+          {{#if this.interactionOverridable}}
+          <select class="side-interaction-select interaction-{{this.sideInteraction}}"
+                  data-action-index="{{../index}}" data-group-id="{{this.groupId}}">
+            <option value="versus" {{#if (eq this.sideInteraction "versus")}}selected{{/if}}>{{lookup @root.interactionLabels "versus"}}</option>
+            <option value="independent" {{#if (eq this.sideInteraction "independent")}}selected{{/if}}>{{lookup @root.interactionLabels "independent"}}</option>
+            <option value="none" {{#if (eq this.sideInteraction "none")}}selected{{/if}}>{{lookup @root.interactionLabels "none"}}</option>
+          </select>
+          {{else if this.sideInteraction}}
+          <span class="resolve-side-interaction interaction-{{this.sideInteraction}}">
+            {{lookup @root.interactionLabels this.sideInteraction}}
+          </span>
+          {{/if}}
+        </div>
+        {{#unless @last}}<span class="resolve-vs">vs</span>{{/unless}}
+        {{/each}}
+      </div>
+
+      {{!-- Roll buttons --}}
+      {{#unless this.hasResult}}
+      <div class="resolve-roll-buttons">
+        {{#each this.sides}}
+        {{#unless (eq this.sideInteraction "none")}}
+        <button type="button" class="panel-action-btn" data-action="rollAction"
+                data-actor-id="{{this.actorId}}" data-conflict-action="{{this.action}}"
+                data-group-id="{{this.groupId}}">
+          <i class="fa-solid fa-dice"></i> {{localize "TB2E.Conflict.Roll"}} {{this.testLabel}} ({{this.combatantName}})
+        </button>
+        {{/unless}}
+        {{/each}}
+        {{#if @root.isGM}}
+        <button type="button" class="panel-action-btn secondary" data-action="resolveAction"
+                data-action-index="{{this.index}}">
+          <i class="fa-solid fa-check"></i> {{localize "TB2E.Conflict.MarkResolved"}}
+        </button>
+        {{/if}}
+      </div>
+      {{else}}
+      {{!-- Resolved: show next action button --}}
+      {{#if @root.isGM}}
+      {{#unless this.isLastAction}}
+      <button type="button" class="panel-action-btn" data-action="nextAction">
+        <i class="fa-solid fa-forward-step"></i> {{localize "TB2E.Conflict.NextAction"}}
+      </button>
+      {{/unless}}
+      {{/if}}
+      {{/unless}}
+
+      {{/unless}}
+    </div>
+    {{/if}}
+
+    {{!-- Past action: compact summary with icons --}}
+    {{#if this.isPast}}
+    {{#if this.isRevealed}}
+    <div class="resolve-action-summary">
+      {{#each this.sides}}
+      <span class="resolve-summary-side action-{{this.action}}">
+        {{#if this.actionIcon}}<i class="{{this.actionIcon}}"></i> {{/if}}{{this.combatantName}}: {{this.actionLabel}}
+      </span>
+      {{/each}}
+      {{#if this.interactionLabel}}
+      <span class="resolve-summary-interaction">({{this.interactionLabel}})</span>
+      {{/if}}
+    </div>
+    {{/if}}
+    {{/if}}
+  </div>
+  {{/each}}
+
+  {{!-- Navigation buttons --}}
+  {{#if isGM}}
+  <div class="resolve-nav">
+    {{#if allResolved}}
+    <button type="button" class="setup-next-btn" data-action="nextRound">
+      <span class="setup-next-label">{{localize "TB2E.Conflict.NewRound"}}</span>
+      <i class="fa-solid fa-arrow-right"></i>
+    </button>
+    {{/if}}
+    <button type="button" class="panel-action-btn danger" data-action="endConflict">
+      <i class="fa-solid fa-flag-checkered"></i> {{localize "TB2E.Conflict.EndConflict"}}
+    </button>
+  </div>
+  {{/if}}
+
+</div>

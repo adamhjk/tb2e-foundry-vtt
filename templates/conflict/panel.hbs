@@ -1,0 +1,83 @@
+{{!-- Conflict Panel — Main Wrapper --}}
+<div class="conflict-panel-wrapper">
+
+  {{#unless hasCombat}}
+  <div class="panel-empty">
+    <p>{{localize "TB2E.Conflict.NoConflict"}}</p>
+  </div>
+  {{else}}
+
+  {{!-- Header bar --}}
+  <div class="panel-header-bar">
+    <div class="panel-header-info">
+      <span class="panel-conflict-type">
+        <i class="fa-solid fa-shield-halved"></i>
+        {{conflictTypeLabel}}
+      </span>
+      {{#if round}}
+      <span class="panel-round">{{localize "TB2E.Conflict.Round"}} {{round}}</span>
+      {{/if}}
+      {{#if isResolve}}
+      <span class="panel-action-num">{{localize "TB2E.Conflict.ActionLabel"}} {{actionNum}}/3</span>
+      {{/if}}
+    </div>
+    <div class="panel-header-bars">
+      {{#each headerGroups}}
+      <div class="panel-header-group">
+        <span class="panel-header-group-name">{{this.name}}</span>
+        {{#if this.hasDisposition}}
+        <span class="panel-header-group-hp">{{this.current}}/{{this.max}}</span>
+        <div class="panel-header-hp-bar">
+          <div class="panel-header-hp-fill" style="width: {{this.percent}}%"></div>
+        </div>
+        {{/if}}
+      </div>
+      {{/each}}
+    </div>
+  </div>
+
+  {{!-- Tab strip --}}
+  <nav class="panel-tabs">
+    {{#each tabs}}
+    <button type="button"
+            class="panel-tab {{this.state}} {{#if this.isActive}}active{{/if}}"
+            data-action="switchTab" data-tab="{{this.id}}">
+      <span class="tab-state-icon">
+        {{#if (eq this.state "completed")}}<i class="fa-solid fa-check"></i>{{/if}}
+        {{#if (eq this.state "current")}}<i class="fa-solid fa-play"></i>{{/if}}
+        {{#if (eq this.state "upcoming")}}<i class="fa-regular fa-circle"></i>{{/if}}
+      </span>
+      <i class="{{this.icon}}"></i>
+      {{this.label}}
+    </button>
+    {{/each}}
+  </nav>
+
+  {{!-- Tab content --}}
+  <div class="panel-content">
+    {{#if isSetupTab}}
+    {{> "systems/tb2e/templates/conflict/panel-setup.hbs"}}
+    {{/if}}
+
+    {{#if isDispositionTab}}
+    {{> "systems/tb2e/templates/conflict/panel-disposition.hbs"}}
+    {{/if}}
+
+    {{#if isWeaponsTab}}
+    {{> "systems/tb2e/templates/conflict/panel-weapons.hbs"}}
+    {{/if}}
+
+    {{#if isScriptTab}}
+    {{> "systems/tb2e/templates/conflict/panel-script.hbs"}}
+    {{/if}}
+
+    {{#if isResolveTab}}
+    {{> "systems/tb2e/templates/conflict/panel-resolve.hbs"}}
+    {{/if}}
+  </div>
+
+  {{!-- Roster strip --}}
+  {{> "systems/tb2e/templates/conflict/panel-roster.hbs"}}
+
+  {{/unless}}
+</div>

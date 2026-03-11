@@ -31,7 +31,9 @@ export function buildResolutionContext({
   action, opponentAction, conflictType, combatant, actor, impede = 0, position = 0
 }) {
   const interaction = getInteraction(action, opponentAction);
-  const typeCfg = CONFIG.TB2E.conflictTypes[conflictType];
+  // Use effective config from combat when available (handles manual overrides).
+  const combat = combatant?.combat;
+  const typeCfg = combat?.getEffectiveConflictConfig?.() ?? CONFIG.TB2E.conflictTypes[conflictType];
   const actionCfg = typeCfg?.actions?.[action];
 
   // Determine if this side tests at all.
@@ -81,6 +83,17 @@ export function buildResolutionContext({
   let bonusDice = position;
   let penaltyDice = impede;
 
+  // Weapon data for future bonus application.
+  const weaponId = combatant.system.weaponId || actor.system.conflict?.weaponId || "";
+  const isUnarmed = weaponId === "__unarmed__";
+  let weaponBonuses = null;
+  if ( weaponId && weaponId !== "__unarmed__" && weaponId !== "__improvised__" ) {
+    const weaponItem = actor.items.get(weaponId);
+    if ( weaponItem ) {
+      weaponBonuses = { name: weaponItem.name, system: weaponItem.system };
+    }
+  }
+
   return {
     action,
     opponentAction,
@@ -93,6 +106,9 @@ export function buildResolutionContext({
     penaltyDice,
     obstacle,
     weapon: combatant.system.weapon || actor.system.conflict?.weapon || "",
+    weaponId,
+    isUnarmed,
+    weaponBonuses,
     actorName: actor.name,
     actorImg: actor.img
   };

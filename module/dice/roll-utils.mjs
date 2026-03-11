@@ -15,7 +15,7 @@ import { abilities, skills } from "../config.mjs";
  * @returns {{ finalSuccesses: number, pass: boolean|null }}
  */
 export function recalculateSuccesses({ successes, obstacle, postSuccessMods = [], isVersus }) {
-  if ( isVersus ) {
+  if ( isVersus || obstacle == null ) {
     const successBonus = postSuccessMods.reduce((s, m) => s + m.value, 0);
     return { finalSuccesses: Math.max(successes + successBonus, 0), pass: null };
   }
@@ -126,11 +126,13 @@ export function buildChatTemplateData({ actor, rollData, tbFlags, isVersus, syne
     successesLabel: game.i18n.localize("TB2E.Roll.Successes"),
     obstacleLabel: game.i18n.localize("TB2E.Roll.ObstacleLabel"),
     testLabel: game.i18n.localize("TB2E.Roll.Test"),
-    testTypeLabel: isVersus
-      ? game.i18n.localize("TB2E.Roll.Versus")
-      : (rollData.isBL
-        ? game.i18n.format("TB2E.Roll.BLTest", { ability: abilityLabel })
-        : game.i18n.localize("TB2E.Roll.Independent")),
+    testTypeLabel: tbFlags.testContext?.isDisposition
+      ? game.i18n.localize("TB2E.Conflict.Disposition")
+      : isVersus
+        ? game.i18n.localize("TB2E.Roll.Versus")
+        : (rollData.isBL
+          ? game.i18n.format("TB2E.Roll.BLTest", { ability: abilityLabel })
+          : game.i18n.localize("TB2E.Roll.Independent")),
     pendingLabel: game.i18n.localize("TB2E.Roll.Pending"),
     spellName: tbFlags.testContext?.spellName ?? null,
     invocationName: tbFlags.testContext?.invocationName ?? null

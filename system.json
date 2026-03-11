@@ -8,6 +8,7 @@
   },
   "esmodules": ["tb2e.mjs"],
   "styles": ["tb2e.css"],
+  "relationships": {},
   "languages": [
     {
       "lang": "en",
@@ -35,6 +36,9 @@
       "relic": {}
     },
     "Combat": {
+      "conflict": {}
+    },
+    "Combatant": {
       "conflict": {}
     }
   },

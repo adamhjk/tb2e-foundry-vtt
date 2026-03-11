@@ -22,8 +22,8 @@
 .tb2e-conflict-header,
 .tb2e-conflict-body,
 .tb2e-conflict-footer,
-.conflict-window-content,
-.character-conflict-panel {
+.character-conflict-panel,
+.conflict-panel {
   .mixin-theme-light();
 }
 
@@ -33,15 +33,15 @@
 
 body.theme-light :is(
   .tb2e, .tb2e-chat-card, .tb2e-conflict-header, .tb2e-conflict-body,
-  .tb2e-conflict-footer, .conflict-window-content,
-  .character-conflict-panel, .tb2e.gear-sheet, .tb2e.spell-sheet, .tb2e.invocation-sheet) {
+  .tb2e-conflict-footer,
+  .character-conflict-panel, .conflict-panel, .tb2e.gear-sheet, .tb2e.spell-sheet, .tb2e.invocation-sheet) {
   .mixin-theme-light();
 }
 
 body.theme-dark :is(
   .tb2e, .tb2e-chat-card, .tb2e-conflict-header, .tb2e-conflict-body,
-  .tb2e-conflict-footer, .conflict-window-content,
-  .character-conflict-panel, .tb2e.gear-sheet, .tb2e.spell-sheet, .tb2e.invocation-sheet) {
+  .tb2e-conflict-footer,
+  .character-conflict-panel, .conflict-panel, .tb2e.gear-sheet, .tb2e.spell-sheet, .tb2e.invocation-sheet) {
   .mixin-theme-dark();
 }
 
@@ -52,16 +52,16 @@ body.theme-dark :is(
 .themed.theme-light.tb2e,
 .themed.theme-light :is(
   .tb2e-chat-card, .tb2e-conflict-header, .tb2e-conflict-body,
-  .tb2e-conflict-footer, .conflict-window-content,
-  .character-conflict-panel, .tb2e.gear-sheet, .tb2e.spell-sheet, .tb2e.invocation-sheet) {
+  .tb2e-conflict-footer,
+  .character-conflict-panel, .conflict-panel, .tb2e.gear-sheet, .tb2e.spell-sheet, .tb2e.invocation-sheet) {
   .mixin-theme-light();
 }
 
 .themed.theme-dark.tb2e,
 .themed.theme-dark :is(
   .tb2e-chat-card, .tb2e-conflict-header, .tb2e-conflict-body,
-  .tb2e-conflict-footer, .conflict-window-content,
-  .character-conflict-panel, .tb2e.gear-sheet, .tb2e.spell-sheet, .tb2e.invocation-sheet) {
+  .tb2e-conflict-footer,
+  .character-conflict-panel, .conflict-panel, .tb2e.gear-sheet, .tb2e.spell-sheet, .tb2e.invocation-sheet) {
   .mixin-theme-dark();
 }
 
@@ -96,14 +96,15 @@ body.theme-dark :is(
 @import "chat/nature-crisis.less";
 @import "chat/wise-advancement.less";
 @import "chat/burden-card.less";
+@import "chat/conflict-cards.less";
 
 // Conflict system
 @import "conflict/tracker.less";
 @import "conflict/inline-rolling.less";
 @import "conflict/distribution.less";
 @import "conflict/cards.less";
-@import "conflict/window.less";
 @import "conflict/character-panel.less";
+@import "conflict/panel.less";
 
 // Alternate actor sheets
 @import "sheets/monster.less";

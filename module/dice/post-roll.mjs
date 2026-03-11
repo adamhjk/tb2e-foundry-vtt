@@ -415,6 +415,30 @@ async function _handleFinalize(message) {
   const rollData = tbFlags.roll;
   const actor = game.actors.get(tbFlags.actorId);
 
+  // Disposition mode: finalize and optionally store to combat
+  if ( tbFlags.testContext?.isDisposition ) {
+    const finalSuccesses = rollData.finalSuccesses ?? rollData.successes;
+    const abilityRating = tbFlags.testContext.dispositionAbilityRating ?? 0;
+    const disposition = Math.max(finalSuccesses + abilityRating, 1);
+
+    // If linked to a combat encounter, store the disposition
+    const combatId = tbFlags.testContext.combatId;
+    const groupId = tbFlags.testContext.conflictGroupId;
+    if ( combatId && groupId ) {
+      const combat = game.combats.get(combatId);
+      if ( combat ) {
+        const cardHtml = message.content;
+        await combat.requestStoreDispositionRoll(groupId,
+          { rolled: disposition, diceResults: rollData.diceResults, cardHtml }
+        );
+      }
+    }
+
+    await message.update({ "flags.tb2e.resolved": true });
+    await _reRenderChatCard(message);
+    return;
+  }
+
   // Versus mode: finalize without advancement (resolution handles it)
   if ( tbFlags.versus ) {
     await message.update({ "flags.tb2e.resolved": true });
@@ -781,14 +805,29 @@ async function _reRenderChatCard(message) {
     synergyHelpers: _buildSynergyHelpers(tbFlags.helpers, tbFlags.helperSynergy || {})
   });
 
+  // Disposition-specific template overrides
+  if ( tbFlags.testContext?.isDisposition ) {
+    const dispFinalSuccesses = rollData.finalSuccesses ?? rollData.successes;
+    templateData.isDisposition = true;
+    templateData.disposition = Math.max(dispFinalSuccesses + (tbFlags.testContext.dispositionAbilityRating ?? 0), 1);
+    templateData.abilityLabel = tbFlags.testContext.dispositionAbilityLabel;
+    templateData.abilityRating = tbFlags.testContext.dispositionAbilityRating;
+    templateData.dispositionLabel = game.i18n.localize("TB2E.Conflict.Disposition");
+    templateData.conflictTypeLabel = tbFlags.testContext.conflictTypeLabel ?? null;
+    templateData.conflictTitle = tbFlags.testContext.conflictTypeLabel
+      ? game.i18n.localize("TB2E.Conflict.Title") : null;
+    templateData.groupName = tbFlags.testContext.groupName ?? null;
+  }
+
   // Re-render additions: post-roll button state and nature tax visibility
+  const isDisposition = !!tbFlags.testContext?.isDisposition;
   Object.assign(templateData, {
     luckUsed: !!tbFlags.luckUsed,
     deeperUsed: !!tbFlags.deeperUsed,
     ofCourseUsed: !!tbFlags.ofCourseUsed,
-    showNatureTax: !isVersus && tbFlags.channelNature && !tbFlags.natureTaxResolved,
-    showDirectNatureTax: !isVersus && tbFlags.directNatureTest && !tbFlags.withinNature && !tbFlags.directNatureTaxApplied,
-    directNatureWithin: !isVersus && tbFlags.directNatureTest && tbFlags.withinNature,
+    showNatureTax: !isVersus && !isDisposition && tbFlags.channelNature && !tbFlags.natureTaxResolved,
+    showDirectNatureTax: !isVersus && !isDisposition && tbFlags.directNatureTest && !tbFlags.withinNature && !tbFlags.directNatureTaxApplied,
+    directNatureWithin: !isVersus && !isDisposition && tbFlags.directNatureTest && tbFlags.withinNature,
     versusFinalized: isVersus && resolved,
     versusResolvedLabel: isVersus && resolved
       ? game.i18n.format("TB2E.Roll.VersusFinalized", { successes: finalSuccesses })
