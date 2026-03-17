@@ -79,6 +79,13 @@
                 title="{{localize 'TB2E.Conflict.SetCaptain'}}">
           <i class="fa-solid fa-crown"></i>
         </button>
+        {{#if this.isMonster}}
+        <button type="button" class="setup-boss-btn {{#if this.isBoss}}active{{/if}}"
+                data-action="setBoss" data-combatant-id="{{this.id}}"
+                title="{{localize 'TB2E.Conflict.SetBoss'}}">
+          <i class="fa-solid fa-shield"></i>
+        </button>
+        {{/if}}
         <button type="button" class="setup-remove-btn"
                 data-action="removeCombatant" data-combatant-id="{{this.id}}"
                 title="{{localize 'TB2E.Conflict.Remove'}}">

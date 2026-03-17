@@ -55,7 +55,10 @@ export default class ConflictPanel extends HandlebarsApplicationMixin(Applicatio
       nextRound: ConflictPanel.#onNextRound,
       endConflict: ConflictPanel.#onEndConflict,
       setCaptain: ConflictPanel.#onSetCaptain,
-      chooseSkill: ConflictPanel.#onChooseSkill
+      setBoss: ConflictPanel.#onSetBoss,
+      setFlatDisposition: ConflictPanel.#onSetFlatDisposition,
+      chooseSkill: ConflictPanel.#onChooseSkill,
+      resolveConflict: ConflictPanel.#onResolveConflict
     }
   };
 
@@ -72,6 +75,7 @@ export default class ConflictPanel extends HandlebarsApplicationMixin(Applicatio
     "systems/tb2e/templates/conflict/panel-weapons.hbs",
     "systems/tb2e/templates/conflict/panel-script.hbs",
     "systems/tb2e/templates/conflict/panel-resolve.hbs",
+    "systems/tb2e/templates/conflict/panel-resolution.hbs",
     "systems/tb2e/templates/conflict/panel-roster.hbs"
   ];
 
@@ -128,16 +132,7 @@ export default class ConflictPanel extends HandlebarsApplicationMixin(Applicatio
   _onRender(context, options) {
     super._onRender(context, options);
 
-    // Handle weapon input changes (non-gear conflicts).
-    for ( const input of this.element.querySelectorAll(".weapon-input") ) {
-      input.addEventListener("change", (event) => {
-        const combatantId = event.target.dataset.combatantId;
-        const combat = this.#getCombat();
-        if ( combat && combatantId ) combat.setWeapon(combatantId, event.target.value.trim());
-      });
-    }
-
-    // Handle weapon select changes (gear conflicts).
+    // Handle weapon select changes (all conflict types now use a dropdown).
     for ( const select of this.element.querySelectorAll(".weapon-select") ) {
       select.addEventListener("change", (event) => {
         const combatantId = event.target.dataset.combatantId;
@@ -154,9 +149,21 @@ export default class ConflictPanel extends HandlebarsApplicationMixin(Applicatio
         } else {
           improvisedInput?.classList.add("hidden");
           const selectedOption = event.target.options[event.target.selectedIndex];
-          const name = weaponId ? selectedOption.text : "";
+          // Use data-clean-name to avoid including the bonus summary in the stored weapon name.
+          const name = weaponId ? (selectedOption.dataset.cleanName || selectedOption.text) : "";
           combat.setWeapon(combatantId, name, weaponId);
         }
+      });
+    }
+
+    // Handle weapon assignment select changes (assignable conflict weapons like Blackmail, Locals).
+    for ( const select of this.element.querySelectorAll(".weapon-assignment-select") ) {
+      select.addEventListener("change", (event) => {
+        const combatantId = event.target.dataset.combatantId;
+        const combat = this.#getCombat();
+        if ( !combat || !combatantId ) return;
+        const combatant = combat.combatants.get(combatantId);
+        if ( combatant ) combatant.update({ "system.weaponAssignment": event.target.value });
       });
     }
 
@@ -319,8 +326,10 @@ export default class ConflictPanel extends HandlebarsApplicationMixin(Applicatio
     // Handle roster HP editing.
     for ( const input of this.element.querySelectorAll(".roster-hp-input") ) {
       input.addEventListener("change", async (event) => {
-        const actorId = event.target.dataset.actorId;
-        const actor = game.actors.get(actorId);
+        const combatantId = event.target.dataset.combatantId;
+        const combat = this.#getCombat();
+        const combatant = combat?.combatants.get(combatantId);
+        const actor = combatant?.actor;
         if ( !actor ) return;
         const max = actor.system.conflict?.hp?.max || 0;
         const newValue = Math.max(0, Math.min(parseInt(event.target.value) || 0, max));
@@ -365,7 +374,7 @@ export default class ConflictPanel extends HandlebarsApplicationMixin(Applicatio
    * @returns {string} "completed", "current", or "upcoming"
    */
   #getTabState(tabId, phase) {
-    const order = ["setup", "disposition", "weapons", "scripting", "resolve"];
+    const order = ["setup", "disposition", "weapons", "scripting", "resolve", "resolution"];
     const phaseIndex = order.indexOf(phase);
     const tabIndex = order.indexOf(tabId === "script" ? "scripting" : tabId);
     if ( tabIndex < phaseIndex ) return "completed";
@@ -404,11 +413,11 @@ export default class ConflictPanel extends HandlebarsApplicationMixin(Applicatio
     context.phase = phase;
 
     // Sync active tab to phase when phase advances.
-    const phaseToTab = { setup: "setup", disposition: "disposition", weapons: "weapons", scripting: "script", resolve: "resolve" };
+    const phaseToTab = { setup: "setup", disposition: "disposition", weapons: "weapons", scripting: "script", resolve: "resolve", resolution: "resolution" };
     const recommendedTab = phaseToTab[phase] || "setup";
 
     // Detect forward phase transition — advance all clients to the new tab.
-    const order = ["setup", "disposition", "weapons", "scripting", "resolve"];
+    const order = ["setup", "disposition", "weapons", "scripting", "resolve", "resolution"];
     const lastIdx = order.indexOf(this.#lastPhase);
     const phaseIdx = order.indexOf(phase);
     if ( phaseIdx > lastIdx ) {
@@ -429,7 +438,8 @@ export default class ConflictPanel extends HandlebarsApplicationMixin(Applicatio
       { id: "disposition", label: "TB2E.Conflict.Tab.Disposition", icon: "fa-solid fa-dice" },
       { id: "weapons", label: "TB2E.Conflict.Tab.Weapons", icon: "fa-solid fa-sword" },
       { id: "script", label: "TB2E.Conflict.Tab.Script", icon: "fa-solid fa-scroll" },
-      { id: "resolve", label: "TB2E.Conflict.Tab.Resolve", icon: "fa-solid fa-swords" }
+      { id: "resolve", label: "TB2E.Conflict.Tab.Resolve", icon: "fa-solid fa-swords" },
+      { id: "resolution", label: "TB2E.Conflict.Tab.Resolution", icon: "fa-solid fa-flag-checkered" }
     ];
     context.tabs = tabDefs.map(t => ({
       ...t,
@@ -444,6 +454,7 @@ export default class ConflictPanel extends HandlebarsApplicationMixin(Applicatio
     context.isWeaponsTab = this.#activeTab === "weapons";
     context.isScriptTab = this.#activeTab === "script";
     context.isResolveTab = this.#activeTab === "resolve";
+    context.isResolutionTab = this.#activeTab === "resolution";
     context.isResolve = phase === "resolve";
 
     // Group disposition bars for header.
@@ -452,7 +463,7 @@ export default class ConflictPanel extends HandlebarsApplicationMixin(Applicatio
       const members = combat.combatants.filter(c => c._source.group === group.id);
       let current = 0, max = 0;
       for ( const c of members ) {
-        const actor = game.actors.get(c.actorId);
+        const actor = c.actor;
         const hp = actor?.system.conflict?.hp || { value: 0, max: 0 };
         current += hp.value;
         max += hp.max;
@@ -483,6 +494,9 @@ export default class ConflictPanel extends HandlebarsApplicationMixin(Applicatio
       case "resolve":
         this.#prepareResolveContext(context, combat, groups, gd);
         break;
+      case "resolution":
+        this.#prepareResolutionContext(context, combat, groups, gd);
+        break;
     }
 
     // Roster data.
@@ -509,12 +523,17 @@ export default class ConflictPanel extends HandlebarsApplicationMixin(Applicatio
         name: group.name,
         captainId: groupData.captainId || null,
         hasCaptain: !!groupData.captainId,
-        combatants: members.map(c => ({
-          id: c.id,
-          name: c.name,
-          img: c.img,
-          isCaptain: groupData.captainId === c.id
-        }))
+        combatants: members.map(c => {
+          const actor = game.actors.get(c.actorId);
+          return {
+            id: c.id,
+            name: c.name,
+            img: c.img,
+            isCaptain: groupData.captainId === c.id,
+            isBoss: c.system.isBoss,
+            isMonster: actor?.type === "monster"
+          };
+        })
       });
     }
 
@@ -590,10 +609,46 @@ export default class ConflictPanel extends HandlebarsApplicationMixin(Applicatio
       const hasRolled = groupData.rolled != null;
       const hasDistributed = !!groupData.distributed;
 
-      // Skill choice state.
+      // Monster group detection — must come before skill choice logic.
+      const isMonsterGroup = captainActor?.type === "monster";
+
+      // Monster group disposition calculation.
+      let suggestedDisposition = null;
+      let monsterDispositionHint = "";
+      let monsterGroupHelpDice = 0;
+      let isListedConflict = false;
+      if ( isMonsterGroup ) {
+        const conflictType = combat.system.conflictType;
+        const monsterCount = members.filter(c => {
+          const a = game.actors.get(c.actorId);
+          return a?.type === "monster";
+        }).length;
+        const matchingDisp = captainActor.system.dispositions.find(d =>
+          d.conflictType?.toLowerCase().includes(conflictType)
+        );
+        const additional = Math.max(monsterCount - 1, 0);
+        monsterGroupHelpDice = additional;
+
+        if ( matchingDisp ) {
+          // Listed conflict: flat value + 1 per additional monster.
+          isListedConflict = true;
+          suggestedDisposition = matchingDisp.hp + additional;
+          monsterDispositionHint = additional > 0
+            ? `${game.i18n.localize("TB2E.Monster.PredetDisposition")}: ${matchingDisp.hp} + ${additional} (group) = ${suggestedDisposition}`
+            : `${game.i18n.localize("TB2E.Monster.PredetDisposition")}: ${matchingDisp.hp}`;
+        } else {
+          // Unlisted conflict: roll Nature, additional monsters provide +1D help each.
+          suggestedDisposition = null;
+          monsterDispositionHint = additional > 0
+            ? game.i18n.format("TB2E.Monster.UnlistedWithHelp", { count: additional })
+            : game.i18n.localize("TB2E.Monster.UnlistedConflict");
+        }
+      }
+
+      // Skill choice state — monsters always test Nature, so skip skill choice for them.
       const hasMultipleSkills = (conflictCfg?.dispositionSkills?.length || 0) > 1;
       const chosenSkill = groupData.chosenSkill || (hasMultipleSkills ? null : conflictCfg?.dispositionSkills?.[0]);
-      const needsSkillChoice = !chosenSkill && hasMultipleSkills;
+      const needsSkillChoice = !isMonsterGroup && !chosenSkill && hasMultipleSkills;
 
       let skillOptions = [];
       if ( needsSkillChoice && captainActor ) {
@@ -617,18 +672,39 @@ export default class ConflictPanel extends HandlebarsApplicationMixin(Applicatio
       let distributionRows = [];
       if ( hasRolled && !hasDistributed ) {
         const total = groupData.rolled;
-        const base = Math.floor(total / (members.length || 1));
-        let remainder = total - (base * (members.length || 1));
-        distributionRows = members.map(c => {
-          const suggested = base + (remainder > 0 ? 1 : 0);
-          if ( remainder > 0 ) remainder--;
-          return { id: c.id, name: c.name, isCaptain: groupData.captainId === c.id, suggested };
-        });
+
+        // Check if any member is designated as boss.
+        const bossId = members.find(c => {
+          const combatant = combat.combatants.get(c.id);
+          return combatant?.system.isBoss;
+        })?.id;
+
+        if ( bossId ) {
+          // Boss distribution: boss gets bulk, minions get 1 each.
+          const minionCount = members.length - 1;
+          distributionRows = members.map(c => {
+            const isBoss = c.id === bossId;
+            const suggested = isBoss ? Math.max(total - minionCount, 1) : 1;
+            return { id: c.id, name: c.name, isCaptain: groupData.captainId === c.id, isBoss, suggested };
+          });
+        } else {
+          // Even split.
+          const base = Math.floor(total / (members.length || 1));
+          let remainder = total - (base * (members.length || 1));
+          distributionRows = members.map(c => {
+            const suggested = base + (remainder > 0 ? 1 : 0);
+            if ( remainder > 0 ) remainder--;
+            return { id: c.id, name: c.name, isCaptain: groupData.captainId === c.id, isBoss: false, suggested };
+          });
+        }
       }
 
       // Permission checks.
       const captainActorId = captain?.actorId;
-      const canRoll = !hasRolled && !!chosenSkill && (game.user.isGM || game.user.character?.id === captainActorId);
+      // Monsters can roll only for unlisted conflicts (listed conflicts use predefined disposition).
+      const canRoll = isMonsterGroup
+        ? !hasRolled && !isListedConflict && (game.user.isGM || game.user.character?.id === captainActorId)
+        : !hasRolled && !!chosenSkill && (game.user.isGM || game.user.character?.id === captainActorId);
       const canDistribute = hasRolled && !hasDistributed && (game.user.isGM || game.user.character?.id === captainActorId);
       const canChooseSkill = !hasRolled && needsSkillChoice && (game.user.isGM || game.user.character?.id === captainActorId);
 
@@ -649,7 +725,12 @@ export default class ConflictPanel extends HandlebarsApplicationMixin(Applicatio
         dispositionTotal: groupData.rolled || 0,
         canRoll,
         canDistribute,
-        canChooseSkill
+        canChooseSkill,
+        isMonsterGroup,
+        isListedConflict,
+        suggestedDisposition,
+        monsterDispositionHint,
+        monsterGroupHelpDice
       });
     }
 
@@ -662,6 +743,7 @@ export default class ConflictPanel extends HandlebarsApplicationMixin(Applicatio
   #prepareWeaponsContext(context, combat, groups) {
     const conflictCfg = combat.getEffectiveConflictConfig();
     const usesGear = !!conflictCfg?.usesGear;
+    const conflictWeapons = conflictCfg?.conflictWeapons || [];
     context.usesGear = usesGear;
     context.weaponGroups = [];
     for ( const group of groups ) {
@@ -673,6 +755,7 @@ export default class ConflictPanel extends HandlebarsApplicationMixin(Applicatio
           const actor = game.actors.get(c.actorId);
           const canEdit = game.user.isGM || game.user.character?.id === c.actorId;
           const weaponId = c.system.weaponId || "";
+          const isAssignable = conflictWeapons.find(w => w.id === weaponId)?.assignable || false;
           const data = {
             id: c.id,
             name: c.name,
@@ -682,17 +765,56 @@ export default class ConflictPanel extends HandlebarsApplicationMixin(Applicatio
             knockedOut: c.system.knockedOut,
             canEdit,
             isUnarmed: weaponId === "__unarmed__",
-            isImprovised: weaponId === "__improvised__"
+            isImprovised: weaponId === "__improvised__",
+            showAssignment: isAssignable,
+            weaponAssignmentChoices: [
+              { value: "attack",   label: "TB2E.Conflict.Action.Attack",   selected: c.system.weaponAssignment === "attack" },
+              { value: "defend",   label: "TB2E.Conflict.Action.Defend",   selected: c.system.weaponAssignment === "defend" },
+              { value: "feint",    label: "TB2E.Conflict.Action.Feint",    selected: c.system.weaponAssignment === "feint" },
+              { value: "maneuver", label: "TB2E.Conflict.Action.Maneuver", selected: c.system.weaponAssignment === "maneuver" }
+            ]
           };
 
-          // Build weapon choices for gear-based conflicts.
-          if ( usesGear && actor && !c.system.knockedOut ) {
-            const weapons = (actor.itemTypes.weapon || []).filter(w => !w.system.dropped);
-            data.weaponChoices = [
-              { id: "__unarmed__", name: game.i18n.localize("TB2E.Conflict.WeaponUnarmed"), selected: weaponId === "__unarmed__" },
-              ...weapons.map(w => ({ id: w.id, name: w.name, selected: weaponId === w.id })),
-              { id: "__improvised__", name: game.i18n.localize("TB2E.Conflict.WeaponImprovised"), selected: weaponId === "__improvised__" }
-            ];
+          // Build weapon choices for all combatants (gear or conflict-specific or generic).
+          if ( actor && !c.system.knockedOut ) {
+            if ( actor.type === "monster" ) {
+              // Monster weapons are embedded in the data model, not items.
+              data.weaponChoices = [
+                { id: "__unarmed__", name: game.i18n.localize("TB2E.Conflict.WeaponUnarmed"), selected: weaponId === "__unarmed__" },
+                ...(actor.system.weapons || []).map((w, i) => ({
+                  id: `__monster_${i}__`, name: w.name || `Weapon ${i + 1}`, selected: weaponId === `__monster_${i}__`
+                }))
+              ];
+            } else if ( usesGear ) {
+              const weapons = (actor.itemTypes.weapon || []).filter(w => !w.system.dropped);
+              data.weaponChoices = [
+                { id: "__unarmed__", name: game.i18n.localize("TB2E.Conflict.WeaponUnarmed"), selected: weaponId === "__unarmed__" },
+                ...weapons.map(w => ({ id: w.id, name: w.name, selected: weaponId === w.id })),
+                { id: "__improvised__", name: game.i18n.localize("TB2E.Conflict.WeaponImprovised"), selected: weaponId === "__improvised__" },
+                // For conflicts with both gear and special weapons (e.g. Capture), append conflict-specific choices.
+                ...conflictWeapons.map(w => ({
+                  id: w.id, name: game.i18n.localize(w.label), bonusSummary: ConflictPanel.#buildBonusSummary(w),
+                  selected: weaponId === w.id
+                }))
+              ];
+            } else if ( conflictWeapons.length ) {
+              // Conflict-specific weapon list (Chase, Flee, Convince, etc.).
+              data.weaponChoices = [
+                ...conflictWeapons.map(w => ({
+                  id: w.id, name: game.i18n.localize(w.label), bonusSummary: ConflictPanel.#buildBonusSummary(w),
+                  selected: weaponId === w.id
+                })),
+                { id: "__improvised__", name: game.i18n.localize("TB2E.Conflict.WeaponImprovised"), selected: weaponId === "__improvised__" },
+                { id: "__unarmed__",    name: game.i18n.localize("TB2E.Conflict.WeaponUnarmed"),    selected: weaponId === "__unarmed__", bonusSummary: "-1D" }
+              ];
+            } else {
+              // Generic (Manual, Negotiate, War, Journey, Abjure): Armed / Improvised / Unarmed.
+              data.weaponChoices = [
+                { id: "__armed__",    name: game.i18n.localize("TB2E.Conflict.WeaponArmed"),     selected: weaponId === "__armed__" },
+                { id: "__improvised__", name: game.i18n.localize("TB2E.Conflict.WeaponImprovised"), selected: weaponId === "__improvised__" },
+                { id: "__unarmed__",  name: game.i18n.localize("TB2E.Conflict.WeaponUnarmed"),   selected: weaponId === "__unarmed__", bonusSummary: "-1D" }
+              ];
+            }
           }
 
           return data;
@@ -701,6 +823,25 @@ export default class ConflictPanel extends HandlebarsApplicationMixin(Applicatio
     }
     const allArmed = Array.from(combat.combatants).every(c => c.system.knockedOut || c.system.weapon);
     context.canBeginScripting = allArmed;
+  }
+
+  /* -------------------------------------------- */
+
+  /**
+   * Build a short bonus summary string for a conflict weapon entry.
+   * @param {object} weapon - Conflict weapon config entry.
+   * @returns {string}
+   */
+  static #buildBonusSummary(weapon) {
+    if ( !weapon.bonuses?.length ) return "";
+    return weapon.bonuses.map(b => {
+      const sign = b.value > 0 ? "+" : "";
+      const unit = b.type === "dice" ? "D" : "s";
+      if ( b.assignable ) return `${sign}${b.value}${unit}`;
+      const actionCfg = CONFIG.TB2E?.conflictActions?.[b.action];
+      const actionLabel = actionCfg ? game.i18n.localize(actionCfg.label) : b.action;
+      return `${sign}${b.value}${unit} ${actionLabel}`;
+    }).join(", ");
   }
 
   /* -------------------------------------------- */
@@ -867,13 +1008,15 @@ export default class ConflictPanel extends HandlebarsApplicationMixin(Applicatio
         const combatant = combat.combatants.get(entry.combatantId);
         const actor = combatant ? game.actors.get(combatant.actorId) : null;
 
-        // Get the skill/ability for this action.
+        // Get the skill/ability for this action; monsters always test Nature.
         const conflictCfg = combat.getEffectiveConflictConfig();
         const actionCfg = conflictCfg?.actions?.[entry.action];
         let testLabel = "";
         if ( actionCfg ) {
-          const key = actionCfg.keys[0];
-          const labelKey = actionCfg.type === "skill"
+          const isMonster = actor?.type === "monster";
+          const testType = isMonster ? "ability" : actionCfg.type;
+          const key = isMonster ? "nature" : actionCfg.keys[0];
+          const labelKey = testType === "skill"
             ? CONFIG.TB2E.skills[key]?.label
             : CONFIG.TB2E.abilities[key]?.label;
           testLabel = labelKey ? game.i18n.localize(labelKey) : key;
@@ -950,12 +1093,82 @@ export default class ConflictPanel extends HandlebarsApplicationMixin(Applicatio
     context.allRevealed = allRevealed;
     context.allResolved = allResolved;
 
+    // Check if a side has hit 0 — show "Resolve Conflict" button.
+    const endState = combat.checkConflictEnd();
+    context.canResolveConflict = endState.ended;
+
     // Interaction labels lookup for template.
     context.interactionLabels = {
       versus: game.i18n.localize("TB2E.Conflict.Interaction.versus"),
       independent: game.i18n.localize("TB2E.Conflict.Interaction.independent"),
       none: game.i18n.localize("TB2E.Conflict.Interaction.none")
     };
+  }
+
+  /* -------------------------------------------- */
+
+  #prepareResolutionContext(context, combat, groups, gd) {
+    const endState = combat.checkConflictEnd();
+    context.isTie = endState.tie;
+
+    if ( endState.tie ) {
+      context.winnerName = null;
+      context.loserName = null;
+    } else if ( endState.winnerGroupId ) {
+      const winnerGroup = combat.groups.get(endState.winnerGroupId);
+      const loserGroup = combat.groups.get(endState.loserGroupId);
+      context.winnerName = winnerGroup?.name || "???";
+      context.loserName = loserGroup?.name || "???";
+    }
+
+    // Compromise calculation for the winner.
+    if ( !endState.tie && endState.winnerGroupId ) {
+      const comp = combat.calculateCompromise(endState.winnerGroupId);
+      const levelKey = comp.level.charAt(0).toUpperCase() + comp.level.slice(1);
+      context.compromise = {
+        level: comp.level,
+        label: game.i18n.localize(`TB2E.Conflict.Compromise.${levelKey}`),
+        remaining: comp.remaining,
+        starting: comp.starting,
+        percent: Math.round(comp.percent * 100)
+      };
+      context.noCompromise = comp.remaining === comp.starting;
+    } else if ( endState.tie ) {
+      context.compromise = {
+        level: "major",
+        label: game.i18n.localize("TB2E.Conflict.Compromise.Major"),
+        remaining: 0,
+        starting: 0,
+        percent: 0
+      };
+      context.noCompromise = false;
+    }
+
+    // Team summaries.
+    context.resolutionTeams = groups.map(g => {
+      const members = combat.combatants.filter(c => c._source.group === g.id);
+      let remaining = 0, starting = 0;
+      for ( const c of members ) {
+        const actor = c.actor;
+        remaining += actor?.system.conflict?.hp?.value || 0;
+        starting += actor?.system.conflict?.hp?.max || 0;
+      }
+      return {
+        name: g.name,
+        remaining,
+        starting,
+        percent: starting > 0 ? Math.round((remaining / starting) * 100) : 0,
+        isWinner: g.id === endState.winnerGroupId,
+        isLoser: g.id === endState.loserGroupId
+      };
+    });
+
+    // Page references.
+    context.compromisePageRef = "SG p. 74-76";
+    context.isKillConflict = combat.system.conflictType === "kill";
+    if ( context.isKillConflict ) {
+      context.killCompromisePageRef = "SG p. 77-78";
+    }
   }
 
   /* -------------------------------------------- */
@@ -969,7 +1182,7 @@ export default class ConflictPanel extends HandlebarsApplicationMixin(Applicatio
       const captainActorId = captainId ? combat.combatants.get(captainId)?.actorId : null;
       const isCaptain = captainActorId && captainActorId === game.user.character?.id;
       for ( const c of members ) {
-        const actor = game.actors.get(c.actorId);
+        const actor = c.actor;
         const hp = actor?.system.conflict?.hp || { value: 0, max: 0 };
         const actedLastRound = c.system.actedLastRound || [];
         const actedLastRoundLabel = actedLastRound.length
@@ -1018,12 +1231,47 @@ export default class ConflictPanel extends HandlebarsApplicationMixin(Applicatio
    * @this {ConflictPanel}
    */
   static async #onSetCaptain(event, target) {
-    const combatantId = target.dataset.combatantId;
+    const combatantId = target.closest("[data-combatant-id]")?.dataset.combatantId;
     const groupId = target.closest("[data-group-id]")?.dataset.groupId;
     const combat = this.#getCombat();
     if ( combat && combatantId && groupId ) {
       await combat.setCaptain(groupId, combatantId);
     }
+  }
+
+  /* -------------------------------------------- */
+
+  /**
+   * Toggle boss designation for a combatant.
+   * @this {ConflictPanel}
+   */
+  static async #onSetBoss(event, target) {
+    const combatantId = target.closest("[data-combatant-id]")?.dataset.combatantId;
+    const combat = this.#getCombat();
+    if ( !combat || !combatantId ) return;
+    const combatant = combat.combatants.get(combatantId);
+    if ( !combatant ) return;
+    await combatant.update({ "system.isBoss": !combatant.system.isBoss });
+  }
+
+  /* -------------------------------------------- */
+
+  /**
+   * Set flat disposition from the GM input + confirm button.
+   * @this {ConflictPanel}
+   */
+  static async #onSetFlatDisposition(event, target) {
+    const groupId = target.dataset.groupId;
+    const combat = this.#getCombat();
+    if ( !combat || !groupId ) return;
+    const input = target.closest(".disp-gm-flat")?.querySelector(".gm-disposition-input");
+    const value = parseInt(input?.value) || 0;
+    if ( value <= 0 ) return;
+    await combat.storeDispositionRoll(groupId, {
+      rolled: value,
+      diceResults: [],
+      cardHtml: `<em>GM set disposition to ${value}</em>`
+    });
   }
 
   /* -------------------------------------------- */
@@ -1108,10 +1356,27 @@ export default class ConflictPanel extends HandlebarsApplicationMixin(Applicatio
 
     const group = combat.groups.get(groupId);
     const members = combat.combatants.filter(c => c._source.group === groupId);
-    const memberActors = members
-      .filter(c => c.id !== groupData.captainId)
-      .map(c => game.actors.get(c.actorId))
-      .filter(Boolean);
+    const memberCombatants = members
+      .filter(c => c.id !== groupData.captainId && c.actor);
+
+    // Monster group help dice for unlisted conflicts (+1D per additional monster).
+    const contextModifiers = [];
+    if ( actor.type === "monster" ) {
+      const monsterCount = members.filter(c => {
+        const a = game.actors.get(c.actorId);
+        return a?.type === "monster";
+      }).length;
+      const additional = Math.max(monsterCount - 1, 0);
+      if ( additional > 0 ) {
+        contextModifiers.push({
+          label: `Monster group (+${additional}D)`,
+          type: "dice",
+          value: additional,
+          source: "context",
+          active: true
+        });
+      }
+    }
 
     await rollTest({
       actor,
@@ -1125,7 +1390,8 @@ export default class ConflictPanel extends HandlebarsApplicationMixin(Applicatio
         combatId: combat.id,
         conflictTypeLabel: game.i18n.localize(conflictCfg?.label ?? "TB2E.Conflict.Title"),
         groupName: group?.name ?? "",
-        candidates: memberActors
+        candidates: memberCombatants,
+        contextModifiers
       }
     });
   }
@@ -1380,7 +1646,9 @@ export default class ConflictPanel extends HandlebarsApplicationMixin(Applicatio
     if ( !combat ) return;
 
     const actorId = target.dataset.actorId;
-    const actor = game.actors.get(actorId);
+    const combatantId = target.dataset.combatantId;
+    const combatant = combatantId ? combat.combatants.get(combatantId) : null;
+    const actor = combatant?.actor ?? game.actors.get(actorId);
     if ( !actor ) return;
 
     const actionKey = target.dataset.conflictAction;
@@ -1389,8 +1657,13 @@ export default class ConflictPanel extends HandlebarsApplicationMixin(Applicatio
     const actionCfg = conflictCfg?.actions?.[actionKey];
     if ( !actionCfg ) return;
 
-    // Determine the test key.
-    const testKey = actionCfg.keys[0];
+    // Determine the test type and key; monsters always test Nature.
+    let testType = actionCfg.type;
+    let testKey = actionCfg.keys[0];
+    if ( actor.type === "monster" ) {
+      testType = "ability";
+      testKey = "nature";
+    }
 
     // Build conflict modifiers from maneuver effects.
     const roundNum = combat.system.currentRound || 0;
@@ -1442,12 +1715,49 @@ export default class ConflictPanel extends HandlebarsApplicationMixin(Applicatio
       }
     }
 
+    // Apply conflict weapon bonuses/penalties.
+    const resolvedCombatant = combatant ?? [...combat.combatants].find(c => c.actorId === actorId);
+    if ( resolvedCombatant ) {
+      const weaponId = resolvedCombatant.system.weaponId;
+      const cfgWeapons = conflictCfg?.conflictWeapons || [];
+
+      if ( weaponId === "__unarmed__" ) {
+        modifiers.push({
+          label: game.i18n.localize("TB2E.Conflict.WeaponUnarmed"),
+          type: "dice", value: -1, source: "conflict", timing: "pre"
+        });
+      } else {
+        const weaponCfg = cfgWeapons.find(w => w.id === weaponId);
+        if ( weaponCfg?.bonuses ) {
+          for ( const bonus of weaponCfg.bonuses ) {
+            const targetAction = bonus.assignable ? resolvedCombatant.system.weaponAssignment : bonus.action;
+            if ( targetAction !== actionKey ) continue;
+            modifiers.push({
+              label: game.i18n.localize(weaponCfg.label),
+              type: bonus.type,
+              value: bonus.value,
+              source: "conflict",
+              timing: bonus.type === "success" ? "post" : "pre"
+            });
+          }
+        }
+      }
+    }
+
+    // Build group-isolated candidate list for helpers.
+    // Use combatant.actor (not game.actors.get) to handle unlinked/synthetic actors.
+    // Exclude the roller by combatant ID so unlinked tokens sharing an actorId are handled correctly.
+    const groupMembers = combat.combatants.filter(c => c._source.group === groupId);
+    const memberCombatants = groupMembers
+      .filter(c => c.id !== combatantId && c.actor);
+
     await rollTest({
       actor,
-      type: actionCfg.type,
+      type: testType,
       key: testKey,
       testContext: {
         isConflict: true,
+        candidates: memberCombatants,
         modifiers,
         ...(obstacle != null ? { obstacle } : {}),
         ...(isVersus ? { isVersus: true } : {})
@@ -1524,7 +1834,7 @@ export default class ConflictPanel extends HandlebarsApplicationMixin(Applicatio
         const members = combat.combatants.filter(c => c._source.group === g.id);
         let current = 0, max = 0;
         for ( const c of members ) {
-          const actor = game.actors.get(c.actorId);
+          const actor = c.actor;
           const hp = actor?.system.conflict?.hp || { value: 0, max: 0 };
           current += hp.value;
           max += hp.max;
@@ -1701,21 +2011,14 @@ export default class ConflictPanel extends HandlebarsApplicationMixin(Applicatio
   /* -------------------------------------------- */
 
   /**
-   * End the conflict.
+   * Transition to resolution phase — posts compromise chat card and switches tab.
    * @this {ConflictPanel}
    */
-  static async #onEndConflict() {
+  static async #onResolveConflict() {
     const combat = this.#getCombat();
     if ( !combat ) return;
 
-    const confirmed = await foundry.applications.api.DialogV2.confirm({
-      window: { title: game.i18n.localize("TB2E.Conflict.EndConflict") },
-      content: `<p>${game.i18n.localize("TB2E.Conflict.EndConflictConfirm")}</p>`,
-      yes: { default: true }
-    });
-    if ( !confirmed ) return;
-
-    // Post compromise chat card before deleting.
+    // Post compromise chat card.
     const groups = Array.from(combat.groups);
     const endState = combat.checkConflictEnd();
     let winnerName = "";
@@ -1731,16 +2034,13 @@ export default class ConflictPanel extends HandlebarsApplicationMixin(Applicatio
         level: comp.level,
         label: game.i18n.localize(`TB2E.Conflict.Compromise.${levelKey}`)
       };
-    } else {
-      // No side at 0 — GM is ending early.
-      winnerName = game.i18n.localize("TB2E.Conflict.EndConflict");
     }
 
     const teams = groups.map(g => {
       const members = combat.combatants.filter(c => c._source.group === g.id);
       let remaining = 0, starting = 0;
       for ( const c of members ) {
-        const actor = game.actors.get(c.actorId);
+        const actor = c.actor;
         remaining += actor?.system.conflict?.hp?.value || 0;
         starting += actor?.system.conflict?.hp?.max || 0;
       }
@@ -1758,6 +2058,72 @@ export default class ConflictPanel extends HandlebarsApplicationMixin(Applicatio
       content: cardHtml,
       type: CONST.CHAT_MESSAGE_STYLES.OTHER
     });
+
+    await combat.beginResolution();
+    this.#activeTab = "resolution";
+  }
+
+  /* -------------------------------------------- */
+
+  /**
+   * End the conflict.
+   * @this {ConflictPanel}
+   */
+  static async #onEndConflict() {
+    const combat = this.#getCombat();
+    if ( !combat ) return;
+
+    const confirmed = await foundry.applications.api.DialogV2.confirm({
+      window: { title: game.i18n.localize("TB2E.Conflict.EndConflict") },
+      content: `<p>${game.i18n.localize("TB2E.Conflict.EndConflictConfirm")}</p>`,
+      yes: { default: true }
+    });
+    if ( !confirmed ) return;
+
+    // Skip chat card if already in resolution phase (card was posted on entry).
+    if ( combat.system.phase !== "resolution" ) {
+      const groups = Array.from(combat.groups);
+      const endState = combat.checkConflictEnd();
+      let winnerName = "";
+      let compromise = null;
+      if ( endState.tie ) {
+        winnerName = game.i18n.localize("TB2E.Roll.Tied");
+      } else if ( endState.winnerGroupId ) {
+        const winnerGroup = combat.groups.get(endState.winnerGroupId);
+        winnerName = winnerGroup?.name || "???";
+        const comp = combat.calculateCompromise(endState.winnerGroupId);
+        const levelKey = comp.level.charAt(0).toUpperCase() + comp.level.slice(1);
+        compromise = {
+          level: comp.level,
+          label: game.i18n.localize(`TB2E.Conflict.Compromise.${levelKey}`)
+        };
+      } else {
+        winnerName = game.i18n.localize("TB2E.Conflict.EndConflict");
+      }
+
+      const teams = groups.map(g => {
+        const members = combat.combatants.filter(c => c._source.group === g.id);
+        let remaining = 0, starting = 0;
+        for ( const c of members ) {
+          const actor = c.actor;
+          remaining += actor?.system.conflict?.hp?.value || 0;
+          starting += actor?.system.conflict?.hp?.max || 0;
+        }
+        return { name: g.name, remaining, starting };
+      });
+
+      const cardHtml = await foundry.applications.handlebars.renderTemplate(
+        "systems/tb2e/templates/chat/conflict-compromise.hbs", {
+          winnerName,
+          compromise,
+          teams
+        }
+      );
+      await ChatMessage.create({
+        content: cardHtml,
+        type: CONST.CHAT_MESSAGE_STYLES.OTHER
+      });
+    }
 
     this.close();
     await combat.endConflict();

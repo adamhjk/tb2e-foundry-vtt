@@ -4,9 +4,12 @@
   <fieldset>
     <legend><i class="fa-solid fa-dragon"></i> {{localize "TB2E.Monster.CoreStats"}}</legend>
     <div class="monster-stat-grid">
-      <div class="field-pair">
-        <label>{{localize "TB2E.Monster.Nature"}}</label>
+      <div class="field-pair rollable" data-action="rollNature">
+        <label class="ability-name">{{localize "TB2E.Monster.Nature"}}</label>
         <input type="number" name="system.nature" value="{{system.nature}}" min="0">
+        {{#if natureReduced}}
+        <span class="effective-nature">{{localize "TB2E.Monster.EffectiveNature"}}: {{effectiveNature}}D</span>
+        {{/if}}
       </div>
       <div class="field-pair">
         <label>{{localize "TB2E.Fields.Might"}}</label>
@@ -28,6 +31,12 @@
       <input type="text" name="system.natureDescriptors" value="{{system.natureDescriptors}}"
              placeholder="{{localize 'TB2E.Monster.NatureDescriptorsPlaceholder'}}">
     </div>
+    <div class="field-pair boss-toggle">
+      <label>
+        <input type="checkbox" name="system.isBoss" {{checked system.isBoss}}>
+        <i class="fa-solid fa-crown"></i> {{localize "TB2E.Monster.IsBoss"}}
+      </label>
+    </div>
   </fieldset>
 
   {{!-- Conflict Dispositions --}}
@@ -41,9 +50,13 @@
                placeholder="{{localize 'TB2E.Monster.ConflictType'}}" class="disposition-type">
         <input type="number" name="system.dispositions.{{idx}}.hp" value="{{hp}}"
                min="0" class="disposition-hp">
+        <span class="disposition-formula">{{formulaHint}}</span>
       </div>
       {{/each}}
     </div>
+    <button type="button" class="btn-fill" data-action="fillDispositions">
+      <i class="fa-solid fa-calculator"></i> {{localize "TB2E.Monster.FillFromNature"}}
+    </button>
   </fieldset>
 
   {{!-- Weapons --}}

@@ -1,0 +1,79 @@
+{{!-- Resolution Tab --}}
+<div class="panel-tab-content resolution-tab">
+
+  {{!-- Winner / Tie Banner --}}
+  <div class="resolution-banner {{#if isTie}}tie{{else}}winner{{/if}}">
+    {{#if isTie}}
+    <i class="fa-solid fa-equals"></i>
+    <span class="resolution-banner-text">{{localize "TB2E.Roll.Tied"}}</span>
+    {{else}}
+    <i class="fa-solid fa-trophy"></i>
+    <span class="resolution-banner-text">{{winnerName}} {{localize "TB2E.Conflict.Winner"}}</span>
+    {{/if}}
+  </div>
+
+  {{!-- Compromise Level --}}
+  {{#if compromise}}
+  <div class="resolution-compromise level-{{compromise.level}}">
+    {{#if noCompromise}}
+    <span class="resolution-compromise-label">{{localize "TB2E.Conflict.Compromise.None"}}</span>
+    {{else}}
+    <span class="resolution-compromise-label">{{compromise.label}}</span>
+    <span class="resolution-compromise-detail">{{compromise.remaining}}/{{compromise.starting}} ({{compromise.percent}}%)</span>
+    {{/if}}
+  </div>
+  {{/if}}
+
+  {{!-- Tie description --}}
+  {{#if isTie}}
+  <div class="resolution-tie-desc">
+    {{localize "TB2E.Conflict.Resolution.TieDescription"}}
+  </div>
+  {{/if}}
+
+  {{!-- Team Disposition Summary --}}
+  <div class="resolution-teams">
+    {{#each resolutionTeams}}
+    <div class="resolution-team {{#if this.isWinner}}winner{{/if}} {{#if this.isLoser}}loser{{/if}}">
+      <span class="resolution-team-name">{{this.name}}</span>
+      <div class="resolution-team-hp">
+        <span class="resolution-team-hp-value">{{this.remaining}}/{{this.starting}}</span>
+        <div class="resolution-team-hp-bar">
+          <div class="resolution-team-hp-fill" style="width: {{this.percent}}%"></div>
+        </div>
+      </div>
+    </div>
+    {{/each}}
+  </div>
+
+  {{!-- Rules Reference --}}
+  <div class="resolution-rules">
+    <div class="resolution-rules-header">
+      <i class="fa-solid fa-book"></i>
+      {{localize "TB2E.Conflict.Resolution.RulesReference"}}
+    </div>
+    <div class="resolution-rules-list">
+      <div class="resolution-rule-item">
+        <span class="resolution-rule-label">{{localize "TB2E.Conflict.Resolution.CompromiseRules"}}</span>
+        <span class="resolution-rule-ref">{{compromisePageRef}}</span>
+      </div>
+      {{#if isKillConflict}}
+      <div class="resolution-rule-item">
+        <span class="resolution-rule-label">{{localize "TB2E.Conflict.Resolution.KillCompromise"}}</span>
+        <span class="resolution-rule-ref">{{killCompromisePageRef}}</span>
+      </div>
+      {{/if}}
+    </div>
+  </div>
+
+  {{!-- End Conflict Button --}}
+  {{#if isGM}}
+  <div class="resolution-end">
+    <button type="button" class="setup-next-btn danger" data-action="endConflict">
+      <span class="setup-next-label">{{localize "TB2E.Conflict.EndConflict"}}</span>
+      <i class="fa-solid fa-flag-checkered"></i>
+    </button>
+  </div>
+  {{/if}}
+
+</div>

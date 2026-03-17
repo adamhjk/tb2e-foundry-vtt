@@ -224,3 +224,117 @@
   color: var(--tb-blue);
   border-color: var(--tb-blue);
 }
+
+/* Stat Grid Field Layout — label left, input right */
+
+.tb2e.sheet.monster .monster-stat-grid .field-pair {
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
+.tb2e.sheet.monster .monster-stat-grid .field-pair label {
+  flex: 1;
+}
+
+.tb2e.sheet.monster .monster-stat-grid input {
+  flex: 0 0 3rem;
+  width: 3rem;
+  max-width: none;
+  text-align: center;
+}
+
+/* Nature Cell */
+
+.tb2e.sheet.monster .monster-stat-grid .rollable {
+  border-radius: var(--tb-radius);
+  margin-left: -0.5rem;
+  padding-left: 0.5rem;
+}
+
+.tb2e.sheet.monster .effective-nature {
+  font-size: 0.8rem;
+  color: var(--tb-cond-injured);
+  font-style: italic;
+}
+
+/* Disposition Formula Hints */
+
+.tb2e.sheet.monster .disposition-row {
+  flex-wrap: wrap;
+}
+
+.tb2e.sheet.monster .disposition-formula {
+  flex: 0 0 100%;
+  font-size: 0.7rem;
+  color: var(--tb-text-faint);
+  font-style: italic;
+  padding-left: 0.25rem;
+}
+
+/* Fill from Nature Button */
+
+.tb2e.sheet.monster .btn-fill {
+  all: unset;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-family: var(--tb-font-heading);
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--tb-text-dim);
+  padding: 0.35rem 0.6rem;
+  margin-top: 0.5rem;
+  border: 1px dashed var(--tb-border);
+  border-radius: var(--tb-radius);
+  transition: color 0.2s, border-color 0.2s;
+}
+
+.tb2e.sheet.monster .btn-fill:hover {
+  color: var(--tb-blue);
+  border-color: var(--tb-blue);
+}
+
+/* Boss Badge */
+
+.tb2e.sheet.monster .boss-badge {
+  color: var(--tb-amber);
+  font-size: 1.1rem;
+  margin-left: 0.4rem;
+}
+
+.tb2e.sheet.monster .name-row {
+  display: flex;
+  align-items: center;
+}
+
+.tb2e.sheet.monster .name-row .character-name {
+  flex: 1;
+}
+
+/* Boss Toggle */
+
+.tb2e.sheet.monster .boss-toggle label {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.85rem;
+  color: var(--tb-text-dim);
+  cursor: pointer;
+}
+
+.tb2e.sheet.monster .boss-toggle i {
+  color: var(--tb-amber);
+}
+
+/* Monster Disposition Hint in Conflict Panel */
+
+.disp-monster-hint {
+  font-size: 0.8rem;
+  color: var(--tb-text-faint);
+  font-style: italic;
+  margin-top: 0.25rem;
+}

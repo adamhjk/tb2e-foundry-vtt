@@ -46,30 +46,37 @@ export function buildResolutionContext({
   let baseDice = 0;
 
   if ( tests && actionCfg ) {
-    testType = actionCfg.type;
-    // Pick the first matching key the actor actually has.
-    for ( const key of actionCfg.keys ) {
-      if ( testType === "skill" ) {
-        const rating = actor.system.skills?.[key]?.rating || 0;
-        if ( rating > 0 || actionCfg.keys.length === 1 ) {
-          testKey = key;
-          baseDice = rating;
-          break;
-        }
-      } else {
-        const rating = actor.system.abilities?.[key]?.rating || 0;
-        if ( rating > 0 || actionCfg.keys.length === 1 ) {
-          testKey = key;
-          baseDice = rating;
-          break;
+    if ( actor.type === "monster" ) {
+      // Monsters roll Nature for all conflict actions.
+      testKey = "nature";
+      testType = "ability";
+      baseDice = actor.system.nature;
+    } else {
+      testType = actionCfg.type;
+      // Pick the first matching key the actor actually has.
+      for ( const key of actionCfg.keys ) {
+        if ( testType === "skill" ) {
+          const rating = actor.system.skills?.[key]?.rating || 0;
+          if ( rating > 0 || actionCfg.keys.length === 1 ) {
+            testKey = key;
+            baseDice = rating;
+            break;
+          }
+        } else {
+          const rating = actor.system.abilities?.[key]?.rating || 0;
+          if ( rating > 0 || actionCfg.keys.length === 1 ) {
+            testKey = key;
+            baseDice = rating;
+            break;
+          }
         }
       }
-    }
-    // Fallback to first key if none found.
-    if ( !testKey && actionCfg.keys.length ) {
-      testKey = actionCfg.keys[0];
-      if ( testType === "skill" ) baseDice = actor.system.skills?.[testKey]?.rating || 0;
-      else baseDice = actor.system.abilities?.[testKey]?.rating || 0;
+      // Fallback to first key if none found.
+      if ( !testKey && actionCfg.keys.length ) {
+        testKey = actionCfg.keys[0];
+        if ( testType === "skill" ) baseDice = actor.system.skills?.[testKey]?.rating || 0;
+        else baseDice = actor.system.abilities?.[testKey]?.rating || 0;
+      }
     }
   }
 
@@ -88,9 +95,16 @@ export function buildResolutionContext({
   const isUnarmed = weaponId === "__unarmed__";
   let weaponBonuses = null;
   if ( weaponId && weaponId !== "__unarmed__" && weaponId !== "__improvised__" ) {
-    const weaponItem = actor.items.get(weaponId);
-    if ( weaponItem ) {
-      weaponBonuses = { name: weaponItem.name, system: weaponItem.system };
+    // Monster weapons are embedded in the data model, not items.
+    if ( actor.type === "monster" && weaponId.startsWith("__monster_") ) {
+      const idx = parseInt(weaponId.replace("__monster_", "").replace("__", ""), 10);
+      const mw = actor.system.weapons[idx];
+      if ( mw ) weaponBonuses = { name: mw.name, system: mw };
+    } else {
+      const weaponItem = actor.items.get(weaponId);
+      if ( weaponItem ) {
+        weaponBonuses = { name: weaponItem.name, system: weaponItem.system };
+      }
     }
   }
 

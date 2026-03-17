@@ -24,7 +24,7 @@ export default class TB2EActor extends Actor {
     const disposition = dispositions[this.type];
     if ( disposition !== undefined ) {
       this.updateSource({ prototypeToken: {
-        actorLink: true,
+        actorLink: this.type !== "monster",
         disposition,
         displayBars: CONST.TOKEN_DISPLAY_MODES.ALWAYS,
         displayName: CONST.TOKEN_DISPLAY_MODES.ALWAYS,

@@ -13,6 +13,7 @@ export default class MonsterData extends foundry.abstract.TypeDataModel {
       instinct: new fields.StringField(),
       armor: new fields.StringField(),
       specialRules: new fields.HTMLField(),
+      isBoss: new fields.BooleanField({ initial: false }),
 
       // ---- Conditions (no Fresh for monsters) ----
       conditions: new fields.SchemaField({
@@ -53,5 +54,23 @@ export default class MonsterData extends foundry.abstract.TypeDataModel {
       // ---- Description (GM notes) ----
       description: new fields.HTMLField()
     };
+  }
+
+  /* -------------------------------------------- */
+
+  prepareDerivedData() {
+    const n = this.nature;
+
+    // Suggested disposition HP per tier (reference hints, not stored values).
+    this.dispositionSuggestions = [
+      { key: "strength", multiplier: 2, hp: n * 2, dispositionIndex: 0, actual: this.dispositions[0]?.hp ?? 0 },
+      { key: "competency", multiplier: 1, hp: n, dispositionIndex: 1, actual: this.dispositions[1]?.hp ?? 0 },
+      { key: "weakness", multiplier: 0.5, hp: Math.ceil(n / 2), dispositionIndex: 2, actual: this.dispositions[2]?.hp ?? 0 }
+    ];
+
+    // Effective Nature accounting for conditions (-1D per injured/sick).
+    const injured = this.conditions.injured ? 1 : 0;
+    const sick = this.conditions.sick ? 1 : 0;
+    this.effectiveNature = Math.max(this.nature - injured - sick, 1);
   }
 }

@@ -14,7 +14,7 @@
       {{#if this.canEditHP}}
       <input type="number" class="roster-hp-input" value="{{this.hp.value}}"
              min="0" max="{{this.hp.max}}"
-             data-actor-id="{{this.actorId}}" data-group-id="{{this.groupId}}">
+             data-combatant-id="{{this.id}}" data-group-id="{{this.groupId}}">
       <span class="roster-hp-max">/{{this.hp.max}}</span>
       {{else}}
       <span class="roster-hp">{{this.hp.value}}/{{this.hp.max}}</span>

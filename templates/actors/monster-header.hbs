@@ -15,8 +15,11 @@
     <div class="header-top-row">
       <img class="torchbearer-logo" src="systems/tb2e/assets/torchbearer-logo.png" alt="Torchbearer">
     </div>
-    <input type="text" name="name" value="{{actor.name}}"
-           placeholder="{{localize 'TB2E.Fields.Name'}}" class="character-name">
+    <div class="name-row">
+      <input type="text" name="name" value="{{actor.name}}"
+             placeholder="{{localize 'TB2E.Fields.Name'}}" class="character-name">
+      {{#if system.isBoss}}<i class="fa-solid fa-crown boss-badge" title="{{localize 'TB2E.Monster.IsBoss'}}"></i>{{/if}}
+    </div>
     <div class="header-summary">
       <span class="summary-line">
         {{#if system.type}}{{system.type}}{{/if}}

@@ -12,21 +12,27 @@
         {{#if this.knockedOut}}
         <span class="weapon-ko"><i class="fa-solid fa-skull"></i></span>
         {{else if this.canEdit}}
-          {{#if @root.usesGear}}
           <select class="weapon-select" data-combatant-id="{{this.id}}">
             <option value="">{{localize "TB2E.Conflict.WeaponChoose"}}</option>
             {{#each this.weaponChoices}}
-            <option value="{{this.id}}" {{#if this.selected}}selected{{/if}}>{{this.name}}</option>
+            <option value="{{this.id}}" data-clean-name="{{this.name}}" {{#if this.selected}}selected{{/if}}>
+              {{this.name}}{{#if this.bonusSummary}} — {{this.bonusSummary}}{{/if}}
+            </option>
             {{/each}}
           </select>
+          {{#if @root.usesGear}}
           <input type="text" class="weapon-improvised-input {{#unless this.isImprovised}}hidden{{/unless}}"
                  value="{{#if this.isImprovised}}{{this.weapon}}{{/if}}"
                  data-combatant-id="{{this.id}}"
                  placeholder="{{localize 'TB2E.Conflict.WeaponImprovisedPlaceholder'}}">
-          {{else}}
-          <input type="text" class="weapon-input" value="{{this.weapon}}"
-                 data-combatant-id="{{this.id}}"
-                 placeholder="{{localize 'TB2E.Conflict.WeaponPlaceholder'}}">
+          {{/if}}
+          {{#if this.showAssignment}}
+          <select class="weapon-assignment-select" data-combatant-id="{{this.id}}">
+            <option value="">{{localize "TB2E.Conflict.WeaponAssignAction"}}</option>
+            {{#each this.weaponAssignmentChoices}}
+            <option value="{{this.value}}" {{#if this.selected}}selected{{/if}}>{{localize this.label}}</option>
+            {{/each}}
+          </select>
           {{/if}}
         {{else}}
           {{#if this.isUnarmed}}

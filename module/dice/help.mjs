@@ -24,6 +24,8 @@ import { abilities, skills } from "../config.mjs";
  * @returns {number}
  */
 function _getAbilityRating(actor, key) {
+  // Monsters store nature directly on system (no abilities object)
+  if ( !actor.system.abilities ) return actor.system[key] ?? 0;
   const data = actor.system.abilities[key];
   if ( typeof data === "number" ) return data;
   return data?.rating ?? 0;
@@ -76,27 +78,34 @@ export function getEligibleHelpers({ actor, type, key, testContext = {}, candida
   if ( testContext.isRecovery ) return [];
   if ( testContext.isLifestyle ) return [];
 
-  // Build candidate list — characters + NPCs with tokens in the current scene
+  // Build candidate list from scene tokens filtered by conflict team.
   let pool;
   if ( candidates ) {
     pool = candidates;
   } else {
-    const sceneActorIds = new Set(
-      (canvas?.scene?.tokens ?? []).map(t => t.actorId).filter(Boolean)
-    );
-    pool = game.actors.filter(a => {
-      if ( a.id === actor.id ) return false;
-      if ( a.type === "character" ) return true;
-      if ( a.type === "npc" ) return sceneActorIds.has(a.id);
-      return false;
+    // Build pool from scene tokens so unlinked actors are included.
+    // Helpers must be on the same conflict team as the roller.
+    const rollerTeam = actor.system.conflict?.team ?? "party";
+    const rollerTokenId = actor.isToken ? actor.token?.id : null;
+    pool = (canvas?.scene?.tokens ?? []).filter(t => {
+      if ( !t.actor ) return false;
+      // Exclude the roller: by token ID for unlinked tokens (so other tokens sharing the
+      // same base actor are NOT excluded), or by actorId for linked actors.
+      if ( rollerTokenId ? t.id === rollerTokenId : t.actorId === actor.id ) return false;
+      return (t.actor.system.conflict?.team ?? "party") === rollerTeam;
     });
   }
 
   const results = [];
 
-  for ( const candidate of pool ) {
-    // Skip the roller
-    if ( candidate.id === actor.id ) continue;
+  for ( const raw of pool ) {
+    // Candidates may be Combatant or Actor objects — normalize to actor for ability checks.
+    // Combatant.name resolves to the token name (e.g. "Kobold (1)"); Actor.name is actor name.
+    const candidate = raw.actor ?? raw;
+
+    // Skip the roller — only needed for default pool path; when candidates is
+    // explicitly provided the caller has already excluded the roller by combatant ID.
+    if ( !candidates && candidate.id === actor.id ) continue;
 
     // Check blocking conditions
     const { blocked } = isBlockedFromHelping(candidate);
@@ -108,7 +117,7 @@ export function getEligibleHelpers({ actor, type, key, testContext = {}, candida
 
     results.push({
       id: candidate.id,
-      name: candidate.name,
+      name: raw.name,          // token name if Combatant, actor name if Actor
       helpVia: match.helpVia,
       helpViaType: match.helpViaType,
       helpViaLabel: match.helpViaLabel,
@@ -162,8 +171,9 @@ export function getEligibleWiseAiders({ actor, testContext = {}, candidates }) {
 
   const results = [];
 
-  for ( const candidate of pool ) {
-    if ( candidate.id === actor.id ) continue;
+  for ( const raw of pool ) {
+    const candidate = raw.actor ?? raw;
+    if ( !candidates && candidate.id === actor.id ) continue;
     if ( candidate.type !== "character" ) continue;
 
     // Check blocking conditions
@@ -177,7 +187,7 @@ export function getEligibleWiseAiders({ actor, testContext = {}, candidates }) {
       if ( !wise.name ) continue;
       results.push({
         id: candidate.id,
-        name: candidate.name,
+        name: raw.name,
         wiseIndex: i,
         wiseName: wise.name
       });

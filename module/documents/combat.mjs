@@ -192,17 +192,14 @@ export default class TB2ECombat extends Combat {
       if ( captain ) await captain.update({ "system.pendingDistribution": { groupId, distribution } });
       return;
     }
-    const updates = [];
+    const promises = [];
     for ( const [combatantId, value] of Object.entries(distribution) ) {
       const combatant = this.combatants.get(combatantId);
-      if ( !combatant?.actorId ) continue;
-      updates.push({
-        _id: combatant.actorId,
-        "system.conflict.hp.value": value,
-        "system.conflict.hp.max": value
-      });
+      const actor = combatant?.actor;
+      if ( !actor ) continue;
+      promises.push(actor.update({ "system.conflict.hp.value": value, "system.conflict.hp.max": value }));
     }
-    if ( updates.length ) await Actor.updateDocuments(updates);
+    await Promise.all(promises);
 
     // Mark this group as distributed.
     const gd = foundry.utils.deepClone(this.system.groupDispositions || {});
@@ -241,47 +238,43 @@ export default class TB2ECombat extends Combat {
     const combatant = this.combatants.get(combatantId);
     if ( !combatant ) return;
     await combatant.update({ "system.weapon": weaponName, "system.weaponId": weaponId });
-    if ( combatant.actorId ) {
-      const actor = game.actors.get(combatant.actorId);
-      if ( actor ) await actor.update({ "system.conflict.weapon": weaponName, "system.conflict.weaponId": weaponId });
-    }
+    const actor = combatant.actor;
+    if ( actor ) await actor.update({ "system.conflict.weapon": weaponName, "system.conflict.weaponId": weaponId });
   }
 
   /**
    * Transition from weapons to scripting phase.
-   * Initializes the first round data structure.
+   * Initializes round 1 data structure on the first call; subsequent rounds
+   * are already initialized by {@link advanceRound}.
    * @returns {Promise<TB2ECombat>}
    */
   async beginScripting() {
-    const nextRound = (this.system.currentRound || 0) + 1;
-    const rounds = foundry.utils.deepClone(this.system.rounds || {});
+    const update = { "system.phase": "scripting" };
 
-    const actions = {};
-    const locked = {};
-    for ( const group of this.groups ) {
-      actions[group.id] = [null, null, null];
-      locked[group.id] = false;
+    // First round only: initialize round 1 data structure.
+    // Subsequent rounds are initialized by advanceRound().
+    if ( !this.system.currentRound ) {
+      const rounds = foundry.utils.deepClone(this.system.rounds || {});
+      const actions = {};
+      const locked = {};
+      for ( const group of this.groups ) {
+        actions[group.id] = [null, null, null];
+        locked[group.id] = false;
+      }
+      rounds[1] = {
+        actions, locked,
+        volleys: [
+          { revealed: false, result: null },
+          { revealed: false, result: null },
+          { revealed: false, result: null }
+        ],
+        effects: { impede: {}, position: {} }
+      };
+      update["system.currentRound"] = 1;
+      update["system.rounds"] = rounds;
     }
 
-    rounds[nextRound] = {
-      actions,
-      locked,
-      volleys: [
-        { revealed: false, result: null },
-        { revealed: false, result: null },
-        { revealed: false, result: null }
-      ],
-      effects: {
-        impede: {},
-        position: {}
-      }
-    };
-
-    return this.update({
-      "system.currentRound": nextRound,
-      "system.rounds": rounds,
-      "system.phase": "scripting"
-    });
+    return this.update(update);
   }
 
   /* -------------------------------------------- */
@@ -639,7 +632,7 @@ export default class TB2ECombat extends Combat {
     let remaining = 0;
     let starting = 0;
     for ( const c of members ) {
-      const actor = game.actors.get(c.actorId);
+      const actor = c.actor;
       if ( !actor ) continue;
       remaining += actor.system.conflict.hp.value;
       starting += actor.system.conflict.hp.max;
@@ -665,7 +658,7 @@ export default class TB2ECombat extends Combat {
       const members = this.combatants.filter(c => c._source.group === g.id);
       let total = 0;
       for ( const c of members ) {
-        const actor = game.actors.get(c.actorId);
+        const actor = c.actor;
         total += actor?.system.conflict?.hp?.value || 0;
       }
       return { groupId: g.id, total };
@@ -681,22 +674,42 @@ export default class TB2ECombat extends Combat {
   }
 
   /**
-   * End the conflict, resetting dispositions and deleting the combat.
+   * Transition to the resolution phase.
+   * @returns {Promise<TB2ECombat>}
+   */
+  async beginResolution() {
+    if ( !game.user.isGM ) return;
+    return this.update({ "system.phase": "resolution" });
+  }
+
+  /** @override */
+  async _preDelete(options, user) {
+    await super._preDelete(options, user);
+    if ( !this.isConflict || !game.user.isGM ) return;
+
+    // Reset conflict HP on all participating actors.
+    const seen = new Set();
+    for ( const combatant of this.combatants ) {
+      const actor = combatant.actor;
+      if ( !actor || seen.has(actor) ) continue;
+      seen.add(actor);
+      const resetData = {
+        "system.conflict.hp.value": 0,
+        "system.conflict.hp.max": 0
+      };
+      // Only reset weapon fields that exist in the actor's schema.
+      const schema = actor.system.schema?.fields?.conflict?.fields;
+      if ( schema?.weapon ) resetData["system.conflict.weapon"] = "";
+      if ( schema?.weaponId ) resetData["system.conflict.weaponId"] = "";
+      await actor.update(resetData);
+    }
+  }
+
+  /**
+   * End the conflict, deleting the combat. Actor cleanup is handled by _preDelete.
    * @returns {Promise<void>}
    */
   async endConflict() {
-    const updates = [];
-    for ( const combatant of this.combatants ) {
-      if ( !combatant.actorId ) continue;
-      updates.push({
-        _id: combatant.actorId,
-        "system.conflict.hp.value": 0,
-        "system.conflict.hp.max": 0,
-        "system.conflict.weapon": "",
-        "system.conflict.weaponId": ""
-      });
-    }
-    if ( updates.length ) await Actor.updateDocuments(updates);
     return this.delete();
   }
 

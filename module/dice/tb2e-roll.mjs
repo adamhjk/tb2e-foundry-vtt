@@ -41,6 +41,12 @@ export function createModifier({
  * @returns {{ label: string, dice: number }}
  */
 function _resolveRollData(actor, type, key) {
+  // Monsters: Nature is a top-level number, not in an abilities object.
+  if ( actor.type === "monster" && key === "nature" ) {
+    const label = game.i18n.localize("TB2E.Ability.Nature");
+    return { label, dice: actor.system.nature };
+  }
+
   const cfg = type === "ability" ? abilities[key] : skills[key];
   const label = game.i18n.localize(cfg.label);
   if ( type === "ability" ) {
@@ -611,6 +617,25 @@ async function _showRollDialog({
 
         // Manual modifiers
         all.push(...manualModifiers);
+
+        // BL halving modifier (live preview — mirrors _applyBLHalving logic)
+        if ( blInfo ) {
+          const NON_HALVABLE = new Set(["trait", "persona", "nature", "condition"]);
+          let halvable = Number(form.elements.poolSize.value);
+          for ( const m of all ) {
+            if ( m.timing !== "pre" || m.type !== "dice" ) continue;
+            if ( !NON_HALVABLE.has(m.source) ) halvable += m.value;
+          }
+          const penalty = Math.ceil(halvable / 2) - halvable;
+          if ( penalty !== 0 ) {
+            all.push(createModifier({
+              label: game.i18n.localize("TB2E.Roll.BLHalving"),
+              type: "dice", value: penalty, source: "bl-halving",
+              icon: "fa-solid fa-divide", color: "--tb-amber", timing: "pre"
+            }));
+          }
+        }
+
         return all;
       }
 
@@ -1160,19 +1185,11 @@ export async function rollTest({ actor, type, key, testContext = {} }) {
   // Collect all modifiers from the dialog result (already includes helpers, traits, persona, etc.)
   const allModifiers = config.modifiers || [];
 
-  // Calculate final pool
-  let poolSize;
-  if ( blInfo ) {
-    // BL: halve the halvable portion
-    const { poolSize: blPool, halvingMod } = _applyBLHalving(config.baseDice, allModifiers);
-    poolSize = blPool;
-    if ( halvingMod.value !== 0 ) allModifiers.push(halvingMod);
-  } else {
-    const diceBonus = allModifiers
-      .filter(m => m.timing === "pre" && m.type === "dice")
-      .reduce((s, m) => s + m.value, 0);
-    poolSize = Math.max(config.baseDice + diceBonus, 1);
-  }
+  // Calculate final pool (BL halving modifier is already included from the dialog)
+  const diceBonus = allModifiers
+    .filter(m => m.timing === "pre" && m.type === "dice")
+    .reduce((s, m) => s + m.value, 0);
+  const poolSize = Math.max(config.baseDice + diceBonus, 1);
 
   const { roll, successes, diceResults } = await evaluateRoll(poolSize);
 
@@ -1505,7 +1522,7 @@ async function _handleDispositionRoll({ actor, type, key, label, baseDice, poolS
   // Look up ability rating from actor
   const abilityKey = config.dispositionAbilityKey || "health";
   const abilityCfg = abilities[abilityKey];
-  const abilityRating = actor.system.abilities[abilityKey]?.rating || 0;
+  const abilityRating = (actor.type === "monster") ? 0 : (actor.system.abilities[abilityKey]?.rating || 0);
   const abilityLabel = abilityCfg ? game.i18n.localize(abilityCfg.label) : abilityKey;
 
   // Store raw successes (no obstacle for disposition)

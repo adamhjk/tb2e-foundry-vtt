@@ -131,7 +131,7 @@ export default class ConflictTracker extends CombatTracker {
       let hasDisposition = false;
 
       for ( const c of members ) {
-        const actor = game.actors.get(c.actorId);
+        const actor = c.actor;
         const disp = actor?.system.conflict?.hp || { value: 0, max: 0 };
         const isCaptain = groupData.captainId === c.id;
 

@@ -52,23 +52,23 @@
             {{lookup @root.interactionLabels this.sideInteraction}}
           </span>
           {{/if}}
+          {{!-- Roll button under this side (invisible placeholder when "none" to keep columns aligned) --}}
+          {{#unless ../../hasResult}}
+          <button type="button" class="panel-action-btn resolve-side-roll-btn {{#if (eq this.sideInteraction "none")}}invisible{{/if}}" data-action="rollAction"
+                  data-actor-id="{{this.actorId}}" data-combatant-id="{{this.combatantId}}"
+                  data-conflict-action="{{this.action}}"
+                  data-group-id="{{this.groupId}}" {{#if (eq this.sideInteraction "none")}}disabled{{/if}}>
+            <i class="fa-solid fa-dice"></i> {{localize "TB2E.Conflict.Roll"}} {{this.testLabel}}
+          </button>
+          {{/unless}}
         </div>
         {{#unless @last}}<span class="resolve-vs">vs</span>{{/unless}}
         {{/each}}
       </div>
 
-      {{!-- Roll buttons --}}
+      {{!-- Mark resolved button --}}
       {{#unless this.hasResult}}
       <div class="resolve-roll-buttons">
-        {{#each this.sides}}
-        {{#unless (eq this.sideInteraction "none")}}
-        <button type="button" class="panel-action-btn" data-action="rollAction"
-                data-actor-id="{{this.actorId}}" data-conflict-action="{{this.action}}"
-                data-group-id="{{this.groupId}}">
-          <i class="fa-solid fa-dice"></i> {{localize "TB2E.Conflict.Roll"}} {{this.testLabel}} ({{this.combatantName}})
-        </button>
-        {{/unless}}
-        {{/each}}
         {{#if @root.isGM}}
         <button type="button" class="panel-action-btn secondary" data-action="resolveAction"
                 data-action-index="{{this.index}}">
@@ -112,15 +112,17 @@
   {{!-- Navigation buttons --}}
   {{#if isGM}}
   <div class="resolve-nav">
-    {{#if allResolved}}
+    {{#if canResolveConflict}}
+    <button type="button" class="setup-next-btn" data-action="resolveConflict">
+      <span class="setup-next-label">{{localize "TB2E.Conflict.ResolveConflict"}}</span>
+      <i class="fa-solid fa-arrow-right"></i>
+    </button>
+    {{else if allResolved}}
     <button type="button" class="setup-next-btn" data-action="nextRound">
       <span class="setup-next-label">{{localize "TB2E.Conflict.NewRound"}}</span>
       <i class="fa-solid fa-arrow-right"></i>
     </button>
     {{/if}}
-    <button type="button" class="panel-action-btn danger" data-action="endConflict">
-      <i class="fa-solid fa-flag-checkered"></i> {{localize "TB2E.Conflict.EndConflict"}}
-    </button>
   </div>
   {{/if}}
 

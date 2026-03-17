@@ -158,48 +158,6 @@ Hooks.on("updateActor", (actor, changes, options, userId) => {
     });
   }
 
-  // Auto-check conflict end when an actor's conflict HP changes.
-  if ( changes.system?.conflict?.hp != null ) {
-    const combat = game.combats?.find(c => c.isConflict && c.combatants.some(cb => cb.actorId === actor.id));
-    if ( combat && combat.system.phase === "resolve" ) {
-      const endState = combat.checkConflictEnd();
-      if ( endState.ended ) {
-        // Post compromise card and end conflict.
-        (async () => {
-          const groups = Array.from(combat.groups);
-          let winnerName = "";
-          let compromise = null;
-          if ( endState.tie ) {
-            winnerName = game.i18n.localize("TB2E.Roll.Tied");
-          } else if ( endState.winnerGroupId ) {
-            const winnerGroup = combat.groups.get(endState.winnerGroupId);
-            winnerName = winnerGroup?.name || "???";
-            const comp = combat.calculateCompromise(endState.winnerGroupId);
-            const levelKey = comp.level.charAt(0).toUpperCase() + comp.level.slice(1);
-            compromise = { level: comp.level, label: game.i18n.localize(`TB2E.Conflict.Compromise.${levelKey}`) };
-          }
-          const teams = groups.map(g => {
-            const members = combat.combatants.filter(c => c._source.group === g.id);
-            let remaining = 0, starting = 0;
-            for ( const c of members ) {
-              const a = game.actors.get(c.actorId);
-              remaining += a?.system.conflict?.hp?.value || 0;
-              starting += a?.system.conflict?.hp?.max || 0;
-            }
-            return { name: g.name, remaining, starting };
-          });
-          const cardHtml = await foundry.applications.handlebars.renderTemplate(
-            "systems/tb2e/templates/chat/conflict-compromise.hbs",
-            { winnerName, compromise, teams }
-          );
-          await ChatMessage.create({ content: cardHtml, type: CONST.CHAT_MESSAGE_STYLES.OTHER });
-          await combat.endConflict();
-          const panel = game.tb2e?.conflictPanel;
-          if ( panel?.rendered ) panel.close();
-        })();
-      }
-    }
-  }
 });
 
 // Auto-open ConflictPanel when conflict transitions to disposition phase.

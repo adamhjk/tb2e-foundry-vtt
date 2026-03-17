@@ -1,4 +1,5 @@
 import { conditions } from "../../config.mjs";
+import { rollTest } from "../../dice/tb2e-roll.mjs";
 
 const { HandlebarsApplicationMixin } = foundry.applications.api;
 const { ActorSheetV2 } = foundry.applications.sheets;
@@ -12,7 +13,9 @@ export default class MonsterSheet extends HandlebarsApplicationMixin(ActorSheetV
       toggleCondition: MonsterSheet.#onToggleCondition,
       toggleTeam: MonsterSheet.#onToggleTeam,
       addWeapon: MonsterSheet.#onAddWeapon,
-      deleteWeapon: MonsterSheet.#onDeleteWeapon
+      deleteWeapon: MonsterSheet.#onDeleteWeapon,
+      rollNature: MonsterSheet.#onRollNature,
+      fillDispositions: MonsterSheet.#onFillDispositions
     },
     form: { submitOnChange: true },
     window: { resizable: true }
@@ -113,16 +116,26 @@ export default class MonsterSheet extends HandlebarsApplicationMixin(ActorSheetV
 
   #prepareBodyContext(context) {
     const sys = this.document.system;
+    const n = sys.nature;
 
-    // Dispositions with visual tier indicators.
+    // Dispositions with visual tier indicators and formula hints.
+    const formulaHints = [
+      `= Nature \u00d7 2 (${n * 2}) + weapons`,
+      `= Nature (${n}) + weapons`,
+      `= \u2308Nature \u00f7 2\u2309 (${Math.ceil(n / 2)}) + weapons`
+    ];
     context.dispositions = sys.dispositions.map((d, i) => {
       let tier = "weakness";
       if ( i === 0 ) tier = "strength";
       else if ( i === 1 ) tier = "competency";
-      return { ...d, idx: i, tier };
+      return { ...d, idx: i, tier, formulaHint: formulaHints[i] };
     });
 
     context.weapons = sys.weapons.map((w, i) => ({ ...w, idx: i }));
+
+    // Effective Nature display.
+    context.effectiveNature = sys.effectiveNature;
+    context.natureReduced = sys.effectiveNature < sys.nature;
   }
 
   /* -------------------------------------------- */
@@ -157,5 +170,22 @@ export default class MonsterSheet extends HandlebarsApplicationMixin(ActorSheetV
     const current = foundry.utils.deepClone(this.document.system.weapons || []);
     current.splice(index, 1);
     this.document.update({ "system.weapons": current });
+  }
+
+  /* -------------------------------------------- */
+
+  static #onRollNature(event, target) {
+    rollTest({ actor: this.document, type: "ability", key: "nature" });
+  }
+
+  /* -------------------------------------------- */
+
+  static #onFillDispositions(event, target) {
+    const n = this.document.system.nature;
+    const current = foundry.utils.deepClone(this.document.system.dispositions);
+    current[0].hp = n * 2;
+    current[1].hp = n;
+    current[2].hp = Math.ceil(n / 2);
+    this.document.update({ "system.dispositions": current });
   }
 }

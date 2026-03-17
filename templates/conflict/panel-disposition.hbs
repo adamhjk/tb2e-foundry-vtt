@@ -44,7 +44,15 @@
       <div class="disp-gm-flat">
         <label>{{localize "TB2E.Conflict.SetFlat"}}</label>
         <input type="number" class="gm-disposition-input" data-group-id="{{this.id}}"
-               min="1" placeholder="—">
+               min="1" {{#if this.isListedConflict}}value="{{this.suggestedDisposition}}"{{/if}}
+               placeholder="{{#if this.isMonsterGroup}}{{this.suggestedDisposition}}{{else}}—{{/if}}">
+        <button type="button" class="disp-gm-flat-btn" data-action="setFlatDisposition" data-group-id="{{this.id}}"
+                title="{{localize 'TB2E.Conflict.SetFlat'}}">
+          <i class="fa-solid fa-check"></i>
+        </button>
+        {{#if this.isMonsterGroup}}
+        <span class="disp-monster-hint">{{this.monsterDispositionHint}}</span>
+        {{/if}}
       </div>
       {{/if}}
     {{else}}
@@ -67,6 +75,7 @@
         <li class="dist-row">
           <span class="dist-name">
             {{#if this.isCaptain}}<i class="fa-solid fa-star"></i>{{/if}}
+            {{#if this.isBoss}}<i class="fa-solid fa-shield dist-boss-icon"></i>{{/if}}
             {{this.name}}
           </span>
           <input type="number" name="disp-{{this.id}}" value="{{this.suggested}}"

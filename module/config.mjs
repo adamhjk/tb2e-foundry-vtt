@@ -197,6 +197,11 @@ export const conflictTypes = {
   capture: {
     label: "TB2E.Conflict.Type.Capture",
     usesGear: true,
+    conflictWeapons: [
+      { id: "camouflage",  label: "TB2E.Weapon.Camouflage",  bonuses: [{ action: "feint",    type: "dice",    value: 1 }] },
+      { id: "lures",       label: "TB2E.Weapon.Lures",       bonuses: [{ action: "maneuver", type: "dice",    value: 1 }] },
+      { id: "netsOrTraps", label: "TB2E.Weapon.NetsOrTraps", bonuses: [{ action: "attack",   type: "success", value: 1 }] }
+    ],
     dispositionSkills: ["fighter", "hunter"],
     dispositionAbility: "will",
     actions: {
@@ -208,6 +213,12 @@ export const conflictTypes = {
   },
   chase: {
     label: "TB2E.Conflict.Type.Chase",
+    conflictWeapons: [
+      { id: "caltropsOrOil", label: "TB2E.Weapon.CaltropsOrOil", bonuses: [{ action: "feint",  type: "success", value: 1 }] },
+      { id: "locals",        label: "TB2E.Weapon.Locals",        bonuses: [{ type: "dice", value: 1, assignable: true }], assignable: true },
+      { id: "maps",          label: "TB2E.Weapon.Maps",          bonuses: [] },
+      { id: "rightTools",    label: "TB2E.Weapon.RightTools",    bonuses: [{ action: "attack", type: "success", value: 1 }] }
+    ],
     dispositionSkills: ["hunter", "pathfinder"],
     dispositionAbility: "health",
     actions: {
@@ -231,6 +242,12 @@ export const conflictTypes = {
   },
   flee: {
     label: "TB2E.Conflict.Type.Flee",
+    conflictWeapons: [
+      { id: "caltropsOrOil", label: "TB2E.Weapon.CaltropsOrOil", bonuses: [{ action: "feint",  type: "success", value: 1 }] },
+      { id: "locals",        label: "TB2E.Weapon.Locals",        bonuses: [{ type: "dice", value: 1, assignable: true }], assignable: true },
+      { id: "maps",          label: "TB2E.Weapon.Maps",          bonuses: [] },
+      { id: "rightTools",    label: "TB2E.Weapon.RightTools",    bonuses: [{ action: "attack", type: "success", value: 1 }] }
+    ],
     dispositionSkills: ["scout", "rider"],
     dispositionAbility: "health",
     actions: {
@@ -242,6 +259,14 @@ export const conflictTypes = {
   },
   convince: {
     label: "TB2E.Conflict.Type.Convince",
+    conflictWeapons: [
+      { id: "blackmail",    label: "TB2E.Weapon.Blackmail",    bonuses: [{ type: "dice", value: 1, assignable: true }], assignable: true },
+      { id: "deception",    label: "TB2E.Weapon.Deception",    bonuses: [{ action: "feint",    type: "success", value: 1 }] },
+      { id: "evidence",     label: "TB2E.Weapon.Evidence",     bonuses: [{ action: "attack",   type: "success", value: 1 }] },
+      { id: "finery",       label: "TB2E.Weapon.Finery",       bonuses: [] },
+      { id: "intimidation", label: "TB2E.Weapon.Intimidation", bonuses: [{ action: "maneuver", type: "success", value: 1 }] },
+      { id: "promises",     label: "TB2E.Weapon.Promises",     bonuses: [{ action: "defend",   type: "dice",    value: 1 }] }
+    ],
     dispositionSkills: ["persuader"],
     dispositionAbility: "will",
     actions: {
@@ -253,6 +278,11 @@ export const conflictTypes = {
   },
   convinceCrowd: {
     label: "TB2E.Conflict.Type.ConvinceCrowd",
+    conflictWeapons: [
+      { id: "elevatedPosition",   label: "TB2E.Weapon.ElevatedPosition",   bonuses: [{ action: "attack", type: "success", value: 1 }] },
+      { id: "playingToMood",      label: "TB2E.Weapon.PlayingToMood",      bonuses: [{ action: "feint",  type: "success", value: 1 }] },
+      { id: "uniformOfAuthority", label: "TB2E.Weapon.UniformOfAuthority", bonuses: [{ action: "defend", type: "dice",    value: 1 }] }
+    ],
     dispositionSkills: ["orator"],
     dispositionAbility: "will",
     actions: {
@@ -264,6 +294,11 @@ export const conflictTypes = {
   },
   trick: {
     label: "TB2E.Conflict.Type.Trick",
+    conflictWeapons: [
+      { id: "truth",       label: "TB2E.Weapon.Truth",       bonuses: [{ action: "attack",   type: "dice", value: 1 }] },
+      { id: "distraction", label: "TB2E.Weapon.Distraction", bonuses: [{ action: "maneuver", type: "dice", value: 1 }] },
+      { id: "prop",        label: "TB2E.Weapon.Prop",        bonuses: [{ action: "feint",    type: "dice", value: 1 }] }
+    ],
     dispositionSkills: ["manipulator"],
     dispositionAbility: "will",
     actions: {
@@ -297,6 +332,11 @@ export const conflictTypes = {
   },
   riddle: {
     label: "TB2E.Conflict.Type.Riddle",
+    conflictWeapons: [
+      { id: "answers",      label: "TB2E.Weapon.Answers",      bonuses: [{ action: "defend",   type: "success", value: 2 }] },
+      { id: "materialClue", label: "TB2E.Weapon.MaterialClue", bonuses: [{ action: "maneuver", type: "dice",    value: 2 }] },
+      { id: "riddle",       label: "TB2E.Weapon.Riddle",       bonuses: [{ action: "attack",   type: "dice",    value: 1 }, { action: "attack", type: "success", value: 1 }] }
+    ],
     dispositionSkills: ["loremaster", "scholar"],
     dispositionAbility: "will",
     actions: {
