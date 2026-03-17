@@ -41,7 +41,7 @@
           <span class="resolve-side-test">{{this.testLabel}}</span>
           {{!-- Per-side interaction --}}
           {{#if this.interactionOverridable}}
-          <select class="side-interaction-select interaction-{{this.sideInteraction}}"
+          <select class="side-interaction-select"
                   data-action-index="{{../index}}" data-group-id="{{this.groupId}}">
             <option value="versus" {{#if (eq this.sideInteraction "versus")}}selected{{/if}}>{{lookup @root.interactionLabels "versus"}}</option>
             <option value="independent" {{#if (eq this.sideInteraction "independent")}}selected{{/if}}>{{lookup @root.interactionLabels "independent"}}</option>
