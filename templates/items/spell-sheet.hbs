@@ -208,17 +208,13 @@
   {{!-- Special Rules --}}
   <fieldset class="gear-section">
     <legend>{{localize "TB2E.Spell.SpecialRules"}}</legend>
-    <div class="editor-wrapper">
-      {{editor system.specialRules target="system.specialRules" button=true editable=true}}
-    </div>
+    <textarea name="system.specialRules" rows="4">{{system.specialRules}}</textarea>
   </fieldset>
 
   {{!-- Effect/Description --}}
   <fieldset class="gear-section">
     <legend>{{localize "TB2E.Spell.Effect"}}</legend>
-    <div class="editor-wrapper">
-      {{editor system.description target="system.description" button=true editable=true}}
-    </div>
+    <textarea name="system.description" rows="4">{{system.description}}</textarea>
   </fieldset>
 
 </div>

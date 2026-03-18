@@ -57,7 +57,8 @@ export default class CharacterSheet extends HandlebarsApplicationMixin(ActorShee
       deleteInvocation: CharacterSheet.#onDeleteInvocation,
       performInvocation: CharacterSheet.#onPerformInvocation,
       addRelic: CharacterSheet.#onAddRelic,
-      deleteRelic: CharacterSheet.#onDeleteRelic
+      deleteRelic: CharacterSheet.#onDeleteRelic,
+      setLightLevel: CharacterSheet.#onSetLightLevel
     },
     form: { submitOnChange: true },
     window: { resizable: true }
@@ -264,6 +265,17 @@ export default class CharacterSheet extends HandlebarsApplicationMixin(ActorShee
       context.conflictLabel = game.i18n.localize(cfg?.label || "TB2E.Conflict.Title");
       context.dispositionPercent = Math.round((disp.value / disp.max) * 100);
     }
+
+    // Light level toggle.
+    const LIGHT_LEVELS = [
+      { level: "full", icon: "fa-sun",                label: game.i18n.localize("TB2E.Light.Full") },
+      { level: "dim",  icon: "fa-circle-half-stroke", label: game.i18n.localize("TB2E.Light.Dim")  },
+      { level: "dark", icon: "fa-moon",               label: game.i18n.localize("TB2E.Light.Dark") }
+    ];
+    context.lightLevels = LIGHT_LEVELS.map(l => ({
+      ...l,
+      active: sys.lightLevel === l.level
+    }));
   }
 
   /* -------------------------------------------- */
@@ -546,6 +558,7 @@ export default class CharacterSheet extends HandlebarsApplicationMixin(ActorShee
       isLight: item.type === "supply" && item.system.supplyType === "light",
       isFood: item.type === "supply" && item.system.supplyType === "food",
       lit: item.type === "supply" && item.system.supplyType === "light" && item.system.lit,
+      depleted: item.type === "supply" && item.system.supplyType === "light" && !item.system.lit && (item.system.turnsRemaining ?? 0) <= 0,
       nameSingular: item.system.nameSingular || "",
       turnsRemaining: item.system.turnsRemaining ?? 0,
       hasQuantity: (item.system.quantityMax ?? 1) > 1
@@ -957,7 +970,14 @@ export default class CharacterSheet extends HandlebarsApplicationMixin(ActorShee
         const item = this.document.items.get(itemId);
         if ( !item ) return;
         const value = Math.max(field === "quantityMax" ? 1 : 0, parseInt(input.value) || 0);
-        await item.update({ [`system.${field}`]: value });
+        const update = { [`system.${field}`]: value };
+        // Refueling a depleted light source: setting turns > 0 relights it in place.
+        const isDepletedLight = item.type === "supply" && item.system.supplyType === "light"
+          && !item.system.lit && (item.system.turnsRemaining ?? 0) <= 0;
+        if ( field === "turnsRemaining" && value > 0 && isDepletedLight ) {
+          update["system.lit"] = true;
+        }
+        await item.update(update);
       });
     }
 
@@ -1594,6 +1614,7 @@ export default class CharacterSheet extends HandlebarsApplicationMixin(ActorShee
     const itemId = target.dataset.itemId;
     const item = this.document.items.get(itemId);
     if ( !item || item.system.quantity <= 0 ) return;
+    if ( (item.system.turnsRemaining ?? 0) <= 0 ) return;
 
     // Decrement bundle quantity
     await item.update({ "system.quantity": item.system.quantity - 1 });
@@ -2022,6 +2043,11 @@ export default class CharacterSheet extends HandlebarsApplicationMixin(ActorShee
   /**
    * Reset trait uses for a new session after confirmation.
    */
+  static #onSetLightLevel(event, target) {
+    const level = target.dataset.level;
+    this.document.update({ "system.lightLevel": level });
+  }
+
   static async #onResetSession(event, target) {
     const confirmed = await foundry.applications.api.DialogV2.confirm({
       window: { title: game.i18n.localize("TB2E.Session.Reset") },

@@ -7,9 +7,15 @@ import { PendingVersusRegistry, resolveVersus, processVersusFinalize, handleTrai
 import { activatePostRollListeners, activateNatureCrisisListeners, activateWiseAdvancementListeners, processSynergyMailbox, processWiseAdvancementMailbox } from "./module/dice/post-roll.mjs";
 import { activateSpellSourceListeners } from "./module/dice/spell-casting.mjs";
 import { activateBurdenListeners } from "./module/dice/invocation-casting.mjs";
+import { activateGrindConditionListeners } from "./module/applications/grind-tracker.mjs";
 
 Hooks.once("init", function() {
-  globalThis.tb2e = game.tb2e = { dice, conflictPanel: null };
+  globalThis.tb2e = game.tb2e = { dice, conflictPanel: null, grindTracker: null };
+
+  // Register grind tracker world settings.
+  game.settings.register("tb2e", "grindPhase", { scope: "world", config: false, type: String, default: "adventure" });
+  game.settings.register("tb2e", "grindTurn", { scope: "world", config: false, type: Number, default: 1 });
+  game.settings.register("tb2e", "grindExtreme", { scope: "world", config: false, type: Boolean, default: false });
 
   CONFIG.TB2E = TB2E;
 
@@ -77,6 +83,9 @@ Hooks.once("init", function() {
     label: "TB2E.SheetInvocation"
   });
 
+  // Preload grind tracker template.
+  loadTemplates(["systems/tb2e/templates/grind-tracker.hbs"]);
+
   // Preload templates.
   loadTemplates([
     "systems/tb2e/templates/dice/roll-dialog.hbs",
@@ -96,7 +105,10 @@ Hooks.once("init", function() {
     "systems/tb2e/templates/chat/conflict-declaration.hbs",
     "systems/tb2e/templates/chat/conflict-action-reveal.hbs",
     "systems/tb2e/templates/chat/conflict-round-summary.hbs",
-    "systems/tb2e/templates/chat/conflict-compromise.hbs"
+    "systems/tb2e/templates/chat/conflict-compromise.hbs",
+    "systems/tb2e/templates/chat/torch-expired.hbs",
+    "systems/tb2e/templates/chat/grind-tick.hbs",
+    "systems/tb2e/templates/chat/grind-condition.hbs"
   ]);
 
   console.log("Torchbearer 2E | System initialized.");
@@ -120,6 +132,7 @@ Hooks.on("renderChatMessageHTML", (message, html) => {
   activateWiseAdvancementListeners(message, html);
   activateSpellSourceListeners(message, html);
   activateBurdenListeners(message, html);
+  activateGrindConditionListeners(message, html);
 
   // Versus tied card actions
   const vs = message.getFlag("tb2e", "versus");
@@ -158,6 +171,38 @@ Hooks.on("updateActor", (actor, changes, options, userId) => {
     });
   }
 
+  const pendingExtinguish = changes.flags?.tb2e?.pendingLightExtinguish;
+  if ( pendingExtinguish ) {
+    const covered = game.actors.filter(a =>
+      a.type === "character" &&
+      a.getFlag("tb2e", "grindCoveredBy") === actor.id
+    );
+    Promise.all(covered.map(a => a.update({ "system.lightLevel": "dark" }))).then(() => {
+      actor.unsetFlag("tb2e", "pendingLightExtinguish");
+    });
+  }
+
+});
+
+// When a light source goes out, set covered characters to darkness.
+Hooks.on("updateItem", async (item, changes) => {
+  if (
+    item.type !== "supply" ||
+    item.system?.supplyType !== "light" ||
+    changes.system?.lit !== false
+  ) return;
+  const holder = item.parent;
+  if ( !holder ) return;
+
+  if ( game.user.isGM ) {
+    const covered = game.actors.filter(a =>
+      a.type === "character" &&
+      a.getFlag("tb2e", "grindCoveredBy") === holder.id
+    );
+    for ( const a of covered ) await a.update({ "system.lightLevel": "dark" });
+  } else if ( holder.isOwner ) {
+    await holder.setFlag("tb2e", "pendingLightExtinguish", true);
+  }
 });
 
 // Auto-open ConflictPanel when conflict transitions to disposition phase.
@@ -167,6 +212,24 @@ Hooks.on("updateCombat", (combat, changes) => {
     const panel = applications.conflict.ConflictPanel.getInstance();
     if ( !panel.rendered ) panel.render({ force: true });
   }
+});
+
+// Add Grind Tracker button to the tokens scene controls toolbar (GM only).
+Hooks.on("getSceneControlButtons", (controls) => {
+  const tokens = controls["tokens"];
+  if ( !tokens ) return;
+  tokens.tools["grind-tracker"] = {
+    name: "grind-tracker",
+    title: "TB2E.GrindTracker.Title",
+    icon: "fa-solid fa-hourglass-half",
+    button: true,
+    visible: game.user.isGM,
+    onChange: () => {
+      const tracker = applications.GrindTracker.getInstance();
+      if ( tracker.rendered ) tracker.close();
+      else tracker.render({ force: true });
+    }
+  };
 });
 
 // Auto-assign combatants to the correct team group when added to a conflict.

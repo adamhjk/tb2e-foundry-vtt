@@ -1,0 +1,64 @@
+/* ============================================ */
+/*  Grind Event Chat Cards                      */
+/* ============================================ */
+
+/* Red accent variant (parallel to card-accent--amber/green) */
+.tb2e-chat-card.card-accent--red {
+  border-color: var(--tb-red);
+  background: linear-gradient(var(--tb-red-bg), var(--tb-red-bg)), var(--tb-bg-raised);
+}
+
+.tb2e-chat-card.card-accent--red .card-header {
+  background: linear-gradient(var(--tb-red-glow), var(--tb-red-glow)), var(--tb-bg-mid);
+  border-bottom-color: var(--tb-red-glow-bright);
+}
+
+.tb2e-chat-card.card-accent--red .card-portrait {
+  border-color: var(--tb-red);
+}
+
+.tb2e-chat-card.card-accent--red .card-label {
+  color: var(--tb-red-bright);
+}
+
+/* Dark/danger banner (parallel to banner-fail/banner-pass etc.) */
+.tb2e-chat-card .banner-dark {
+  background: linear-gradient(135deg, var(--tb-banner-dark-from), var(--tb-banner-dark-to));
+  color: var(--tb-banner-dark-text);
+  border-top: 2px solid var(--tb-banner-dark-border);
+}
+
+/* -------------------------------------------- */
+/*  Grind Tick Card                             */
+/* -------------------------------------------- */
+
+.grind-tick-card .grind-tick-body {
+  text-align: center;
+  padding: 0.75rem 1rem;
+  font-style: italic;
+  color: var(--tb-text-dim);
+}
+
+/* -------------------------------------------- */
+/*  Torch Expired Card                          */
+/* -------------------------------------------- */
+
+.grind-torch-card .grind-torch-affected {
+  margin-top: 0.25rem;
+  color: var(--tb-red-bright);
+  font-style: italic;
+}
+
+/* -------------------------------------------- */
+/*  Grind Condition Card                        */
+/* -------------------------------------------- */
+
+.grind-condition-card .grind-condition-name {
+  margin-top: 0.5rem;
+  font-family: var(--tb-font-heading);
+  font-size: 1.1em;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--tb-amber-bright);
+}

@@ -12,7 +12,7 @@ export default class ArmorData extends foundry.abstract.TypeDataModel {
         choices: ["leather", "chain", "plate", "helmet", "shield"]
       }),
       absorbs: new fields.NumberField({ initial: 1, integer: true, min: 0 }),
-      specialRules: new fields.HTMLField()
+      specialRules: new fields.StringField()
     };
   }
 }

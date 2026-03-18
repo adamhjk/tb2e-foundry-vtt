@@ -1,0 +1,164 @@
+<div class="grind-ledger">
+
+  {{!-- =============================== --}}
+  {{!-- Left Column: Controls           --}}
+  {{!-- =============================== --}}
+  <div class="ledger-col ledger-controls-col">
+
+    {{!-- Phase Selector --}}
+    <button class="phase-btn" data-action="setPhase" title="Click to cycle phase">
+      <span class="phase-btn-label">{{phaseLabel}}</span>
+      <i class="fa-solid fa-rotate"></i>
+    </button>
+
+    {{!-- Extreme Toggle --}}
+    <label class="extreme-label">
+      <input type="checkbox" class="extreme-checkbox"{{#if extreme}} checked{{/if}} />
+      Extreme
+    </label>
+
+    {{!-- Turn Counter --}}
+    {{#if isAdventurePhase}}
+      <div class="turn-block">
+        <div class="turn-heading">Turn</div>
+        <input class="turn-number-input{{#if isGrindTurn}} grind{{/if}}"
+               type="number" min="1" value="{{turn}}" />
+        <div class="turn-pips">
+          {{#each pips}}
+            <span class="turn-pip{{#if filled}} filled{{/if}}"></span>
+          {{/each}}
+        </div>
+        {{#if isGrindTurn}}
+          <div class="grind-warning">Grind!</div>
+        {{/if}}
+      </div>
+
+      {{!-- Advance Button --}}
+      <button class="advance-btn" data-action="advanceTurn">
+        <i class="fa-solid fa-forward-step"></i>
+        Advance
+      </button>
+    {{else}}
+      <div class="phase-name-large">{{phaseLabel}}</div>
+    {{/if}}
+
+  </div>
+
+  {{!-- =============================== --}}
+  {{!-- Character Columns               --}}
+  {{!-- =============================== --}}
+  {{#each characters}}
+  <div class="ledger-col ledger-char-col">
+
+    {{!-- Header --}}
+    <div class="char-header">
+      <div class="char-name">{{name}}</div>
+      <div class="char-identity">
+        {{stock}}{{#if class}} · {{class}}{{/if}}
+      </div>
+    </div>
+
+    {{!-- Light Sources --}}
+    <div class="char-light">
+      {{#if isHolder}}
+        <div class="light-holder-tag">◆ holds</div>
+        {{#each litSources}}
+          <div class="light-source-row">
+            <button class="light-flame-btn{{#if low}} low{{/if}}"
+                    data-action="toggleLight"
+                    data-actor-id="{{../id}}"
+                    data-item-id="{{id}}"
+                    title="Toggle light">
+              <i class="fa-solid fa-fire"></i>
+            </button>
+            <span class="light-source-name">{{name}}</span>
+            <span class="light-turns{{#if low}} low{{/if}}">{{turnsRemaining}}</span>
+          </div>
+        {{/each}}
+      {{else if coveredByName}}
+        <div class="light-covered-row">
+          <button class="light-level-cycle-btn {{lightLevel}}"
+                  data-action="setLightLevel"
+                  data-actor-id="{{id}}"
+                  title="Click to cycle light level">
+            <i class="fa-solid {{lightLevelIcon}}"></i>
+          </button>
+          {{#if coveredByLight}}
+            <span class="light-source-name">{{coveredByLight.name}}</span>
+            <span class="light-turns{{#if coveredByLight.low}} low{{/if}}">{{coveredByLight.turnsRemaining}}</span>
+            <span class="covered-via">(via {{coveredByName}})</span>
+          {{else}}
+            <span class="light-warn"><i class="fa-solid fa-triangle-exclamation"></i></span>
+            <span class="covered-via">(via {{coveredByName}})</span>
+          {{/if}}
+        </div>
+      {{else}}
+        <div class="light-none-row">
+          <i class="fa-solid fa-triangle-exclamation"></i> No light
+        </div>
+      {{/if}}
+
+      {{!-- Unlit sources the GM can toggle on --}}
+      {{#each unlitSources}}
+        <div class="light-source-row unlit">
+          <button class="light-flame-btn unlit"
+                  data-action="toggleLight"
+                  data-actor-id="{{../id}}"
+                  data-item-id="{{id}}"
+                  title="Light this source">
+            <i class="fa-regular fa-fire"></i>
+          </button>
+          <span class="light-source-name">{{name}}</span>
+          <span class="light-turns">{{turnsRemaining}}</span>
+        </div>
+      {{/each}}
+
+      {{!-- Depleted sources — cannot be re-lit until refueled --}}
+      {{#each depletedSources}}
+        <div class="light-source-row depleted">
+          <span class="light-flame-icon depleted"><i class="fa-solid fa-smoke"></i></span>
+          <span class="light-source-name depleted">{{name}}</span>
+          <span class="light-turns depleted">0t</span>
+        </div>
+      {{/each}}
+    </div>
+
+    {{!-- Covered-By Dropdown --}}
+    <div class="char-covered-by">
+      <select class="covered-by-select" data-covered-by-actor="{{id}}">
+        {{#each coveredByOptions}}
+          <option value="{{id}}"{{#if selected}} selected{{/if}}>{{name}}</option>
+        {{/each}}
+      </select>
+    </div>
+
+    {{!-- Containers --}}
+    {{#if containers.length}}
+    <div class="char-containers">
+      {{#each containers}}
+        <div class="container-item">
+          <span class="container-type-badge">{{type}}</span>
+          <span class="container-slots">×{{slots}}</span>
+        </div>
+      {{/each}}
+    </div>
+    {{/if}}
+
+    {{!-- Conditions --}}
+    <div class="char-conditions">
+      {{conditionsDisplay}}
+    </div>
+
+    {{!-- Next Grind Condition --}}
+    <div class="next-grind{{#if isGrindTurn}} imminent{{/if}}">
+      {{#if nextCondLabel}}
+        ↓ {{nextCondLabel}}
+      {{else}}
+        ✝ Dead
+      {{/if}}
+    </div>
+
+  </div>
+  {{/each}}
+
+</div>

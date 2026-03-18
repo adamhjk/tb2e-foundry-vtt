@@ -121,13 +121,13 @@
   {{!-- Special Rules --}}
   <fieldset>
     <legend><i class="fa-solid fa-scroll"></i> {{localize "TB2E.Monster.SpecialRules"}}</legend>
-    {{editor system.specialRules target="system.specialRules" button=true editable=true}}
+    <textarea name="system.specialRules" rows="4">{{system.specialRules}}</textarea>
   </fieldset>
 
   {{!-- Description --}}
   <fieldset>
     <legend><i class="fa-solid fa-book-open"></i> {{localize "TB2E.Monster.Description"}}</legend>
-    {{editor system.description target="system.description" button=true editable=true}}
+    <textarea name="system.description" rows="4">{{system.description}}</textarea>
   </fieldset>
 
 </section>

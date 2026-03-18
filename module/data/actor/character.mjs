@@ -31,7 +31,7 @@ export default class CharacterData extends foundry.abstract.TypeDataModel {
       instinct: new fields.StringField(),
 
       // ---- Biography ----
-      bio: new fields.HTMLField(),
+      bio: new fields.StringField(),
 
       // ---- Fate & Persona ----
       fate: new fields.SchemaField({
@@ -146,6 +146,12 @@ export default class CharacterData extends foundry.abstract.TypeDataModel {
         team: new fields.StringField({ initial: "party", choices: ["party", "gm"] }),
         weapon: new fields.StringField({ blank: true }),
         weaponId: new fields.StringField({ blank: true })
+      }),
+
+      // ---- Light Level ----
+      lightLevel: new fields.StringField({
+        initial: "full",
+        choices: ["full", "dim", "dark"]
       }),
 
       // ---- Allies & Enemies ----

@@ -156,7 +156,7 @@
   {{!-- Description --}}
   <fieldset>
     <legend><i class="fa-solid fa-book-open"></i> {{localize "TB2E.NPC.Description"}}</legend>
-    {{editor system.description target="system.description" button=true editable=true}}
+    <textarea name="system.description" rows="4">{{system.description}}</textarea>
   </fieldset>
 
 </section>

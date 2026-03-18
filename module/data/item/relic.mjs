@@ -11,7 +11,7 @@ export default class RelicData extends foundry.abstract.TypeDataModel {
       linkedInvocations: new fields.ArrayField(new fields.StringField()),
       linkedCircle: new fields.NumberField({ nullable: true, initial: null, integer: true, min: 1, max: 4 }),
       immortal: new fields.StringField(),
-      lore: new fields.HTMLField()
+      lore: new fields.StringField()
     };
   }
 }

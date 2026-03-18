@@ -755,5 +755,24 @@
   "TB2E.Relic.HasRelic": "You have {relic}. Use it for this invocation?",
   "TB2E.Relic.NoRelic": "No relic found for this invocation. Without a relic: +1 Ob, +1 burden, +1 invocation time.",
   "TB2E.Relic.AddLinkedInvocation": "Add Invocation",
-  "TB2E.Relic.Lore": "Lore"
+  "TB2E.Relic.Lore": "Lore",
+
+  "TB2E.GrindTracker.Title": "Grind Tracker",
+  "TB2E.GrindTracker.GrindTicks": "The Grind Ticks",
+  "TB2E.GrindTracker.LightExpired": "{actor}'s {item} has gone out!",
+  "TB2E.GrindTracker.Phase.adventure": "Adventure",
+  "TB2E.GrindTracker.Phase.camp": "Camp",
+  "TB2E.GrindTracker.Phase.town": "Town",
+  "TB2E.GrindTracker.LightExpiredTitle": "Light Extinguished",
+  "TB2E.GrindTracker.LightExpiredBody": "{item} has burned out.",
+  "TB2E.GrindTracker.NowInDarkness": "Now in darkness: {names}",
+  "TB2E.GrindTracker.GrindTicksBody": "Turn {turn}: the darkness presses in. All adventurers suffer the next condition in the sequence.",
+  "TB2E.GrindTracker.ConditionLabel": "The Grind",
+  "TB2E.GrindTracker.ConditionBody": "The grind ticks — {name} suffers the next condition.",
+  "TB2E.GrindTracker.ApplyCondition": "Apply {condition}",
+  "TB2E.GrindTracker.ConditionApplied": "Applied",
+
+  "TB2E.Light.Full": "Full Light",
+  "TB2E.Light.Dim": "Dim Light",
+  "TB2E.Light.Dark": "Darkness"
 }

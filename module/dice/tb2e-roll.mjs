@@ -1165,6 +1165,18 @@ export async function rollTest({ actor, type, key, testContext = {} }) {
     }));
   }
 
+  // Light level penalty: +1 Ob for dim or dark, all tests except riddling
+  const lightLevel = actor.system.lightLevel;
+  if ( (lightLevel === "dim" || lightLevel === "dark") && key !== "riddling" ) {
+    contextModifiers.push(createModifier({
+      label: game.i18n.localize(lightLevel === "dim" ? "TB2E.Light.Dim" : "TB2E.Light.Dark"),
+      type: "obstacle", value: 1, source: "context",
+      icon: lightLevel === "dim" ? "fa-solid fa-circle-half-stroke" : "fa-solid fa-moon",
+      color: lightLevel === "dim" ? "--tb-amber-bright" : "--tb-blue-dim",
+      timing: "pre"
+    }));
+  }
+
   // Show dialog
   const config = await _showRollDialog({
     label,

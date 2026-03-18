@@ -52,8 +52,14 @@ export default class NPCData extends foundry.abstract.TypeDataModel {
         weapon: new fields.StringField({ blank: true })
       }),
 
+      // ---- Light Level ----
+      lightLevel: new fields.StringField({
+        initial: "full",
+        choices: ["full", "dim", "dark"]
+      }),
+
       // ---- Description (GM notes) ----
-      description: new fields.HTMLField()
+      description: new fields.StringField()
     };
   }
 }

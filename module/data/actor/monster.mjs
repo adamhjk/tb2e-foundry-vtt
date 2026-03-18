@@ -12,7 +12,7 @@ export default class MonsterData extends foundry.abstract.TypeDataModel {
       type: new fields.StringField(),
       instinct: new fields.StringField(),
       armor: new fields.StringField(),
-      specialRules: new fields.HTMLField(),
+      specialRules: new fields.StringField(),
       isBoss: new fields.BooleanField({ initial: false }),
 
       // ---- Conditions (no Fresh for monsters) ----
@@ -52,7 +52,7 @@ export default class MonsterData extends foundry.abstract.TypeDataModel {
       }),
 
       // ---- Description (GM notes) ----
-      description: new fields.HTMLField()
+      description: new fields.StringField()
     };
   }
 

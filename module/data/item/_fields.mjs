@@ -17,7 +17,7 @@ export function inventoryFields(fields) {
   }
 
   return {
-    description: new fields.HTMLField(),
+    description: new fields.StringField(),
     slot: new fields.StringField({ initial: "" }),
     slotIndex: new fields.NumberField({ initial: 0, integer: true, min: 0 }),
     slotOptions: new fields.SchemaField(slotOptionFields),

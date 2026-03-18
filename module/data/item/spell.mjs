@@ -9,7 +9,7 @@ export default class SpellData extends foundry.abstract.TypeDataModel {
     });
 
     return {
-      description: new fields.HTMLField(),
+      description: new fields.StringField(),
       circle: new fields.NumberField({ initial: 1, integer: true, min: 1, max: 5 }),
 
       // Casting
@@ -56,7 +56,7 @@ export default class SpellData extends foundry.abstract.TypeDataModel {
         name: new fields.StringField(),
         description: new fields.StringField()
       })),
-      specialRules: new fields.HTMLField(),
+      specialRules: new fields.StringField(),
 
       // Per-character tracking (state on the owned item)
       library: new fields.BooleanField({ initial: false }),

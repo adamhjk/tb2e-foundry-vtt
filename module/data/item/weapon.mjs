@@ -24,7 +24,7 @@ export default class WeaponData extends foundry.abstract.TypeDataModel {
         value: new fields.NumberField({ initial: 1, integer: true }),
         condition: new fields.StringField()
       })),
-      specialRules: new fields.HTMLField()
+      specialRules: new fields.StringField()
     };
   }
 }

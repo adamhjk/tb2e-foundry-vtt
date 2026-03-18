@@ -4,7 +4,7 @@ export default class TraitData extends foundry.abstract.TypeDataModel {
     const fields = foundry.data.fields;
 
     return {
-      description: new fields.HTMLField(),
+      description: new fields.StringField(),
       level: new fields.NumberField({ initial: 1, integer: true, min: 1, max: 3 }),
       isClass: new fields.BooleanField({ initial: false }),
       beneficial: new fields.NumberField({ initial: 0, integer: true, min: 0 }),

@@ -144,6 +144,44 @@
   letter-spacing: 0.04em;
 }
 
+/* Light Level Toggle */
+.tb2e.sheet .header-light-level {
+  display: flex;
+  align-items: center;
+  gap: 0.1rem;
+  margin-left: 0.4rem;
+}
+
+.tb2e.sheet .light-level-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  border: 1px solid transparent;
+  border-radius: 3px;
+  background: none;
+  cursor: pointer;
+  color: var(--tb-text-faint);
+  font-size: 0.65rem;
+  padding: 0;
+  transition: color 0.15s, border-color 0.15s;
+
+  &:hover {
+    color: var(--tb-text-dim);
+    border-color: var(--tb-border-light);
+  }
+
+  &.active {
+    border-color: var(--tb-border);
+    background: var(--tb-bg-raised);
+
+    &[data-level="full"] { color: var(--tb-amber); }
+    &[data-level="dim"]  { color: var(--tb-amber-bright); }
+    &[data-level="dark"] { color: var(--tb-blue-dim); }
+  }
+}
+
 /* Session Reset Button */
 .tb2e.sheet .session-reset-btn {
   all: unset;

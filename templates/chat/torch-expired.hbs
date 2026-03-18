@@ -1,0 +1,19 @@
+<div class="tb2e-chat-card card-accent--red grind-torch-card">
+  <div class="card-header">
+    <img class="card-portrait" src="{{actorImg}}" alt="{{actorName}}">
+    <div class="card-info">
+      <span class="card-name">{{actorName}}</span>
+      <span class="card-label">{{label}}</span>
+    </div>
+  </div>
+  <div class="card-body">
+    <p>{{body}}</p>
+    {{#if affectedLine}}
+    <p class="grind-torch-affected"><i class="fa-solid fa-moon"></i> {{affectedLine}}</p>
+    {{/if}}
+  </div>
+  <div class="card-banner banner-dark">
+    <i class="fa-solid fa-moon"></i>
+    <span>{{localize "TB2E.Light.Dark"}}</span>
+  </div>
+</div>

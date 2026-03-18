@@ -18,6 +18,17 @@
               title="{{localize 'TB2E.Session.ResetTooltip'}}">
         <i class="fa-solid fa-rotate"></i> {{localize "TB2E.Session.Reset"}}
       </button>
+      <div class="header-light-level">
+        {{#each lightLevels}}
+        <button type="button"
+                class="light-level-btn{{#if active}} active{{/if}}"
+                data-action="setLightLevel"
+                data-level="{{level}}"
+                title="{{label}}">
+          <i class="fa-solid {{icon}}"></i>
+        </button>
+        {{/each}}
+      </div>
     </div>
     <input type="text" name="name" value="{{actor.name}}"
            placeholder="{{localize 'TB2E.Fields.Name'}}" class="character-name">

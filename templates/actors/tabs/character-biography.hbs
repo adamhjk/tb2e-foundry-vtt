@@ -3,7 +3,7 @@
   {{!-- Biography --}}
   <fieldset class="bio-section">
     <legend><i class="fa-solid fa-book-open"></i> {{localize "TB2E.Bio"}}</legend>
-    {{editor system.bio target="system.bio" button=true editable=true}}
+    <textarea name="system.bio" rows="6">{{system.bio}}</textarea>
   </fieldset>
 
   {{!-- Allies & Enemies --}}

@@ -65,7 +65,8 @@
 .tb2e-conflict-body,
 .tb2e-conflict-footer,
 .character-conflict-panel,
-.conflict-panel {
+.conflict-panel,
+.grind-tracker {
   /* Surfaces — snow and ice */
   --tb-bg-darkest: #dfe4eb;
   --tb-bg-dark: #e6eaf0;
@@ -115,6 +116,13 @@
   --tb-red: #dc2626;
   --tb-red-dim: #b91c1c;
   --tb-red-bright: #ef4444;
+  --tb-red-glow: rgba(220, 38, 38, 0.1);
+  --tb-red-glow-bright: rgba(220, 38, 38, 0.18);
+  --tb-red-bg: rgba(220, 38, 38, 0.04);
+  --tb-banner-dark-from: #fef2f2;
+  --tb-banner-dark-to: #fee2e2;
+  --tb-banner-dark-text: #991b1b;
+  --tb-banner-dark-border: #dc2626;
   /* Banner — pass */
   --tb-banner-pass-from: #dbeafe;
   --tb-banner-pass-to: #bfdbfe;
@@ -160,7 +168,8 @@
 body.theme-light :is(
   .tb2e, .tb2e-chat-card, .tb2e-conflict-header, .tb2e-conflict-body,
   .tb2e-conflict-footer,
-  .character-conflict-panel, .conflict-panel, .tb2e.gear-sheet, .tb2e.spell-sheet, .tb2e.invocation-sheet) {
+  .character-conflict-panel, .conflict-panel, .tb2e.gear-sheet, .tb2e.spell-sheet, .tb2e.invocation-sheet,
+  .grind-tracker) {
   /* Surfaces — snow and ice */
   --tb-bg-darkest: #dfe4eb;
   --tb-bg-dark: #e6eaf0;
@@ -210,6 +219,13 @@ body.theme-light :is(
   --tb-red: #dc2626;
   --tb-red-dim: #b91c1c;
   --tb-red-bright: #ef4444;
+  --tb-red-glow: rgba(220, 38, 38, 0.1);
+  --tb-red-glow-bright: rgba(220, 38, 38, 0.18);
+  --tb-red-bg: rgba(220, 38, 38, 0.04);
+  --tb-banner-dark-from: #fef2f2;
+  --tb-banner-dark-to: #fee2e2;
+  --tb-banner-dark-text: #991b1b;
+  --tb-banner-dark-border: #dc2626;
   /* Banner — pass */
   --tb-banner-pass-from: #dbeafe;
   --tb-banner-pass-to: #bfdbfe;
@@ -252,7 +268,8 @@ body.theme-light :is(
 body.theme-dark :is(
   .tb2e, .tb2e-chat-card, .tb2e-conflict-header, .tb2e-conflict-body,
   .tb2e-conflict-footer,
-  .character-conflict-panel, .conflict-panel, .tb2e.gear-sheet, .tb2e.spell-sheet, .tb2e.invocation-sheet) {
+  .character-conflict-panel, .conflict-panel, .tb2e.gear-sheet, .tb2e.spell-sheet, .tb2e.invocation-sheet,
+  .grind-tracker) {
   --tb-bg-darkest: #0c1220;
   --tb-bg-dark: #0f172a;
   --tb-bg-mid: #1e293b;
@@ -293,6 +310,13 @@ body.theme-dark :is(
   --tb-red: #ef4444;
   --tb-red-dim: #dc2626;
   --tb-red-bright: #f87171;
+  --tb-red-glow: rgba(239, 68, 68, 0.18);
+  --tb-red-glow-bright: rgba(239, 68, 68, 0.28);
+  --tb-red-bg: rgba(239, 68, 68, 0.08);
+  --tb-banner-dark-from: rgba(239, 68, 68, 0.22);
+  --tb-banner-dark-to: rgba(239, 68, 68, 0.12);
+  --tb-banner-dark-text: #f87171;
+  --tb-banner-dark-border: #ef4444;
   --tb-banner-pass-from: rgba(96, 165, 250, 0.2);
   --tb-banner-pass-to: rgba(96, 165, 250, 0.12);
   --tb-banner-pass-text: #93c5fd;
@@ -331,7 +355,8 @@ body.theme-dark :is(
 .themed.theme-light :is(
   .tb2e-chat-card, .tb2e-conflict-header, .tb2e-conflict-body,
   .tb2e-conflict-footer,
-  .character-conflict-panel, .conflict-panel, .tb2e.gear-sheet, .tb2e.spell-sheet, .tb2e.invocation-sheet) {
+  .character-conflict-panel, .conflict-panel, .tb2e.gear-sheet, .tb2e.spell-sheet, .tb2e.invocation-sheet,
+  .grind-tracker) {
   /* Surfaces — snow and ice */
   --tb-bg-darkest: #dfe4eb;
   --tb-bg-dark: #e6eaf0;
@@ -381,6 +406,13 @@ body.theme-dark :is(
   --tb-red: #dc2626;
   --tb-red-dim: #b91c1c;
   --tb-red-bright: #ef4444;
+  --tb-red-glow: rgba(220, 38, 38, 0.1);
+  --tb-red-glow-bright: rgba(220, 38, 38, 0.18);
+  --tb-red-bg: rgba(220, 38, 38, 0.04);
+  --tb-banner-dark-from: #fef2f2;
+  --tb-banner-dark-to: #fee2e2;
+  --tb-banner-dark-text: #991b1b;
+  --tb-banner-dark-border: #dc2626;
   /* Banner — pass */
   --tb-banner-pass-from: #dbeafe;
   --tb-banner-pass-to: #bfdbfe;
@@ -424,7 +456,8 @@ body.theme-dark :is(
 .themed.theme-dark :is(
   .tb2e-chat-card, .tb2e-conflict-header, .tb2e-conflict-body,
   .tb2e-conflict-footer,
-  .character-conflict-panel, .conflict-panel, .tb2e.gear-sheet, .tb2e.spell-sheet, .tb2e.invocation-sheet) {
+  .character-conflict-panel, .conflict-panel, .tb2e.gear-sheet, .tb2e.spell-sheet, .tb2e.invocation-sheet,
+  .grind-tracker) {
   --tb-bg-darkest: #0c1220;
   --tb-bg-dark: #0f172a;
   --tb-bg-mid: #1e293b;
@@ -465,6 +498,13 @@ body.theme-dark :is(
   --tb-red: #ef4444;
   --tb-red-dim: #dc2626;
   --tb-red-bright: #f87171;
+  --tb-red-glow: rgba(239, 68, 68, 0.18);
+  --tb-red-glow-bright: rgba(239, 68, 68, 0.28);
+  --tb-red-bg: rgba(239, 68, 68, 0.08);
+  --tb-banner-dark-from: rgba(239, 68, 68, 0.22);
+  --tb-banner-dark-to: rgba(239, 68, 68, 0.12);
+  --tb-banner-dark-text: #f87171;
+  --tb-banner-dark-border: #ef4444;
   --tb-banner-pass-from: rgba(96, 165, 250, 0.2);
   --tb-banner-pass-to: rgba(96, 165, 250, 0.12);
   --tb-banner-pass-text: #93c5fd;
@@ -768,6 +808,45 @@ body.theme-dark :is(
   color: var(--tb-text-faint);
   text-transform: uppercase;
   letter-spacing: 0.04em;
+}
+/* Light Level Toggle */
+.tb2e.sheet .header-light-level {
+  display: flex;
+  align-items: center;
+  gap: 0.1rem;
+  margin-left: 0.4rem;
+}
+.tb2e.sheet .light-level-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  border: 1px solid transparent;
+  border-radius: 3px;
+  background: none;
+  cursor: pointer;
+  color: var(--tb-text-faint);
+  font-size: 0.65rem;
+  padding: 0;
+  transition: color 0.15s, border-color 0.15s;
+}
+.tb2e.sheet .light-level-btn:hover {
+  color: var(--tb-text-dim);
+  border-color: var(--tb-border-light);
+}
+.tb2e.sheet .light-level-btn.active {
+  border-color: var(--tb-border);
+  background: var(--tb-bg-raised);
+}
+.tb2e.sheet .light-level-btn.active[data-level="full"] {
+  color: var(--tb-amber);
+}
+.tb2e.sheet .light-level-btn.active[data-level="dim"] {
+  color: var(--tb-amber-bright);
+}
+.tb2e.sheet .light-level-btn.active[data-level="dark"] {
+  color: var(--tb-blue-dim);
 }
 /* Session Reset Button */
 .tb2e.sheet .session-reset-btn {
@@ -1707,6 +1786,17 @@ body.theme-dark .tb2e.sheet .torchbearer-logo,
   font-style: italic;
   flex-shrink: 0;
   margin-left: auto;
+}
+/* Depleted Light Source State */
+.tb2e.sheet .slot-depleted-icon {
+  width: 1.2rem;
+  height: 1.2rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--tb-text-faint);
+  font-size: 0.65rem;
+  flex-shrink: 0;
 }
 /* Placement Buttons */
 .tb2e.sheet .slot-placements {
@@ -4379,6 +4469,59 @@ body.theme-dark .tb2e.sheet .torchbearer-logo,
   display: flex;
   align-items: center;
   gap: 0.3rem;
+}
+/* ============================================ */
+/*  Grind Event Chat Cards                      */
+/* ============================================ */
+/* Red accent variant (parallel to card-accent--amber/green) */
+.tb2e-chat-card.card-accent--red {
+  border-color: var(--tb-red);
+  background: linear-gradient(var(--tb-red-bg), var(--tb-red-bg)), var(--tb-bg-raised);
+}
+.tb2e-chat-card.card-accent--red .card-header {
+  background: linear-gradient(var(--tb-red-glow), var(--tb-red-glow)), var(--tb-bg-mid);
+  border-bottom-color: var(--tb-red-glow-bright);
+}
+.tb2e-chat-card.card-accent--red .card-portrait {
+  border-color: var(--tb-red);
+}
+.tb2e-chat-card.card-accent--red .card-label {
+  color: var(--tb-red-bright);
+}
+/* Dark/danger banner (parallel to banner-fail/banner-pass etc.) */
+.tb2e-chat-card .banner-dark {
+  background: linear-gradient(135deg, var(--tb-banner-dark-from), var(--tb-banner-dark-to));
+  color: var(--tb-banner-dark-text);
+  border-top: 2px solid var(--tb-banner-dark-border);
+}
+/* -------------------------------------------- */
+/*  Grind Tick Card                             */
+/* -------------------------------------------- */
+.grind-tick-card .grind-tick-body {
+  text-align: center;
+  padding: 0.75rem 1rem;
+  font-style: italic;
+  color: var(--tb-text-dim);
+}
+/* -------------------------------------------- */
+/*  Torch Expired Card                          */
+/* -------------------------------------------- */
+.grind-torch-card .grind-torch-affected {
+  margin-top: 0.25rem;
+  color: var(--tb-red-bright);
+  font-style: italic;
+}
+/* -------------------------------------------- */
+/*  Grind Condition Card                        */
+/* -------------------------------------------- */
+.grind-condition-card .grind-condition-name {
+  margin-top: 0.5rem;
+  font-family: var(--tb-font-heading);
+  font-size: 1.1em;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--tb-amber-bright);
 }
 /* ============================================ */
 /*  Conflict Tracker                            */
@@ -7448,5 +7591,428 @@ body.theme-dark .tb2e.sheet .torchbearer-logo,
 .tb2e.sheet.npc .btn-add:hover {
   color: var(--tb-blue);
   border-color: var(--tb-blue);
+}
+/* ============================================ */
+/*  Grind Tracker — The Ledger                  */
+/* ============================================ */
+/* Remove default window padding so the ledger fills edge-to-edge */
+.grind-tracker .window-content {
+  padding: 0;
+  overflow: hidden;
+}
+/* -------------------------------------------- */
+/*  Ledger Layout                               */
+/* -------------------------------------------- */
+.grind-ledger {
+  display: flex;
+  flex-direction: row;
+  min-height: 180px;
+  background: var(--tb-bg-mid);
+}
+/* Shared column base */
+.grind-ledger .ledger-col {
+  border-right: 1px solid var(--tb-border);
+  padding: 0.5rem 0.6rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+.grind-ledger .ledger-col:last-child {
+  border-right: none;
+}
+/* -------------------------------------------- */
+/*  Controls Column (phase + extreme + turn + advance) */
+/* -------------------------------------------- */
+.grind-ledger .ledger-controls-col {
+  min-width: 120px;
+  width: 130px;
+  flex-shrink: 0;
+  background: var(--tb-bg-raised);
+  justify-content: flex-start;
+  align-items: stretch;
+}
+/* Turn block — centered within controls column */
+.grind-ledger .turn-block {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.3rem 0;
+  border-top: 1px solid var(--tb-border);
+  border-bottom: 1px solid var(--tb-border);
+  margin: 0.15rem 0;
+}
+.grind-ledger .turn-heading {
+  font-family: var(--tb-font-heading);
+  font-size: 0.62rem;
+  font-weight: bold;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--tb-text-dim);
+}
+.grind-ledger .turn-number-input {
+  font-family: var(--tb-font-heading);
+  font-size: 2.6rem;
+  font-weight: bold;
+  color: var(--tb-text-body);
+  text-align: center;
+  width: 72px;
+  border: none;
+  background: transparent;
+  padding: 0;
+  line-height: 1;
+  /* Hide number spinner */
+  -moz-appearance: textfield;
+}
+.grind-ledger .turn-number-input::-webkit-outer-spin-button,
+.grind-ledger .turn-number-input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+.grind-ledger .turn-number-input:focus {
+  outline: 1px solid var(--tb-border);
+  border-radius: 4px;
+}
+.grind-ledger .turn-number-input.grind {
+  color: var(--tb-red);
+}
+.grind-ledger .turn-pips {
+  display: flex;
+  gap: 5px;
+  align-items: center;
+  justify-content: center;
+}
+.grind-ledger .turn-pip {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: var(--tb-border);
+}
+.grind-ledger .turn-pip.filled {
+  background: var(--tb-blue);
+}
+.grind-ledger .grind-warning {
+  font-family: var(--tb-font-heading);
+  font-size: 0.75rem;
+  font-weight: bold;
+  color: var(--tb-red);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  animation: grind-tracker-pulse 0.9s ease-in-out infinite alternate;
+}
+@keyframes grind-tracker-pulse {
+  from {
+    opacity: 0.6;
+  }
+  to {
+    opacity: 1;
+  }
+}
+.grind-ledger .phase-name-large {
+  font-family: var(--tb-font-heading);
+  font-size: 1.1rem;
+  font-weight: bold;
+  color: var(--tb-text-body);
+  text-transform: uppercase;
+  text-align: center;
+  letter-spacing: 0.06em;
+}
+.grind-ledger .phase-btn {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.3rem;
+  width: 100%;
+  padding: 0.3rem 0.5rem;
+  border: 1px solid var(--tb-border);
+  border-radius: 4px;
+  background: var(--tb-bg-mid);
+  color: var(--tb-text-body);
+  font-family: var(--tb-font-heading);
+  font-size: 0.8rem;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  cursor: pointer;
+}
+.grind-ledger .phase-btn:hover {
+  background: var(--tb-bg-dark);
+  border-color: var(--tb-blue);
+  color: var(--tb-blue);
+}
+.grind-ledger .phase-btn i {
+  font-size: 0.65rem;
+  color: var(--tb-text-faint);
+}
+.grind-ledger .extreme-label {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-family: var(--tb-font-body);
+  font-size: 0.75rem;
+  color: var(--tb-text-dim);
+  cursor: pointer;
+}
+.grind-ledger .extreme-label input[type="checkbox"] {
+  cursor: pointer;
+}
+.grind-ledger .advance-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.3rem;
+  width: 100%;
+  padding: 0.4rem 0.5rem;
+  border: none;
+  border-radius: 4px;
+  background: linear-gradient(135deg, var(--tb-blue), var(--tb-blue-dim));
+  color: var(--tb-bg-white);
+  font-family: var(--tb-font-heading);
+  font-size: 0.8rem;
+  font-weight: bold;
+  letter-spacing: 0.04em;
+  cursor: pointer;
+  margin-top: 0.25rem;
+}
+.grind-ledger .advance-btn:hover {
+  background: linear-gradient(135deg, var(--tb-blue-bright), var(--tb-blue));
+}
+/* -------------------------------------------- */
+/*  Character Columns                           */
+/* -------------------------------------------- */
+.grind-ledger .ledger-char-col {
+  flex: 1;
+  min-width: 130px;
+  background: var(--tb-bg-mid);
+  /* Alternate background for visual separation */
+}
+.grind-ledger .ledger-char-col:nth-child(even) {
+  background: var(--tb-bg-raised);
+}
+.grind-ledger .char-header {
+  border-bottom: 1px solid var(--tb-border);
+  padding-bottom: 0.3rem;
+  margin-bottom: 0.15rem;
+}
+.grind-ledger .char-name {
+  font-family: var(--tb-font-heading);
+  font-size: 0.9rem;
+  font-weight: bold;
+  color: var(--tb-text-body);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.grind-ledger .char-identity {
+  font-family: var(--tb-font-body);
+  font-size: 0.68rem;
+  color: var(--tb-text-dim);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+/* -------------------------------------------- */
+/*  Light Sources                               */
+/* -------------------------------------------- */
+.grind-ledger .char-light {
+  font-size: 0.75rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+.grind-ledger .light-holder-tag {
+  font-family: var(--tb-font-heading);
+  font-size: 0.62rem;
+  font-weight: bold;
+  color: var(--tb-amber);
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+}
+.grind-ledger .light-source-row {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+.grind-ledger .light-source-row.unlit {
+  opacity: 0.55;
+}
+.grind-ledger .light-source-row.unlit:hover {
+  opacity: 0.85;
+}
+.grind-ledger .light-source-row.depleted {
+  opacity: 0.45;
+}
+.grind-ledger .light-source-row.depleted .light-source-name.depleted {
+  font-style: italic;
+  color: var(--tb-text-dim);
+}
+.grind-ledger .light-source-row.depleted .light-turns.depleted {
+  color: var(--tb-text-faint);
+}
+.grind-ledger .light-flame-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.7rem;
+  line-height: 1;
+  flex-shrink: 0;
+}
+.grind-ledger .light-flame-icon.depleted {
+  color: var(--tb-text-faint);
+  font-size: 0.65rem;
+}
+.grind-ledger .light-flame-btn {
+  border: none;
+  background: none;
+  padding: 0;
+  cursor: pointer;
+  color: var(--tb-amber);
+  font-size: 0.8rem;
+  line-height: 1;
+  flex-shrink: 0;
+}
+.grind-ledger .light-flame-btn:hover {
+  color: var(--tb-amber-glow);
+}
+.grind-ledger .light-flame-btn.low {
+  color: var(--tb-red);
+}
+.grind-ledger .light-flame-btn.low:hover {
+  color: var(--tb-red);
+}
+.grind-ledger .light-flame-btn.unlit {
+  color: var(--tb-text-faint);
+}
+.grind-ledger .light-flame-btn.unlit:hover {
+  color: var(--tb-amber);
+}
+.grind-ledger .light-source-name {
+  flex: 1;
+  color: var(--tb-text-body);
+  font-family: var(--tb-font-body);
+  font-size: 0.7rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.grind-ledger .light-turns {
+  font-family: var(--tb-font-heading);
+  font-size: 0.75rem;
+  font-weight: bold;
+  color: var(--tb-amber);
+  flex-shrink: 0;
+}
+.grind-ledger .light-turns.low {
+  color: var(--tb-red);
+}
+.grind-ledger .light-covered-row {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+.grind-ledger .covered-via {
+  color: var(--tb-text-dim);
+  font-family: var(--tb-font-body);
+  font-size: 0.7rem;
+  font-style: italic;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+.grind-ledger .light-warn {
+  color: var(--tb-amber);
+  font-size: 0.72rem;
+  flex-shrink: 0;
+}
+.grind-ledger .light-none-row {
+  color: var(--tb-text-faint);
+  font-family: var(--tb-font-body);
+  font-size: 0.7rem;
+  font-style: italic;
+}
+.grind-ledger .light-level-cycle-btn {
+  border: none;
+  background: none;
+  padding: 0;
+  cursor: pointer;
+  font-size: 0.65rem;
+  line-height: 1;
+  flex-shrink: 0;
+}
+.grind-ledger .light-level-cycle-btn.full {
+  color: var(--tb-amber);
+}
+.grind-ledger .light-level-cycle-btn.dim {
+  color: var(--tb-amber-bright);
+}
+.grind-ledger .light-level-cycle-btn.dark {
+  color: var(--tb-blue-dim);
+}
+.grind-ledger .light-level-cycle-btn:hover {
+  opacity: 0.7;
+}
+/* -------------------------------------------- */
+/*  Covered-By Dropdown                         */
+/* -------------------------------------------- */
+.grind-ledger .char-covered-by {
+  margin-top: 0.1rem;
+}
+.grind-ledger .covered-by-select {
+  width: 100%;
+  font-family: var(--tb-font-body);
+  font-size: 0.68rem;
+  padding: 0.15rem 0.25rem;
+  border: 1px solid var(--tb-border-light);
+  border-radius: 3px;
+  background: var(--tb-bg-white);
+  color: var(--tb-text-body);
+}
+/* -------------------------------------------- */
+/*  Containers                                  */
+/* -------------------------------------------- */
+.grind-ledger .char-containers {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.2rem;
+  margin-top: 0.1rem;
+}
+.grind-ledger .container-item {
+  display: flex;
+  align-items: center;
+  gap: 0.2rem;
+}
+.grind-ledger .container-type-badge {
+  font-family: var(--tb-font-body);
+  font-size: 0.68rem;
+  color: var(--tb-text-dim);
+  text-transform: capitalize;
+}
+.grind-ledger .container-slots {
+  font-family: var(--tb-font-heading);
+  font-size: 0.7rem;
+  font-weight: bold;
+  color: var(--tb-blue);
+}
+/* -------------------------------------------- */
+/*  Conditions                                  */
+/* -------------------------------------------- */
+.grind-ledger .char-conditions {
+  font-family: var(--tb-font-body);
+  font-size: 0.7rem;
+  color: var(--tb-text-body);
+  line-height: 1.3;
+  margin-top: 0.1rem;
+}
+/* -------------------------------------------- */
+/*  Next Grind Condition                        */
+/* -------------------------------------------- */
+.grind-ledger .next-grind {
+  font-family: var(--tb-font-body);
+  font-size: 0.68rem;
+  color: var(--tb-amber);
+  margin-top: 0.1rem;
+}
+.grind-ledger .next-grind.imminent {
+  color: var(--tb-red);
+  font-weight: bold;
 }
 /*# sourceMappingURL=tb2e.css.map */

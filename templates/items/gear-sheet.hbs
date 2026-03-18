@@ -279,9 +279,7 @@
   {{!-- Description --}}
   <fieldset class="gear-section">
     <legend>{{localize "TB2E.Item.Description"}}</legend>
-    <div class="editor-wrapper">
-      {{editor system.description target="system.description" button=true editable=true}}
-    </div>
+    <textarea name="system.description" rows="4">{{system.description}}</textarea>
   </fieldset>
 
 </div>

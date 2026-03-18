@@ -23,7 +23,8 @@
 .tb2e-conflict-body,
 .tb2e-conflict-footer,
 .character-conflict-panel,
-.conflict-panel {
+.conflict-panel,
+.grind-tracker {
   .mixin-theme-light();
 }
 
@@ -34,14 +35,16 @@
 body.theme-light :is(
   .tb2e, .tb2e-chat-card, .tb2e-conflict-header, .tb2e-conflict-body,
   .tb2e-conflict-footer,
-  .character-conflict-panel, .conflict-panel, .tb2e.gear-sheet, .tb2e.spell-sheet, .tb2e.invocation-sheet) {
+  .character-conflict-panel, .conflict-panel, .tb2e.gear-sheet, .tb2e.spell-sheet, .tb2e.invocation-sheet,
+  .grind-tracker) {
   .mixin-theme-light();
 }
 
 body.theme-dark :is(
   .tb2e, .tb2e-chat-card, .tb2e-conflict-header, .tb2e-conflict-body,
   .tb2e-conflict-footer,
-  .character-conflict-panel, .conflict-panel, .tb2e.gear-sheet, .tb2e.spell-sheet, .tb2e.invocation-sheet) {
+  .character-conflict-panel, .conflict-panel, .tb2e.gear-sheet, .tb2e.spell-sheet, .tb2e.invocation-sheet,
+  .grind-tracker) {
   .mixin-theme-dark();
 }
 
@@ -53,7 +56,8 @@ body.theme-dark :is(
 .themed.theme-light :is(
   .tb2e-chat-card, .tb2e-conflict-header, .tb2e-conflict-body,
   .tb2e-conflict-footer,
-  .character-conflict-panel, .conflict-panel, .tb2e.gear-sheet, .tb2e.spell-sheet, .tb2e.invocation-sheet) {
+  .character-conflict-panel, .conflict-panel, .tb2e.gear-sheet, .tb2e.spell-sheet, .tb2e.invocation-sheet,
+  .grind-tracker) {
   .mixin-theme-light();
 }
 
@@ -61,7 +65,8 @@ body.theme-dark :is(
 .themed.theme-dark :is(
   .tb2e-chat-card, .tb2e-conflict-header, .tb2e-conflict-body,
   .tb2e-conflict-footer,
-  .character-conflict-panel, .conflict-panel, .tb2e.gear-sheet, .tb2e.spell-sheet, .tb2e.invocation-sheet) {
+  .character-conflict-panel, .conflict-panel, .tb2e.gear-sheet, .tb2e.spell-sheet, .tb2e.invocation-sheet,
+  .grind-tracker) {
   .mixin-theme-dark();
 }
 
@@ -97,6 +102,7 @@ body.theme-dark :is(
 @import "chat/wise-advancement.less";
 @import "chat/burden-card.less";
 @import "chat/conflict-cards.less";
+@import "chat/grind-cards.less";
 
 // Conflict system
 @import "conflict/tracker.less";
@@ -109,3 +115,6 @@ body.theme-dark :is(
 // Alternate actor sheets
 @import "sheets/monster.less";
 @import "sheets/npc.less";
+
+// Grind Tracker HUD
+@import "grind-tracker.less";
