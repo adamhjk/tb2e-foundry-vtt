@@ -1,0 +1,24 @@
+_id: e02a2b3c4d5e6f7a
+name: Bone Knitting Needles
+type: relic
+img: systems/tb2e/icons/ffffff/transparent/1x1/delapouite/chisel.svg
+system:
+  description: "<p>Dungeoneer's Handbook, p. 209</p>"
+  slot: ''
+  slotIndex: 0
+  slotOptions:
+    head: 1
+    pack: 1
+  cost: 0
+  damaged: false
+  dropped: false
+  quantity: 1
+  quantityMax: 1
+  relicTier: minor
+  linkedInvocations:
+    - Bone Knitter
+  linkedCircle: null
+  immortal: ''
+  lore: ''
+effects: []
+_key: '!items!e02a2b3c4d5e6f7a'

@@ -1,0 +1,25 @@
+_id: e08a2b3c4d5e6f7a
+name: Sharp Scissors
+type: relic
+img: systems/tb2e/icons/ffffff/transparent/1x1/john-redman/scissors.svg
+system:
+  description: "<p>Dungeoneer's Handbook, p. 223</p>"
+  slot: ''
+  slotIndex: 0
+  slotOptions:
+    carried: 1
+    belt: 1
+    pack: 1
+  cost: 0
+  damaged: false
+  dropped: false
+  quantity: 1
+  quantityMax: 1
+  relicTier: minor
+  linkedInvocations:
+    - Absolution of the Lord of Endings
+  linkedCircle: null
+  immortal: Lord of Endings
+  lore: ''
+effects: []
+_key: '!items!e08a2b3c4d5e6f7a'

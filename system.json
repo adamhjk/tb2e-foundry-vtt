@@ -47,11 +47,47 @@
     { "name": "weapons",    "label": "Weapons",    "path": "packs/weapons",    "type": "Item" },
     { "name": "armor",      "label": "Armor",       "path": "packs/armor",      "type": "Item" },
     { "name": "containers", "label": "Containers",  "path": "packs/containers", "type": "Item" },
-    { "name": "gear",       "label": "Gear",        "path": "packs/gear",       "type": "Item" },
-    { "name": "supplies",   "label": "Supplies",    "path": "packs/supplies",   "type": "Item" },
+    { "name": "equipment",   "label": "Equipment",   "path": "packs/equipment",  "type": "Item" },
+    { "name": "light-sources", "label": "Light Sources", "path": "packs/light-sources", "type": "Item" },
+    { "name": "food-and-drink", "label": "Food & Drink", "path": "packs/food-and-drink", "type": "Item" },
     { "name": "spells",     "label": "Spells",      "path": "packs/spells",     "type": "Item" },
     { "name": "invocations", "label": "Invocations", "path": "packs/invocations", "type": "Item" },
     { "name": "relics",      "label": "Relics",      "path": "packs/relics",      "type": "Item" },
+    { "name": "agents",      "label": "Alchemical Agents", "path": "packs/agents", "type": "Item" },
+    { "name": "bulk-goods",  "label": "Bulk Goods",        "path": "packs/bulk-goods", "type": "Item" },
+    { "name": "clothing",    "label": "Clothing",           "path": "packs/clothing",   "type": "Item" },
+    { "name": "magical-religious", "label": "Magical & Religious Equipment", "path": "packs/magical-religious", "type": "Item" },
+    { "name": "musical-instruments", "label": "Musical Instruments", "path": "packs/musical-instruments", "type": "Item" },
     { "name": "monsters",    "label": "Monsters",    "path": "packs/monsters",    "type": "Actor" }
+  ],
+  "packFolders": [
+    {
+      "name": "Equipment",
+      "sorting": "a",
+      "color": "#8b6914",
+      "packs": [
+        "agents",
+        "armor",
+        "bulk-goods",
+        "clothing",
+        "containers",
+        "equipment",
+        "food-and-drink",
+        "light-sources",
+        "magical-religious",
+        "musical-instruments",
+        "weapons"
+      ]
+    },
+    {
+      "name": "Magic",
+      "sorting": "a",
+      "color": "#6b3fa0",
+      "packs": [
+        "invocations",
+        "relics",
+        "spells"
+      ]
+    }
   ]
 }

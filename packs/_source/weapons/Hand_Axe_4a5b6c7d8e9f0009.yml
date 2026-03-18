@@ -1,0 +1,35 @@
+_id: 4a5b6c7d8e9f0009
+name: Hand Axe
+type: weapon
+img: systems/tb2e/icons/ffffff/transparent/1x1/delapouite/sharp-axe.svg
+system:
+  description: Dungeoneer's Handbook, p. 158
+  slot: ''
+  slotIndex: 0
+  slotOptions:
+    carried: 1
+    belt: 1
+    pack: 2
+  cost: 1
+  damaged: false
+  dropped: false
+  quantity: 1
+  quantityMax: 1
+  wield: 1
+  conflictBonuses:
+    attack:
+      type: dice
+      value: 0
+    defend:
+      type: dice
+      value: 0
+    feint:
+      type: dice
+      value: 0
+    maneuver:
+      type: dice
+      value: 0
+  skillBonuses: []
+  specialRules: "May be thrown once per fight, turning an independent Attack action into a versus test (not against opponents wielding a bow, crossbow or sling). After throwing, you count as disarmed until you equip another weapon between rounds."
+effects: []
+_key: '!items!4a5b6c7d8e9f0009'

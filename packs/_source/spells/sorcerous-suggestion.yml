@@ -1,9 +1,9 @@
 _id: a1b2c3d4e5f6300b
 name: Sorcerous Suggestion
 type: spell
-img: icons/magic/light/orb-lightning-blue.webp
+img: systems/tb2e/icons/ffffff/transparent/1x1/delapouite/convince.svg
 system:
-  description: "<p>With a sibilant intonation, the sorcerous suggestion slithers into the mind of the magician's victim.</p><p>The caster may use Arcanist in place of the Manipulator skill for one turn, including for help and disposition during conflicts.</p><p>In addition, Sorcerous Suggestion grants access to three weapons for convince and trick conflicts.</p>"
+  description: "<p>Dungeoneer's Handbook, p. 206</p>"
   circle: 3
   castingType: skillSwap
   fixedObstacle: 0

@@ -1,0 +1,21 @@
+_id: a7b8c9d0e1f2a3b4
+name: Fury of the Lords of Life and Death
+type: invocation
+img: systems/tb2e/icons/ffffff/transparent/1x1/delapouite/anubis.svg
+system:
+  description: "<p>Dungeoneer's Handbook, p. 218</p>"
+  circle: 2
+  castingType: versus
+  versusDefense: nature
+  mightPenalty: true
+  invocationTime: 1
+  invocationTimeWithRelic: 0
+  duration: Two turns
+  burden: 3
+  burdenWithRelic: 2
+  relic: Vestments of the Lords of Life and Death
+  relicInventory: worn/torso 2
+  sacramental: Holy water
+  performed: false
+effects: []
+_key: '!items!a7b8c9d0e1f2a3b4'

@@ -111,7 +111,15 @@ export const containerTypes = {
   quiver: { label: "TB2E.Container.Quiver", slots: 3, occupies: "worn", occupiesSlots: 1 },
   waterskin: { label: "TB2E.Container.Waterskin", slots: 0, liquid: true },
   bottle: { label: "TB2E.Container.Bottle", slots: 0, liquid: true },
-  jug: { label: "TB2E.Container.Jug", slots: 0, liquid: true }
+  jug: { label: "TB2E.Container.Jug", slots: 0, liquid: true },
+  framePack:     { label: "TB2E.Container.FramePack",     slots: 8,  occupies: "torso",   occupiesSlots: 3 },
+  barrel:        { label: "TB2E.Container.Barrel",        slots: 0,  liquid: true },
+  cask:          { label: "TB2E.Container.Cask",          slots: 0,  liquid: true },
+  chestSmall:    { label: "TB2E.Container.ChestSmall",    slots: 4,  occupies: "carried", occupiesSlots: 2 },
+  seaChest:      { label: "TB2E.Container.SeaChest",      slots: 9,  occupies: "carried", occupiesSlots: 6 },
+  clayPot:       { label: "TB2E.Container.ClayPot",       slots: 0,  liquid: true },
+  purse:         { label: "TB2E.Container.Purse",         slots: 1,  occupies: "torso",   occupiesSlots: 1 },
+  woodenCanteen: { label: "TB2E.Container.WoodenCanteen", slots: 0,  liquid: true }
 };
 
 /**

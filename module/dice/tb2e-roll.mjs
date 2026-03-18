@@ -1177,6 +1177,18 @@ export async function rollTest({ actor, type, key, testContext = {} }) {
     }));
   }
 
+  // Wine bolster: +1D to the next Will or Health test while the wineBolster flag is set
+  const wineBolsterActive = type === "ability" && (key === "will" || key === "health")
+    && actor.getFlag("tb2e", "wineBolster");
+  if ( wineBolsterActive ) {
+    contextModifiers.push(createModifier({
+      label: game.i18n.localize("TB2E.WineBolster.Label"),
+      type: "dice", value: 1, source: "context",
+      icon: "fa-solid fa-wine-glass", color: "--tb-frost",
+      timing: "pre"
+    }));
+  }
+
   // Show dialog
   const config = await _showRollDialog({
     label,
@@ -1235,6 +1247,9 @@ export async function rollTest({ actor, type, key, testContext = {} }) {
       config, rollFlags, postSuccessMods
     });
   }
+
+  // Consume the wine bolster after the roll completes
+  if ( wineBolsterActive ) await actor.unsetFlag("tb2e", "wineBolster");
 }
 
 /* -------------------------------------------- */

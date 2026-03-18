@@ -1,0 +1,34 @@
+_id: 4a5b6c7d8e9f0004
+name: Crossbow
+type: weapon
+img: systems/tb2e/icons/ffffff/transparent/1x1/carl-olsen/crossbow.svg
+system:
+  description: Dungeoneer's Handbook, p. 156
+  slot: ''
+  slotIndex: 0
+  slotOptions:
+    carried: 2
+    belt: 1
+  cost: 4
+  damaged: false
+  dropped: false
+  quantity: 1
+  quantityMax: 1
+  wield: 2
+  conflictBonuses:
+    attack:
+      type: success
+      value: 1
+    defend:
+      type: dice
+      value: 0
+    feint:
+      type: dice
+      value: 0
+    maneuver:
+      type: dice
+      value: 1
+  skillBonuses: []
+  specialRules: "+1s to Attack; +1D to Maneuver. When your Attack action is rolled against a Defend action, the crossbow grants an additional +1D to Attack. Bypasses leather armor. Cannot be used in hand-to-hand combat. Requires a belt slot for the ammunition quiver."
+effects: []
+_key: '!items!4a5b6c7d8e9f0004'

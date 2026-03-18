@@ -1,0 +1,73 @@
+_id: a1b2c3d4e5f60002
+name: Orc
+type: monster
+img: icons/svg/mystery-man.svg
+system:
+  nature: 4
+  natureDescriptors: Fighting, Skulking, Looting
+  might: 3
+  precedence: '1'
+  type: Troll
+  instinct: Always snuff the lights before plucking the soft fruits
+  armor: Black iron shield and spiked helmet
+  specialRules: Scholar's Guide, p. 192
+  isBoss: false
+  conditions:
+    hungry: false
+    angry: false
+    afraid: false
+    exhausted: false
+    injured: false
+    sick: false
+    dead: false
+  dispositions:
+    - conflictType: Capture
+      hp: 9
+    - conflictType: Kill
+      hp: 5
+    - conflictType: Flee/Pursue
+      hp: 4
+  weapons:
+    - name: Spear
+      conflictTypes: K, Cap, D/O
+      attack: ''
+      defend: (+1D)
+      feint: ''
+      maneuver: +1D
+    - name: Shield
+      conflictTypes: K, Cap, D/O
+      attack: ''
+      defend: +2D
+      feint: ''
+      maneuver: ''
+    - name: Hand Axe
+      conflictTypes: K, Cap, D/O
+      attack: ''
+      defend: ''
+      feint: ''
+      maneuver: ''
+    - name: Hobnailed Boots
+      conflictTypes: Flee/Pursue
+      attack: ''
+      defend: ''
+      feint: ''
+      maneuver: +1D
+    - name: Tireless Endurance
+      conflictTypes: Flee/Pursue
+      attack: +1D
+      defend: ''
+      feint: ''
+      maneuver: ''
+  conflict:
+    hp:
+      value: 0
+      max: 0
+    team: gm
+  description: Scholar's Guide, p. 192
+prototypeToken:
+  actorLink: false
+  appendNumber: true
+  disposition: -1
+items: []
+effects: []
+_key: '!actors!a1b2c3d4e5f60002'

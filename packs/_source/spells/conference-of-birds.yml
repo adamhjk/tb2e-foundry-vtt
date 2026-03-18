@@ -1,9 +1,9 @@
 _id: a1b2c3d4e5f63004
 name: Conference of Birds
 type: spell
-img: icons/magic/light/orb-lightning-blue.webp
+img: systems/tb2e/icons/ffffff/transparent/1x1/delapouite/bird-scepter.svg
 system:
-  description: "<p>Chanting an endless, rhythmic phrase, the magician summons a conference of aetherial birds who grasp them in their talons and lift them airborne.</p><p>This spell grants the power of flight to one character for one phase. Flying characters may overcome obstacles involving ascent or descent of great heights without a test.</p><p>In addition, they are granted +2D to Maneuver actions and +1s to successful Feint actions in capture and pursue or flee conflicts.</p>"
+  description: "<p>Dungeoneer's Handbook, p. 202</p>"
   circle: 3
   castingType: fixed
   fixedObstacle: 4

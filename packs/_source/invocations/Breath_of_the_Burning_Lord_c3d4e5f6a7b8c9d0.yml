@@ -1,0 +1,21 @@
+_id: c3d4e5f6a7b8c9d0
+name: Breath of the Burning Lord
+type: invocation
+img: systems/tb2e/icons/ffffff/transparent/1x1/delapouite/brasero.svg
+system:
+  description: "<p>Dungeoneer's Handbook, p. 210</p>"
+  circle: 1
+  castingType: fixed
+  fixedObstacle: 2
+  invocationTime: 1
+  invocationTimeWithRelic: 0
+  duration: One turn
+  burden: 2
+  burdenWithRelic: 1
+  relic: A burning coal in a silver censer
+  relicInventory: carried 1
+  sacramental: A bit of blubber or fine incense
+  mightPenalty: true
+  performed: false
+effects: []
+_key: '!items!c3d4e5f6a7b8c9d0'

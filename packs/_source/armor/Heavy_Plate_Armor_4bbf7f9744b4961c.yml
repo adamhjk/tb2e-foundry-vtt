@@ -1,0 +1,20 @@
+_id: 4bbf7f9744b4961c
+name: Heavy Plate Armor
+type: armor
+img: systems/tb2e/icons/ffffff/transparent/1x1/lorc/breastplate.svg
+system:
+  description: Lore Master's Manual, p. 78
+  slot: ''
+  slotIndex: 0
+  slotOptions:
+    torso: 3
+  cost: 7
+  damaged: false
+  dropped: false
+  quantity: 1
+  quantityMax: 1
+  armorType: plate
+  absorbs: 1
+  specialRules: Lore Master's Manual, p. 78
+effects: []
+_key: '!items!4bbf7f9744b4961c'

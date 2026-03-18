@@ -1,0 +1,18 @@
+_id: 8a7b6c5d4e3f0004
+name: Spell Book
+type: spellbook
+img: systems/tb2e/icons/ffffff/transparent/1x1/delapouite/book-cover.svg
+system:
+  description: "Dungeoneer's Handbook, p. 155"
+  slot: ""
+  slotIndex: 0
+  slotOptions:
+    pack: 2
+  cost: 4
+  damaged: false
+  dropped: false
+  quantity: 1
+  quantityMax: 1
+  folios: 5
+effects: []
+_key: '!items!8a7b6c5d4e3f0004'

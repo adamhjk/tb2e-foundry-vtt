@@ -1,9 +1,9 @@
 _id: a1b2c3d4e5f60006
 name: Dweomercraft
 type: spell
-img: icons/magic/light/orb-lightning-blue.webp
+img: systems/tb2e/icons/ffffff/transparent/1x1/delapouite/crafting.svg
 system:
-  description: "<p>Conjures tools or materials from raw aether. Can create mundane tools for a limited duration or conjure supplies for various skills.</p>"
+  description: "<p>Dungeoneer's Handbook, p. 186</p>"
   circle: 1
   castingType: factors
   fixedObstacle: 0

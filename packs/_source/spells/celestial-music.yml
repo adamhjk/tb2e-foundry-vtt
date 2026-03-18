@@ -1,9 +1,9 @@
 _id: a1b2c3d4e5f60004
 name: Celestial Music
 type: spell
-img: icons/magic/light/orb-lightning-blue.webp
+img: systems/tb2e/icons/ffffff/transparent/1x1/delapouite/musical-notes.svg
 system:
-  description: "<p>Produces an entrancing celestial melody that captivates listeners, contested against their Will or Nature.</p>"
+  description: "<p>Dungeoneer's Handbook, p. 185</p>"
   circle: 1
   castingType: versus
   fixedObstacle: 0

@@ -1,0 +1,34 @@
+_id: 4a5b6c7d8e9f0006
+name: Dwarven Shield
+type: weapon
+img: systems/tb2e/icons/ffffff/transparent/1x1/delapouite/viking-shield.svg
+system:
+  description: Lore Master's Manual, p. 85
+  slot: ''
+  slotIndex: 0
+  slotOptions:
+    carried: 1
+    torso: 1
+  cost: 2
+  damaged: false
+  dropped: false
+  quantity: 1
+  quantityMax: 1
+  wield: 1
+  conflictBonuses:
+    attack:
+      type: dice
+      value: 0
+    defend:
+      type: dice
+      value: 2
+    feint:
+      type: dice
+      value: 0
+    maneuver:
+      type: dice
+      value: 0
+  skillBonuses: []
+  specialRules: "+2D to Defend. Absorbs up to two points of damage (one point per hit). After absorbing the first hit, the defend bonus drops to +1D. A second hit destroys the shield. A damaged (but not destroyed) dwarven shield may be repaired."
+effects: []
+_key: '!items!4a5b6c7d8e9f0006'

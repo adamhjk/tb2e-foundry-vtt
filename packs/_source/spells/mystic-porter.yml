@@ -1,9 +1,9 @@
 _id: a1b2c3d4e5f60008
 name: Mystic Porter
 type: spell
-img: icons/magic/light/orb-lightning-blue.webp
+img: systems/tb2e/icons/ffffff/transparent/1x1/delapouite/backpack.svg
 system:
-  description: "<p>Conjures an invisible force that carries inventory for the caster or another, providing additional carrying capacity for a limited duration.</p>"
+  description: "<p>Dungeoneer's Handbook, p. 187</p>"
   circle: 1
   castingType: factors
   fixedObstacle: 0

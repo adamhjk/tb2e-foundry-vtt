@@ -1,0 +1,36 @@
+_id: c7e5adf019a86c1d
+name: Staff
+type: weapon
+img: systems/tb2e/icons/ffffff/transparent/1x1/delapouite/crescent-staff.svg
+system:
+  description: Dungeoneer's Handbook, p. 159
+  slot: ''
+  slotIndex: 0
+  slotOptions:
+    carried: 1
+  cost: 1
+  damaged: false
+  dropped: false
+  quantity: 1
+  quantityMax: 1
+  wield: 2
+  conflictBonuses:
+    attack:
+      type: dice
+      value: 0
+    defend:
+      type: dice
+      value: 1
+    feint:
+      type: dice
+      value: 0
+    maneuver:
+      type: dice
+      value: 0
+  skillBonuses:
+    - skill: dungeoneer
+      value: 1
+      condition: Hiking and climbing
+  specialRules: "+1D to Defend. Grants +1D to Dungeoneer tests involving hiking or climbing when carried."
+effects: []
+_key: '!items!c7e5adf019a86c1d'

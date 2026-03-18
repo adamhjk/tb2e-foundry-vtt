@@ -1,9 +1,9 @@
 _id: a1b2c3d4e5f6000e
 name: "Wizard's \xC6gis"
 type: spell
-img: icons/magic/light/orb-lightning-blue.webp
+img: systems/tb2e/icons/ffffff/transparent/1x1/delapouite/attached-shield.svg
 system:
-  description: "<p>The magician summons a luminescent shield of aether bearing their sigil.</p><p>Use the Arcanist skill to Defend in place of the required skill or ability during a kill, capture or drive off conflict. This includes rolling for or helping with the disposition roll.</p><p>No casting roll necessary before the conflict.</p>"
+  description: "<p>Dungeoneer's Handbook, p. 191</p>"
   circle: 1
   castingType: skillSwap
   fixedObstacle: 0

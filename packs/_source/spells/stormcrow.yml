@@ -1,9 +1,9 @@
 _id: a1b2c3d4e5f6300d
 name: Stormcrow
 type: spell
-img: icons/magic/light/orb-lightning-blue.webp
+img: systems/tb2e/icons/ffffff/transparent/1x1/lorc/crow-dive.svg
 system:
-  description: "<p>The magician plucks at a thread in the Skein of Destiny, delicately sending a whisper of power along its length to set it thrumming. So long as the power lasts, even those who do not wish to hear what the magician says will listen and consider.</p><p>Increase your Precedence by 1 for one conflict. Cast this spell when equipping weapons for a conflict.</p>"
+  description: "<p>Dungeoneer's Handbook, p. 207</p>"
   circle: 3
   castingType: factors
   fixedObstacle: 0

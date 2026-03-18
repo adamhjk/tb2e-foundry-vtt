@@ -1,0 +1,35 @@
+_id: c9d0e1f2a3b4c5d6
+name: Benison of Hlin Hearthmistress
+type: invocation
+img: systems/tb2e/icons/ffffff/transparent/1x1/delapouite/barn.svg
+system:
+  description: "<p>Dungeoneer's Handbook, p. 230</p>"
+  circle: 4
+  castingType: factors
+  factors:
+    - name: Settlement Type
+      options:
+        - label: Steading
+          value: 1
+        - label: Borderland fortress or wizard's tower
+          value: 2
+        - label: Remote village, religious bastion or shire
+          value: 3
+        - label: Busy crossroads or walled town
+          value: 4
+        - label: Dilapidated port
+          value: 5
+        - label: Bustling metropolis
+          value: 6
+  invocationTime: 3
+  invocationTimeWithRelic: 2
+  duration: Instantaneous
+  burden: 5
+  burdenWithRelic: 4
+  relic: Hlin Hearthmistress's Ring of Keys
+  relicInventory: belt 1
+  sacramental: Sheaves of the first grains of the harvest
+  mightPenalty: true
+  performed: false
+effects: []
+_key: '!items!c9d0e1f2a3b4c5d6'

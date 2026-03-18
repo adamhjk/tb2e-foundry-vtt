@@ -1,0 +1,20 @@
+_id: 0c56c7b8da4c2da3
+name: Arming Jacket
+type: armor
+img: systems/tb2e/icons/ffffff/transparent/1x1/delapouite/leather-armor.svg
+system:
+  description: Lore Master's Manual, p. 77
+  slot: ''
+  slotIndex: 0
+  slotOptions:
+    torso: 1
+  cost: 3
+  damaged: false
+  dropped: false
+  quantity: 1
+  quantityMax: 1
+  armorType: leather
+  absorbs: 1
+  specialRules: Lore Master's Manual, p. 77
+effects: []
+_key: '!items!0c56c7b8da4c2da3'

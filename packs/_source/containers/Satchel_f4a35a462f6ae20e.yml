@@ -1,0 +1,21 @@
+_id: f4a35a462f6ae20e
+name: Satchel
+type: container
+img: systems/tb2e/icons/ffffff/transparent/1x1/delapouite/shoulder-bag.svg
+system:
+  description: Dungeoneer's Handbook, p. 152
+  slot: ''
+  slotIndex: 0
+  slotOptions:
+    torso: 1
+  cost: 1
+  damaged: false
+  dropped: false
+  quantity: 1
+  quantityMax: 1
+  containerKey: ''
+  containerSlots: 3
+  containerType: satchel
+  lost: false
+effects: []
+_key: '!items!f4a35a462f6ae20e'

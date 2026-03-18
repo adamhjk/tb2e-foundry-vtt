@@ -1,0 +1,21 @@
+_id: e1f2a3b4c5d60003
+name: Lantern
+type: supply
+img: systems/tb2e/icons/ffffff/transparent/1x1/delapouite/old-lantern.svg
+system:
+  description: "Dungeoneer's Handbook, p. 154; Scholar's Guide, pp. 42–43"
+  slot: ""
+  slotIndex: 0
+  slotOptions:
+    carried: 1
+  cost: 3
+  damaged: false
+  dropped: false
+  quantity: 1
+  quantityMax: 1
+  supplyType: light
+  turnsRemaining: 3
+  lit: false
+  nameSingular: Lantern
+  skillBonuses: []
+_key: '!items!e1f2a3b4c5d60003'

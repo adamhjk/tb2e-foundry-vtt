@@ -1,9 +1,9 @@
 _id: a1b2c3d4e5f6000d
 name: Wisdom of the Sages
 type: spell
-img: icons/magic/light/orb-lightning-blue.webp
+img: systems/tb2e/icons/ffffff/transparent/1x1/delapouite/book-cover.svg
 system:
-  description: "<p>Intoning their true names, the magician summons long-dead sages from beyond the Shroud of Worlds to whisper the translation of spoken or written words.</p><p>Possessed by ghosts, the caster may read, speak or comprehend a foreign or alien tongue. No Scholar test required.</p>"
+  description: "<p>Dungeoneer's Handbook, p. 191</p>"
   circle: 1
   castingType: factors
   fixedObstacle: 0

@@ -1,0 +1,19 @@
+_id: d4e5f6a7b8c90006
+name: Hat
+type: gear
+img: systems/tb2e/icons/ffffff/transparent/1x1/delapouite/robin-hood-hat.svg
+system:
+  description: Lore Master's Manual, p. 80
+  slot: ''
+  slotIndex: 0
+  slotOptions:
+    head: 1
+  cost: 1
+  damaged: false
+  dropped: false
+  quantity: 1
+  quantityMax: 1
+  skillBonuses: []
+  specialRules: ''
+effects: []
+_key: '!items!d4e5f6a7b8c90006'

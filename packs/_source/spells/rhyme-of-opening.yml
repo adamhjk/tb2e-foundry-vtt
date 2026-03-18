@@ -1,9 +1,9 @@
 _id: a1b2c3d4e5f62007
 name: Rhyme of Opening
 type: spell
-img: icons/magic/light/orb-lightning-blue.webp
+img: systems/tb2e/icons/ffffff/transparent/1x1/delapouite/boss-key.svg
 system:
-  description: "<p>Opens locks, doors, chains, and other physical barriers through an incantation.</p>"
+  description: "<p>Dungeoneer's Handbook, p. 196</p>"
   circle: 2
   castingType: factors
   fixedObstacle: 0

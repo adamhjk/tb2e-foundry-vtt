@@ -1,9 +1,9 @@
 _id: a1b2c3d4e5f60009
 name: Supernal Vision
 type: spell
-img: icons/magic/light/orb-lightning-blue.webp
+img: systems/tb2e/icons/ffffff/transparent/1x1/delapouite/blindfold.svg
 system:
-  description: "<p>Entering a trance, the magician shifts their vision to the Otherworld, attuning to the magical auras of enchanted items, creatures or places within their presence. While in this state, their eyes are covered with a milky whiteness.</p><p>While in this state, the caster may use the Lore Master skill to study magical auras and determine their purpose. Additionally, while under the effects of this spell, the caster gains +1D to Arcanist tests but suffers -1D to all tests requiring physical action. The caster may end this spell at any time.</p><p>In addition, the caster is able to see spirits in the Otherworld. However, those spirits are also able to see the caster's eyes and might choose to investigate...</p>"
+  description: "<p>Dungeoneer's Handbook, p. 188</p>"
   circle: 1
   castingType: factors
   fixedObstacle: 0

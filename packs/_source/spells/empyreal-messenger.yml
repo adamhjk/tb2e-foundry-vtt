@@ -1,9 +1,9 @@
 _id: a1b2c3d4e5f63006
 name: Empyreal Messenger
 type: spell
-img: icons/magic/light/orb-lightning-blue.webp
+img: systems/tb2e/icons/ffffff/transparent/1x1/lorc/raven.svg
 system:
-  description: "<p>The magician summons a wizened, grizzled raven with glossy feathers and knowing eyes to bear a message to a distant place.</p><p>The raven will carry a written message in its claw, or will memorize and repeat a spoken message. Spoken messages can be no more than a sentence in length.</p><p>The raven delivers messages to nearby destinations in a timely manner according to the distance traveled.</p>"
+  description: "<p>Dungeoneer's Handbook, p. 203</p>"
   circle: 3
   castingType: factors
   fixedObstacle: 0

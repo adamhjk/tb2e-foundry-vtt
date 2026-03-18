@@ -1,9 +1,9 @@
 _id: a1b2c3d4e5f63008
 name: Incandescent Beacon
 type: spell
-img: icons/magic/light/orb-lightning-blue.webp
+img: systems/tb2e/icons/ffffff/transparent/1x1/delapouite/ceiling-light.svg
 system:
-  description: "<p>The magician conjures a heatless flame to light the darkness.</p><p>This spell creates a light equivalent to a lantern that lasts for the remainder of the session. The spell may be cast on an area, in which case it is immobile, or it may be cast on an object, in which case it moves with that object.</p><p>The light can be covered but not extinguished. However, a Shroud of Shadows spell can cancel it, if used properly.</p>"
+  description: "<p>Dungeoneer's Handbook, p. 204</p>"
   circle: 3
   castingType: fixed
   fixedObstacle: 3

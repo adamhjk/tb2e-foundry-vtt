@@ -1,0 +1,21 @@
+_id: a3b4c5d6e7f80015
+name: Square-Back Hatchet
+type: gear
+img: systems/tb2e/icons/ffffff/transparent/1x1/delapouite/hatchet.svg
+system:
+  description: Lore Master's Manual, p. 69
+  slot: ''
+  slotIndex: 0
+  slotOptions:
+    pack: 1
+    carried: 1
+    belt: 1
+  cost: 2
+  damaged: false
+  dropped: false
+  quantity: 1
+  quantityMax: 1
+  skillBonuses: []
+  specialRules: ''
+effects: []
+_key: '!items!a3b4c5d6e7f80015'

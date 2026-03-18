@@ -1,0 +1,20 @@
+_id: 5dea133e6d410f37
+name: Helmet
+type: armor
+img: systems/tb2e/icons/ffffff/transparent/1x1/lorc/heavy-helm.svg
+system:
+  description: Dungeoneer's Handbook, p. 150
+  slot: ''
+  slotIndex: 0
+  slotOptions:
+    head: 1
+  cost: 2
+  damaged: false
+  dropped: false
+  quantity: 1
+  quantityMax: 1
+  armorType: helmet
+  absorbs: 1
+  specialRules: Dungeoneer's Handbook, p. 150
+effects: []
+_key: '!items!5dea133e6d410f37'

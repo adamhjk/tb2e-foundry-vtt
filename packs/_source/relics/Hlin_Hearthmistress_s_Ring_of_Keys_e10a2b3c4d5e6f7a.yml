@@ -1,0 +1,23 @@
+_id: e10a2b3c4d5e6f7a
+name: Hlin Hearthmistress's Ring of Keys
+type: relic
+img: systems/tb2e/icons/ffffff/transparent/1x1/delapouite/boss-key.svg
+system:
+  description: "<p>Dungeoneer's Handbook, p. 230</p>"
+  slot: ''
+  slotIndex: 0
+  slotOptions:
+    belt: 1
+  cost: 0
+  damaged: false
+  dropped: false
+  quantity: 1
+  quantityMax: 1
+  relicTier: minor
+  linkedInvocations:
+    - Benison of Hlin Hearthmistress
+  linkedCircle: null
+  immortal: Hlin Hearthmistress
+  lore: ''
+effects: []
+_key: '!items!e10a2b3c4d5e6f7a'

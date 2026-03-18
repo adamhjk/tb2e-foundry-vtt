@@ -1,0 +1,23 @@
+_id: e03a2b3c4d5e6f7a
+name: Silver Censer with Burning Coal
+type: relic
+img: systems/tb2e/icons/ffffff/transparent/1x1/delapouite/brasero.svg
+system:
+  description: "<p>Dungeoneer's Handbook, p. 210</p>"
+  slot: ''
+  slotIndex: 0
+  slotOptions:
+    carried: 1
+  cost: 0
+  damaged: false
+  dropped: false
+  quantity: 1
+  quantityMax: 1
+  relicTier: minor
+  linkedInvocations:
+    - Breath of the Burning Lord
+  linkedCircle: null
+  immortal: The Burning Lord
+  lore: ''
+effects: []
+_key: '!items!e03a2b3c4d5e6f7a'

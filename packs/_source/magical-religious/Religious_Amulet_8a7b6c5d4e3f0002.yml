@@ -1,0 +1,19 @@
+_id: 8a7b6c5d4e3f0002
+name: Religious Amulet
+type: gear
+img: systems/tb2e/icons/ffffff/transparent/1x1/delapouite/tribal-pendant.svg
+system:
+  description: "Loremaster's Manual, p. 85"
+  slot: ""
+  slotIndex: 0
+  slotOptions:
+    neck: 1
+  cost: 1
+  damaged: false
+  dropped: false
+  quantity: 1
+  quantityMax: 1
+  skillBonuses: []
+  specialRules: "Loremaster's Manual, p. 85"
+effects: []
+_key: '!items!8a7b6c5d4e3f0002'

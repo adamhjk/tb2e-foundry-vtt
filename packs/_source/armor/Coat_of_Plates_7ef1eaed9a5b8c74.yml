@@ -1,0 +1,20 @@
+_id: 7ef1eaed9a5b8c74
+name: Coat of Plates
+type: armor
+img: systems/tb2e/icons/ffffff/transparent/1x1/lorc/breastplate.svg
+system:
+  description: Lore Master's Manual, p. 77
+  slot: ''
+  slotIndex: 0
+  slotOptions:
+    torso: 2
+  cost: 4
+  damaged: false
+  dropped: false
+  quantity: 1
+  quantityMax: 1
+  armorType: leather
+  absorbs: 1
+  specialRules: Lore Master's Manual, p. 77
+effects: []
+_key: '!items!7ef1eaed9a5b8c74'

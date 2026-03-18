@@ -1,0 +1,33 @@
+_id: e5f6a7b8c9d0e1f2
+name: Blood Vow to the Lords of Creation
+type: invocation
+img: systems/tb2e/icons/ffffff/transparent/1x1/delapouite/arm-sling.svg
+system:
+  description: "<p>Dungeoneer's Handbook, p. 215</p>"
+  circle: 2
+  castingType: factors
+  factors:
+    - name: Injuries
+      options:
+        - label: Heal thyself
+          value: 3
+        - label: Heal the injury of another
+          value: 4
+        - label: Heal the injuries of two people
+          value: 5
+        - label: Heal the injuries of a small group
+          value: 6
+        - label: Heal the injuries of a large group
+          value: 7
+  invocationTime: 2
+  invocationTimeWithRelic: 1
+  duration: Instantaneous
+  burden: 3
+  burdenWithRelic: 2
+  relic: Hyresti's Silver Chalice
+  relicInventory: pack 1
+  sacramental: A good, strong wine
+  mightPenalty: true
+  performed: false
+effects: []
+_key: '!items!e5f6a7b8c9d0e1f2'

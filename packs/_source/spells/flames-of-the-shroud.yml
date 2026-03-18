@@ -1,9 +1,9 @@
 _id: a1b2c3d4e5f62004
 name: Flames of the Shroud
 type: spell
-img: icons/magic/light/orb-lightning-blue.webp
+img: systems/tb2e/icons/ffffff/transparent/1x1/delapouite/burning-forest.svg
 system:
-  description: "<p>No casting roll required. Use Arcanist in place of Fighter for one test in a kill, capture, or drive off conflict.</p>"
+  description: "<p>Dungeoneer's Handbook, p. 194</p>"
   circle: 2
   castingType: skillSwap
   fixedObstacle: 0

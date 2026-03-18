@@ -1,0 +1,20 @@
+_id: 9c8b7a6d5e4f0002
+name: Flute
+type: gear
+img: systems/tb2e/icons/ffffff/transparent/1x1/delapouite/flute.svg
+system:
+  description: "Loremaster's Manual, p. 85"
+  slot: ""
+  slotIndex: 0
+  slotOptions:
+    carried: 1
+    pack: 1
+  cost: 2
+  damaged: false
+  dropped: false
+  quantity: 1
+  quantityMax: 1
+  skillBonuses: []
+  specialRules: "+1D to Orator tests involving declaiming poetry or singing songs."
+effects: []
+_key: '!items!9c8b7a6d5e4f0002'

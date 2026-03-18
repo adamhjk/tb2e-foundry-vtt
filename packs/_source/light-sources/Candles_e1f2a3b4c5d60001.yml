@@ -1,0 +1,21 @@
+_id: e1f2a3b4c5d60001
+name: Candles
+type: supply
+img: systems/tb2e/icons/ffffff/transparent/1x1/delapouite/candles.svg
+system:
+  description: "Dungeoneer's Handbook, p. 154; Scholar's Guide, pp. 42–43"
+  slot: ""
+  slotIndex: 0
+  slotOptions:
+    pack: 1
+  cost: 1
+  damaged: false
+  dropped: false
+  quantity: 4
+  quantityMax: 4
+  supplyType: light
+  turnsRemaining: 4
+  lit: false
+  nameSingular: Candle
+  skillBonuses: []
+_key: '!items!e1f2a3b4c5d60001'

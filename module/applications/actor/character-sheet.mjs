@@ -529,7 +529,7 @@ export default class CharacterSheet extends HandlebarsApplicationMixin(ActorShee
     // Resolve the slot cost for the item's current position.
     let resolvedSlotCost = getMinSlotCost(so);
     if ( item.system.slot && slotGroupDef ) {
-      const optKey = resolveSlotOptionKey(slotGroupDef.key, item.system.slotIndex ?? 0, slotGroupDef.isContainer || false);
+      const optKey = resolveSlotOptionKey(slotGroupDef.key, item.system.slotIndex ?? 0, slotGroupDef.isContainer || false, slotGroupDef.containerType ?? null);
       resolvedSlotCost = getSlotCost(so, optKey) ?? resolvedSlotCost;
     }
     const notation = formatSlotOptions(so);
@@ -1609,12 +1609,19 @@ export default class CharacterSheet extends HandlebarsApplicationMixin(ActorShee
 
   /**
    * Light a source from a bundle: decrement bundle quantity, create a lit item, auto-place in hand.
+   * For vessels (quantityMax === 1), simply toggle lit in place.
    */
   static async #onLightSource(event, target) {
     const itemId = target.dataset.itemId;
     const item = this.document.items.get(itemId);
     if ( !item || item.system.quantity <= 0 ) return;
     if ( (item.system.turnsRemaining ?? 0) <= 0 ) return;
+
+    // Vessel (quantityMax === 1): light in place, no bundle consumption
+    if ( (item.system.quantityMax ?? 1) <= 1 ) {
+      await item.update({ "system.lit": true });
+      return;
+    }
 
     // Decrement bundle quantity
     await item.update({ "system.quantity": item.system.quantity - 1 });
@@ -1783,21 +1790,21 @@ export default class CharacterSheet extends HandlebarsApplicationMixin(ActorShee
       }
     }
 
-    // Check pack slots (containers only — not cache).
-    const packCost = getSlotCost(so, "pack");
-    if ( packCost !== null ) {
-      // Equipped containers.
-      const containers = (this.document.itemTypes.container || []).filter(c =>
-        c.system.slot && !c.system.dropped && !c.system.lost
-      );
-      for ( const c of containers ) {
-        const cType = CONFIG.TB2E.containerTypes[c.system.containerType];
-        if ( cType?.liquid ) continue;
-        const cKey = c.system.containerKey || `container-${c.id}`;
-        const slotIndex = this.#findFirstFit(item, cKey, packCost);
-        if ( slotIndex !== null ) {
-          placements.push({ slotKey: cKey, slotIndex, label: c.name, cost: packCost });
-        }
+    // Check container slots (pack, quiver, pouch) — not cache.
+    const equippedContainers = (this.document.itemTypes.container || []).filter(c =>
+      c.system.slot && !c.system.dropped && !c.system.lost
+    );
+    for ( const c of equippedContainers ) {
+      const cType = CONFIG.TB2E.containerTypes[c.system.containerType];
+      if ( cType?.liquid ) continue;
+      const cKey = c.system.containerKey || `container-${c.id}`;
+      const ct = c.system.containerType;
+      const containerOptKey = ct === "quiver" ? "quiver" : ct === "pouch" ? "pouch" : "pack";
+      const cost = getSlotCost(so, containerOptKey);
+      if ( cost === null ) continue;
+      const slotIndex = this.#findFirstFit(item, cKey, cost);
+      if ( slotIndex !== null ) {
+        placements.push({ slotKey: cKey, slotIndex, label: c.name, cost });
       }
     }
 
@@ -1812,6 +1819,18 @@ export default class CharacterSheet extends HandlebarsApplicationMixin(ActorShee
   }
 
   /**
+   * Look up the containerType for an equipped container by its slot key.
+   * @param {string} slotKey
+   * @returns {string|null}
+   */
+  #containerTypeForSlot(slotKey) {
+    const container = this.document.items.find(i =>
+      i.type === "container" && (i.system.containerKey || `container-${i.id}`) === slotKey
+    );
+    return container?.system.containerType ?? null;
+  }
+
+  /**
    * Find the first slot index in a group where an item of the given cost fits.
    * @param {Item} item - The item to place (excluded from occupant checks).
    * @param {string} slotKey - The slot group key.
@@ -1823,6 +1842,7 @@ export default class CharacterSheet extends HandlebarsApplicationMixin(ActorShee
     if ( capacity === null ) return null;
     const isContainer = !["head", "neck", "hand-L", "hand-R", "torso", "belt", "feet", "pocket"].includes(slotKey)
       && slotKey !== "cache";
+    const containerType = isContainer ? this.#containerTypeForSlot(slotKey) : null;
 
     const occupants = this.document.items.filter(i =>
       i.system.slot === slotKey && i.id !== item.id
@@ -1831,7 +1851,7 @@ export default class CharacterSheet extends HandlebarsApplicationMixin(ActorShee
     // Build an occupied-ranges array.
     const occupied = occupants.map(i => {
       const start = i.system.slotIndex ?? 0;
-      const occOptKey = resolveSlotOptionKey(slotKey, start, isContainer);
+      const occOptKey = resolveSlotOptionKey(slotKey, start, isContainer, containerType);
       const occCost = getSlotCost(i.system.slotOptions, occOptKey) ?? 1;
       return { start, end: start + occCost };
     });
@@ -1875,9 +1895,10 @@ export default class CharacterSheet extends HandlebarsApplicationMixin(ActorShee
   async #assignSlot(item, slotKey, slotIndex) {
     // Determine whether this is a container slot.
     const isContainer = !["head", "neck", "hand-L", "hand-R", "torso", "belt", "feet", "pocket"].includes(slotKey);
+    const containerType = isContainer && slotKey !== "cache" ? this.#containerTypeForSlot(slotKey) : null;
 
     // Resolve which slotOptions key applies and check placement is allowed.
-    const optionKey = resolveSlotOptionKey(slotKey, slotIndex, isContainer);
+    const optionKey = resolveSlotOptionKey(slotKey, slotIndex, isContainer, containerType);
     let needed = getSlotCost(item.system.slotOptions, optionKey);
     if ( needed === null && slotKey === "cache" ) {
       needed = getCacheCost(item.system.slotOptions);
@@ -1898,7 +1919,7 @@ export default class CharacterSheet extends HandlebarsApplicationMixin(ActorShee
 
     // Check available space — resolve each occupant's cost at this location.
     const usedSlots = occupants.reduce((sum, i) => {
-      const occOptKey = resolveSlotOptionKey(slotKey, i.system.slotIndex ?? 0, isContainer);
+      const occOptKey = resolveSlotOptionKey(slotKey, i.system.slotIndex ?? 0, isContainer, containerType);
       return sum + (getSlotCost(i.system.slotOptions, occOptKey) ?? 1);
     }, 0);
     if ( usedSlots + needed > groupCapacity ) {
@@ -1915,7 +1936,7 @@ export default class CharacterSheet extends HandlebarsApplicationMixin(ActorShee
     // Check positional fit: item must not overlap with existing occupants.
     for ( const occ of occupants ) {
       const occStart = occ.system.slotIndex ?? 0;
-      const occOptKey = resolveSlotOptionKey(slotKey, occStart, isContainer);
+      const occOptKey = resolveSlotOptionKey(slotKey, occStart, isContainer, containerType);
       const occEnd = occStart + (getSlotCost(occ.system.slotOptions, occOptKey) ?? 1);
       if ( slotIndex < occEnd && slotIndex + needed > occStart ) {
         ui.notifications.warn("Not enough room at that position.");

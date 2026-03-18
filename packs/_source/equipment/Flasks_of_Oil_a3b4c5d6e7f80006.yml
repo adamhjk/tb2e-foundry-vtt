@@ -1,0 +1,20 @@
+_id: a3b4c5d6e7f80006
+name: Flasks of Oil
+type: gear
+img: systems/tb2e/icons/ffffff/transparent/1x1/delapouite/oil-can.svg
+system:
+  description: Dungeoneer's Handbook, p. 153
+  slot: ''
+  slotIndex: 0
+  slotOptions:
+    pack: 1
+    carried: 1
+  cost: 2
+  damaged: false
+  dropped: false
+  quantity: 1
+  quantityMax: 1
+  skillBonuses: []
+  specialRules: ''
+effects: []
+_key: '!items!a3b4c5d6e7f80006'

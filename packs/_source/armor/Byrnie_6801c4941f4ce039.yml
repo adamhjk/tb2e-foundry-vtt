@@ -1,0 +1,20 @@
+_id: 6801c4941f4ce039
+name: Byrnie
+type: armor
+img: systems/tb2e/icons/ffffff/transparent/1x1/willdabeast/chain-mail.svg
+system:
+  description: Lore Master's Manual, p. 77
+  slot: ''
+  slotIndex: 0
+  slotOptions:
+    torso: 1
+  cost: 5
+  damaged: false
+  dropped: false
+  quantity: 1
+  quantityMax: 1
+  armorType: chain
+  absorbs: 1
+  specialRules: Lore Master's Manual, p. 77
+effects: []
+_key: '!items!6801c4941f4ce039'

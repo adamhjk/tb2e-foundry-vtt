@@ -1,9 +1,9 @@
 _id: a1b2c3d4e5f63002
 name: Balefire
 type: spell
-img: icons/magic/light/orb-lightning-blue.webp
+img: systems/tb2e/icons/ffffff/transparent/1x1/lorc/fireball.svg
 system:
-  description: "<p>The magician gleans the residues of anger and hate from the Skein of Destiny and ignites them into an incandescent ball of aetheric energy, which they then hurl at their enemies.</p><p>This spell increases the magician's Might by one and grants +3s to the Attack action.</p><p>If Balefire reduces an opposing team below zero hit points, the excess damage is applied to the caster's team as the fire rages out of control.</p><p>Balefire sets alight all flammable material it touches: hair, clothing, flesh, scrolls, books, paper, oil, wood, etc. Such material will be consumed in one turn after impact if not doused by water, sand or other means.</p><p>Wooden doors, structures and buildings hit with Balefire will scorch, weaken or be consumed at the end of the following turn unless the fire is doused.</p>"
+  description: "<p>Dungeoneer's Handbook, p. 201</p>"
   circle: 3
   castingType: skillSwap
   fixedObstacle: 0
@@ -40,7 +40,7 @@ system:
       description: "+1D to cast Balefire if angry."
     - name: "Explosive"
       description: "Bypasses mundane armor, shields and helmets. Increases Might by one. If reduces team below 0 HP, excess damages caster's team."
-  specialRules: "<p>Must select as weapon for the round, assigned Attack on action 3. May not help others during this round. If part of team of two, other member takes two consecutive actions. Cannot be used alone. Outside conflict, requires one turn to cast.</p>"
+  specialRules: "<p>Dungeoneer's Handbook, p. 201</p>"
   library: false
   spellbook: false
   memorized: false

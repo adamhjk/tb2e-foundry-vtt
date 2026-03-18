@@ -1,0 +1,33 @@
+_id: 1a154536a3254361
+name: Spear
+type: weapon
+img: systems/tb2e/icons/ffffff/transparent/1x1/lorc/barbed-spear.svg
+system:
+  description: Dungeoneer's Handbook, p. 159
+  slot: ''
+  slotIndex: 0
+  slotOptions:
+    carried: 1
+  cost: 1
+  damaged: false
+  dropped: false
+  quantity: 1
+  quantityMax: 1
+  wield: 1
+  conflictBonuses:
+    attack:
+      type: dice
+      value: 0
+    defend:
+      type: dice
+      value: 0
+    feint:
+      type: dice
+      value: 0
+    maneuver:
+      type: dice
+      value: 1
+  skillBonuses: []
+  specialRules: "+1D to Maneuver. In narrow corridors or tight confines, also grants +1D to Defend. Bypasses leather armor. May be thrown to turn an independent Attack into a versus test (not against bow, crossbow or sling); you count as disarmed after throwing."
+effects: []
+_key: '!items!1a154536a3254361'

@@ -1,0 +1,19 @@
+_id: c3d4e5f6a7b8000d
+name: Spool of Rope
+type: gear
+img: systems/tb2e/icons/ffffff/transparent/1x1/delapouite/rope-coil.svg
+system:
+  description: Lore Master's Manual, p. 79
+  slot: ''
+  slotIndex: 0
+  slotOptions:
+    pack: 8
+  cost: 4
+  damaged: false
+  dropped: false
+  quantity: 1
+  quantityMax: 1
+  skillBonuses: []
+  specialRules: ''
+effects: []
+_key: '!items!c3d4e5f6a7b8000d'

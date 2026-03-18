@@ -1,9 +1,9 @@
 _id: a1b2c3d4e5f6000c
 name: "Wayfinder's Friend"
 type: spell
-img: icons/magic/light/orb-lightning-blue.webp
+img: systems/tb2e/icons/ffffff/transparent/1x1/lorc/compass.svg
 system:
-  description: "<p>The magician summons guidance from the spirits of land and sea.</p><p>If the magician is lost in the wilderness, successfully casting the Wayfinder's Friend will grant them a revelation as to their current location in relation to their desired destination. The spirits of the air, sun and moon will emerge and report!</p><p>To have the spirits guide them to a destination, the magician may use the Arcanist skill in place of Pathfinder or Sailor (for navigational tests only). This spell doesn't work underground.</p>"
+  description: "<p>Dungeoneer's Handbook, p. 190</p>"
   circle: 1
   castingType: factors
   fixedObstacle: 0

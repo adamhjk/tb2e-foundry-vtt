@@ -1,0 +1,20 @@
+_id: 5212d9e35345bc91
+name: Leather Armor
+type: armor
+img: systems/tb2e/icons/ffffff/transparent/1x1/delapouite/leather-armor.svg
+system:
+  description: Dungeoneer's Handbook, p. 151
+  slot: ''
+  slotIndex: 0
+  slotOptions:
+    torso: 1
+  cost: 2
+  damaged: false
+  dropped: false
+  quantity: 1
+  quantityMax: 1
+  armorType: leather
+  absorbs: 1
+  specialRules: Dungeoneer's Handbook, p. 151
+effects: []
+_key: '!items!5212d9e35345bc91'

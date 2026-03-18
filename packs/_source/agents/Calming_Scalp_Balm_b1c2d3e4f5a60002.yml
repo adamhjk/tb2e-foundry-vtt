@@ -1,0 +1,19 @@
+_id: b1c2d3e4f5a60002
+name: Calming Scalp Balm
+type: gear
+img: systems/tb2e/icons/ffffff/transparent/1x1/lorc/standing-potion.svg
+system:
+  description: Lore Master's Manual, p. 72
+  slot: ''
+  slotIndex: 0
+  slotOptions:
+    pack: 1
+  cost: 2
+  damaged: false
+  dropped: false
+  quantity: 1
+  quantityMax: 1
+  skillBonuses: []
+  specialRules: ''
+effects: []
+_key: '!items!b1c2d3e4f5a60002'

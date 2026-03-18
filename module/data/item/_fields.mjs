@@ -2,7 +2,10 @@
  * Location keys for slotOptions — maps to allowed inventory positions.
  * @enum {string}
  */
-export const SLOT_OPTION_KEYS = ["head", "neck", "wornHand", "carried", "torso", "belt", "feet", "pack", "pocket"];
+export const SLOT_OPTION_KEYS = [
+  "head", "neck", "wornHand", "carried", "torso", "belt", "feet", "pack", "pocket",
+  "quiver", "pouch"
+];
 
 /**
  * Shared inventory schema fields used by all gear item types.
@@ -34,13 +37,18 @@ export function inventoryFields(fields) {
  * @param {string} slotKey - The sheet slot group key (e.g. "hand-L", "torso", "belt", a container key).
  * @param {number} slotIndex - The index within the slot group.
  * @param {boolean} isContainer - Whether the slot group is a container.
+ * @param {string|null} containerType - The container's type (e.g. "quiver", "pouch"), if known.
  * @returns {string} The slotOptions key to look up.
  */
-export function resolveSlotOptionKey(slotKey, slotIndex, isContainer = false) {
+export function resolveSlotOptionKey(slotKey, slotIndex, isContainer = false, containerType = null) {
   if ( slotKey === "hand-L" || slotKey === "hand-R" ) {
     return slotIndex === 0 ? "wornHand" : "carried";
   }
-  if ( isContainer ) return "pack";
+  if ( isContainer ) {
+    if ( containerType === "quiver" ) return "quiver";
+    if ( containerType === "pouch" ) return "pouch";
+    return "pack";
+  }
   if ( SLOT_OPTION_KEYS.includes(slotKey) ) return slotKey;
   // Fallback: treat unknown keys as pack (container-derived keys).
   return "pack";
@@ -76,7 +84,7 @@ export function getMinSlotCost(slotOptions) {
  * @returns {number}
  */
 export function getCacheCost(slotOptions) {
-  return slotOptions?.pack ?? getMinSlotCost(slotOptions);
+  return slotOptions?.pack ?? slotOptions?.quiver ?? slotOptions?.pouch ?? getMinSlotCost(slotOptions);
 }
 
 /**
@@ -88,7 +96,8 @@ export function formatSlotOptions(slotOptions) {
   const labels = {
     head: "Head", neck: "Neck", wornHand: "Worn/hand",
     carried: "Carried", torso: "Torso", belt: "Belt",
-    feet: "Feet", pack: "Pack", pocket: "Pocket"
+    feet: "Feet", pack: "Pack", pocket: "Pocket",
+    quiver: "Quiver", pouch: "Pouch"
   };
   const parts = [];
   for ( const key of SLOT_OPTION_KEYS ) {

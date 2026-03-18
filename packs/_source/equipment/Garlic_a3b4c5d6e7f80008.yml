@@ -1,0 +1,21 @@
+_id: a3b4c5d6e7f80008
+name: Garlic
+type: gear
+img: systems/tb2e/icons/ffffff/transparent/1x1/delapouite/garlic.svg
+system:
+  description: Dungeoneer's Handbook, p. 153
+  slot: ''
+  slotIndex: 0
+  slotOptions:
+    carried: 1
+    neck: 1
+    pack: 1
+  cost: 1
+  damaged: false
+  dropped: false
+  quantity: 1
+  quantityMax: 1
+  skillBonuses: []
+  specialRules: ''
+effects: []
+_key: '!items!a3b4c5d6e7f80008'

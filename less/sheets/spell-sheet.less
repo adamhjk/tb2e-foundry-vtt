@@ -12,6 +12,137 @@
     min-height: 0;
   }
 
+  /* Shared item sheet layout */
+  .gear-header {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .gear-img {
+    width: 48px;
+    height: 48px;
+    border: 1px solid var(--tb-border);
+    border-radius: var(--tb-radius);
+    object-fit: cover;
+    cursor: pointer;
+  }
+
+  .gear-header-fields {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+  }
+
+  .gear-name-input {
+    font-family: var(--tb-font-heading);
+    font-size: 1.2rem;
+    border: none;
+    border-bottom: 1px solid var(--tb-border);
+    background: transparent;
+    color: var(--tb-text-body);
+    padding: 0.2rem 0;
+  }
+
+  .gear-fields {
+    display: flex;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+
+  .field-pair {
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+
+    label {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      color: var(--tb-text-faint);
+    }
+
+    input[type="number"] {
+      width: 4rem;
+      text-align: center;
+    }
+
+    input[type="text"] {
+      min-width: 6rem;
+    }
+
+    textarea {
+      width: 100%;
+      min-height: 3rem;
+      font-size: 0.85rem;
+      resize: vertical;
+    }
+
+    &.full-width {
+      flex: 1 1 100%;
+    }
+  }
+
+  .checkbox-field {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-size: 0.85rem;
+    cursor: pointer;
+
+    input[type="checkbox"] {
+      accent-color: var(--tb-blue);
+    }
+  }
+
+  .gear-section {
+    border: 1px solid var(--tb-border);
+    border-radius: var(--tb-radius-lg);
+    padding: 0.5rem 0.75rem;
+
+    legend {
+      font-family: var(--tb-font-heading);
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--tb-blue-dim);
+      padding: 0 0.3rem;
+    }
+  }
+
+  .conflict-bonuses-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 0.5rem 0;
+
+    th {
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      color: var(--tb-text-faint);
+      text-align: left;
+      padding: 0.2rem 0.3rem;
+      border-bottom: 1px solid var(--tb-border);
+    }
+
+    td {
+      padding: 0.2rem 0.3rem;
+    }
+
+    select {
+      font-size: 0.8rem;
+      padding: 0.15rem;
+    }
+
+    input[type="number"] {
+      width: 3rem;
+      text-align: center;
+      font-size: 0.85rem;
+    }
+  }
+
   .spell-circle-select {
     width: auto;
     font-size: 0.85rem;

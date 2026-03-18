@@ -1,0 +1,24 @@
+_id: e04a2b3c4d5e6f7a
+name: Silver Lancet
+type: relic
+img: systems/tb2e/icons/ffffff/transparent/1x1/delapouite/bone-knife.svg
+system:
+  description: "<p>Dungeoneer's Handbook, p. 214</p>"
+  slot: ''
+  slotIndex: 0
+  slotOptions:
+    pocket: 1
+    neck: 1
+  cost: 0
+  damaged: false
+  dropped: false
+  quantity: 1
+  quantityMax: 1
+  relicTier: minor
+  linkedInvocations:
+    - Balm of the Lords of Serenity
+  linkedCircle: null
+  immortal: Lords of Serenity
+  lore: ''
+effects: []
+_key: '!items!e04a2b3c4d5e6f7a'

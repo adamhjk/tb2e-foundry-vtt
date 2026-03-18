@@ -1,0 +1,19 @@
+_id: b1c2d3e4f5a60001
+name: Bilious Smoke Pot
+type: gear
+img: systems/tb2e/icons/ffffff/transparent/1x1/darkzaitzev/smoke-bomb.svg
+system:
+  description: Lore Master's Manual, p. 72
+  slot: ''
+  slotIndex: 0
+  slotOptions:
+    pack: 2
+  cost: 2
+  damaged: false
+  dropped: false
+  quantity: 2
+  quantityMax: 2
+  skillBonuses: []
+  specialRules: ''
+effects: []
+_key: '!items!b1c2d3e4f5a60001'

@@ -1,0 +1,20 @@
+_id: b1c2d3e4f5a60002
+name: Rations, Preserved
+type: supply
+img: systems/tb2e/icons/ffffff/transparent/1x1/darkzaitzev/fish-cooked.svg
+system:
+  description: Dungeoneer's Handbook, p. 154
+  slot: ''
+  slotIndex: 0
+  slotOptions:
+    pack: 1
+  cost: 2
+  damaged: false
+  dropped: false
+  quantity: 3
+  quantityMax: 3
+  supplyType: food
+  turnsRemaining: 0
+  skillBonuses: []
+effects: []
+_key: '!items!b1c2d3e4f5a60002'

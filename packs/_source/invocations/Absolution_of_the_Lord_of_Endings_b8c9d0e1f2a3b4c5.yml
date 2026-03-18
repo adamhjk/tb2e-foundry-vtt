@@ -1,0 +1,24 @@
+_id: b8c9d0e1f2a3b4c5
+name: Absolution of the Lord of Endings
+type: invocation
+img: systems/tb2e/icons/ffffff/transparent/1x1/john-redman/scissors.svg
+system:
+  description: "<p>Dungeoneer's Handbook, p. 223</p>"
+  circle: 3
+  castingType: fixed
+  fixedObstacle: 1
+  obstacleNote: >-
+    Ob 1 + circle of spell/invocation, Ob 4 for cursed items, Ob 1 + Might for
+    monster curses
+  invocationTime: 2
+  invocationTimeWithRelic: 1
+  duration: Permanent
+  burden: 4
+  burdenWithRelic: 3
+  relic: A pair of sharp scissors
+  relicInventory: carried 1, belt 1 or pack 1
+  sacramental: Holy water
+  mightPenalty: true
+  performed: false
+effects: []
+_key: '!items!b8c9d0e1f2a3b4c5'

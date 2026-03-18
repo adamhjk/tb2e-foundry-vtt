@@ -1,9 +1,9 @@
 _id: a1b2c3d4e5f6300a
 name: Sign of Abrogation
 type: spell
-img: icons/magic/light/orb-lightning-blue.webp
+img: systems/tb2e/icons/ffffff/transparent/1x1/delapouite/anticlockwise-rotation.svg
 system:
-  description: "<p>Make the authoritative Sign of Abrogation to dispel offending magics.</p><p>This spell destroys or cancels a spell that has already been cast.</p>"
+  description: "<p>Dungeoneer's Handbook, p. 205</p>"
   circle: 3
   castingType: fixed
   fixedObstacle: 0

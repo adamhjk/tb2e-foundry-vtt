@@ -1,0 +1,79 @@
+_id: a1b2c3d4e5f60001
+name: Kobold
+type: monster
+img: icons/svg/mystery-man.svg
+system:
+  nature: 2
+  natureDescriptors: Trapping, Lurking, Swarming
+  might: 1
+  precedence: '1'
+  type: Troll
+  instinct: Always set a trap around areas we've infested
+  armor: Leaders carry shields
+  specialRules: Scholar's Guide, p. 191
+  isBoss: false
+  conditions:
+    hungry: false
+    angry: false
+    afraid: false
+    exhausted: false
+    injured: false
+    sick: false
+    dead: false
+  dispositions:
+    - conflictType: Flee/Pursue
+      hp: 5
+    - conflictType: Capture
+      hp: 3
+    - conflictType: Trick
+      hp: 1
+  weapons:
+    - name: Sling
+      conflictTypes: K, Cap, D/O
+      attack: ''
+      defend: ''
+      feint: ''
+      maneuver: +2D
+    - name: Bomb
+      conflictTypes: K, Cap, D/O
+      attack: +1s
+      defend: ''
+      feint: ''
+      maneuver: ''
+    - name: Spear
+      conflictTypes: K, Cap, D/O
+      attack: ''
+      defend: (+1D)
+      feint: ''
+      maneuver: +1D
+    - name: Deadfalls
+      conflictTypes: Flee/Pursue
+      attack: +1s
+      defend: ''
+      feint: ''
+      maneuver: +1D
+    - name: Mantrap
+      conflictTypes: Capture
+      attack: +1D
+      defend: ''
+      feint: ''
+      maneuver: ''
+    - name: Sharp Bite
+      conflictTypes: Capture
+      attack: ''
+      defend: +1D
+      feint: ''
+      maneuver: ''
+  conflict:
+    hp:
+      value: 0
+      max: 0
+    team: gm
+  description: Scholar's Guide, p. 191
+prototypeToken:
+  actorLink: false
+  appendNumber: true
+  disposition: -1
+items: []
+effects: []
+_key: '!actors!a1b2c3d4e5f60001'

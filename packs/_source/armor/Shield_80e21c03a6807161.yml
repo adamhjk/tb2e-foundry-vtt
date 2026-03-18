@@ -1,0 +1,20 @@
+_id: 80e21c03a6807161
+name: Shield
+type: armor
+img: systems/tb2e/icons/ffffff/transparent/1x1/willdabeast/round-shield.svg
+system:
+  description: Dungeoneer's Handbook, p. 158
+  slot: ''
+  slotIndex: 0
+  slotOptions:
+    carried: 1
+  cost: 1
+  damaged: false
+  dropped: false
+  quantity: 1
+  quantityMax: 1
+  armorType: shield
+  absorbs: 1
+  specialRules: Dungeoneer's Handbook, p. 158
+effects: []
+_key: '!items!80e21c03a6807161'

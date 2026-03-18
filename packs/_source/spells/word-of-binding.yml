@@ -1,9 +1,9 @@
 _id: a1b2c3d4e5f6000f
 name: Word of Binding
 type: spell
-img: icons/magic/light/orb-lightning-blue.webp
+img: systems/tb2e/icons/ffffff/transparent/1x1/lorc/crossed-chains.svg
 system:
-  description: "<p>With a sharp syllable uttered by the magician, invisible webs of aether, stronger than iron, bind portals and chests shut.</p><p>This spell takes existing binding materials and makes them supernaturally strong. Bonds, a door, a chest or a gate held by the Word of Binding cannot be opened by mundane means. Once bound, only the expiration of the spell, the destruction of the object or the Rhyme of Opening or Sign of Abrogation spells can break the spell.</p>"
+  description: "<p>Dungeoneer's Handbook, p. 192</p>"
   circle: 1
   castingType: fixed
   fixedObstacle: 3

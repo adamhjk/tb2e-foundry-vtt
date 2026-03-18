@@ -1,9 +1,9 @@
 _id: a1b2c3d4e5f60003
 name: Arcane Semblance
 type: spell
-img: icons/magic/light/orb-lightning-blue.webp
+img: systems/tb2e/icons/ffffff/transparent/1x1/lorc/domino-mask.svg
 system:
-  description: "<p>Alters the appearance of the caster or others to resemble someone else.</p>"
+  description: "<p>Dungeoneer's Handbook, p. 184</p>"
   circle: 1
   castingType: factors
   fixedObstacle: 0

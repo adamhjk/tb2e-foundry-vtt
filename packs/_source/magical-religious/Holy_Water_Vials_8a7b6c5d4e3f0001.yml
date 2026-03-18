@@ -1,0 +1,23 @@
+_id: 8a7b6c5d4e3f0001
+name: Holy Water Vials
+type: supply
+img: systems/tb2e/icons/ffffff/transparent/1x1/delapouite/holy-water.svg
+system:
+  description: "Dungeoneer's Handbook, p. 155"
+  slot: ""
+  slotIndex: 0
+  slotOptions:
+    carried: 1
+    pack: 1
+  cost: 2
+  damaged: false
+  dropped: false
+  quantity: 3
+  quantityMax: 3
+  supplyType: other
+  turnsRemaining: 0
+  lit: false
+  nameSingular: Holy Water Vial
+  skillBonuses: []
+  specialRules: "Dungeoneer's Handbook, p. 155"
+_key: '!items!8a7b6c5d4e3f0001'

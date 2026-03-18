@@ -1,0 +1,20 @@
+_id: d4e5f6a7b8c90005
+name: Finery
+type: gear
+img: systems/tb2e/icons/ffffff/transparent/1x1/delapouite/ample-dress.svg
+system:
+  description: Dungeoneer's Handbook, p. 235
+  slot: ''
+  slotIndex: 0
+  slotOptions:
+    torso: 3
+    pack: 4
+  cost: 4
+  damaged: false
+  dropped: false
+  quantity: 1
+  quantityMax: 1
+  skillBonuses: []
+  specialRules: ''
+effects: []
+_key: '!items!d4e5f6a7b8c90005'

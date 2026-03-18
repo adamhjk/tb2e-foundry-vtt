@@ -1,9 +1,9 @@
 _id: a1b2c3d4e5f6200b
 name: Water Lung
 type: spell
-img: icons/magic/light/orb-lightning-blue.webp
+img: systems/tb2e/icons/ffffff/transparent/1x1/delapouite/coral.svg
 system:
-  description: "<p>Allows the targets to breathe underwater for a limited duration.</p>"
+  description: "<p>Dungeoneer's Handbook, p. 199</p>"
   circle: 2
   castingType: factors
   fixedObstacle: 0

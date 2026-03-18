@@ -1,9 +1,9 @@
 _id: a1b2c3d4e5f62003
 name: Eyes of the Bat
 type: spell
-img: icons/magic/light/orb-lightning-blue.webp
+img: systems/tb2e/icons/ffffff/transparent/1x1/delapouite/bat.svg
 system:
-  description: "<p>Grants the ability to see in complete darkness using echolocation. The caster cannot read or determine color while the spell is in effect.</p>"
+  description: "<p>Dungeoneer's Handbook, p. 194</p>"
   circle: 2
   castingType: fixed
   fixedObstacle: 3

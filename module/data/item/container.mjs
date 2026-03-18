@@ -11,7 +11,9 @@ export default class ContainerData extends foundry.abstract.TypeDataModel {
       containerSlots: new fields.NumberField({ initial: 6, integer: true, min: 0 }),
       containerType: new fields.StringField({
         initial: "backpack",
-        choices: ["backpack", "satchel", "largeSack", "smallSack", "pouch", "quiver", "waterskin", "bottle", "jug"]
+        choices: ["backpack", "satchel", "largeSack", "smallSack", "pouch", "quiver",
+                  "waterskin", "bottle", "jug",
+                  "framePack", "barrel", "cask", "chestSmall", "seaChest", "clayPot", "purse", "woodenCanteen"]
       }),
       liquidType: new fields.StringField({ initial: "water" }),
       lost: new fields.BooleanField({ initial: false })

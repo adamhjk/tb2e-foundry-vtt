@@ -1,0 +1,21 @@
+_id: 5ea96db03977dec6
+name: Backpack
+type: container
+img: systems/tb2e/icons/ffffff/transparent/1x1/delapouite/backpack.svg
+system:
+  description: Dungeoneer's Handbook, p. 152
+  slot: ''
+  slotIndex: 0
+  slotOptions:
+    torso: 2
+  cost: 2
+  damaged: false
+  dropped: false
+  quantity: 1
+  quantityMax: 1
+  containerKey: ''
+  containerSlots: 6
+  containerType: backpack
+  lost: false
+effects: []
+_key: '!items!5ea96db03977dec6'

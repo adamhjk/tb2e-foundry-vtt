@@ -2474,6 +2474,7 @@ body.theme-dark .tb2e.sheet .torchbearer-logo,
 /*  Spell Sheet                                  */
 /* -------------------------------------------- */
 .tb2e.spell-sheet {
+  /* Shared item sheet layout */
   /* Factor groups */
   /* Conflict type checkboxes */
   /* Qualities */
@@ -2486,6 +2487,116 @@ body.theme-dark .tb2e.sheet .torchbearer-logo,
   overflow-y: auto;
   flex: 1;
   min-height: 0;
+}
+.tb2e.spell-sheet .gear-header {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+.tb2e.spell-sheet .gear-img {
+  width: 48px;
+  height: 48px;
+  border: 1px solid var(--tb-border);
+  border-radius: var(--tb-radius);
+  object-fit: cover;
+  cursor: pointer;
+}
+.tb2e.spell-sheet .gear-header-fields {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+.tb2e.spell-sheet .gear-name-input {
+  font-family: var(--tb-font-heading);
+  font-size: 1.2rem;
+  border: none;
+  border-bottom: 1px solid var(--tb-border);
+  background: transparent;
+  color: var(--tb-text-body);
+  padding: 0.2rem 0;
+}
+.tb2e.spell-sheet .gear-fields {
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  align-items: center;
+}
+.tb2e.spell-sheet .field-pair {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+.tb2e.spell-sheet .field-pair label {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--tb-text-faint);
+}
+.tb2e.spell-sheet .field-pair input[type="number"] {
+  width: 4rem;
+  text-align: center;
+}
+.tb2e.spell-sheet .field-pair input[type="text"] {
+  min-width: 6rem;
+}
+.tb2e.spell-sheet .field-pair textarea {
+  width: 100%;
+  min-height: 3rem;
+  font-size: 0.85rem;
+  resize: vertical;
+}
+.tb2e.spell-sheet .field-pair.full-width {
+  flex: 1 1 100%;
+}
+.tb2e.spell-sheet .checkbox-field {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.85rem;
+  cursor: pointer;
+}
+.tb2e.spell-sheet .checkbox-field input[type="checkbox"] {
+  accent-color: var(--tb-blue);
+}
+.tb2e.spell-sheet .gear-section {
+  border: 1px solid var(--tb-border);
+  border-radius: var(--tb-radius-lg);
+  padding: 0.5rem 0.75rem;
+}
+.tb2e.spell-sheet .gear-section legend {
+  font-family: var(--tb-font-heading);
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--tb-blue-dim);
+  padding: 0 0.3rem;
+}
+.tb2e.spell-sheet .conflict-bonuses-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 0.5rem 0;
+}
+.tb2e.spell-sheet .conflict-bonuses-table th {
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--tb-text-faint);
+  text-align: left;
+  padding: 0.2rem 0.3rem;
+  border-bottom: 1px solid var(--tb-border);
+}
+.tb2e.spell-sheet .conflict-bonuses-table td {
+  padding: 0.2rem 0.3rem;
+}
+.tb2e.spell-sheet .conflict-bonuses-table select {
+  font-size: 0.8rem;
+  padding: 0.15rem;
+}
+.tb2e.spell-sheet .conflict-bonuses-table input[type="number"] {
+  width: 3rem;
+  text-align: center;
+  font-size: 0.85rem;
 }
 .tb2e.spell-sheet .spell-circle-select {
   width: auto;
@@ -2577,6 +2688,7 @@ body.theme-dark .tb2e.sheet .torchbearer-logo,
 /*  Invocation Sheet                              */
 /* -------------------------------------------- */
 .tb2e.invocation-sheet {
+  /* Shared item sheet layout */
   /* Factor groups */
   /* Conflict type checkboxes */
   /* Qualities */
@@ -2589,6 +2701,116 @@ body.theme-dark .tb2e.sheet .torchbearer-logo,
   overflow-y: auto;
   flex: 1;
   min-height: 0;
+}
+.tb2e.invocation-sheet .gear-header {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+.tb2e.invocation-sheet .gear-img {
+  width: 48px;
+  height: 48px;
+  border: 1px solid var(--tb-border);
+  border-radius: var(--tb-radius);
+  object-fit: cover;
+  cursor: pointer;
+}
+.tb2e.invocation-sheet .gear-header-fields {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+.tb2e.invocation-sheet .gear-name-input {
+  font-family: var(--tb-font-heading);
+  font-size: 1.2rem;
+  border: none;
+  border-bottom: 1px solid var(--tb-border);
+  background: transparent;
+  color: var(--tb-text-body);
+  padding: 0.2rem 0;
+}
+.tb2e.invocation-sheet .gear-fields {
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  align-items: center;
+}
+.tb2e.invocation-sheet .field-pair {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+.tb2e.invocation-sheet .field-pair label {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--tb-text-faint);
+}
+.tb2e.invocation-sheet .field-pair input[type="number"] {
+  width: 4rem;
+  text-align: center;
+}
+.tb2e.invocation-sheet .field-pair input[type="text"] {
+  min-width: 6rem;
+}
+.tb2e.invocation-sheet .field-pair textarea {
+  width: 100%;
+  min-height: 3rem;
+  font-size: 0.85rem;
+  resize: vertical;
+}
+.tb2e.invocation-sheet .field-pair.full-width {
+  flex: 1 1 100%;
+}
+.tb2e.invocation-sheet .checkbox-field {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.85rem;
+  cursor: pointer;
+}
+.tb2e.invocation-sheet .checkbox-field input[type="checkbox"] {
+  accent-color: var(--tb-blue);
+}
+.tb2e.invocation-sheet .gear-section {
+  border: 1px solid var(--tb-border);
+  border-radius: var(--tb-radius-lg);
+  padding: 0.5rem 0.75rem;
+}
+.tb2e.invocation-sheet .gear-section legend {
+  font-family: var(--tb-font-heading);
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--tb-blue-dim);
+  padding: 0 0.3rem;
+}
+.tb2e.invocation-sheet .conflict-bonuses-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 0.5rem 0;
+}
+.tb2e.invocation-sheet .conflict-bonuses-table th {
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--tb-text-faint);
+  text-align: left;
+  padding: 0.2rem 0.3rem;
+  border-bottom: 1px solid var(--tb-border);
+}
+.tb2e.invocation-sheet .conflict-bonuses-table td {
+  padding: 0.2rem 0.3rem;
+}
+.tb2e.invocation-sheet .conflict-bonuses-table select {
+  font-size: 0.8rem;
+  padding: 0.15rem;
+}
+.tb2e.invocation-sheet .conflict-bonuses-table input[type="number"] {
+  width: 3rem;
+  text-align: center;
+  font-size: 0.85rem;
 }
 .tb2e.invocation-sheet .spell-circle-select {
   width: auto;

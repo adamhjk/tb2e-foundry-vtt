@@ -1,0 +1,34 @@
+_id: 4a5b6c7d8e9f0002
+name: Bow
+type: weapon
+img: systems/tb2e/icons/ffffff/transparent/1x1/delapouite/bow-arrow.svg
+system:
+  description: Dungeoneer's Handbook, p. 156
+  slot: ''
+  slotIndex: 0
+  slotOptions:
+    carried: 1
+    quiver: 1
+  cost: 3
+  damaged: false
+  dropped: false
+  quantity: 1
+  quantityMax: 1
+  wield: 2
+  conflictBonuses:
+    attack:
+      type: dice
+      value: 0
+    defend:
+      type: dice
+      value: 0
+    feint:
+      type: dice
+      value: 0
+    maneuver:
+      type: dice
+      value: 2
+  skillBonuses: []
+  specialRules: "Grants +2D to Maneuver. Once per conflict, you may count Attack against Attack as a versus test, not independent. Bypasses leather armor. Cannot be used once the wielder is engaged in hand-to-hand combat. Purchasing a bow includes a quiver and arrows."
+effects: []
+_key: '!items!4a5b6c7d8e9f0002'

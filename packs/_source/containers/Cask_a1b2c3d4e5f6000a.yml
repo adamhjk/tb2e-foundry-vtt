@@ -1,0 +1,23 @@
+_id: a1b2c3d4e5f6000a
+name: Cask
+type: container
+img: systems/tb2e/icons/ffffff/transparent/1x1/delapouite/barrel.svg
+system:
+  description: Lore Master's Manual, p. 78
+  slot: ''
+  slotIndex: 0
+  slotOptions:
+    carried: 2
+    pack: 4
+  cost: 2
+  damaged: false
+  dropped: false
+  quantity: 4
+  quantityMax: 4
+  containerKey: ''
+  containerSlots: 0
+  containerType: cask
+  liquidType: water
+  lost: false
+effects: []
+_key: '!items!a1b2c3d4e5f6000a'

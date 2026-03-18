@@ -17,6 +17,11 @@ BOOKS = {
         "title": "Dungeoneer's Handbook",
         "description": "Character-focused — abilities, nature, skills, traits, inventory, arcana, ritual, advancement, levels, gear, spells",
     },
+    "loremasters-manual": {
+        "file": "loremasters_manual.pdf",
+        "title": "Loremaster's Manual",
+        "description": "GM-focused — adventure design, denizens, loot, equipment, scenario construction",
+    },
 }
 
 # Watermark text to strip

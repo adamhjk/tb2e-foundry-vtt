@@ -1,0 +1,21 @@
+_id: e1f2a3b4c5d60005
+name: Covered Lantern
+type: supply
+img: systems/tb2e/icons/ffffff/transparent/1x1/delapouite/old-lantern.svg
+system:
+  description: "Loremaster's Manual, pp. 84–85"
+  slot: ""
+  slotIndex: 0
+  slotOptions:
+    carried: 1
+  cost: 4
+  damaged: false
+  dropped: false
+  quantity: 1
+  quantityMax: 1
+  supplyType: light
+  turnsRemaining: 4
+  lit: false
+  nameSingular: Covered Lantern
+  skillBonuses: []
+_key: '!items!e1f2a3b4c5d60005'

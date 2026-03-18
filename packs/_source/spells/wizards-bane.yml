@@ -1,9 +1,9 @@
 _id: a1b2c3d4e5f6200c
 name: "Wizard's Bane"
 type: spell
-img: icons/magic/light/orb-lightning-blue.webp
+img: systems/tb2e/icons/ffffff/transparent/1x1/delapouite/brain-leak.svg
 system:
-  description: "<p>Causes the target to permanently forget the past few moments, contested against their Will or Nature. If used against a magician who has recently memorized a spell, it triggers a temerarious discharge.</p>"
+  description: "<p>Dungeoneer's Handbook, p. 199</p>"
   circle: 2
   castingType: versus
   fixedObstacle: 0

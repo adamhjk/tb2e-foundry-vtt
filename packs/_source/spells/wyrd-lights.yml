@@ -1,9 +1,9 @@
 _id: a1b2c3d4e5f60010
 name: Wyrd Lights
 type: spell
-img: icons/magic/light/orb-lightning-blue.webp
+img: systems/tb2e/icons/ffffff/transparent/1x1/delapouite/candles.svg
 system:
-  description: "<p>With whispered words, the magician calls forth dancing flames from the aetherial plane.</p><p>The magician summons a number of lights that dance and whirl about the head. Each wisp provides light equivalent to a candle and is unaffected by wind and weather. They can even give light when submerged in water.</p><p>With a thought, the caster may send the lights down corridors or around corners, giving the appearance of a party of adventurers carrying candles. The caster may also command each light to hover in a different place or follow a different person. The magician may choose to end the spell at any time.</p>"
+  description: "<p>Dungeoneer's Handbook, p. 192</p>"
   circle: 1
   castingType: factors
   fixedObstacle: 0

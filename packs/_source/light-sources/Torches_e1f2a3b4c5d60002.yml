@@ -1,0 +1,22 @@
+_id: e1f2a3b4c5d60002
+name: Torches
+type: supply
+img: systems/tb2e/icons/ffffff/transparent/1x1/delapouite/torch.svg
+system:
+  description: "Dungeoneer's Handbook, p. 154; Scholar's Guide, pp. 42–43"
+  slot: ""
+  slotIndex: 0
+  slotOptions:
+    carried: 1
+    pack: 1
+  cost: 2
+  damaged: false
+  dropped: false
+  quantity: 4
+  quantityMax: 4
+  supplyType: light
+  turnsRemaining: 2
+  lit: false
+  nameSingular: Torch
+  skillBonuses: []
+_key: '!items!e1f2a3b4c5d60002'

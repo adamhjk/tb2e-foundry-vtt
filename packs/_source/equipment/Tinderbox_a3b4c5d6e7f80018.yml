@@ -1,0 +1,22 @@
+_id: a3b4c5d6e7f80018
+name: Tinderbox
+type: gear
+img: systems/tb2e/icons/ffffff/transparent/1x1/delapouite/flint-spark.svg
+system:
+  description: Dungeoneer's Handbook, p. 154
+  slot: ''
+  slotIndex: 0
+  slotOptions:
+    pack: 1
+  cost: 1
+  damaged: false
+  dropped: false
+  quantity: 1
+  quantityMax: 1
+  skillBonuses:
+    - skill: survivalist
+      value: 1
+      condition: Starting fires in bad conditions
+  specialRules: ''
+effects: []
+_key: '!items!a3b4c5d6e7f80018'

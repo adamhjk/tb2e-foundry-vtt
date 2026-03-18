@@ -1,0 +1,20 @@
+_id: d4e5f6a7b8c90007
+name: Leather Gloves
+type: gear
+img: systems/tb2e/icons/ffffff/transparent/1x1/delapouite/gloves.svg
+system:
+  description: Lore Master's Manual, p. 80
+  slot: ''
+  slotIndex: 0
+  slotOptions:
+    hands: 2
+    pack: 1
+  cost: 2
+  damaged: false
+  dropped: false
+  quantity: 1
+  quantityMax: 1
+  skillBonuses: []
+  specialRules: ''
+effects: []
+_key: '!items!d4e5f6a7b8c90007'

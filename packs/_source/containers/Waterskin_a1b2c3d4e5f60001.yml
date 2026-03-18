@@ -1,0 +1,23 @@
+_id: a1b2c3d4e5f60001
+name: Waterskin
+type: container
+img: systems/tb2e/icons/ffffff/transparent/1x1/delapouite/waterskin.svg
+system:
+  description: Dungeoneer's Handbook, p. 152
+  slot: ''
+  slotIndex: 0
+  slotOptions:
+    belt: 1
+    pack: 1
+  cost: 1
+  damaged: false
+  dropped: false
+  quantity: 1
+  quantityMax: 1
+  containerKey: ''
+  containerSlots: 0
+  containerType: waterskin
+  liquidType: water
+  lost: false
+effects: []
+_key: '!items!a1b2c3d4e5f60001'

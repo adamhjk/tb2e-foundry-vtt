@@ -1,0 +1,20 @@
+_id: b1c2d3e4f5a60001
+name: Rations, Fresh
+type: supply
+img: systems/tb2e/icons/ffffff/transparent/1x1/delapouite/bread.svg
+system:
+  description: Dungeoneer's Handbook, p. 154
+  slot: ''
+  slotIndex: 0
+  slotOptions:
+    pack: 1
+  cost: 1
+  damaged: false
+  dropped: false
+  quantity: 2
+  quantityMax: 2
+  supplyType: food
+  turnsRemaining: 0
+  skillBonuses: []
+effects: []
+_key: '!items!b1c2d3e4f5a60001'

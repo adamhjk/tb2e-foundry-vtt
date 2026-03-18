@@ -1,0 +1,34 @@
+_id: 026b10bdba9bf1a4
+name: Sword
+type: weapon
+img: systems/tb2e/icons/ffffff/transparent/1x1/lorc/broadsword.svg
+system:
+  description: Dungeoneer's Handbook, p. 159
+  slot: ''
+  slotIndex: 0
+  slotOptions:
+    carried: 1
+    belt: 1
+  cost: 3
+  damaged: false
+  dropped: false
+  quantity: 1
+  quantityMax: 1
+  wield: 1
+  conflictBonuses:
+    attack:
+      type: dice
+      value: 0
+    defend:
+      type: dice
+      value: 0
+    feint:
+      type: dice
+      value: 0
+    maneuver:
+      type: dice
+      value: 0
+  skillBonuses: []
+  specialRules: "Grants +1D to one action type (Attack, Defend, Feint or Maneuver) of your choice. Once chosen, the bonus sticks to that action type for the remainder of the conflict."
+effects: []
+_key: '!items!026b10bdba9bf1a4'

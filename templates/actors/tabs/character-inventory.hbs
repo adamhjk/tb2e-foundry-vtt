@@ -46,8 +46,13 @@
                 <span class="slot-depleted-icon" title="Spent — set turns to refuel"><i class="fa-solid fa-smoke"></i></span>
                 <input type="number" class="slot-qty-input" value="{{turnsRemaining}}" min="0" data-item-id="{{itemId}}" data-field="turnsRemaining">t
                 {{else}}
+                {{#if hasQuantity}}
                 <button type="button" class="slot-consume-btn" data-action="lightSource" data-item-id="{{itemId}}" title="Ignite one"><i class="fa-solid fa-fire-flame-simple"></i></button>
                 <input type="number" class="slot-qty-input" value="{{quantity}}" min="0" max="{{quantityMax}}" data-item-id="{{itemId}}" data-field="quantity">/<input type="number" class="slot-qty-input" value="{{quantityMax}}" min="1" data-item-id="{{itemId}}" data-field="quantityMax">
+                {{else}}
+                <button type="button" class="slot-consume-btn" data-action="lightSource" data-item-id="{{itemId}}" title="Light"><i class="fa-solid fa-fire-flame-simple"></i></button>
+                <input type="number" class="slot-qty-input" value="{{turnsRemaining}}" min="0" data-item-id="{{itemId}}" data-field="turnsRemaining">t
+                {{/if}}
                 {{/if}}
               </span>
               {{else if isLiquidContainer}}
@@ -109,8 +114,13 @@
                 <span class="slot-depleted-icon" title="Spent — set turns to refuel"><i class="fa-solid fa-smoke"></i></span>
                 <input type="number" class="slot-qty-input" value="{{turnsRemaining}}" min="0" data-item-id="{{itemId}}" data-field="turnsRemaining">t
                 {{else}}
+                {{#if hasQuantity}}
                 <button type="button" class="slot-consume-btn" data-action="lightSource" data-item-id="{{itemId}}" title="Ignite one"><i class="fa-solid fa-fire-flame-simple"></i></button>
                 <input type="number" class="slot-qty-input" value="{{quantity}}" min="0" max="{{quantityMax}}" data-item-id="{{itemId}}" data-field="quantity">/<input type="number" class="slot-qty-input" value="{{quantityMax}}" min="1" data-item-id="{{itemId}}" data-field="quantityMax">
+                {{else}}
+                <button type="button" class="slot-consume-btn" data-action="lightSource" data-item-id="{{itemId}}" title="Light"><i class="fa-solid fa-fire-flame-simple"></i></button>
+                <input type="number" class="slot-qty-input" value="{{turnsRemaining}}" min="0" data-item-id="{{itemId}}" data-field="turnsRemaining">t
+                {{/if}}
                 {{/if}}
               </span>
               {{else if isLiquidContainer}}
@@ -173,8 +183,13 @@
                 <span class="slot-depleted-icon" title="Spent — set turns to refuel"><i class="fa-solid fa-smoke"></i></span>
                 <input type="number" class="slot-qty-input" value="{{turnsRemaining}}" min="0" data-item-id="{{itemId}}" data-field="turnsRemaining">t
                 {{else}}
+                {{#if hasQuantity}}
                 <button type="button" class="slot-consume-btn" data-action="lightSource" data-item-id="{{itemId}}" title="Ignite one"><i class="fa-solid fa-fire-flame-simple"></i></button>
                 <input type="number" class="slot-qty-input" value="{{quantity}}" min="0" max="{{quantityMax}}" data-item-id="{{itemId}}" data-field="quantity">/<input type="number" class="slot-qty-input" value="{{quantityMax}}" min="1" data-item-id="{{itemId}}" data-field="quantityMax">
+                {{else}}
+                <button type="button" class="slot-consume-btn" data-action="lightSource" data-item-id="{{itemId}}" title="Light"><i class="fa-solid fa-fire-flame-simple"></i></button>
+                <input type="number" class="slot-qty-input" value="{{turnsRemaining}}" min="0" data-item-id="{{itemId}}" data-field="turnsRemaining">t
+                {{/if}}
                 {{/if}}
               </span>
               {{else if isLiquidContainer}}

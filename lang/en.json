@@ -184,6 +184,14 @@
   "TB2E.Container.Waterskin": "Waterskin",
   "TB2E.Container.Bottle": "Bottle",
   "TB2E.Container.Jug": "Jug",
+  "TB2E.Container.FramePack": "Frame Pack",
+  "TB2E.Container.Barrel": "Barrel",
+  "TB2E.Container.Cask": "Cask",
+  "TB2E.Container.ChestSmall": "Chest, Small",
+  "TB2E.Container.SeaChest": "Sea Chest",
+  "TB2E.Container.ClayPot": "Clay Pot",
+  "TB2E.Container.Purse": "Purse",
+  "TB2E.Container.WoodenCanteen": "Wooden Canteen",
 
   "TB2E.Liquid.Water": "Water",
   "TB2E.Liquid.Wine": "Wine",
@@ -193,6 +201,7 @@
   "TB2E.Liquid.DrinkWineContent": "Wine can quench hunger and thirst, or bolster your spirit for recovery.",
   "TB2E.Liquid.QuenchThirst": "Quench Thirst",
   "TB2E.Liquid.BolsterSpirit": "Bolster Spirit (+1D)",
+  "TB2E.WineBolster.Label": "Wine (Bolster Spirit)",
 
   "TB2E.Supply.Food": "Food",
   "TB2E.Supply.Light": "Light Source",
