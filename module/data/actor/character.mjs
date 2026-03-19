@@ -76,21 +76,26 @@ export default class CharacterData extends foundry.abstract.TypeDataModel {
         { initial: [] }
       ),
 
-      // ---- Skills (34 fixed skills) ----
+      // ---- Skills (41 fixed skills) ----
       skills: new fields.SchemaField({
         alchemist: advancementField(),
         arcanist: advancementField(),
         armorer: advancementField(),
+        beggar: advancementField(),
+        butcher: advancementField(),
         carpenter: advancementField(),
         cartographer: advancementField(),
         commander: advancementField(),
         cook: advancementField(),
         criminal: advancementField(),
         dungeoneer: advancementField(),
+        enchanter: advancementField(),
         fighter: advancementField(),
+        fisher: advancementField(),
         haggler: advancementField(),
         healer: advancementField(),
         hunter: advancementField(),
+        jeweler: advancementField(),
         laborer: advancementField(),
         loremaster: advancementField(),
         manipulator: advancementField(),
@@ -109,7 +114,9 @@ export default class CharacterData extends foundry.abstract.TypeDataModel {
         smith: advancementField(),
         steward: advancementField(),
         stonemason: advancementField(),
+        strategist: advancementField(),
         survivalist: advancementField(),
+        tanner: advancementField(),
         theologian: advancementField(),
         weaver: advancementField()
       }),

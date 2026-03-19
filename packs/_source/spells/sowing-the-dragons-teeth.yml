@@ -1,0 +1,67 @@
+_id: a1b2c3d4e5f64004
+name: Sowing the Dragon's Teeth
+type: spell
+img: systems/tb2e/icons/ffffff/transparent/1x1/lorc/bone-gnawer.svg
+system:
+  description: "Lore Master's Manual, p. 61"
+  circle: 4
+  castingType: factors
+  fixedObstacle: 0
+  obstacleNote: ""
+  castingTime: oneTurn
+  duration: "One warfare conflict"
+  factors:
+    - name: "Material"
+      options:
+        - label: "Mud or sand [Might 3]"
+          value: 2
+        - label: "Clay or earth [Might 4]"
+          value: 3
+        - label: "Rock [Might 5]"
+          value: 4
+    - name: "Experience"
+      options:
+        - label: "Conscripts [2D]"
+          value: 1
+        - label: "Soldiers [3D]"
+          value: 2
+        - label: "Veterans [4D]"
+          value: 3
+        - label: "Elite [5D]"
+          value: 4
+    - name: "Command"
+      options:
+        - label: "Self"
+          value: 0
+        - label: "Other"
+          value: 1
+  factorNote: ""
+  swapSkill: ""
+  swapConflictTypes: []
+  versusDefense: ""
+  mightPenalty: false
+  materials: "The teeth of a wyrm"
+  focus: ""
+  scribeObstacle: 4
+  learnObstacle: 4
+  conflictBonuses:
+    attack:
+      type: dice
+      value: 0
+    defend:
+      type: dice
+      value: 0
+    feint:
+      type: dice
+      value: 0
+    maneuver:
+      type: dice
+      value: 0
+  conflictQualities: []
+  specialRules: ""
+  library: false
+  spellbook: false
+  memorized: false
+  cast: false
+  scroll: false
+_key: '!items!a1b2c3d4e5f64004'

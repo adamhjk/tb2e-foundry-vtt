@@ -1,0 +1,85 @@
+_id: a1b2c3d4e5f60008
+name: Disturbed Spirit
+type: monster
+img: systems/tb2e/icons/ffffff/transparent/1x1/lorc/spectre.svg
+system:
+  nature: 6
+  natureDescriptors: Possessing, Punishing, Seeking Knowledge
+  might: 5
+  precedence: '0'
+  type: Spirit
+  instinct: Always take revenge on those who disturb my rest
+  armor: None
+  specialRules: Scholar's Guide, p. 183
+  isBoss: false
+  conditions:
+    hungry: false
+    angry: false
+    afraid: false
+    exhausted: false
+    injured: false
+    sick: false
+    dead: false
+  dispositions:
+    - conflictType: Convince
+      hp: 12
+    - conflictType: Banish
+      hp: 7
+    - conflictType: Pursue
+      hp: 5
+  weapons:
+    - name: Cursed Blade
+      conflictTypes: Kill
+      attack: +2D
+      defend: ''
+      feint: ''
+      maneuver: ''
+    - name: Terrifying Aura
+      conflictTypes: Kill
+      attack: ''
+      defend: ''
+      feint: ''
+      maneuver: +1s
+    - name: Stench of Death
+      conflictTypes: Kill
+      attack: ''
+      defend: +1D
+      feint: ''
+      maneuver: ''
+    - name: Discorporate
+      conflictTypes: Pursue
+      attack: +1D
+      defend: ''
+      feint: ''
+      maneuver: ''
+    - name: Entrancing Gaze
+      conflictTypes: Pursue
+      attack: ''
+      defend: ''
+      feint: +1s
+      maneuver: ''
+    - name: Shadow Step
+      conflictTypes: Pursue
+      attack: ''
+      defend: ''
+      feint: ''
+      maneuver: +1D
+    - name: Terrifying Visions
+      conflictTypes: Banish
+      attack: +1D
+      defend: ''
+      feint: ''
+      maneuver: ''
+  conflict:
+    hp:
+      value: 0
+      max: 0
+    team: gm
+  description: Scholar's Guide, p. 183
+prototypeToken:
+  actorLink: false
+  appendNumber: true
+  disposition: -1
+items: []
+effects: []
+_key: '!actors!a1b2c3d4e5f60008'

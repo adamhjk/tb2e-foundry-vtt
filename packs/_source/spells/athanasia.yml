@@ -1,0 +1,67 @@
+_id: a1b2c3d4e5f64001
+name: Athanasia
+type: spell
+img: systems/tb2e/icons/ffffff/transparent/1x1/lorc/crowned-heart.svg
+system:
+  description: "Lore Master's Manual, p. 59"
+  circle: 4
+  castingType: factors
+  fixedObstacle: 0
+  obstacleNote: ""
+  castingTime: oneTurn
+  duration: "Variable"
+  factors:
+    - name: "Type of Conflict"
+      options:
+        - label: "Ambush"
+          value: 1
+        - label: "Skirmish"
+          value: 2
+        - label: "Battle"
+          value: 3
+    - name: "Breadth"
+      options:
+        - label: "Self"
+          value: 1
+        - label: "Other hero"
+          value: 2
+        - label: "Unit"
+          value: 3
+        - label: "Army"
+          value: 5
+    - name: "Duration"
+      options:
+        - label: "One round of warfare actions"
+          value: 0
+        - label: "One warfare conflict"
+          value: 1
+  factorNote: ""
+  swapSkill: ""
+  swapConflictTypes: []
+  versusDefense: ""
+  mightPenalty: false
+  materials: ""
+  focus: "A hazel staff inscribed with runes of destiny"
+  scribeObstacle: 4
+  learnObstacle: 4
+  conflictBonuses:
+    attack:
+      type: dice
+      value: 0
+    defend:
+      type: dice
+      value: 0
+    feint:
+      type: dice
+      value: 0
+    maneuver:
+      type: dice
+      value: 0
+  conflictQualities: []
+  specialRules: "Lore Master's Manual, p. 59"
+  library: false
+  spellbook: false
+  memorized: false
+  cast: false
+  scroll: false
+_key: '!items!a1b2c3d4e5f64001'

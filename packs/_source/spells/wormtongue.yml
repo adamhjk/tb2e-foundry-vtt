@@ -1,0 +1,57 @@
+_id: a1b2c3d4e5f64006
+name: Wormtongue
+type: spell
+img: systems/tb2e/icons/ffffff/transparent/1x1/lorc/cursed-star.svg
+system:
+  description: "Lore Master's Manual, pp. 62-63"
+  circle: 4
+  castingType: versus
+  fixedObstacle: 0
+  obstacleNote: "Versus test plus factors for effect selection"
+  castingTime: oneTurn
+  duration: "Variable"
+  factors:
+    - name: "Modified Personality"
+      options:
+        - label: "Add a goal"
+          value: 1
+        - label: "Add a belief"
+          value: 2
+        - label: "Change an instinct"
+          value: 3
+        - label: "Change a creed"
+          value: 4
+    - name: "Victim"
+      options:
+        - label: "Will or Nature rating"
+          value: 0
+  factorNote: "Add the victim's Will or Nature rating to the obstacle"
+  swapSkill: ""
+  swapConflictTypes: []
+  versusDefense: "willOrNature"
+  mightPenalty: false
+  materials: ""
+  focus: "The tongue of an oath-breaker [worn/neck or pocket]"
+  scribeObstacle: 5
+  learnObstacle: 4
+  conflictBonuses:
+    attack:
+      type: dice
+      value: 0
+    defend:
+      type: dice
+      value: 0
+    feint:
+      type: dice
+      value: 0
+    maneuver:
+      type: dice
+      value: 0
+  conflictQualities: []
+  specialRules: "Lore Master's Manual, pp. 62-63"
+  library: false
+  spellbook: false
+  memorized: false
+  cast: false
+  scroll: false
+_key: '!items!a1b2c3d4e5f64006'

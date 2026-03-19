@@ -1,0 +1,67 @@
+_id: a1b2c3d4e5f60009
+name: Dragefolk
+type: monster
+img: systems/tb2e/icons/ffffff/transparent/1x1/lorc/lizardman.svg
+system:
+  nature: 4
+  natureDescriptors: Swimming, Hunting, Feasting
+  might: 3
+  precedence: '1'
+  type: Folk
+  instinct: Always bring a gift to the feast
+  armor: Scales (equivalent to chain armor)
+  specialRules: Scholar's Guide, p. 184
+  isBoss: false
+  conditions:
+    hungry: false
+    angry: false
+    afraid: false
+    exhausted: false
+    injured: false
+    sick: false
+    dead: false
+  dispositions:
+    - conflictType: Capture
+      hp: 11
+    - conflictType: Kill
+      hp: 7
+    - conflictType: Drive Off
+      hp: 5
+  weapons:
+    - name: Trident
+      conflictTypes: K, Cap, D/O
+      attack: ''
+      defend: ''
+      feint: +1s
+      maneuver: +1D
+    - name: Battle Net
+      conflictTypes: K, Cap, D/O
+      attack: +1D
+      defend: ''
+      feint: ''
+      maneuver: +1s
+    - name: Hurled Stone
+      conflictTypes: K, Cap, D/O
+      attack: +1s
+      defend: ''
+      feint: ''
+      maneuver: ''
+    - name: Thoughtful Demeanor
+      conflictTypes: Convince
+      attack: ''
+      defend: +1D
+      feint: ''
+      maneuver: ''
+  conflict:
+    hp:
+      value: 0
+      max: 0
+    team: gm
+  description: Scholar's Guide, p. 184
+prototypeToken:
+  actorLink: false
+  appendNumber: true
+  disposition: -1
+items: []
+effects: []
+_key: '!actors!a1b2c3d4e5f60009'

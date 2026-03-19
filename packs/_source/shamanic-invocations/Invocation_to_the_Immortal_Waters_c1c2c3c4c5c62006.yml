@@ -1,0 +1,58 @@
+_id: c1c2c3c4c5c62006
+name: Invocation to the Immortal Waters
+type: invocation
+img: systems/tb2e/icons/ffffff/transparent/1x1/delapouite/waterfall.svg
+system:
+  description: "Lore Master's Manual, p. 47"
+  circle: 2
+  castingType: factors
+  fixedObstacle: 0
+  obstacleNote: ""
+  invocationTime: 2
+  invocationTimeWithRelic: 1
+  duration: Variable
+  factors:
+    - name: Breadth
+      options:
+        - label: "Self"
+          value: 0
+        - label: "Other"
+          value: 1
+        - label: "Small group"
+          value: 3
+    - name: Duration
+      options:
+        - label: "One turn"
+          value: 1
+        - label: "Two turns"
+          value: 2
+        - label: "Phase"
+          value: 3
+  factorNote: ""
+  versusDefense: ""
+  mightPenalty: true
+  sacramental: ''
+  relic: "A lock of Njor's hair"
+  relicInventory: worn/neck or pocket
+  burden: 3
+  burdenWithRelic: 2
+  swapSkill: ""
+  swapConflictTypes: []
+  conflictBonuses:
+    attack:
+      type: dice
+      value: 0
+    defend:
+      type: dice
+      value: 0
+    feint:
+      type: dice
+      value: 0
+    maneuver:
+      type: dice
+      value: 0
+  conflictQualities: []
+  specialRules: ''
+  performed: false
+effects: []
+_key: '!items!c1c2c3c4c5c62006'

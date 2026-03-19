@@ -1,0 +1,79 @@
+_id: a1b2c3d4e5f6001f
+name: Gruxu
+type: monster
+img: systems/tb2e/icons/ffffff/transparent/1x1/lorc/lizardman.svg
+system:
+  nature: 5
+  natureDescriptors: Reaving, Scheming, Swimming
+  might: 4
+  precedence: '1'
+  type: Folk
+  instinct: Never kill when you can take a captive
+  armor: Scales (equivalent to chain armor)
+  specialRules: Lore Master's Manual, p. 253
+  isBoss: false
+  conditions:
+    hungry: false
+    angry: false
+    afraid: false
+    exhausted: false
+    injured: false
+    sick: false
+    dead: false
+  dispositions:
+    - conflictType: Capture
+      hp: 12
+    - conflictType: Kill
+      hp: 7
+    - conflictType: Convince
+      hp: 5
+  weapons:
+    - name: Venomous Bite
+      conflictTypes: K, Cap, D/O
+      attack: +1D
+      defend: ''
+      feint: ''
+      maneuver: ''
+    - name: Lightning Reflexes
+      conflictTypes: K, Cap, D/O
+      attack: ''
+      defend: ''
+      feint: +1s
+      maneuver: ''
+    - name: Sad Lizard Eyes
+      conflictTypes: Convince
+      attack: ''
+      defend: ''
+      feint: +1s
+      maneuver: ''
+    - name: Ancient Memory
+      conflictTypes: Convince
+      attack: ''
+      defend: +1D
+      feint: ''
+      maneuver: ''
+    - name: Tireless Tread
+      conflictTypes: Flee
+      attack: +1D
+      defend: ''
+      feint: ''
+      maneuver: ''
+    - name: Sensitive Ears
+      conflictTypes: Flee
+      attack: ''
+      defend: +1s
+      feint: ''
+      maneuver: ''
+  conflict:
+    hp:
+      value: 0
+      max: 0
+    team: gm
+  description: Lore Master's Manual, p. 253
+prototypeToken:
+  actorLink: false
+  appendNumber: true
+  disposition: -1
+items: []
+effects: []
+_key: '!actors!a1b2c3d4e5f6001f'

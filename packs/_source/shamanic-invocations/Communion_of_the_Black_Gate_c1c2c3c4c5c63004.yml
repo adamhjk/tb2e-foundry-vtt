@@ -1,0 +1,72 @@
+_id: c1c2c3c4c5c63004
+name: Communion of the Black Gate
+type: invocation
+img: systems/tb2e/icons/ffffff/transparent/1x1/lorc/magic-gate.svg
+system:
+  description: "Lore Master's Manual, p. 52"
+  circle: 3
+  castingType: factors
+  fixedObstacle: 0
+  obstacleNote: ""
+  invocationTime: 3
+  invocationTimeWithRelic: 2
+  duration: One turn
+  factors:
+    - name: Corpse
+      options:
+        - label: "Recent"
+          value: 1
+        - label: "Three days old"
+          value: 2
+        - label: "Bones"
+          value: 3
+    - name: Death
+      options:
+        - label: "Violent"
+          value: 0
+        - label: "Peaceful"
+          value: 1
+    - name: Species
+      options:
+        - label: "Human, halfling or folk type"
+          value: 0
+        - label: "Troll type or dwarf"
+          value: 1
+        - label: "Beast type"
+          value: 2
+    - name: Grave
+      options:
+        - label: "Desecrated"
+          value: 1
+        - label: "Unsanctified"
+          value: 2
+        - label: "Sanctified"
+          value: 3
+  factorNote: ""
+  versusDefense: ""
+  mightPenalty: true
+  sacramental: A portion of blood or wine
+  relic: A polished obsidian mirror
+  relicInventory: carried 1 or pack 1
+  burden: 4
+  burdenWithRelic: 3
+  swapSkill: ""
+  swapConflictTypes: []
+  conflictBonuses:
+    attack:
+      type: dice
+      value: 0
+    defend:
+      type: dice
+      value: 0
+    feint:
+      type: dice
+      value: 0
+    maneuver:
+      type: dice
+      value: 0
+  conflictQualities: []
+  specialRules: "Lore Master's Manual, p. 52"
+  performed: false
+effects: []
+_key: '!items!c1c2c3c4c5c63004'

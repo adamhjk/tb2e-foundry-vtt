@@ -1,0 +1,62 @@
+_id: c1c2c3c4c5c6200a
+name: Tongue of the Lord of Beasts
+type: invocation
+img: systems/tb2e/icons/ffffff/transparent/1x1/lorc/beast-eye.svg
+system:
+  description: "Lore Master's Manual, p. 49"
+  circle: 2
+  castingType: factors
+  fixedObstacle: 0
+  obstacleNote: ""
+  invocationTime: 2
+  invocationTimeWithRelic: 1
+  duration: Variable
+  factors:
+    - name: Animal Type
+      options:
+        - label: "Apes, dolphins, whales or birds"
+          value: 1
+        - label: "Dogs, seals, pigs or cats"
+          value: 2
+        - label: "Cows or horses"
+          value: 3
+        - label: "Fish"
+          value: 4
+        - label: "Insects"
+          value: 5
+    - name: Duration
+      options:
+        - label: "One turn"
+          value: 0
+        - label: "Two turns"
+          value: 1
+        - label: "Phase"
+          value: 2
+  factorNote: ""
+  versusDefense: ""
+  mightPenalty: true
+  sacramental: A tongue of the desired beast to be communicated with
+  relic: Vial of saliva from the Lord of Beasts
+  relicInventory: pack 1
+  burden: 3
+  burdenWithRelic: 2
+  swapSkill: ""
+  swapConflictTypes: []
+  conflictBonuses:
+    attack:
+      type: dice
+      value: 0
+    defend:
+      type: dice
+      value: 0
+    feint:
+      type: dice
+      value: 0
+    maneuver:
+      type: dice
+      value: 0
+  conflictQualities: []
+  specialRules: ''
+  performed: false
+effects: []
+_key: '!items!c1c2c3c4c5c6200a'

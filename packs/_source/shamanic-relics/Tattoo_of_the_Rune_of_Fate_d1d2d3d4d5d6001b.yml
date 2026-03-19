@@ -1,0 +1,22 @@
+_id: d1d2d3d4d5d6001b
+name: Tattoo of the Rune of Fate
+type: relic
+img: systems/tb2e/icons/ffffff/transparent/1x1/lorc/rune-stone.svg
+system:
+  description: "Lore Master's Manual, p. 52"
+  slot: ''
+  slotIndex: 0
+  slotOptions: {}
+  cost: 0
+  damaged: false
+  dropped: false
+  quantity: 1
+  quantityMax: 1
+  relicTier: minor
+  linkedInvocations:
+    - Byrnie of the Disir
+  linkedCircle: null
+  immortal: Lords of Fate
+  lore: ''
+effects: []
+_key: '!items!d1d2d3d4d5d6001b'

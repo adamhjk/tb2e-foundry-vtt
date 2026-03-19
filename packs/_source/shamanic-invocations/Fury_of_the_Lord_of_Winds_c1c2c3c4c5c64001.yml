@@ -1,0 +1,56 @@
+_id: c1c2c3c4c5c64001
+name: Fury of the Lord of Winds
+type: invocation
+img: systems/tb2e/icons/ffffff/transparent/1x1/lorc/whirlwind.svg
+system:
+  description: "Lore Master's Manual, p. 56"
+  circle: 4
+  castingType: factors
+  fixedObstacle: 0
+  obstacleNote: ""
+  invocationTime: 3
+  invocationTimeWithRelic: 2
+  duration: "One or two phases"
+  factors:
+    - name: Weather Type
+      options:
+        - label: "Gale"
+          value: 3
+        - label: "Storm or ice storm"
+          value: 4
+        - label: "Heatwave or extreme cold"
+          value: 5
+    - name: Seasonality
+      options:
+        - label: "Seasonable"
+          value: 1
+        - label: "Unseasonable"
+          value: 2
+  factorNote: ""
+  versusDefense: ""
+  mightPenalty: true
+  sacramental: A bit of rope unknotted to release the wind
+  relic: "Njor's drum"
+  relicInventory: carried 2, pack 3
+  burden: 5
+  burdenWithRelic: 4
+  swapSkill: ""
+  swapConflictTypes: []
+  conflictBonuses:
+    attack:
+      type: dice
+      value: 0
+    defend:
+      type: dice
+      value: 0
+    feint:
+      type: dice
+      value: 0
+    maneuver:
+      type: dice
+      value: 0
+  conflictQualities: []
+  specialRules: "Lore Master's Manual, p. 56"
+  performed: false
+effects: []
+_key: '!items!c1c2c3c4c5c64001'

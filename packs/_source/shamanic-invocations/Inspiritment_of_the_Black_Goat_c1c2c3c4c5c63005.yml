@@ -1,0 +1,58 @@
+_id: c1c2c3c4c5c63005
+name: Inspiritment of the Black Goat
+type: invocation
+img: systems/tb2e/icons/ffffff/transparent/1x1/lorc/ghost-ally.svg
+system:
+  description: "Lore Master's Manual, p. 53"
+  circle: 3
+  castingType: factors
+  fixedObstacle: 0
+  obstacleNote: ""
+  invocationTime: 2
+  invocationTimeWithRelic: 1
+  duration: "One phase (or more)"
+  factors:
+    - name: Type
+      options:
+        - label: "Aptrgangr [again-walker]"
+          value: 1
+        - label: "Tomb guardian"
+          value: 2
+        - label: "Skeletal honor guard"
+          value: 3
+    - name: Death Site
+      options:
+        - label: "Gibbet or battlefield"
+          value: 1
+        - label: "Graveyard or grave pit"
+          value: 2
+        - label: "Ossuary"
+          value: 3
+  factorNote: ""
+  versusDefense: ""
+  mightPenalty: true
+  sacramental: "A live, black goat (who is set free to roam)"
+  relic: An obsidian rod capped with a skull
+  relicInventory: carried 1 or pack 1
+  burden: 4
+  burdenWithRelic: 3
+  swapSkill: ""
+  swapConflictTypes: []
+  conflictBonuses:
+    attack:
+      type: dice
+      value: 0
+    defend:
+      type: dice
+      value: 0
+    feint:
+      type: dice
+      value: 0
+    maneuver:
+      type: dice
+      value: 0
+  conflictQualities: []
+  specialRules: "Lore Master's Manual, p. 53"
+  performed: false
+effects: []
+_key: '!items!c1c2c3c4c5c63005'

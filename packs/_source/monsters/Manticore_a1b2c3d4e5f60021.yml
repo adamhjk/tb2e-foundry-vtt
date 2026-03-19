@@ -1,0 +1,79 @@
+_id: a1b2c3d4e5f60021
+name: Manticore
+type: monster
+img: systems/tb2e/icons/ffffff/transparent/1x1/lorc/scorpion.svg
+system:
+  nature: 6
+  natureDescriptors: Ambushing, Devouring, Mimicking
+  might: 5
+  precedence: '0'
+  type: Beast
+  instinct: Always toy with my prey before the kill
+  armor: Hide (equivalent to leather armor)
+  specialRules: Lore Master's Manual, p. 255
+  isBoss: false
+  conditions:
+    hungry: false
+    angry: false
+    afraid: false
+    exhausted: false
+    injured: false
+    sick: false
+    dead: false
+  dispositions:
+    - conflictType: Kill
+      hp: 15
+    - conflictType: Trick
+      hp: 9
+    - conflictType: Drive Off
+      hp: 6
+  weapons:
+    - name: Razor Sharp Teeth
+      conflictTypes: K, Cap, D/O
+      attack: +1D
+      defend: ''
+      feint: ''
+      maneuver: ''
+    - name: Springing Leap
+      conflictTypes: K, Cap, D/O
+      attack: ''
+      defend: ''
+      feint: ''
+      maneuver: +1D
+    - name: Tail Spikes
+      conflictTypes: K, Cap, D/O
+      attack: +1s
+      defend: ''
+      feint: +1D
+      maneuver: ''
+    - name: Cunning Mind
+      conflictTypes: Trick
+      attack: +1D
+      defend: ''
+      feint: ''
+      maneuver: ''
+    - name: Mimicry
+      conflictTypes: Trick
+      attack: ''
+      defend: ''
+      feint: +2D
+      maneuver: ''
+    - name: Many Faced
+      conflictTypes: Trick
+      attack: ''
+      defend: ''
+      feint: ''
+      maneuver: +1s
+  conflict:
+    hp:
+      value: 0
+      max: 0
+    team: gm
+  description: Lore Master's Manual, p. 255
+prototypeToken:
+  actorLink: false
+  appendNumber: true
+  disposition: -1
+items: []
+effects: []
+_key: '!actors!a1b2c3d4e5f60021'

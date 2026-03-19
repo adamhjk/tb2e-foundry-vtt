@@ -32,7 +32,7 @@ export const abilities = {
 };
 
 /**
- * All 34 skills with Beginner's Luck ability reference and suggested help skills.
+ * All 41 skills with Beginner's Luck ability reference and suggested help skills.
  * bl: "W" = Will, "H" = Health
  * help: array of skill keys that can provide help dice on tests of this skill
  * @enum {object}
@@ -41,16 +41,21 @@ export const skills = {
   alchemist:    { label: "TB2E.Skill.Alchemist",    bl: "W", help: ["loremaster", "laborer"],     page: "DH p.160" },
   arcanist:     { label: "TB2E.Skill.Arcanist",     bl: "W", help: ["loremaster"],                page: "DH p.161" },
   armorer:      { label: "TB2E.Skill.Armorer",       bl: "H", help: ["smith", "laborer"],          page: "DH p.161" },
+  beggar:       { label: "TB2E.Skill.Beggar",       bl: "W", help: ["orator", "manipulator"],     page: "LMM p.36" },
+  butcher:      { label: "TB2E.Skill.Butcher",      bl: "H", help: ["cook", "laborer"],           page: "LMM p.37" },
   carpenter:    { label: "TB2E.Skill.Carpenter",    bl: "H", help: ["alchemist", "laborer"],      page: "DH p.161" },
   cartographer: { label: "TB2E.Skill.Cartographer", bl: "W", help: ["scholar", "pathfinder"],     page: "DH p.162" },
   commander:    { label: "TB2E.Skill.Commander",    bl: "W", help: ["steward", "orator"],         page: "DH p.162" },
   cook:         { label: "TB2E.Skill.Cook",         bl: "W", help: ["alchemist", "laborer"],      page: "DH p.163" },
   criminal:     { label: "TB2E.Skill.Criminal",     bl: "H", help: ["scout", "scholar"],          page: "DH p.163" },
   dungeoneer:   { label: "TB2E.Skill.Dungeoneer",   bl: "H", help: ["sapper", "survivalist"],     page: "DH p.164" },
+  enchanter:    { label: "TB2E.Skill.Enchanter",    bl: "W", help: ["alchemist", "arcanist"],     page: "LMM pp.37-38" },
   fighter:      { label: "TB2E.Skill.Fighter",      bl: "H", help: ["hunter"],                    page: "DH p.164" },
+  fisher:       { label: "TB2E.Skill.Fisher",       bl: "W", help: ["laborer", "sailor"],         page: "LMM pp.38-39" },
   haggler:      { label: "TB2E.Skill.Haggler",      bl: "W", help: ["manipulator"],               page: "DH p.165" },
   healer:       { label: "TB2E.Skill.Healer",       bl: "W", help: ["survivalist", "alchemist"],  page: "DH p.165" },
   hunter:       { label: "TB2E.Skill.Hunter",       bl: "H", help: ["survivalist", "laborer"],    page: "DH p.166" },
+  jeweler:      { label: "TB2E.Skill.Jeweler",      bl: "W", help: ["laborer", "alchemist"],      page: "LMM p.39" },
   laborer:      { label: "TB2E.Skill.Laborer",      bl: "H", help: ["peasant"],                   page: "DH pp.166-167" },
   loremaster:   { label: "TB2E.Skill.Loremaster",   bl: "W", help: ["arcanist", "theologian"],    page: "DH p.167" },
   manipulator:  { label: "TB2E.Skill.Manipulator",  bl: "W", help: ["haggler", "persuader"],      page: "DH p.167" },
@@ -66,10 +71,12 @@ export const skills = {
   scavenger:    { label: "TB2E.Skill.Scavenger",    bl: "H", help: ["scout"],                     page: "DH p.172" },
   scholar:      { label: "TB2E.Skill.Scholar",      bl: "W", help: ["loremaster", "steward"],     page: "DH pp.172-173" },
   scout:        { label: "TB2E.Skill.Scout",        bl: "W", help: ["pathfinder", "hunter"],      page: "DH p.173" },
-  smith:        { label: "TB2E.Skill.Smith",        bl: "H", help: ["laborer"],                   page: "DH p.249" },
+  smith:        { label: "TB2E.Skill.Smith",        bl: "H", help: ["laborer", "armorer"],         page: "LMM pp.39-40" },
   steward:      { label: "TB2E.Skill.Steward",      bl: "W", help: ["scholar", "theologian"],     page: "DH p.174" },
   stonemason:   { label: "TB2E.Skill.Stonemason",   bl: "H", help: ["laborer"],                   page: "DH p.174" },
+  strategist:   { label: "TB2E.Skill.Strategist",   bl: "W", help: ["commander", "scholar", "steward"], page: "LMM p.40" },
   survivalist:  { label: "TB2E.Skill.Survivalist",  bl: "H", help: ["peasant"],                   page: "DH p.175" },
+  tanner:       { label: "TB2E.Skill.Tanner",       bl: "H", help: ["laborer", "armorer"],        page: "LMM p.40" },
   theologian:   { label: "TB2E.Skill.Theologian",   bl: "W", help: ["scholar", "ritualist"],      page: "DH p.176" },
   weaver:       { label: "TB2E.Skill.Weaver",       bl: "W", help: ["laborer", "peasant"],        page: "DH p.176" }
 };

@@ -1,0 +1,23 @@
+_id: e05a2b3c4d5e6f7a
+name: Hyresti's Silver Chalice
+type: relic
+img: systems/tb2e/icons/ffffff/transparent/1x1/delapouite/column-vase.svg
+system:
+  description: "Dungeoneer's Handbook, p. 215"
+  slot: ''
+  slotIndex: 0
+  slotOptions:
+    pack: 1
+  cost: 0
+  damaged: false
+  dropped: false
+  quantity: 1
+  quantityMax: 1
+  relicTier: minor
+  linkedInvocations:
+    - Blood Vow to the Lords of Creation
+  linkedCircle: null
+  immortal: Lords of Creation
+  lore: ''
+effects: []
+_key: '!items!e05a2b3c4d5e6f7a'

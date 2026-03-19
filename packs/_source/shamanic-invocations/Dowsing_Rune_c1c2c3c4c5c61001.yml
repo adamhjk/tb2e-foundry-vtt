@@ -1,0 +1,42 @@
+_id: c1c2c3c4c5c61001
+name: Dowsing Rune
+type: invocation
+img: systems/tb2e/icons/ffffff/transparent/1x1/delapouite/water-diviner-stick.svg
+system:
+  description: "Lore Master's Manual, p. 41"
+  circle: 1
+  castingType: skillSwap
+  fixedObstacle: 0
+  obstacleNote: ""
+  invocationTime: 1
+  invocationTimeWithRelic: 0
+  duration: One turn
+  factors: []
+  factorNote: ""
+  versusDefense: ""
+  mightPenalty: true
+  sacramental: ''
+  relic: A rune-inscribed dowsing rod
+  relicInventory: pack 1
+  burden: 2
+  burdenWithRelic: 1
+  swapSkill: survivalist
+  swapConflictTypes: []
+  conflictBonuses:
+    attack:
+      type: dice
+      value: 0
+    defend:
+      type: dice
+      value: 0
+    feint:
+      type: dice
+      value: 0
+    maneuver:
+      type: dice
+      value: 0
+  conflictQualities: []
+  specialRules: ''
+  performed: false
+effects: []
+_key: '!items!c1c2c3c4c5c61001'

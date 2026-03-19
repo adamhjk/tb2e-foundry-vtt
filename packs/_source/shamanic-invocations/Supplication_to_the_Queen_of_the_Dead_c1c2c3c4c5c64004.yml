@@ -1,0 +1,42 @@
+_id: c1c2c3c4c5c64004
+name: Supplication to the Queen of the Dead
+type: invocation
+img: systems/tb2e/icons/ffffff/transparent/1x1/lorc/queen-crown.svg
+system:
+  description: "Lore Master's Manual, p. 58"
+  circle: 4
+  castingType: fixed
+  fixedObstacle: 5
+  obstacleNote: ""
+  invocationTime: 3
+  invocationTimeWithRelic: 2
+  duration: One phase
+  factors: []
+  factorNote: ""
+  versusDefense: ""
+  mightPenalty: true
+  sacramental: Grave goods stolen from a person well-loved
+  relic: "A vial of Halja's tears"
+  relicInventory: pocket 1
+  burden: 5
+  burdenWithRelic: 4
+  swapSkill: ""
+  swapConflictTypes: []
+  conflictBonuses:
+    attack:
+      type: dice
+      value: 0
+    defend:
+      type: dice
+      value: 0
+    feint:
+      type: dice
+      value: 0
+    maneuver:
+      type: dice
+      value: 0
+  conflictQualities: []
+  specialRules: "Lore Master's Manual, p. 58"
+  performed: false
+effects: []
+_key: '!items!c1c2c3c4c5c64004'

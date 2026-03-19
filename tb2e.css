@@ -7514,6 +7514,11 @@ body.theme-dark .tb2e.sheet .torchbearer-logo,
   max-width: none;
   text-align: center;
 }
+.tb2e.sheet.monster .monster-stat-grid input[name="system.type"] {
+  flex: 1 1 auto;
+  width: auto;
+  text-align: left;
+}
 /* Nature Cell */
 .tb2e.sheet.monster .monster-stat-grid .rollable {
   border-radius: var(--tb-radius);

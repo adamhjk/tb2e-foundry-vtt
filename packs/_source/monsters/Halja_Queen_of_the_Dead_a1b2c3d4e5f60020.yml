@@ -1,0 +1,67 @@
+_id: a1b2c3d4e5f60020
+name: Halja, Queen of the Dead
+type: monster
+img: systems/tb2e/icons/ffffff/transparent/1x1/lorc/queen-crown.svg
+system:
+  nature: 14
+  natureDescriptors: Claiming the Dead, Judging, Ruling Hel
+  might: 8
+  precedence: '7'
+  type: Jotunn
+  instinct: Always give to each newcomer according to their due
+  armor: None
+  specialRules: Lore Master's Manual, p. 254
+  isBoss: true
+  conditions:
+    hungry: false
+    angry: false
+    afraid: false
+    exhausted: false
+    injured: false
+    sick: false
+    dead: false
+  dispositions:
+    - conflictType: Trick
+      hp: 30
+    - conflictType: Convince
+      hp: 17
+    - conflictType: Negotiate
+      hp: 9
+  weapons:
+    - name: Piercing Gaze
+      conflictTypes: Trick, Convince, Negotiate
+      attack: ''
+      defend: +1D
+      feint: ''
+      maneuver: +1D
+    - name: Impenetrable Gloom
+      conflictTypes: Trick, Convince
+      attack: ''
+      defend: +1s
+      feint: +1D
+      maneuver: ''
+    - name: Protectiveness
+      conflictTypes: Convince, Negotiate
+      attack: +1D
+      defend: ''
+      feint: ''
+      maneuver: ''
+    - name: Ancient Strength
+      conflictTypes: K, Cap, D/O
+      attack: +2D
+      defend: ''
+      feint: ''
+      maneuver: ''
+  conflict:
+    hp:
+      value: 0
+      max: 0
+    team: gm
+  description: Lore Master's Manual, p. 254
+prototypeToken:
+  actorLink: false
+  appendNumber: true
+  disposition: -1
+items: []
+effects: []
+_key: '!actors!a1b2c3d4e5f60020'

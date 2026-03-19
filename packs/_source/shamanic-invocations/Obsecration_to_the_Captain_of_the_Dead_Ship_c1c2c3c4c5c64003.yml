@@ -1,0 +1,68 @@
+_id: c1c2c3c4c5c64003
+name: Obsecration to the Captain of the Dead Ship
+type: invocation
+img: systems/tb2e/icons/ffffff/transparent/1x1/delapouite/ship-wreck.svg
+system:
+  description: "Lore Master's Manual, p. 57"
+  circle: 4
+  castingType: factors
+  fixedObstacle: 0
+  obstacleNote: ""
+  invocationTime: 2
+  invocationTimeWithRelic: 1
+  duration: Variable
+  factors:
+    - name: Duration
+      options:
+        - label: "One warfare conflict"
+          value: 1
+        - label: "One adventure"
+          value: 2
+        - label: "Until destroyed"
+          value: 3
+    - name: Force
+      options:
+        - label: "One company or ship"
+          value: 2
+        - label: "Two companies or ships"
+          value: 3
+        - label: "Five companies or ships"
+          value: 4
+        - label: "Ten companies or ships"
+          value: 5
+    - name: Field of the Dead
+      options:
+        - label: "Active graveyard, necropolis or recent massacre (again-walkers)"
+          value: 1
+        - label: "Old battlefield or long-ago massacre (tomb guardians)"
+          value: 2
+        - label: "Ancient battlefield or abandoned necropolis (skeletal honor guard)"
+          value: 3
+  factorNote: ""
+  versusDefense: ""
+  mightPenalty: true
+  sacramental: A black goat
+  relic: The skull scepter of Hrym
+  relicInventory: hand/carried 1
+  burden: 5
+  burdenWithRelic: 4
+  swapSkill: ""
+  swapConflictTypes: []
+  conflictBonuses:
+    attack:
+      type: dice
+      value: 0
+    defend:
+      type: dice
+      value: 0
+    feint:
+      type: dice
+      value: 0
+    maneuver:
+      type: dice
+      value: 0
+  conflictQualities: []
+  specialRules: "Lore Master's Manual, p. 57"
+  performed: false
+effects: []
+_key: '!items!c1c2c3c4c5c64003'

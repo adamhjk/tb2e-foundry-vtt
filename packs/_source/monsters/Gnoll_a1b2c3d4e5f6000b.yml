@@ -1,0 +1,79 @@
+_id: a1b2c3d4e5f6000b
+name: Gnoll
+type: monster
+img: systems/tb2e/icons/ffffff/transparent/1x1/caro-asercion/hyena-head.svg
+system:
+  nature: 5
+  natureDescriptors: Ambushing, Devouring, Worshipping
+  might: 3
+  precedence: '1'
+  type: Troll
+  instinct: Never attack directly; always wait in ambush
+  armor: Leather armor; chain armor for the leader
+  specialRules: Scholar's Guide, p. 186
+  isBoss: false
+  conditions:
+    hungry: false
+    angry: false
+    afraid: false
+    exhausted: false
+    injured: false
+    sick: false
+    dead: false
+  dispositions:
+    - conflictType: Capture
+      hp: 12
+    - conflictType: Flee/Pursue
+      hp: 6
+    - conflictType: Drive Off
+      hp: 4
+  weapons:
+    - name: Flail
+      conflictTypes: K, Cap, D/O
+      attack: ''
+      defend: -1D
+      feint: +1D
+      maneuver: ''
+    - name: Battle Axe
+      conflictTypes: K, Cap, D/O
+      attack: +1s
+      defend: -1D
+      feint: ''
+      maneuver: ''
+    - name: Bow
+      conflictTypes: K, Cap, D/O
+      attack: ''
+      defend: ''
+      feint: ''
+      maneuver: +2D
+    - name: Iron Grip
+      conflictTypes: Capture
+      attack: +1s
+      defend: ''
+      feint: ''
+      maneuver: ''
+    - name: Loping Stride
+      conflictTypes: Flee/Pursue
+      attack: ''
+      defend: ''
+      feint: ''
+      maneuver: +2D
+    - name: Intimidating Bark
+      conflictTypes: D/O
+      attack: ''
+      defend: ''
+      feint: +1s
+      maneuver: ''
+  conflict:
+    hp:
+      value: 0
+      max: 0
+    team: gm
+  description: Scholar's Guide, p. 186
+prototypeToken:
+  actorLink: false
+  appendNumber: true
+  disposition: -1
+items: []
+effects: []
+_key: '!actors!a1b2c3d4e5f6000b'

@@ -3,7 +3,7 @@ name: Numinous Sigil
 type: spell
 img: systems/tb2e/icons/ffffff/transparent/1x1/delapouite/aztec-calendar-sun.svg
 system:
-  description: "<p>Dungeoneer's Handbook, p. 195</p>"
+  description: "Dungeoneer's Handbook, p. 195"
   circle: 2
   castingType: factors
   fixedObstacle: 0

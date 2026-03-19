@@ -1,0 +1,42 @@
+_id: c1c2c3c4c5c62002
+name: Fevers of the Lord of Plagues
+type: invocation
+img: systems/tb2e/icons/ffffff/transparent/1x1/lorc/frostfire.svg
+system:
+  description: "Lore Master's Manual, p. 45"
+  circle: 2
+  castingType: fixed
+  fixedObstacle: 4
+  obstacleNote: ""
+  invocationTime: 2
+  invocationTimeWithRelic: 1
+  duration: Instantaneous
+  factors: []
+  factorNote: ""
+  versusDefense: ""
+  mightPenalty: true
+  sacramental: A leaf of holy basil
+  relic: Idol of the Lords of All Fevers and Plagues
+  relicInventory: worn/neck or pocket
+  burden: 3
+  burdenWithRelic: 2
+  swapSkill: ""
+  swapConflictTypes: []
+  conflictBonuses:
+    attack:
+      type: dice
+      value: 0
+    defend:
+      type: dice
+      value: 0
+    feint:
+      type: dice
+      value: 0
+    maneuver:
+      type: dice
+      value: 0
+  conflictQualities: []
+  specialRules: ''
+  performed: false
+effects: []
+_key: '!items!c1c2c3c4c5c62002'

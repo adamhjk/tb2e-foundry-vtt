@@ -1,0 +1,68 @@
+_id: c1c2c3c4c5c64005
+name: "Vali's Dance"
+type: invocation
+img: systems/tb2e/icons/ffffff/transparent/1x1/lorc/crossed-swords.svg
+system:
+  description: "Lore Master's Manual, p. 58"
+  circle: 4
+  castingType: factors
+  fixedObstacle: 0
+  obstacleNote: ""
+  invocationTime: 1
+  invocationTimeWithRelic: 0
+  duration: One turn
+  factors:
+    - name: Advantage
+      options:
+        - label: "+1D"
+          value: 2
+        - label: "+2D"
+          value: 3
+        - label: "+3D"
+          value: 4
+    - name: Duration
+      options:
+        - label: "One round"
+          value: 1
+        - label: "Ambush"
+          value: 2
+        - label: "Skirmish"
+          value: 3
+        - label: "Battle"
+          value: 4
+    - name: Units
+      options:
+        - label: "Company of soldiers"
+          value: 3
+        - label: "War band (multiple companies)"
+          value: 4
+        - label: "Entire army"
+          value: 5
+  factorNote: ""
+  versusDefense: ""
+  mightPenalty: true
+  sacramental: The life of your eldest relative
+  relic: "Vali's corpse splayed in a banner"
+  relicInventory: carried 4
+  burden: 5
+  burdenWithRelic: 4
+  swapSkill: ""
+  swapConflictTypes: []
+  conflictBonuses:
+    attack:
+      type: dice
+      value: 0
+    defend:
+      type: dice
+      value: 0
+    feint:
+      type: dice
+      value: 0
+    maneuver:
+      type: dice
+      value: 0
+  conflictQualities: []
+  specialRules: ''
+  performed: false
+effects: []
+_key: '!items!c1c2c3c4c5c64005'

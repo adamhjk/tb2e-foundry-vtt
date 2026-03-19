@@ -3,7 +3,7 @@ name: Wisdom of the Sages
 type: spell
 img: systems/tb2e/icons/ffffff/transparent/1x1/delapouite/book-cover.svg
 system:
-  description: "<p>Dungeoneer's Handbook, p. 191</p>"
+  description: "Dungeoneer's Handbook, p. 191"
   circle: 1
   castingType: factors
   fixedObstacle: 0

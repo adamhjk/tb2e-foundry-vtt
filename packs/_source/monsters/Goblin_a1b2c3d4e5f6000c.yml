@@ -1,0 +1,67 @@
+_id: a1b2c3d4e5f6000c
+name: Goblin
+type: monster
+img: systems/tb2e/icons/ffffff/transparent/1x1/delapouite/goblin-head.svg
+system:
+  nature: 3
+  natureDescriptors: Lying, Stealing, Fighting
+  might: 2
+  precedence: '0'
+  type: Spirit
+  instinct: Never tell the truth unless it can hurt someone worse than a lie
+  armor: Leather armor; chain armor for the leader
+  specialRules: Scholar's Guide, p. 187
+  isBoss: false
+  conditions:
+    hungry: false
+    angry: false
+    afraid: false
+    exhausted: false
+    injured: false
+    sick: false
+    dead: false
+  dispositions:
+    - conflictType: Kill
+      hp: 7
+    - conflictType: Trick
+      hp: 3
+    - conflictType: Flee
+      hp: 2
+  weapons:
+    - name: Short Sword
+      conflictTypes: K, Cap, D/O
+      attack: (+1D)
+      defend: (+1D)
+      feint: (+1D)
+      maneuver: (+1D)
+    - name: Snaggle-Toothed Bite
+      conflictTypes: Kill
+      attack: ''
+      defend: ''
+      feint: +1s
+      maneuver: ''
+    - name: Cruel Sense of Humor
+      conflictTypes: Convince
+      attack: ''
+      defend: ''
+      feint: ''
+      maneuver: +1D
+    - name: Scrawny Little Legs
+      conflictTypes: Flee
+      attack: ''
+      defend: +1s
+      feint: ''
+      maneuver: ''
+  conflict:
+    hp:
+      value: 0
+      max: 0
+    team: gm
+  description: Scholar's Guide, p. 187
+prototypeToken:
+  actorLink: false
+  appendNumber: true
+  disposition: -1
+items: []
+effects: []
+_key: '!actors!a1b2c3d4e5f6000c'

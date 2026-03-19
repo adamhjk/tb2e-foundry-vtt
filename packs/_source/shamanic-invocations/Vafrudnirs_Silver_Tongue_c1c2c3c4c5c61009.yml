@@ -1,0 +1,42 @@
+_id: c1c2c3c4c5c61009
+name: "Vafrudnir's Silver Tongue"
+type: invocation
+img: systems/tb2e/icons/ffffff/transparent/1x1/lorc/lizard-tongue.svg
+system:
+  description: "Lore Master's Manual, p. 43"
+  circle: 1
+  castingType: fixed
+  fixedObstacle: 3
+  obstacleNote: ""
+  invocationTime: 1
+  invocationTimeWithRelic: 0
+  duration: One turn
+  factors: []
+  factorNote: ""
+  versusDefense: ""
+  mightPenalty: true
+  sacramental: ''
+  relic: The preserved tongue of a liar, hung from the neck
+  relicInventory: worn/neck
+  burden: 2
+  burdenWithRelic: 1
+  swapSkill: ""
+  swapConflictTypes: []
+  conflictBonuses:
+    attack:
+      type: dice
+      value: 0
+    defend:
+      type: dice
+      value: 0
+    feint:
+      type: dice
+      value: 0
+    maneuver:
+      type: dice
+      value: 0
+  conflictQualities: []
+  specialRules: ''
+  performed: false
+effects: []
+_key: '!items!c1c2c3c4c5c61009'

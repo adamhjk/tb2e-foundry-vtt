@@ -1,0 +1,61 @@
+_id: a1b2c3d4e5f6001b
+name: Cyclops
+type: monster
+img: systems/tb2e/icons/ffffff/transparent/1x1/lorc/cyclops.svg
+system:
+  nature: 9
+  natureDescriptors: Cooking, Smashing, Herding (or Crafting)
+  might: 7
+  precedence: '1'
+  type: Troll
+  instinct: Always defend my honor
+  armor: Pelt of a golden lion (equivalent to leather armor)
+  specialRules: Lore Master's Manual, p. 249
+  isBoss: false
+  conditions:
+    hungry: false
+    angry: false
+    afraid: false
+    exhausted: false
+    injured: false
+    sick: false
+    dead: false
+  dispositions:
+    - conflictType: Drive Off
+      hp: 20
+    - conflictType: Kill
+      hp: 11
+    - conflictType: Trick
+      hp: 6
+  weapons:
+    - name: Massive Cudgel
+      conflictTypes: K, Cap, D/O
+      attack: +1D
+      defend: ''
+      feint: ''
+      maneuver: ''
+    - name: Tremendous Stride
+      conflictTypes: K, Cap, D/O
+      attack: ''
+      defend: ''
+      feint: ''
+      maneuver: +1s
+    - name: Dull
+      conflictTypes: Trick
+      attack: ''
+      defend: +1D
+      feint: ''
+      maneuver: ''
+  conflict:
+    hp:
+      value: 0
+      max: 0
+    team: gm
+  description: Lore Master's Manual, p. 249
+prototypeToken:
+  actorLink: false
+  appendNumber: true
+  disposition: -1
+items: []
+effects: []
+_key: '!actors!a1b2c3d4e5f6001b'

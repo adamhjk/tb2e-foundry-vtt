@@ -1,0 +1,42 @@
+_id: c1c2c3c4c5c63002
+name: Boon of the Otherworld
+type: invocation
+img: systems/tb2e/icons/ffffff/transparent/1x1/lorc/totem-mask.svg
+system:
+  description: "Lore Master's Manual, p. 51"
+  circle: 3
+  castingType: fixed
+  fixedObstacle: 3
+  obstacleNote: ""
+  invocationTime: 1
+  invocationTimeWithRelic: 0
+  duration: "Variable (one turn plus MoS)"
+  factors: []
+  factorNote: ""
+  versusDefense: ""
+  mightPenalty: true
+  sacramental: A libation of beer, wine or spirits
+  relic: A claw, tooth, feather or tuft of fur from the Lord of Beasts
+  relicInventory: worn/neck
+  burden: 4
+  burdenWithRelic: 3
+  swapSkill: ""
+  swapConflictTypes: []
+  conflictBonuses:
+    attack:
+      type: dice
+      value: 0
+    defend:
+      type: dice
+      value: 0
+    feint:
+      type: dice
+      value: 0
+    maneuver:
+      type: dice
+      value: 0
+  conflictQualities: []
+  specialRules: "Lore Master's Manual, p. 51"
+  performed: false
+effects: []
+_key: '!items!c1c2c3c4c5c63002'

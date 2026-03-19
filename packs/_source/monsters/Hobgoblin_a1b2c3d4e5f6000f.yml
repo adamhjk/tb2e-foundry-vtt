@@ -1,0 +1,73 @@
+_id: a1b2c3d4e5f6000f
+name: Hobgoblin
+type: monster
+img: systems/tb2e/icons/ffffff/transparent/1x1/caro-asercion/goblin.svg
+system:
+  nature: 3
+  natureDescriptors: Bullying, Raiding, Murdering
+  might: 3
+  precedence: '1'
+  type: Troll
+  instinct: Always attack the weakest and leave the strongest to starve
+  armor: Leather armor and a mix of shields and helmets
+  specialRules: Scholar's Guide, p. 190
+  isBoss: false
+  conditions:
+    hungry: false
+    angry: false
+    afraid: false
+    exhausted: false
+    injured: false
+    sick: false
+    dead: false
+  dispositions:
+    - conflictType: Kill
+      hp: 7
+    - conflictType: Flee/Pursue
+      hp: 4
+    - conflictType: Drive Off
+      hp: 3
+  weapons:
+    - name: Mace
+      conflictTypes: K, Cap, D/O
+      attack: ''
+      defend: ''
+      feint: ''
+      maneuver: ''
+    - name: Spear
+      conflictTypes: K, Cap, D/O
+      attack: ''
+      defend: (+1D)
+      feint: ''
+      maneuver: +1D
+    - name: Shield
+      conflictTypes: K, Cap, D/O
+      attack: ''
+      defend: +2D
+      feint: ''
+      maneuver: ''
+    - name: Crossbow
+      conflictTypes: K, Cap, D/O
+      attack: +1s
+      defend: ''
+      feint: ''
+      maneuver: +1D
+    - name: Hunting Hounds
+      conflictTypes: Flee/Pursue
+      attack: +1D
+      defend: ''
+      feint: ''
+      maneuver: ''
+  conflict:
+    hp:
+      value: 0
+      max: 0
+    team: gm
+  description: Scholar's Guide, p. 190
+prototypeToken:
+  actorLink: false
+  appendNumber: true
+  disposition: -1
+items: []
+effects: []
+_key: '!actors!a1b2c3d4e5f6000f'

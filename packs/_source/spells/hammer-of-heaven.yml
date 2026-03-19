@@ -1,0 +1,52 @@
+_id: a1b2c3d4e5f64002
+name: Hammer of Heaven
+type: spell
+img: systems/tb2e/icons/ffffff/transparent/1x1/lorc/burning-meteor.svg
+system:
+  description: "Lore Master's Manual, p. 60"
+  circle: 4
+  castingType: skillSwap
+  fixedObstacle: 0
+  obstacleNote: ""
+  castingTime: free
+  duration: "Instantaneous"
+  factors: []
+  factorNote: ""
+  swapSkill: "fighter"
+  swapConflictTypes:
+    - "warfare"
+  versusDefense: ""
+  mightPenalty: false
+  materials: ""
+  focus: "An amber rod"
+  scribeObstacle: 4
+  learnObstacle: 4
+  conflictBonuses:
+    attack:
+      type: dice
+      value: 2
+    defend:
+      type: dice
+      value: 0
+    feint:
+      type: dice
+      value: 0
+    maneuver:
+      type: dice
+      value: 0
+  conflictQualities:
+    - name: "Energy Bolt"
+      description: "+1 Might, +2D Attack (Attack is independent against Maneuver)."
+    - name: "White Fire"
+      description: "Mundane armor offers no protection from Hammer of Heaven."
+    - name: "Shockwave"
+      description: "Disposition lost to Hammer of Heaven cannot be regained, even with a successful Defend action."
+    - name: "Collateral Damage"
+      description: "At the GM's discretion, may split trees or shatter a building at its point of impact."
+  specialRules: "Lore Master's Manual, p. 60"
+  library: false
+  spellbook: false
+  memorized: false
+  cast: false
+  scroll: false
+_key: '!items!a1b2c3d4e5f64002'

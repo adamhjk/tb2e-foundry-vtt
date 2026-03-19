@@ -1,0 +1,42 @@
+_id: c1c2c3c4c5c62003
+name: Frenzy of the Lord of Beasts
+type: invocation
+img: systems/tb2e/icons/ffffff/transparent/1x1/lorc/wolf-howl.svg
+system:
+  description: "Lore Master's Manual, p. 45"
+  circle: 2
+  castingType: versus
+  fixedObstacle: 0
+  obstacleNote: ""
+  invocationTime: 1
+  invocationTimeWithRelic: 0
+  duration: Two turns
+  factors: []
+  factorNote: ""
+  versusDefense: nature
+  mightPenalty: true
+  sacramental: ''
+  relic: A dire wolf cloak
+  relicInventory: worn/torso 1
+  burden: 3
+  burdenWithRelic: 2
+  swapSkill: ""
+  swapConflictTypes: []
+  conflictBonuses:
+    attack:
+      type: dice
+      value: 0
+    defend:
+      type: dice
+      value: 0
+    feint:
+      type: dice
+      value: 0
+    maneuver:
+      type: dice
+      value: 0
+  conflictQualities: []
+  specialRules: ''
+  performed: false
+effects: []
+_key: '!items!c1c2c3c4c5c62003'

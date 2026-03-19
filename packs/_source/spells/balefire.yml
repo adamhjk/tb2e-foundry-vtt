@@ -3,7 +3,7 @@ name: Balefire
 type: spell
 img: systems/tb2e/icons/ffffff/transparent/1x1/lorc/fireball.svg
 system:
-  description: "<p>Dungeoneer's Handbook, p. 201</p>"
+  description: "Dungeoneer's Handbook, p. 201"
   circle: 3
   castingType: skillSwap
   fixedObstacle: 0
@@ -40,7 +40,7 @@ system:
       description: "+1D to cast Balefire if angry."
     - name: "Explosive"
       description: "Bypasses mundane armor, shields and helmets. Increases Might by one. If reduces team below 0 HP, excess damages caster's team."
-  specialRules: "<p>Dungeoneer's Handbook, p. 201</p>"
+  specialRules: "Dungeoneer's Handbook, p. 201"
   library: false
   spellbook: false
   memorized: false

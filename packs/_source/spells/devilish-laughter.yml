@@ -3,7 +3,7 @@ name: Devilish Laughter
 type: spell
 img: systems/tb2e/icons/ffffff/transparent/1x1/delapouite/clown.svg
 system:
-  description: "<p>Dungeoneer's Handbook, p. 203</p>"
+  description: "Dungeoneer's Handbook, p. 203"
   circle: 3
   castingType: versus
   fixedObstacle: 0

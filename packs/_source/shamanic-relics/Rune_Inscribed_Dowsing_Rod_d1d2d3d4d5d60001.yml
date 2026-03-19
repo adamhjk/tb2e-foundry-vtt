@@ -1,0 +1,23 @@
+_id: d1d2d3d4d5d60001
+name: Rune-Inscribed Dowsing Rod
+type: relic
+img: systems/tb2e/icons/ffffff/transparent/1x1/delapouite/water-diviner-stick.svg
+system:
+  description: "Lore Master's Manual, p. 41"
+  slot: ''
+  slotIndex: 0
+  slotOptions:
+    pack: 1
+  cost: 0
+  damaged: false
+  dropped: false
+  quantity: 1
+  quantityMax: 1
+  relicTier: minor
+  linkedInvocations:
+    - Dowsing Rune
+  linkedCircle: null
+  immortal: The Water Witch
+  lore: ''
+effects: []
+_key: '!items!d1d2d3d4d5d60001'

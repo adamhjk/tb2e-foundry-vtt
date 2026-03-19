@@ -1,0 +1,58 @@
+_id: c1c2c3c4c5c63006
+name: Orison to the Lord of Locusts
+type: invocation
+img: systems/tb2e/icons/ffffff/transparent/1x1/lorc/bone-gnawer.svg
+system:
+  description: "Lore Master's Manual, p. 54"
+  circle: 3
+  castingType: factors
+  fixedObstacle: 0
+  obstacleNote: ""
+  invocationTime: 2
+  invocationTimeWithRelic: 1
+  duration: Variable
+  factors:
+    - name: Breadth
+      options:
+        - label: "Self"
+          value: 0
+        - label: "Two people"
+          value: 1
+        - label: "Small group"
+          value: 2
+        - label: "Raiding party"
+          value: 3
+    - name: Duration
+      options:
+        - label: "Adventure phase"
+          value: 1
+        - label: "Camp phase"
+          value: 2
+  factorNote: ""
+  versusDefense: ""
+  mightPenalty: true
+  sacramental: A handful of earth desiccated by drought
+  relic: A well-fed locust
+  relicInventory: carried 1, pouch or pocket
+  burden: 4
+  burdenWithRelic: 3
+  swapSkill: ""
+  swapConflictTypes: []
+  conflictBonuses:
+    attack:
+      type: dice
+      value: 0
+    defend:
+      type: dice
+      value: 0
+    feint:
+      type: dice
+      value: 0
+    maneuver:
+      type: dice
+      value: 0
+  conflictQualities: []
+  specialRules: ''
+  performed: false
+effects: []
+_key: '!items!c1c2c3c4c5c63006'

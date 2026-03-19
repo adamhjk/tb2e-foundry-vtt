@@ -1,0 +1,56 @@
+_id: c1c2c3c4c5c62001
+name: Execration
+type: invocation
+img: systems/tb2e/icons/ffffff/transparent/1x1/lorc/cursed-star.svg
+system:
+  description: "Lore Master's Manual, p. 44"
+  circle: 2
+  castingType: factors
+  fixedObstacle: 0
+  obstacleNote: ""
+  invocationTime: 1
+  invocationTimeWithRelic: 0
+  duration: Variable
+  factors:
+    - name: Penalty
+      options:
+        - label: "-1D"
+          value: 3
+        - label: "-2D"
+          value: 4
+    - name: Duration
+      options:
+        - label: "One turn"
+          value: 0
+        - label: "Two turns"
+          value: 1
+        - label: "One phase"
+          value: 2
+  factorNote: ""
+  versusDefense: ""
+  mightPenalty: true
+  sacramental: A sprig of belladonna
+  relic: A brass, eight-pointed Chaos star
+  relicInventory: worn/neck
+  burden: 3
+  burdenWithRelic: 2
+  swapSkill: ""
+  swapConflictTypes: []
+  conflictBonuses:
+    attack:
+      type: dice
+      value: 0
+    defend:
+      type: dice
+      value: 0
+    feint:
+      type: dice
+      value: 0
+    maneuver:
+      type: dice
+      value: 0
+  conflictQualities: []
+  specialRules: ''
+  performed: false
+effects: []
+_key: '!items!c1c2c3c4c5c62001'

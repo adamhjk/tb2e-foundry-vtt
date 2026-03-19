@@ -1,0 +1,79 @@
+_id: a1b2c3d4e5f6001c
+name: Devil Boar
+type: monster
+img: systems/tb2e/icons/ffffff/transparent/1x1/caro-asercion/boar.svg
+system:
+  nature: 5
+  natureDescriptors: Rooting, Goring, Devouring
+  might: 4
+  precedence: '0'
+  type: Troll
+  instinct: Always charge when spooked
+  armor: Tough hides (equivalent to leather armor)
+  specialRules: Lore Master's Manual, p. 250
+  isBoss: false
+  conditions:
+    hungry: false
+    angry: false
+    afraid: false
+    exhausted: false
+    injured: false
+    sick: false
+    dead: false
+  dispositions:
+    - conflictType: Pursue
+      hp: 12
+    - conflictType: Kill
+      hp: 7
+    - conflictType: Trick
+      hp: 3
+  weapons:
+    - name: Razor-sharp Tusks
+      conflictTypes: Kill
+      attack: +1s
+      defend: ''
+      feint: +1D
+      maneuver: ''
+    - name: Ferocious Charge
+      conflictTypes: Kill
+      attack: ''
+      defend: ''
+      feint: ''
+      maneuver: +1D
+    - name: Thunderous Hooves
+      conflictTypes: D/O
+      attack: ''
+      defend: ''
+      feint: ''
+      maneuver: +1s
+    - name: Leathery Hide
+      conflictTypes: D/O
+      attack: ''
+      defend: +1D
+      feint: ''
+      maneuver: ''
+    - name: Thunderous Hooves
+      conflictTypes: Pursue
+      attack: +1D
+      defend: ''
+      feint: ''
+      maneuver: ''
+    - name: Limitless Endurance
+      conflictTypes: Pursue
+      attack: ''
+      defend: +1s
+      feint: ''
+      maneuver: ''
+  conflict:
+    hp:
+      value: 0
+      max: 0
+    team: gm
+  description: Lore Master's Manual, p. 250
+prototypeToken:
+  actorLink: false
+  appendNumber: true
+  disposition: -1
+items: []
+effects: []
+_key: '!actors!a1b2c3d4e5f6001c'

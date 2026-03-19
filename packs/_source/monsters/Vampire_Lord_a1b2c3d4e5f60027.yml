@@ -1,0 +1,85 @@
+_id: a1b2c3d4e5f60027
+name: Vampire Lord
+type: monster
+img: systems/tb2e/icons/ffffff/transparent/1x1/delapouite/resting-vampire.svg
+system:
+  nature: 7
+  natureDescriptors: Hunting, Scheming, Subjugating
+  might: 5
+  precedence: '4'
+  type: Undead
+  instinct: Always drink the blood of my prey
+  armor: Chain or plate armor (in combat as appropriate)
+  specialRules: Lore Master's Manual, pp. 261-262
+  isBoss: true
+  conditions:
+    hungry: false
+    angry: false
+    afraid: false
+    exhausted: false
+    injured: false
+    sick: false
+    dead: false
+  dispositions:
+    - conflictType: Kill
+      hp: 17
+    - conflictType: Capture
+      hp: 10
+    - conflictType: Convince
+      hp: 6
+  weapons:
+    - name: Hideous Bite
+      conflictTypes: K, Cap, D/O
+      attack: +1s
+      defend: ''
+      feint: ''
+      maneuver: ''
+    - name: Monstrous Fortitude
+      conflictTypes: K, Cap, D/O
+      attack: ''
+      defend: +2D
+      feint: ''
+      maneuver: ''
+    - name: Cloak of Shadow
+      conflictTypes: K, Cap, D/O
+      attack: ''
+      defend: ''
+      feint: +1s
+      maneuver: +1D
+    - name: Terrifying Visage
+      conflictTypes: Convince
+      attack: +1D
+      defend: ''
+      feint: +1s
+      maneuver: ''
+    - name: Air of Nobility
+      conflictTypes: Convince
+      attack: ''
+      defend: +1D
+      feint: ''
+      maneuver: +2D
+    - name: Inhuman Alacrity
+      conflictTypes: Flee
+      attack: +2D
+      defend: ''
+      feint: ''
+      maneuver: ''
+    - name: Predatory Senses
+      conflictTypes: Flee
+      attack: ''
+      defend: +1s
+      feint: +2D
+      maneuver: ''
+  conflict:
+    hp:
+      value: 0
+      max: 0
+    team: gm
+  description: Lore Master's Manual, pp. 261-262
+prototypeToken:
+  actorLink: false
+  appendNumber: true
+  disposition: -1
+items: []
+effects: []
+_key: '!actors!a1b2c3d4e5f60027'

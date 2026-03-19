@@ -1,0 +1,48 @@
+_id: c1c2c3c4c5c62005
+name: "Hrym's Hand"
+type: invocation
+img: systems/tb2e/icons/ffffff/transparent/1x1/lorc/cold-heart.svg
+system:
+  description: "Lore Master's Manual, p. 46"
+  circle: 2
+  castingType: skillSwap
+  fixedObstacle: 0
+  obstacleNote: ""
+  invocationTime: 1
+  invocationTimeWithRelic: 0
+  duration: One turn
+  factors: []
+  factorNote: ""
+  versusDefense: ""
+  mightPenalty: true
+  sacramental: A bit of cold ash from a burnt-out fire, rubbed upon the palm
+  relic: "Hrym's fingernail"
+  relicInventory: pocket, worn/neck or worn/hands 1
+  burden: 3
+  burdenWithRelic: 2
+  swapSkill: fighter
+  swapConflictTypes:
+    - kill
+    - driveOff
+  conflictBonuses:
+    attack:
+      type: dice
+      value: 0
+    defend:
+      type: dice
+      value: 0
+    feint:
+      type: dice
+      value: 0
+    maneuver:
+      type: dice
+      value: 0
+  conflictQualities:
+    - name: "Nothingness"
+      description: "Mundane armor provides no protection from Hrym's Hand."
+    - name: "Purified"
+      description: "If the shaman has no conditions (including fresh), they are granted +1D to Ritualist tests."
+  specialRules: "Lore Master's Manual, p. 46"
+  performed: false
+effects: []
+_key: '!items!c1c2c3c4c5c62005'

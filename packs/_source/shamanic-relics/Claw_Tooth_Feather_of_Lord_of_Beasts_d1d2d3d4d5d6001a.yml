@@ -1,0 +1,23 @@
+_id: d1d2d3d4d5d6001a
+name: "Claw, Tooth, Feather or Tuft of Fur from the Lord of Beasts"
+type: relic
+img: systems/tb2e/icons/ffffff/transparent/1x1/lorc/bird-claw.svg
+system:
+  description: "Lore Master's Manual, p. 51"
+  slot: ''
+  slotIndex: 0
+  slotOptions:
+    neck: 1
+  cost: 0
+  damaged: false
+  dropped: false
+  quantity: 1
+  quantityMax: 1
+  relicTier: minor
+  linkedInvocations:
+    - Boon of the Otherworld
+  linkedCircle: null
+  immortal: Lord of Beasts
+  lore: ''
+effects: []
+_key: '!items!d1d2d3d4d5d6001a'

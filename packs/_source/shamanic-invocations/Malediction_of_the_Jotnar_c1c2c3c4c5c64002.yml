@@ -1,0 +1,68 @@
+_id: c1c2c3c4c5c64002
+name: Malediction of the Jotnar
+type: invocation
+img: systems/tb2e/icons/ffffff/transparent/1x1/lorc/alien-skull.svg
+system:
+  description: "Lore Master's Manual, pp. 56-57"
+  circle: 4
+  castingType: factors
+  fixedObstacle: 0
+  obstacleNote: ""
+  invocationTime: 3
+  invocationTimeWithRelic: 2
+  duration: Permanent
+  factors:
+    - name: Settlement Type
+      options:
+        - label: "Steading, prosperous wayhouse"
+          value: 1
+        - label: "Borderland fortress, forgotten temple complex"
+          value: 2
+        - label: "Remote village, religious bastion or Shire"
+          value: 3
+        - label: "Busy crossroads or walled town"
+          value: 4
+        - label: "Dilapidated port or wizard's tower"
+          value: 5
+        - label: "Bustling metropolis"
+          value: 6
+    - name: Disaster Type
+      options:
+        - label: "Riots or street brawls"
+          value: 1
+        - label: "Fire or flood"
+          value: 2
+        - label: "Civil war"
+          value: 3
+        - label: "Plague"
+          value: 4
+        - label: "Scouring"
+          value: 5
+  factorNote: ""
+  versusDefense: ""
+  mightPenalty: true
+  sacramental: A shard of poisonous ice
+  relic: "A vial of Ymir's blood"
+  relicInventory: pack 1
+  burden: 5
+  burdenWithRelic: 4
+  swapSkill: ""
+  swapConflictTypes: []
+  conflictBonuses:
+    attack:
+      type: dice
+      value: 0
+    defend:
+      type: dice
+      value: 0
+    feint:
+      type: dice
+      value: 0
+    maneuver:
+      type: dice
+      value: 0
+  conflictQualities: []
+  specialRules: "Lore Master's Manual, pp. 56-57"
+  performed: false
+effects: []
+_key: '!items!c1c2c3c4c5c64002'

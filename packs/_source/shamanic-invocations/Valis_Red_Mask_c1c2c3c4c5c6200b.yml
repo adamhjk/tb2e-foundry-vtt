@@ -1,0 +1,42 @@
+_id: c1c2c3c4c5c6200b
+name: "Vali's Red Mask"
+type: invocation
+img: systems/tb2e/icons/ffffff/transparent/1x1/lorc/iron-mask.svg
+system:
+  description: "Lore Master's Manual, p. 49"
+  circle: 2
+  castingType: versus
+  fixedObstacle: 0
+  obstacleNote: ""
+  invocationTime: 1
+  invocationTimeWithRelic: 0
+  duration: Instantaneous
+  factors: []
+  factorNote: ""
+  versusDefense: nature
+  mightPenalty: true
+  sacramental: A drop of blood from a kins-person, spilled in anger
+  relic: A dagger used in a murder
+  relicInventory: belt 1 or carried 1
+  burden: 3
+  burdenWithRelic: 2
+  swapSkill: ""
+  swapConflictTypes: []
+  conflictBonuses:
+    attack:
+      type: dice
+      value: 0
+    defend:
+      type: dice
+      value: 0
+    feint:
+      type: dice
+      value: 0
+    maneuver:
+      type: dice
+      value: 0
+  conflictQualities: []
+  specialRules: "Lore Master's Manual, p. 49"
+  performed: false
+effects: []
+_key: '!items!c1c2c3c4c5c6200b'

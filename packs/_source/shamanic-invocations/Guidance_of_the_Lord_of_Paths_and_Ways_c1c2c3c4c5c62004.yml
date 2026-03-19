@@ -1,0 +1,58 @@
+_id: c1c2c3c4c5c62004
+name: Guidance of the Lord of Paths and Ways
+type: invocation
+img: systems/tb2e/icons/ffffff/transparent/1x1/delapouite/stone-path.svg
+system:
+  description: "Lore Master's Manual, p. 46"
+  circle: 2
+  castingType: factors
+  fixedObstacle: 0
+  obstacleNote: ""
+  invocationTime: 2
+  invocationTimeWithRelic: 1
+  duration: One phase
+  factors:
+    - name: Terrain
+      options:
+        - label: "Moors, plains or tundra"
+          value: 1
+        - label: "Desert, forest or hills"
+          value: 2
+        - label: "Jungle, mountains or wetlands"
+          value: 3
+    - name: Travelers
+      options:
+        - label: "One person"
+          value: 1
+        - label: "Adventuring party or small group"
+          value: 2
+        - label: "Caravan or unit of soldiers"
+          value: 3
+  factorNote: ""
+  versusDefense: ""
+  mightPenalty: true
+  sacramental: ''
+  relic: "Sol's Disc"
+  relicInventory: worn/neck or carried 1
+  burden: 3
+  burdenWithRelic: 2
+  swapSkill: ""
+  swapConflictTypes: []
+  conflictBonuses:
+    attack:
+      type: dice
+      value: 0
+    defend:
+      type: dice
+      value: 0
+    feint:
+      type: dice
+      value: 0
+    maneuver:
+      type: dice
+      value: 0
+  conflictQualities: []
+  specialRules: ''
+  performed: false
+effects: []
+_key: '!items!c1c2c3c4c5c62004'

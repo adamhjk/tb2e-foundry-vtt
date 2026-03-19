@@ -1,0 +1,64 @@
+_id: c1c2c3c4c5c6200d
+name: Vision of the Lords of Chaos and Law
+type: invocation
+img: systems/tb2e/icons/ffffff/transparent/1x1/delapouite/all-seeing-eye.svg
+system:
+  description: "Lore Master's Manual, p. 50"
+  circle: 2
+  castingType: factors
+  fixedObstacle: 0
+  obstacleNote: ""
+  invocationTime: 2
+  invocationTimeWithRelic: 1
+  duration: One turn
+  factors:
+    - name: Reading an Aura
+      options:
+        - label: "Dead, alive or extraplanar"
+          value: 1
+        - label: "Possession"
+          value: 2
+        - label: "Recent event that left a physical mark"
+          value: 3
+        - label: "Recent event that left no marks"
+          value: 4
+        - label: "Past event that left a physical mark"
+          value: 5
+        - label: "The future"
+          value: 6
+    - name: Reading Thoughts
+      options:
+        - label: "Sensing intent (to deceive, etc.)"
+          value: 1
+        - label: "Seeing an instinct"
+          value: 2
+        - label: "Seeing a belief or creed"
+          value: 3
+  factorNote: ""
+  versusDefense: ""
+  mightPenalty: true
+  sacramental: ''
+  relic: "Harpa's Eye"
+  relicInventory: worn/neck, pocket
+  burden: 3
+  burdenWithRelic: 2
+  swapSkill: ""
+  swapConflictTypes: []
+  conflictBonuses:
+    attack:
+      type: dice
+      value: 0
+    defend:
+      type: dice
+      value: 0
+    feint:
+      type: dice
+      value: 0
+    maneuver:
+      type: dice
+      value: 0
+  conflictQualities: []
+  specialRules: ''
+  performed: false
+effects: []
+_key: '!items!c1c2c3c4c5c6200d'

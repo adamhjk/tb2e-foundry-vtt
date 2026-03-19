@@ -3,7 +3,7 @@ name: Swarm
 type: spell
 img: systems/tb2e/icons/ffffff/transparent/1x1/delapouite/ants.svg
 system:
-  description: "<p>Dungeoneer's Handbook, p. 188</p>"
+  description: "Dungeoneer's Handbook, p. 188"
   circle: 1
   castingType: skillSwap
   fixedObstacle: 0

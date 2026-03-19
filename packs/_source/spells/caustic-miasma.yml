@@ -1,0 +1,83 @@
+_id: a1b2c3d4e5f65001
+name: Caustic Miasma
+type: spell
+img: systems/tb2e/icons/ffffff/transparent/1x1/lorc/poison-gas.svg
+system:
+  description: "Lore Master's Manual, pp. 63-64"
+  circle: 5
+  castingType: factors
+  fixedObstacle: 0
+  obstacleNote: ""
+  castingTime: twoTurns
+  duration: "Instantaneous"
+  factors:
+    - name: "Target Settlement"
+      options:
+        - label: "Steading or borderland fortress"
+          value: 1
+        - label: "Forgotten temple complex, remote village or Shire"
+          value: 2
+        - label: "Busy crossroads, religious bastion or wizard's tower"
+          value: 3
+        - label: "Dilapidated port or walled town"
+          value: 4
+        - label: "Bustling metropolis, dwarven halls or Elfhome"
+          value: 5
+    - name: "Disaster"
+      options:
+        - label: "Destroy one facility (-1 to future town events); multiple dead"
+          value: 2
+        - label: "Destroy several facilities (-2 to future town events); many dead"
+          value: 4
+        - label: "Destroy all facilities; everyone dead"
+          value: 6
+    - name: "Armies"
+      options:
+        - label: "One unit"
+          value: 2
+        - label: "Two units"
+          value: 3
+        - label: "Half of the army"
+          value: 5
+        - label: "Whole army"
+          value: 6
+    - name: "Chance of Survival"
+      options:
+        - label: "Ob 1 test"
+          value: 1
+        - label: "Ob 2 test"
+          value: 2
+        - label: "Ob 3 test"
+          value: 3
+        - label: "Ob 4 test"
+          value: 5
+  factorNote: "Use either Target Settlement + Disaster or Armies + Chance of Survival"
+  swapSkill: ""
+  swapConflictTypes: []
+  versusDefense: ""
+  mightPenalty: false
+  materials: ""
+  focus: "An Aeolian harp [carried 2 or pack 3]"
+  scribeObstacle: 5
+  learnObstacle: 5
+  conflictBonuses:
+    attack:
+      type: dice
+      value: 0
+    defend:
+      type: dice
+      value: 0
+    feint:
+      type: dice
+      value: 0
+    maneuver:
+      type: dice
+      value: 0
+  conflictQualities: []
+  specialRules: "Lore Master's Manual, pp. 63-64"
+  library: false
+  spellbook: false
+  memorized: false
+  cast: false
+  scroll: false
+_key: '!items!a1b2c3d4e5f65001'

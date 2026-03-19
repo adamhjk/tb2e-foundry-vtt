@@ -1,0 +1,79 @@
+_id: a1b2c3d4e5f60012
+name: Tomb Guardian
+type: monster
+img: systems/tb2e/icons/ffffff/transparent/1x1/skoll/skeleton.svg
+system:
+  nature: 3
+  natureDescriptors: Guarding, Pursuing, Slaying the Living
+  might: 2
+  precedence: '0'
+  type: Undead
+  instinct: Never leave the tomb unguarded
+  armor: Tomb guardians use shields; honor guard wear chain armor
+  specialRules: Scholar's Guide, p. 195
+  isBoss: false
+  conditions:
+    hungry: false
+    angry: false
+    afraid: false
+    exhausted: false
+    injured: false
+    sick: false
+    dead: false
+  dispositions:
+    - conflictType: Drive Off
+      hp: 7
+    - conflictType: Kill
+      hp: 4
+    - conflictType: Flee
+      hp: 3
+  weapons:
+    - name: Battle Axe
+      conflictTypes: K, Cap, D/O
+      attack: +1s
+      defend: -1D
+      feint: ''
+      maneuver: ''
+    - name: Mace
+      conflictTypes: K, Cap, D/O
+      attack: ''
+      defend: ''
+      feint: ''
+      maneuver: ''
+    - name: Spear
+      conflictTypes: K, Cap, D/O
+      attack: ''
+      defend: (+1D)
+      feint: ''
+      maneuver: +1D
+    - name: Shield
+      conflictTypes: K, Cap, D/O
+      attack: ''
+      defend: +2D
+      feint: ''
+      maneuver: ''
+    - name: Sword
+      conflictTypes: K, Cap, D/O
+      attack: (+1D)
+      defend: (+1D)
+      feint: (+1D)
+      maneuver: (+1D)
+    - name: Tireless Tread
+      conflictTypes: Flee
+      attack: ''
+      defend: ''
+      feint: ''
+      maneuver: +1s
+  conflict:
+    hp:
+      value: 0
+      max: 0
+    team: gm
+  description: Scholar's Guide, p. 195
+prototypeToken:
+  actorLink: false
+  appendNumber: true
+  disposition: -1
+items: []
+effects: []
+_key: '!actors!a1b2c3d4e5f60012'

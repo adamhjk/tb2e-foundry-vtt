@@ -3,7 +3,7 @@ name: Aetherial Premonition
 type: spell
 img: systems/tb2e/icons/ffffff/transparent/1x1/delapouite/alarm-clock.svg
 system:
-  description: "<p>Dungeoneer's Handbook, p. 184</p>"
+  description: "Dungeoneer's Handbook, p. 184"
   circle: 1
   castingType: factors
   fixedObstacle: 0

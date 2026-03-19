@@ -1,0 +1,79 @@
+_id: a1b2c3d4e5f60023
+name: Owlbear
+type: monster
+img: systems/tb2e/icons/ffffff/transparent/1x1/lorc/owl.svg
+system:
+  nature: 7
+  natureDescriptors: Hunting, Terrorizing, Tearing Limb from Limb
+  might: 4
+  precedence: '0'
+  type: Troll
+  instinct: Always drag my prey back to my lair before eating it
+  armor: None
+  specialRules: Lore Master's Manual, p. 257
+  isBoss: false
+  conditions:
+    hungry: false
+    angry: false
+    afraid: false
+    exhausted: false
+    injured: false
+    sick: false
+    dead: false
+  dispositions:
+    - conflictType: Kill
+      hp: 16
+    - conflictType: Flee
+      hp: 9
+    - conflictType: Drive Off
+      hp: 6
+  weapons:
+    - name: Rending Claws
+      conflictTypes: Kill
+      attack: +1D
+      defend: ''
+      feint: ''
+      maneuver: ''
+    - name: Crushing Beak
+      conflictTypes: Kill
+      attack: ''
+      defend: ''
+      feint: +2s
+      maneuver: ''
+    - name: Unusual Agility
+      conflictTypes: Flee
+      attack: +1D
+      defend: ''
+      feint: ''
+      maneuver: ''
+    - name: Owl Eyes
+      conflictTypes: Flee
+      attack: ''
+      defend: ''
+      feint: ''
+      maneuver: +1s
+    - name: Monstrous Bulk
+      conflictTypes: D/O
+      attack: ''
+      defend: +1D
+      feint: ''
+      maneuver: ''
+    - name: Unusual Agility
+      conflictTypes: D/O
+      attack: ''
+      defend: ''
+      feint: ''
+      maneuver: +1D
+  conflict:
+    hp:
+      value: 0
+      max: 0
+    team: gm
+  description: Lore Master's Manual, p. 257
+prototypeToken:
+  actorLink: false
+  appendNumber: true
+  disposition: -1
+items: []
+effects: []
+_key: '!actors!a1b2c3d4e5f60023'

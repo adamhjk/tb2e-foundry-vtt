@@ -1,0 +1,22 @@
+_id: d0e1f2a3b4c5d6e7
+name: Twist of the Skein of Fate
+type: invocation
+img: systems/tb2e/icons/ffffff/transparent/1x1/caro-asercion/spinning-wheel.svg
+system:
+  description: "Dungeoneer's Handbook, p. 229"
+  circle: 3
+  castingType: skillSwap
+  swapSkill: circles
+  swapConflictTypes: []
+  invocationTime: 1
+  invocationTimeWithRelic: 0
+  duration: One turn
+  burden: 4
+  burdenWithRelic: 3
+  relic: Urd's Distaff
+  relicInventory: carried 1
+  sacramental: Pure lamb's wool
+  mightPenalty: true
+  performed: false
+effects: []
+_key: '!items!d0e1f2a3b4c5d6e7'

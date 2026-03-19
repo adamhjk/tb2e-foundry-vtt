@@ -1,0 +1,73 @@
+_id: a1b2c3d4e5f6001d
+name: Elder Nixie
+type: monster
+img: systems/tb2e/icons/ffffff/transparent/1x1/delapouite/mermaid.svg
+system:
+  nature: 8
+  natureDescriptors: Sea-dwelling, Shapeshifting, Scourging
+  might: 6
+  precedence: '7'
+  type: Immortal
+  instinct: Always punish defilers of the sea
+  armor: Ancient scales (as leather armor but absorbs all types of damage)
+  specialRules: Lore Master's Manual, p. 251
+  isBoss: false
+  conditions:
+    hungry: false
+    angry: false
+    afraid: false
+    exhausted: false
+    injured: false
+    sick: false
+    dead: false
+  dispositions:
+    - conflictType: Kill
+      hp: 19
+    - conflictType: Drive Off
+      hp: 11
+    - conflictType: Capture
+      hp: 7
+  weapons:
+    - name: Protean Claws
+      conflictTypes: K, Cap, D/O
+      attack: ''
+      defend: ''
+      feint: +1D
+      maneuver: ''
+    - name: Unearthly Fluke
+      conflictTypes: K, Cap, D/O
+      attack: ''
+      defend: ''
+      feint: ''
+      maneuver: +1D
+    - name: Ancient Fury
+      conflictTypes: K, Cap, D/O
+      attack: +2s
+      defend: ''
+      feint: ''
+      maneuver: ''
+    - name: Unearthly Fluke
+      conflictTypes: Pursue
+      attack: +1s
+      defend: ''
+      feint: ''
+      maneuver: ''
+    - name: Sleek Form
+      conflictTypes: Pursue
+      attack: ''
+      defend: ''
+      feint: +1D
+      maneuver: ''
+  conflict:
+    hp:
+      value: 0
+      max: 0
+    team: gm
+  description: Lore Master's Manual, p. 251
+prototypeToken:
+  actorLink: false
+  appendNumber: true
+  disposition: -1
+items: []
+effects: []
+_key: '!actors!a1b2c3d4e5f6001d'

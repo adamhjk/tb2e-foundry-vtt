@@ -1,0 +1,24 @@
+_id: d1d2d3d4d5d6001e
+name: Well-Fed Locust
+type: relic
+img: systems/tb2e/icons/ffffff/transparent/1x1/lorc/bone-gnawer.svg
+system:
+  description: "Lore Master's Manual, p. 54"
+  slot: ''
+  slotIndex: 0
+  slotOptions:
+    carried: 1
+    pocket: 1
+  cost: 0
+  damaged: false
+  dropped: false
+  quantity: 1
+  quantityMax: 1
+  relicTier: minor
+  linkedInvocations:
+    - Orison to the Lord of Locusts
+  linkedCircle: null
+  immortal: The Great Devourer
+  lore: ''
+effects: []
+_key: '!items!d1d2d3d4d5d6001e'

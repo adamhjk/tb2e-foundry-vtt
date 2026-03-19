@@ -1,0 +1,23 @@
+_id: d1d2d3d4d5d6000c
+name: "Brass, Eight-Pointed Chaos Star"
+type: relic
+img: systems/tb2e/icons/ffffff/transparent/1x1/lorc/barbed-star.svg
+system:
+  description: "Lore Master's Manual, p. 44"
+  slot: ''
+  slotIndex: 0
+  slotOptions:
+    neck: 1
+  cost: 0
+  damaged: false
+  dropped: false
+  quantity: 1
+  quantityMax: 1
+  relicTier: minor
+  linkedInvocations:
+    - Execration
+  linkedCircle: null
+  immortal: Lords of Chaos and Law
+  lore: ''
+effects: []
+_key: '!items!d1d2d3d4d5d6000c'

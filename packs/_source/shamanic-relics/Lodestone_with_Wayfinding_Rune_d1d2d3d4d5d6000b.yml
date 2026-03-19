@@ -1,0 +1,23 @@
+_id: d1d2d3d4d5d6000b
+name: Lodestone Carved with the Wayfinding Rune
+type: relic
+img: systems/tb2e/icons/ffffff/transparent/1x1/delapouite/curling-stone.svg
+system:
+  description: "Lore Master's Manual, p. 44"
+  slot: ''
+  slotIndex: 0
+  slotOptions:
+    pocket: 1
+  cost: 0
+  damaged: false
+  dropped: false
+  quantity: 1
+  quantityMax: 1
+  relicTier: minor
+  linkedInvocations:
+    - "Winter's Winding Path"
+  linkedCircle: null
+  immortal: Lady of the Winter Hunt
+  lore: ''
+effects: []
+_key: '!items!d1d2d3d4d5d6000b'

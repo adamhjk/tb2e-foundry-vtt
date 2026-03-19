@@ -1,0 +1,61 @@
+_id: a1b2c3d4e5f60018
+name: Aptrgangr
+type: monster
+img: systems/tb2e/icons/ffffff/transparent/1x1/delapouite/mummy-head.svg
+system:
+  nature: 3
+  natureDescriptors: Devouring Flesh, Hunting, Shambling
+  might: 2
+  precedence: '0'
+  type: Undead
+  instinct: Always seek the living
+  armor: Unliving flesh (absorbs 1 from piercing/slashing)
+  specialRules: Lore Master's Manual, p. 246
+  isBoss: false
+  conditions:
+    hungry: false
+    angry: false
+    afraid: false
+    exhausted: false
+    injured: false
+    sick: false
+    dead: false
+  dispositions:
+    - conflictType: Drive Off
+      hp: 7
+    - conflictType: Kill
+      hp: 4
+    - conflictType: Flee
+      hp: 3
+  weapons:
+    - name: Ragged Nails
+      conflictTypes: Kill, D/O
+      attack: +1D
+      defend: ''
+      feint: +1s
+      maneuver: ''
+    - name: Unreasoning Hunger
+      conflictTypes: Kill, D/O
+      attack: ''
+      defend: +1D
+      feint: ''
+      maneuver: ''
+    - name: Mindless Persistence
+      conflictTypes: Flee
+      attack: +1D
+      defend: +1s
+      feint: ''
+      maneuver: ''
+  conflict:
+    hp:
+      value: 0
+      max: 0
+    team: gm
+  description: Lore Master's Manual, p. 246
+prototypeToken:
+  actorLink: false
+  appendNumber: true
+  disposition: -1
+items: []
+effects: []
+_key: '!actors!a1b2c3d4e5f60018'

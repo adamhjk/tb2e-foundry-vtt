@@ -3,7 +3,7 @@ name: Simulacrum
 type: spell
 img: systems/tb2e/icons/ffffff/transparent/1x1/lorc/mirror-mirror.svg
 system:
-  description: "<p>Dungeoneer's Handbook, p. 206</p>"
+  description: "Dungeoneer's Handbook, p. 206"
   circle: 3
   castingType: fixed
   fixedObstacle: 4

@@ -1,0 +1,61 @@
+_id: a1b2c3d4e5f60024
+name: Sprikken
+type: monster
+img: systems/tb2e/icons/ffffff/transparent/1x1/cathelineau/bad-gnome.svg
+system:
+  nature: 4
+  natureDescriptors: Robbing, Blighting, Terrorizing
+  might: 3
+  precedence: '0'
+  type: Troll
+  instinct: Always torment travelers for coin and amusement
+  armor: None
+  specialRules: Lore Master's Manual, p. 258
+  isBoss: false
+  conditions:
+    hungry: false
+    angry: false
+    afraid: false
+    exhausted: false
+    injured: false
+    sick: false
+    dead: false
+  dispositions:
+    - conflictType: Convince
+      hp: 9
+    - conflictType: Trick
+      hp: 5
+    - conflictType: Pursue
+      hp: 3
+  weapons:
+    - name: Surprising Strength
+      conflictTypes: K, Cap, D/O
+      attack: +1D
+      defend: ''
+      feint: ''
+      maneuver: ''
+    - name: Seven League Boots
+      conflictTypes: Pursue
+      attack: ''
+      defend: ''
+      feint: ''
+      maneuver: +1s
+    - name: Blatant Falsehoods
+      conflictTypes: Convince, Trick
+      attack: ''
+      defend: ''
+      feint: +1s
+      maneuver: ''
+  conflict:
+    hp:
+      value: 0
+      max: 0
+    team: gm
+  description: Lore Master's Manual, p. 258
+prototypeToken:
+  actorLink: false
+  appendNumber: true
+  disposition: -1
+items: []
+effects: []
+_key: '!actors!a1b2c3d4e5f60024'

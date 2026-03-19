@@ -3,7 +3,7 @@ name: Aetheric Appendage
 type: spell
 img: systems/tb2e/icons/ffffff/transparent/1x1/lorc/suckered-tentacle.svg
 system:
-  description: "<p>Dungeoneer's Handbook, p. 183</p>"
+  description: "Dungeoneer's Handbook, p. 183"
   circle: 1
   castingType: fixed
   fixedObstacle: 2

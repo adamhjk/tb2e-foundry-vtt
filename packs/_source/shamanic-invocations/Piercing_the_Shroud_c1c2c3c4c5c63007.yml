@@ -1,0 +1,70 @@
+_id: c1c2c3c4c5c63007
+name: Piercing the Shroud
+type: invocation
+img: systems/tb2e/icons/ffffff/transparent/1x1/lorc/portal.svg
+system:
+  description: "Lore Master's Manual, pp. 54-55"
+  circle: 3
+  castingType: factors
+  fixedObstacle: 0
+  obstacleNote: ""
+  invocationTime: 3
+  invocationTimeWithRelic: 2
+  duration: Permanent
+  factors:
+    - name: Breadth
+      options:
+        - label: "Self"
+          value: 0
+        - label: "A companion"
+          value: 1
+        - label: "Small group"
+          value: 2
+    - name: Day or Night
+      options:
+        - label: "Night"
+          value: 0
+        - label: "Day"
+          value: 1
+    - name: Liminal Time
+      options:
+        - label: "Day or night"
+          value: 0
+    - name: Location of Crossing
+      options:
+        - label: "Unique locale (mountaintop, volcano, ancient forest)"
+          value: 1
+        - label: "Liminal space (cave mouth, estuary, alpine tree line, oasis)"
+          value: 2
+        - label: "Place of sublime beauty or atrocity"
+          value: 3
+        - label: "Unremarkable place (field, busy street)"
+          value: 4
+  factorNote: "Solstice or equinox grants +2D. Dawn or dusk grants +1D."
+  versusDefense: ""
+  mightPenalty: true
+  sacramental: Strong drugs or drink
+  relic: A leather shawl pyrographed with runes
+  relicInventory: worn/torso 1
+  burden: 4
+  burdenWithRelic: 3
+  swapSkill: ""
+  swapConflictTypes: []
+  conflictBonuses:
+    attack:
+      type: dice
+      value: 0
+    defend:
+      type: dice
+      value: 0
+    feint:
+      type: dice
+      value: 0
+    maneuver:
+      type: dice
+      value: 0
+  conflictQualities: []
+  specialRules: "Lore Master's Manual, pp. 54-55"
+  performed: false
+effects: []
+_key: '!items!c1c2c3c4c5c63007'

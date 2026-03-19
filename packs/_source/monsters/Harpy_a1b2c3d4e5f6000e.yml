@@ -1,0 +1,79 @@
+_id: a1b2c3d4e5f6000e
+name: Harpy
+type: monster
+img: systems/tb2e/icons/ffffff/transparent/1x1/lorc/harpy.svg
+system:
+  nature: 4
+  natureDescriptors: Beguiling, Flying, Scavenging
+  might: 4
+  precedence: '0'
+  type: Troll
+  instinct: Always steal from the damned
+  armor: None
+  specialRules: Scholar's Guide, p. 189
+  isBoss: false
+  conditions:
+    hungry: false
+    angry: false
+    afraid: false
+    exhausted: false
+    injured: false
+    sick: false
+    dead: false
+  dispositions:
+    - conflictType: Flee/Pursue
+      hp: 10
+    - conflictType: Capture
+      hp: 6
+    - conflictType: Trick
+      hp: 4
+  weapons:
+    - name: Filthy Wings
+      conflictTypes: Flee/Pursue
+      attack: +1s
+      defend: +1D
+      feint: ''
+      maneuver: ''
+    - name: Piercing Screech
+      conflictTypes: Flee/Pursue
+      attack: ''
+      defend: ''
+      feint: +1s
+      maneuver: ''
+    - name: Choking Stench
+      conflictTypes: Capture
+      attack: +1D
+      defend: ''
+      feint: ''
+      maneuver: ''
+    - name: Savage Talons
+      conflictTypes: Capture
+      attack: ''
+      defend: ''
+      feint: ''
+      maneuver: +1s
+    - name: Enchanting Song
+      conflictTypes: Trick
+      attack: ''
+      defend: ''
+      feint: +1s
+      maneuver: ''
+    - name: Beguiling Promises
+      conflictTypes: Trick
+      attack: ''
+      defend: ''
+      feint: ''
+      maneuver: +1D
+  conflict:
+    hp:
+      value: 0
+      max: 0
+    team: gm
+  description: Scholar's Guide, p. 189
+prototypeToken:
+  actorLink: false
+  appendNumber: true
+  disposition: -1
+items: []
+effects: []
+_key: '!actors!a1b2c3d4e5f6000e'

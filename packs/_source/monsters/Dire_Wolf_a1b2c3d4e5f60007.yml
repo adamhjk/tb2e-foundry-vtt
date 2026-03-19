@@ -1,0 +1,85 @@
+_id: a1b2c3d4e5f60007
+name: Dire Wolf
+type: monster
+img: systems/tb2e/icons/ffffff/transparent/1x1/lorc/direwolf.svg
+system:
+  nature: 5
+  natureDescriptors: Hunting, Stalking, Playing
+  might: 3
+  precedence: '1'
+  type: Beast
+  instinct: Always hunt with the pack
+  armor: None
+  specialRules: Scholar's Guide, p. 182
+  isBoss: false
+  conditions:
+    hungry: false
+    angry: false
+    afraid: false
+    exhausted: false
+    injured: false
+    sick: false
+    dead: false
+  dispositions:
+    - conflictType: Flee/Pursue
+      hp: 12
+    - conflictType: Capture
+      hp: 7
+    - conflictType: Kill
+      hp: 5
+  weapons:
+    - name: Rangy Legs
+      conflictTypes: Flee/Pursue
+      attack: ''
+      defend: +1D
+      feint: ''
+      maneuver: +2D
+    - name: Keen Smell
+      conflictTypes: Flee/Pursue
+      attack: +1s
+      defend: ''
+      feint: ''
+      maneuver: ''
+    - name: Camouflaged Coat
+      conflictTypes: Capture
+      attack: ''
+      defend: ''
+      feint: +1s
+      maneuver: ''
+    - name: Keen Hearing
+      conflictTypes: Capture
+      attack: ''
+      defend: ''
+      feint: ''
+      maneuver: +1s
+    - name: Crushing Jaws
+      conflictTypes: Kill
+      attack: +1s
+      defend: ''
+      feint: ''
+      maneuver: ''
+    - name: Lunging Leap
+      conflictTypes: Kill
+      attack: ''
+      defend: ''
+      feint: +1s
+      maneuver: ''
+    - name: Low Cunning
+      conflictTypes: D/O
+      attack: ''
+      defend: +1D
+      feint: +1s
+      maneuver: ''
+  conflict:
+    hp:
+      value: 0
+      max: 0
+    team: gm
+  description: Scholar's Guide, p. 182
+prototypeToken:
+  actorLink: false
+  appendNumber: true
+  disposition: -1
+items: []
+effects: []
+_key: '!actors!a1b2c3d4e5f60007'

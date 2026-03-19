@@ -1,0 +1,65 @@
+_id: a1b2c3d4e5f65002
+name: Hidden Fortress
+type: spell
+img: systems/tb2e/icons/ffffff/transparent/1x1/lorc/bell-shield.svg
+system:
+  description: "Lore Master's Manual, pp. 64-65"
+  circle: 5
+  castingType: factors
+  fixedObstacle: 0
+  obstacleNote: ""
+  castingTime: twoTurns
+  duration: "Variable"
+  factors:
+    - name: "Duration"
+      options:
+        - label: "Turn"
+          value: 1
+        - label: "Conflict"
+          value: 2
+        - label: "Phase"
+          value: 3
+        - label: "Adventure"
+          value: 4
+    - name: "Amenities"
+      options:
+        - label: "A well and a stocked larder"
+          value: 1
+        - label: "Comfortable beds: +1D to recover from exhausted"
+          value: 1
+        - label: "Ornamental garden: +1D to recover from angry and afraid"
+          value: 1
+        - label: "Invisible: concealed in camp/town, +1D disposition for concealment in warfare"
+          value: 2
+        - label: "Fortified: +2s to warfare disposition"
+          value: 3
+  factorNote: "Amenities are optional. You can select none, one or multiple."
+  swapSkill: ""
+  swapConflictTypes: []
+  versusDefense: ""
+  mightPenalty: false
+  materials: ""
+  focus: "A rook from a chess set or similar playing piece [pocket]"
+  scribeObstacle: 5
+  learnObstacle: 5
+  conflictBonuses:
+    attack:
+      type: dice
+      value: 0
+    defend:
+      type: dice
+      value: 0
+    feint:
+      type: dice
+      value: 0
+    maneuver:
+      type: dice
+      value: 0
+  conflictQualities: []
+  specialRules: ""
+  library: false
+  spellbook: false
+  memorized: false
+  cast: false
+  scroll: false
+_key: '!items!a1b2c3d4e5f65002'

@@ -1,0 +1,61 @@
+_id: a1b2c3d4e5f60015
+name: Troll Rat
+type: monster
+img: systems/tb2e/icons/ffffff/transparent/1x1/delapouite/rat.svg
+system:
+  nature: 2
+  natureDescriptors: Consuming, Burrowing, Swarming
+  might: 1
+  precedence: '0'
+  type: Beast
+  instinct: Always steal shiny objects for the nest
+  armor: None
+  specialRules: Scholar's Guide, p. 198
+  isBoss: false
+  conditions:
+    hungry: false
+    angry: false
+    afraid: false
+    exhausted: false
+    injured: false
+    sick: false
+    dead: false
+  dispositions:
+    - conflictType: Kill
+      hp: 5
+    - conflictType: Drive Off
+      hp: 3
+    - conflictType: Flee
+      hp: 2
+  weapons:
+    - name: Sharp Bite
+      conflictTypes: Kill
+      attack: ''
+      defend: ''
+      feint: +1s
+      maneuver: ''
+    - name: Lithe Body
+      conflictTypes: D/O
+      attack: ''
+      defend: ''
+      feint: ''
+      maneuver: +1D
+    - name: Quick Claws
+      conflictTypes: Flee
+      attack: +1s
+      defend: ''
+      feint: ''
+      maneuver: ''
+  conflict:
+    hp:
+      value: 0
+      max: 0
+    team: gm
+  description: Scholar's Guide, p. 198
+prototypeToken:
+  actorLink: false
+  appendNumber: true
+  disposition: -1
+items: []
+effects: []
+_key: '!actors!a1b2c3d4e5f60015'

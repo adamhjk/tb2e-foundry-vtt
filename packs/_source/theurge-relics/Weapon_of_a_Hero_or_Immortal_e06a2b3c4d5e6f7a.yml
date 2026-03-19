@@ -1,0 +1,23 @@
+_id: e06a2b3c4d5e6f7a
+name: Weapon of a Hero or Immortal
+type: relic
+img: systems/tb2e/icons/ffffff/transparent/1x1/delapouite/ancient-sword.svg
+system:
+  description: "Dungeoneer's Handbook, p. 217"
+  slot: ''
+  slotIndex: 0
+  slotOptions:
+    carried: 1
+  cost: 0
+  damaged: false
+  dropped: false
+  quantity: 1
+  quantityMax: 1
+  relicTier: minor
+  linkedInvocations:
+    - Evocation of the Lords of Battle
+  linkedCircle: null
+  immortal: Lords of Battle
+  lore: ''
+effects: []
+_key: '!items!e06a2b3c4d5e6f7a'

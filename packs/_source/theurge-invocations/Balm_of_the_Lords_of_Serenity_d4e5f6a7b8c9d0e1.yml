@@ -1,0 +1,33 @@
+_id: d4e5f6a7b8c9d0e1
+name: Balm of the Lords of Serenity
+type: invocation
+img: systems/tb2e/icons/ffffff/transparent/1x1/delapouite/blindfold.svg
+system:
+  description: "Dungeoneer's Handbook, p. 214"
+  circle: 2
+  castingType: factors
+  factors:
+    - name: Serenity
+      options:
+        - label: Alleviate your own anger
+          value: 2
+        - label: Alleviate the anger of another
+          value: 3
+        - label: Alleviate anger from two people
+          value: 4
+        - label: Alleviate anger from a small group
+          value: 5
+        - label: Alleviate anger from a large group
+          value: 6
+  invocationTime: 2
+  invocationTimeWithRelic: 1
+  duration: Instantaneous
+  burden: 3
+  burdenWithRelic: 2
+  relic: A silver lancet
+  relicInventory: pocket or worn/neck
+  sacramental: ''
+  mightPenalty: true
+  performed: false
+effects: []
+_key: '!items!d4e5f6a7b8c9d0e1'

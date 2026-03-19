@@ -1,0 +1,23 @@
+_id: d1d2d3d4d5d60005
+name: Finely Carved Model Ship
+type: relic
+img: systems/tb2e/icons/ffffff/transparent/1x1/delapouite/cargo-ship.svg
+system:
+  description: "Lore Master's Manual, p. 42"
+  slot: ''
+  slotIndex: 0
+  slotOptions:
+    pack: 1
+  cost: 0
+  damaged: false
+  dropped: false
+  quantity: 1
+  quantityMax: 1
+  relicTier: minor
+  linkedInvocations:
+    - "Njor's Breath"
+  linkedCircle: null
+  immortal: Njor
+  lore: ''
+effects: []
+_key: '!items!d1d2d3d4d5d60005'

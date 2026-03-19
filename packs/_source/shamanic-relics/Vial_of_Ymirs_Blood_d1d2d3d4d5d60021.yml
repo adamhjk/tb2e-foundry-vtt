@@ -1,0 +1,23 @@
+_id: d1d2d3d4d5d60021
+name: "Vial of Ymir's Blood"
+type: relic
+img: systems/tb2e/icons/ffffff/transparent/1x1/delapouite/snake-jar.svg
+system:
+  description: "Lore Master's Manual, pp. 56-57"
+  slot: ''
+  slotIndex: 0
+  slotOptions:
+    pack: 1
+  cost: 0
+  damaged: false
+  dropped: false
+  quantity: 1
+  quantityMax: 1
+  relicTier: minor
+  linkedInvocations:
+    - Malediction of the Jotnar
+  linkedCircle: null
+  immortal: Ymir
+  lore: ''
+effects: []
+_key: '!items!d1d2d3d4d5d60021'

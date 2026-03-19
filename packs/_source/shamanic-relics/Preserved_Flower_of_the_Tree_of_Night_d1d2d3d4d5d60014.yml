@@ -1,0 +1,24 @@
+_id: d1d2d3d4d5d60014
+name: Preserved Flower of the Tree of Night
+type: relic
+img: systems/tb2e/icons/ffffff/transparent/1x1/delapouite/dandelion-flower.svg
+system:
+  description: "Lore Master's Manual, p. 48"
+  slot: ''
+  slotIndex: 0
+  slotOptions:
+    carried: 1
+    head: 1
+  cost: 0
+  damaged: false
+  dropped: false
+  quantity: 1
+  quantityMax: 1
+  relicTier: minor
+  linkedInvocations:
+    - Summoning the Shrouded One
+  linkedCircle: null
+  immortal: The Shrouded One
+  lore: ''
+effects: []
+_key: '!items!d1d2d3d4d5d60014'

@@ -1,0 +1,24 @@
+_id: d1d2d3d4d5d6000d
+name: Idol of the Lords of All Fevers and Plagues
+type: relic
+img: systems/tb2e/icons/ffffff/transparent/1x1/delapouite/stone-bust.svg
+system:
+  description: "Lore Master's Manual, p. 45"
+  slot: ''
+  slotIndex: 0
+  slotOptions:
+    neck: 1
+    pocket: 1
+  cost: 0
+  damaged: false
+  dropped: false
+  quantity: 1
+  quantityMax: 1
+  relicTier: minor
+  linkedInvocations:
+    - Fevers of the Lord of Plagues
+  linkedCircle: null
+  immortal: Lord of All Fevers and Plagues
+  lore: ''
+effects: []
+_key: '!items!d1d2d3d4d5d6000d'

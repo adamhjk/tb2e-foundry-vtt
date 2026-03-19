@@ -1,0 +1,42 @@
+_id: c1c2c3c4c5c6200c
+name: "Verthandi's Binding"
+type: invocation
+img: systems/tb2e/icons/ffffff/transparent/1x1/lorc/andromeda-chain.svg
+system:
+  description: "Lore Master's Manual, p. 50"
+  circle: 2
+  castingType: versus
+  fixedObstacle: 0
+  obstacleNote: ""
+  invocationTime: 1
+  invocationTimeWithRelic: 0
+  duration: One turn
+  factors: []
+  factorNote: ""
+  versusDefense: nature
+  mightPenalty: true
+  sacramental: ''
+  relic: A thread from the Skein of Destiny
+  relicInventory: pocket or worn/hands 1
+  burden: 3
+  burdenWithRelic: 2
+  swapSkill: ""
+  swapConflictTypes: []
+  conflictBonuses:
+    attack:
+      type: dice
+      value: 0
+    defend:
+      type: dice
+      value: 0
+    feint:
+      type: dice
+      value: 0
+    maneuver:
+      type: dice
+      value: 0
+  conflictQualities: []
+  specialRules: "Lore Master's Manual, p. 50"
+  performed: false
+effects: []
+_key: '!items!c1c2c3c4c5c6200c'

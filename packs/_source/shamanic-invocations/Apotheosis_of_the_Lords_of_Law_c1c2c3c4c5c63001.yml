@@ -1,0 +1,58 @@
+_id: c1c2c3c4c5c63001
+name: Apotheosis of the Lords of Law
+type: invocation
+img: systems/tb2e/icons/ffffff/transparent/1x1/lorc/crowned-explosion.svg
+system:
+  description: "Lore Master's Manual, p. 51"
+  circle: 3
+  castingType: factors
+  fixedObstacle: 0
+  obstacleNote: ""
+  invocationTime: 1
+  invocationTimeWithRelic: 0
+  duration: One turn
+  factors:
+    - name: Type of Conflict
+      options:
+        - label: "Banish"
+          value: 2
+        - label: "Abjure"
+          value: 3
+        - label: "Bind"
+          value: 4
+    - name: Breadth
+      options:
+        - label: "Self"
+          value: 0
+        - label: "Other"
+          value: 1
+        - label: "Small group"
+          value: 3
+  factorNote: ""
+  versusDefense: ""
+  mightPenalty: true
+  sacramental: A horn of strong drink raised to a hero or Immortal of Law
+  relic: The Scepter of Rule
+  relicInventory: carried 1, belt 1 or wielded 1
+  burden: 4
+  burdenWithRelic: 3
+  swapSkill: ""
+  swapConflictTypes: []
+  conflictBonuses:
+    attack:
+      type: dice
+      value: 0
+    defend:
+      type: dice
+      value: 0
+    feint:
+      type: dice
+      value: 0
+    maneuver:
+      type: dice
+      value: 0
+  conflictQualities: []
+  specialRules: ''
+  performed: false
+effects: []
+_key: '!items!c1c2c3c4c5c63001'

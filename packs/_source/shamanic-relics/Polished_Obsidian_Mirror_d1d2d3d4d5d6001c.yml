@@ -1,0 +1,24 @@
+_id: d1d2d3d4d5d6001c
+name: Polished Obsidian Mirror
+type: relic
+img: systems/tb2e/icons/ffffff/transparent/1x1/delapouite/shinto-shrine-mirror.svg
+system:
+  description: "Lore Master's Manual, p. 52"
+  slot: ''
+  slotIndex: 0
+  slotOptions:
+    carried: 1
+    pack: 1
+  cost: 0
+  damaged: false
+  dropped: false
+  quantity: 1
+  quantityMax: 1
+  relicTier: minor
+  linkedInvocations:
+    - Communion of the Black Gate
+  linkedCircle: null
+  immortal: Lords of Life and Death
+  lore: ''
+effects: []
+_key: '!items!d1d2d3d4d5d6001c'

@@ -1,0 +1,79 @@
+_id: a1b2c3d4e5f60022
+name: Ogre
+type: monster
+img: systems/tb2e/icons/ffffff/transparent/1x1/delapouite/ogre.svg
+system:
+  nature: 6
+  natureDescriptors: Eating and Drinking, Lumbering, Smashing
+  might: 5
+  precedence: '1'
+  type: Troll
+  instinct: Always collect skulls and bones to bowl with
+  armor: Thick hide (equivalent to leather armor)
+  specialRules: Lore Master's Manual, p. 256
+  isBoss: false
+  conditions:
+    hungry: false
+    angry: false
+    afraid: false
+    exhausted: false
+    injured: false
+    sick: false
+    dead: false
+  dispositions:
+    - conflictType: Kill
+      hp: 14
+    - conflictType: Capture
+      hp: 8
+    - conflictType: Trick
+      hp: 4
+  weapons:
+    - name: Bludgeon
+      conflictTypes: K, Cap, D/O
+      attack: +1s
+      defend: ''
+      feint: -1D
+      maneuver: ''
+    - name: Ponderous
+      conflictTypes: K, Cap, D/O
+      attack: ''
+      defend: +1D
+      feint: ''
+      maneuver: -1D
+    - name: Tricksy
+      conflictTypes: Trick
+      attack: ''
+      defend: ''
+      feint: +1D
+      maneuver: ''
+    - name: Charming to Children
+      conflictTypes: Convince
+      attack: +1s
+      defend: ''
+      feint: ''
+      maneuver: ''
+    - name: Intimidation
+      conflictTypes: Convince
+      attack: ''
+      defend: ''
+      feint: ''
+      maneuver: +1D
+    - name: Cunning
+      conflictTypes: Convince
+      attack: ''
+      defend: +1s
+      feint: ''
+      maneuver: ''
+  conflict:
+    hp:
+      value: 0
+      max: 0
+    team: gm
+  description: Lore Master's Manual, p. 256
+prototypeToken:
+  actorLink: false
+  appendNumber: true
+  disposition: -1
+items: []
+effects: []
+_key: '!actors!a1b2c3d4e5f60022'

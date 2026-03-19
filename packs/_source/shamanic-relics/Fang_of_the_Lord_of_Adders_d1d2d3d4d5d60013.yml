@@ -1,0 +1,24 @@
+_id: d1d2d3d4d5d60013
+name: Fang of the Lord of Adders
+type: relic
+img: systems/tb2e/icons/ffffff/transparent/1x1/lorc/bestial-fangs.svg
+system:
+  description: "Lore Master's Manual, p. 48"
+  slot: ''
+  slotIndex: 0
+  slotOptions:
+    neck: 1
+    pocket: 1
+  cost: 0
+  damaged: false
+  dropped: false
+  quantity: 1
+  quantityMax: 1
+  relicTier: minor
+  linkedInvocations:
+    - Orison to the Lord of Adders
+  linkedCircle: null
+  immortal: Lord of Adders
+  lore: ''
+effects: []
+_key: '!items!d1d2d3d4d5d60013'

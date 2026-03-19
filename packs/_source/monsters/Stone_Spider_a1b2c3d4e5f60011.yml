@@ -1,0 +1,79 @@
+_id: a1b2c3d4e5f60011
+name: Stone Spider
+type: monster
+img: systems/tb2e/icons/ffffff/transparent/1x1/carl-olsen/spider-face.svg
+system:
+  nature: 5
+  natureDescriptors: Hunting, Hiding, Climbing
+  might: 4
+  precedence: '1'
+  type: Beast
+  instinct: Always attack from ambush
+  armor: Chitin (equivalent to chain armor)
+  specialRules: Scholar's Guide, p. 194
+  isBoss: false
+  conditions:
+    hungry: false
+    angry: false
+    afraid: false
+    exhausted: false
+    injured: false
+    sick: false
+    dead: false
+  dispositions:
+    - conflictType: Capture
+      hp: 12
+    - conflictType: Kill
+      hp: 7
+    - conflictType: Drive Off
+      hp: 5
+  weapons:
+    - name: Camouflaged Carapace
+      conflictTypes: Capture
+      attack: ''
+      defend: +1D
+      feint: +1s
+      maneuver: ''
+    - name: Silk Webs
+      conflictTypes: Capture
+      attack: ''
+      defend: ''
+      feint: ''
+      maneuver: +1D
+    - name: Fangs
+      conflictTypes: Kill
+      attack: -1D
+      defend: ''
+      feint: ''
+      maneuver: ''
+    - name: Eight Horrible Legs
+      conflictTypes: Kill
+      attack: ''
+      defend: ''
+      feint: ''
+      maneuver: +1s
+    - name: Wall Climbing
+      conflictTypes: D/O
+      attack: +1s
+      defend: ''
+      feint: ''
+      maneuver: ''
+    - name: Eight Eyes
+      conflictTypes: D/O
+      attack: ''
+      defend: +1D
+      feint: ''
+      maneuver: ''
+  conflict:
+    hp:
+      value: 0
+      max: 0
+    team: gm
+  description: Scholar's Guide, p. 194
+prototypeToken:
+  actorLink: false
+  appendNumber: true
+  disposition: -1
+items: []
+effects: []
+_key: '!actors!a1b2c3d4e5f60011'

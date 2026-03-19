@@ -1,0 +1,79 @@
+_id: a1b2c3d4e5f60013
+name: Troll Haunt
+type: monster
+img: systems/tb2e/icons/ffffff/transparent/1x1/cathelineau/fomorian.svg
+system:
+  nature: 8
+  natureDescriptors: Tricking, Slaughtering, Skulking
+  might: 5
+  precedence: '1'
+  type: Troll
+  instinct: Always retreat to my lair before sunrise
+  armor: None
+  specialRules: Scholar's Guide, p. 196
+  isBoss: false
+  conditions:
+    hungry: false
+    angry: false
+    afraid: false
+    exhausted: false
+    injured: false
+    sick: false
+    dead: false
+  dispositions:
+    - conflictType: Kill
+      hp: 18
+    - conflictType: Trick
+      hp: 10
+    - conflictType: Drive Off
+      hp: 6
+  weapons:
+    - name: Claws
+      conflictTypes: Kill
+      attack: +1s
+      defend: ''
+      feint: ''
+      maneuver: ''
+    - name: Rubbery Flesh
+      conflictTypes: Kill
+      attack: ''
+      defend: +1D
+      feint: ''
+      maneuver: ''
+    - name: Stubborn Mind
+      conflictTypes: Trick
+      attack: ''
+      defend: +1D
+      feint: ''
+      maneuver: ''
+    - name: Book of Riddles
+      conflictTypes: Trick
+      attack: ''
+      defend: ''
+      feint: ''
+      maneuver: +1s
+    - name: Long Legs
+      conflictTypes: D/O
+      attack: ''
+      defend: ''
+      feint: ''
+      maneuver: +1D
+    - name: Terrifying Bellow
+      conflictTypes: D/O
+      attack: ''
+      defend: ''
+      feint: +1D
+      maneuver: ''
+  conflict:
+    hp:
+      value: 0
+      max: 0
+    team: gm
+  description: Scholar's Guide, p. 196
+prototypeToken:
+  actorLink: false
+  appendNumber: true
+  disposition: -1
+items: []
+effects: []
+_key: '!actors!a1b2c3d4e5f60013'

@@ -3,7 +3,7 @@ name: Somnific Trance
 type: spell
 img: systems/tb2e/icons/ffffff/transparent/1x1/delapouite/bed.svg
 system:
-  description: "<p>Dungeoneer's Handbook, p. 197</p>"
+  description: "Dungeoneer's Handbook, p. 197"
   circle: 2
   castingType: versus
   fixedObstacle: 0

@@ -1,0 +1,43 @@
+_id: a1b2c3d4e5f64003
+name: Inclusion of the Hugr
+type: spell
+img: systems/tb2e/icons/ffffff/transparent/1x1/lorc/skull-in-jar.svg
+system:
+  description: "Lore Master's Manual, pp. 60-61"
+  circle: 4
+  castingType: versus
+  fixedObstacle: 0
+  obstacleNote: ""
+  castingTime: oneTurn
+  duration: "Permanent"
+  factors: []
+  factorNote: ""
+  swapSkill: ""
+  swapConflictTypes: []
+  versusDefense: "willOrNature"
+  mightPenalty: true
+  materials: ""
+  focus: "An amber gem with an inclusion [pack 1]"
+  scribeObstacle: 4
+  learnObstacle: 5
+  conflictBonuses:
+    attack:
+      type: dice
+      value: 0
+    defend:
+      type: dice
+      value: 0
+    feint:
+      type: dice
+      value: 0
+    maneuver:
+      type: dice
+      value: 0
+  conflictQualities: []
+  specialRules: "Lore Master's Manual, pp. 60-61"
+  library: false
+  spellbook: false
+  memorized: false
+  cast: false
+  scroll: false
+_key: '!items!a1b2c3d4e5f64003'

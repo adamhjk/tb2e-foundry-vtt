@@ -1,0 +1,42 @@
+_id: c1c2c3c4c5c6100a
+name: "Vali's Slaughter Prayer"
+type: invocation
+img: systems/tb2e/icons/ffffff/transparent/1x1/lorc/bloody-sword.svg
+system:
+  description: "Lore Master's Manual, p. 44"
+  circle: 1
+  castingType: fixed
+  fixedObstacle: 4
+  obstacleNote: ""
+  invocationTime: 1
+  invocationTimeWithRelic: 0
+  duration: One turn
+  factors: []
+  factorNote: ""
+  versusDefense: ""
+  mightPenalty: true
+  sacramental: The life of a warrior
+  relic: "Vali's sacrificial knife"
+  relicInventory: belt 1
+  burden: 2
+  burdenWithRelic: 1
+  swapSkill: ""
+  swapConflictTypes: []
+  conflictBonuses:
+    attack:
+      type: dice
+      value: 0
+    defend:
+      type: dice
+      value: 0
+    feint:
+      type: dice
+      value: 0
+    maneuver:
+      type: dice
+      value: 0
+  conflictQualities: []
+  specialRules: ''
+  performed: false
+effects: []
+_key: '!items!c1c2c3c4c5c6100a'
