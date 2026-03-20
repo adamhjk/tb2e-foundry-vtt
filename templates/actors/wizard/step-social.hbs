@@ -1,0 +1,20 @@
+{{!-- Step 4: Social Graces --}}
+<div class="wizard-step step-social">
+  <h2 class="step-heading">{{localize "TB2E.Wizard.Step.Social"}}</h2>
+  <p class="step-instructions">{{localize "TB2E.Wizard.SocialInstructions"}}</p>
+
+  <div class="skill-choice-grid">
+    {{#each socialSkills}}
+    <button type="button"
+            class="skill-choice-card{{#if isSelected}} selected{{/if}}"
+            data-action="selectSocial" data-skill="{{key}}">
+      <span class="skill-name">{{label}}</span>
+      {{#if isIncrease}}
+      <span class="skill-change">{{currentRating}} &rarr; {{newRating}}</span>
+      {{else}}
+      <span class="skill-rating">{{newRating}}</span>
+      {{/if}}
+    </button>
+    {{/each}}
+  </div>
+</div>

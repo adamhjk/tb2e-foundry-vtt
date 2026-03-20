@@ -1,0 +1,87 @@
+_id: f1e2d3c4b5a6001d
+name: Sage
+type: npc
+img: systems/tb2e/icons/ffffff/transparent/1x1/lorc/scroll-unfurled.svg
+system:
+  stock: ''
+  class: ''
+  goal: ''
+  abilities:
+    nature:
+      rating: 5
+    will:
+      rating: 3
+    health:
+      rating: 4
+    resources:
+      rating: 2
+    circles:
+      rating: 2
+    precedence:
+      rating: 1
+  might: 2
+  skills:
+    - key: scholar
+      rating: 5
+    - key: loremaster
+      rating: 4
+    - key: alchemist
+      rating: 3
+    - key: mentor
+      rating: 2
+  wises:
+    - History-wise
+    - Human Folly-wise
+  conditions:
+    hungry: false
+    angry: false
+    afraid: false
+    exhausted: false
+    injured: false
+    sick: false
+    dead: false
+  conflict:
+    hp:
+      value: 0
+      max: 0
+    team: gm
+    weapon: ''
+  lightLevel: full
+  description: Scholar's Guide, p. 208
+prototypeToken:
+  actorLink: false
+  appendNumber: true
+  disposition: 0
+items:
+  - _id: a01d000000000001
+    name: Wise
+    type: trait
+    system:
+      level: 1
+      isClass: false
+      beneficial: 0
+      usedAgainst: false
+      checks: 0
+    _key: '!actors.items!f1e2d3c4b5a6001d.a01d000000000001'
+  - _id: a01d000000000002
+    name: Patient
+    type: trait
+    system:
+      level: 1
+      isClass: false
+      beneficial: 0
+      usedAgainst: false
+      checks: 0
+    _key: '!actors.items!f1e2d3c4b5a6001d.a01d000000000002'
+  - _id: a01d000000000003
+    name: Bored
+    type: trait
+    system:
+      level: 1
+      isClass: false
+      beneficial: 0
+      usedAgainst: false
+      checks: 0
+    _key: '!actors.items!f1e2d3c4b5a6001d.a01d000000000003'
+effects: []
+_key: '!actors!f1e2d3c4b5a6001d'

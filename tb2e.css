@@ -66,6 +66,7 @@
 .tb2e-conflict-footer,
 .character-conflict-panel,
 .conflict-panel,
+.character-wizard,
 .grind-tracker {
   /* Surfaces — snow and ice */
   --tb-bg-darkest: #dfe4eb;
@@ -168,7 +169,7 @@
 body.theme-light :is(
   .tb2e, .tb2e-chat-card, .tb2e-conflict-header, .tb2e-conflict-body,
   .tb2e-conflict-footer,
-  .character-conflict-panel, .conflict-panel, .tb2e.gear-sheet, .tb2e.spell-sheet, .tb2e.invocation-sheet,
+  .character-conflict-panel, .conflict-panel, .character-wizard, .tb2e.gear-sheet, .tb2e.spell-sheet, .tb2e.invocation-sheet,
   .grind-tracker) {
   /* Surfaces — snow and ice */
   --tb-bg-darkest: #dfe4eb;
@@ -268,7 +269,7 @@ body.theme-light :is(
 body.theme-dark :is(
   .tb2e, .tb2e-chat-card, .tb2e-conflict-header, .tb2e-conflict-body,
   .tb2e-conflict-footer,
-  .character-conflict-panel, .conflict-panel, .tb2e.gear-sheet, .tb2e.spell-sheet, .tb2e.invocation-sheet,
+  .character-conflict-panel, .conflict-panel, .character-wizard, .tb2e.gear-sheet, .tb2e.spell-sheet, .tb2e.invocation-sheet,
   .grind-tracker) {
   --tb-bg-darkest: #0c1220;
   --tb-bg-dark: #0f172a;
@@ -355,7 +356,7 @@ body.theme-dark :is(
 .themed.theme-light :is(
   .tb2e-chat-card, .tb2e-conflict-header, .tb2e-conflict-body,
   .tb2e-conflict-footer,
-  .character-conflict-panel, .conflict-panel, .tb2e.gear-sheet, .tb2e.spell-sheet, .tb2e.invocation-sheet,
+  .character-conflict-panel, .conflict-panel, .character-wizard, .tb2e.gear-sheet, .tb2e.spell-sheet, .tb2e.invocation-sheet,
   .grind-tracker) {
   /* Surfaces — snow and ice */
   --tb-bg-darkest: #dfe4eb;
@@ -456,7 +457,7 @@ body.theme-dark :is(
 .themed.theme-dark :is(
   .tb2e-chat-card, .tb2e-conflict-header, .tb2e-conflict-body,
   .tb2e-conflict-footer,
-  .character-conflict-panel, .conflict-panel, .tb2e.gear-sheet, .tb2e.spell-sheet, .tb2e.invocation-sheet,
+  .character-conflict-panel, .conflict-panel, .character-wizard, .tb2e.gear-sheet, .tb2e.spell-sheet, .tb2e.invocation-sheet,
   .grind-tracker) {
   --tb-bg-darkest: #0c1220;
   --tb-bg-dark: #0f172a;
@@ -869,6 +870,27 @@ body.theme-dark :is(
   background: var(--tb-frost);
 }
 .tb2e.sheet .session-reset-btn:active {
+  color: var(--tb-blue);
+}
+/* Wizard Launch Button */
+.tb2e.sheet .wizard-launch-btn {
+  all: unset;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3em;
+  font-family: var(--tb-font-heading);
+  font-size: 0.7rem;
+  color: var(--tb-blue-dim);
+  cursor: pointer;
+  padding: 0.15rem 0.4rem;
+  border-radius: var(--tb-radius-sm, 3px);
+  transition: color 0.2s, background-color 0.2s;
+}
+.tb2e.sheet .wizard-launch-btn:hover {
+  color: var(--tb-blue-bright);
+  background: var(--tb-frost);
+}
+.tb2e.sheet .wizard-launch-btn:active {
   color: var(--tb-blue);
 }
 /* -------------------------------------------- */
@@ -1678,6 +1700,20 @@ body.theme-dark .tb2e.sheet .torchbearer-logo,
   color: var(--tb-text-dim);
   padding: 0;
 }
+.tb2e.sheet .slot-value {
+  font-size: 0.65rem;
+  font-weight: 600;
+  color: var(--tb-amber-dim);
+  background: var(--tb-amber-glow);
+  padding: 0 0.3rem;
+  border-radius: 3px;
+  flex-shrink: 0;
+  white-space: nowrap;
+}
+.tb2e.sheet .slot-value i {
+  margin-right: 0.15rem;
+  font-size: 0.55rem;
+}
 .tb2e.sheet .slot-badge {
   font-size: 0.65rem;
   flex-shrink: 0;
@@ -2182,6 +2218,24 @@ body.theme-dark .tb2e.sheet .torchbearer-logo,
 }
 .tb2e.sheet .level-req-table .next-target {
   background: var(--tb-frost);
+}
+.tb2e.sheet .class-benefit-ref {
+  font-style: italic;
+  color: var(--tb-text-dim);
+  margin: 0 0 0.25rem;
+  font-size: 0.85rem;
+}
+.tb2e.sheet .level-req-table .class-benefit-cell {
+  font-size: 0.8rem;
+  max-width: 20rem;
+}
+.tb2e.sheet .level-req-table .level-choice-input {
+  width: 100%;
+  border: none;
+  border-bottom: 1px solid var(--tb-border-light);
+  background: transparent;
+  font-size: 0.8rem;
+  padding: 0.1rem 0.25rem;
 }
 /*  Rollable Rows                               */
 /* -------------------------------------------- */
@@ -7696,7 +7750,7 @@ body.theme-dark .tb2e.sheet .torchbearer-logo,
 }
 /* NPC skill-row override: dropdown + rating + delete */
 .tb2e.sheet.npc .skill-row {
-  grid-template-columns: 1fr 3rem 2rem;
+  grid-template-columns: 50% 3rem 2rem;
 }
 .tb2e.sheet.npc .npc-skills-list {
   display: flex;
@@ -7818,6 +7872,800 @@ body.theme-dark .tb2e.sheet .torchbearer-logo,
 .tb2e.sheet.npc .btn-add:hover {
   color: var(--tb-blue);
   border-color: var(--tb-blue);
+}
+/* ============================================ */
+/*  Character Creation Wizard                   */
+/* ============================================ */
+.character-wizard {
+  /* -------------------------------------------- */
+  /*  Step Navigation (Left Sidebar)              */
+  /* -------------------------------------------- */
+  /* -------------------------------------------- */
+  /*  Main Content Area                           */
+  /* -------------------------------------------- */
+  /* -------------------------------------------- */
+  /*  Running Summary Strip                       */
+  /* -------------------------------------------- */
+  /* -------------------------------------------- */
+  /*  Footer Navigation                           */
+  /* -------------------------------------------- */
+  /* -------------------------------------------- */
+  /*  Step Common Styles                          */
+  /* -------------------------------------------- */
+  /* -------------------------------------------- */
+  /*  Class Cards                                 */
+  /* -------------------------------------------- */
+  /* -------------------------------------------- */
+  /*  Stock Buttons                               */
+  /* -------------------------------------------- */
+  /* -------------------------------------------- */
+  /*  Ability Distribution                        */
+  /* -------------------------------------------- */
+  /* -------------------------------------------- */
+  /*  Skill / Trait Choice Cards                  */
+  /* -------------------------------------------- */
+  /* -------------------------------------------- */
+  /*  Skill/Trait Badges                          */
+  /* -------------------------------------------- */
+  /* -------------------------------------------- */
+  /*  Hometown Cards                              */
+  /* -------------------------------------------- */
+  /* -------------------------------------------- */
+  /*  Nature Questions                            */
+  /* -------------------------------------------- */
+  /* -------------------------------------------- */
+  /*  Circles                                     */
+  /* -------------------------------------------- */
+  /* -------------------------------------------- */
+  /*  Gear                                        */
+  /* -------------------------------------------- */
+  /* -------------------------------------------- */
+  /*  Weapons & Armor                             */
+  /* -------------------------------------------- */
+  /* -------------------------------------------- */
+  /*  Wises                                       */
+  /* -------------------------------------------- */
+  /* -------------------------------------------- */
+  /*  Finishing                                   */
+  /* -------------------------------------------- */
+}
+.character-wizard .wizard-wrapper {
+  display: grid;
+  grid-template-columns: 200px 1fr;
+  height: 100%;
+  gap: 0;
+}
+.character-wizard .wizard-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 8px;
+  background: var(--tb-bg-mid);
+  border-right: 1px solid var(--tb-border);
+  overflow-y: auto;
+}
+.character-wizard .wizard-nav-step {
+  display: grid;
+  grid-template-columns: 22px 1fr;
+  align-items: center;
+  gap: 0 8px;
+  padding: 6px 10px;
+  border: 1px solid transparent;
+  border-radius: var(--tb-radius, 4px);
+  background: none;
+  color: var(--tb-text-faint);
+  font-size: 0.8rem;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  text-align: left;
+}
+.character-wizard .wizard-nav-step:hover:not(:disabled) {
+  background: var(--tb-bg-raised);
+  color: var(--tb-text-body);
+}
+.character-wizard .wizard-nav-step.current {
+  background: var(--tb-frost);
+  border-color: var(--tb-blue);
+  color: var(--tb-blue-bright);
+  font-weight: 600;
+}
+.character-wizard .wizard-nav-step.complete {
+  color: var(--tb-green);
+}
+.character-wizard .wizard-nav-step.disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+.character-wizard .wizard-nav-step .step-number {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: var(--tb-bg-raised);
+  font-size: 0.7rem;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+.character-wizard .wizard-nav-step.current .step-number {
+  background: var(--tb-blue);
+  color: #fff;
+}
+.character-wizard .wizard-nav-step.complete .step-number {
+  background: var(--tb-green);
+  color: #fff;
+}
+.character-wizard .wizard-nav-step .step-label {
+  min-width: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.character-wizard .wizard-main {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+.character-wizard .wizard-content {
+  flex: 1;
+  overflow-y: auto;
+  padding: 16px 20px;
+}
+.character-wizard .wizard-summary-strip {
+  padding: 6px 16px;
+  border-top: 1px solid var(--tb-border-light);
+  background: var(--tb-bg-mid);
+  max-height: 140px;
+  overflow-y: auto;
+}
+.character-wizard .wizard-summary-strip .summary-facts {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 2px 0;
+  font-size: 0.7rem;
+  color: var(--tb-text-body);
+  line-height: 1.5;
+}
+.character-wizard .wizard-summary-strip .fact {
+  white-space: nowrap;
+}
+.character-wizard .wizard-summary-strip .fact::after {
+  content: " \00b7  ";
+  color: var(--tb-text-faint);
+}
+.character-wizard .wizard-summary-strip .fact:last-child::after {
+  content: "";
+}
+.character-wizard .wizard-summary-strip .fact b {
+  font-weight: 700;
+}
+.character-wizard .wizard-summary-strip .fact.dim {
+  color: var(--tb-text-dim);
+  font-style: italic;
+}
+.character-wizard .wizard-summary-strip .fact.trait {
+  color: var(--tb-amber);
+}
+.character-wizard .wizard-summary-strip .fact.weapon {
+  color: var(--tb-steel, var(--tb-text-body));
+}
+.character-wizard .wizard-summary-strip .fact.armor {
+  color: var(--tb-steel, var(--tb-text-body));
+}
+.character-wizard .wizard-summary-strip .summary-skill-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 3px;
+  margin-top: 4px;
+}
+.character-wizard .wizard-summary-strip .stag {
+  font-size: 0.65rem;
+  padding: 1px 5px;
+  background: var(--tb-frost);
+  border-radius: var(--tb-radius, 4px);
+  color: var(--tb-blue-bright);
+  white-space: nowrap;
+}
+.character-wizard .wizard-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 16px;
+  border-top: 1px solid var(--tb-border);
+  background: var(--tb-bg-raised);
+}
+.character-wizard .wizard-page-ref {
+  font-size: 0.75rem;
+  font-style: italic;
+  color: var(--tb-text-dim);
+}
+.character-wizard .wizard-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  border: 1px solid var(--tb-border);
+  border-radius: var(--tb-radius, 4px);
+  background: var(--tb-bg-raised);
+  color: var(--tb-text-body);
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+.character-wizard .wizard-btn:hover:not(:disabled) {
+  background: var(--tb-frost);
+  border-color: var(--tb-blue);
+}
+.character-wizard .wizard-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+.character-wizard .wizard-btn.finish {
+  background: var(--tb-blue);
+  border-color: var(--tb-blue);
+  color: #fff;
+}
+.character-wizard .wizard-btn.finish:hover:not(:disabled) {
+  background: var(--tb-blue-bright);
+}
+.character-wizard .wizard-step h2.step-heading {
+  font-family: 'MedievalSharp', cursive;
+  font-size: 1.4rem;
+  color: var(--tb-blue-bright);
+  margin: 0 0 4px;
+}
+.character-wizard .wizard-step .step-instructions {
+  font-size: 0.85rem;
+  color: var(--tb-text-dim);
+  margin: 0 0 16px;
+}
+.character-wizard .wizard-step .step-page-ref {
+  font-size: 0.75rem;
+  font-style: italic;
+  color: var(--tb-text-faint);
+  margin: 0 0 12px;
+}
+.character-wizard .wizard-step h3 {
+  font-family: 'MedievalSharp', cursive;
+  font-size: 1.05rem;
+  color: var(--tb-text-body);
+  margin: 16px 0 8px;
+}
+.character-wizard .wizard-step h4 {
+  font-size: 0.85rem;
+  color: var(--tb-text-dim);
+  margin: 8px 0 6px;
+}
+.character-wizard .class-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  margin-bottom: 16px;
+}
+.character-wizard .class-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  padding: 14px 16px;
+  background: var(--tb-bg-raised);
+  border: 2px solid var(--tb-border);
+  border-radius: var(--tb-radius, 4px);
+  cursor: pointer;
+  transition: all 0.15s ease;
+  text-align: center;
+}
+.character-wizard .class-card:hover {
+  border-color: var(--tb-blue-dim);
+  background: var(--tb-frost);
+}
+.character-wizard .class-card.selected {
+  border-color: var(--tb-blue);
+  background: var(--tb-frost-bright);
+}
+.character-wizard .class-card .class-name {
+  font-family: 'MedievalSharp', cursive;
+  font-size: 1.05rem;
+  color: var(--tb-text-body);
+  font-weight: 600;
+}
+.character-wizard .class-card .class-stocks {
+  font-size: 0.7rem;
+  color: var(--tb-text-dim);
+}
+.character-wizard .stock-buttons {
+  display: flex;
+  gap: 8px;
+}
+.character-wizard .stock-btn {
+  padding: 8px 16px;
+  background: var(--tb-bg-raised);
+  border: 2px solid var(--tb-border);
+  border-radius: var(--tb-radius, 4px);
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: all 0.15s ease;
+}
+.character-wizard .stock-btn:hover {
+  border-color: var(--tb-blue-dim);
+}
+.character-wizard .stock-btn.selected {
+  border-color: var(--tb-blue);
+  background: var(--tb-frost-bright);
+}
+.character-wizard .ability-slider-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 8px 0;
+}
+.character-wizard .ability-label {
+  font-size: 0.9rem;
+  color: var(--tb-text-body);
+  min-width: 80px;
+}
+.character-wizard .will-slider {
+  flex: 1;
+  accent-color: var(--tb-blue);
+}
+.character-wizard .ability-hint {
+  font-size: 0.75rem;
+  color: var(--tb-text-faint);
+  font-style: italic;
+}
+.character-wizard .ability-fixed {
+  display: flex;
+  gap: 24px;
+}
+.character-wizard .ability-fixed .ability-value {
+  font-size: 0.95rem;
+  color: var(--tb-text-body);
+  padding: 6px 12px;
+  background: var(--tb-frost);
+  border-radius: var(--tb-radius, 4px);
+}
+.character-wizard .skill-choice-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 6px;
+}
+.character-wizard .skill-choice-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  padding: 10px 8px;
+  background: var(--tb-bg-raised);
+  border: 2px solid var(--tb-border);
+  border-radius: var(--tb-radius, 4px);
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+.character-wizard .skill-choice-card:hover {
+  border-color: var(--tb-blue-dim);
+}
+.character-wizard .skill-choice-card.selected {
+  border-color: var(--tb-blue);
+  background: var(--tb-frost-bright);
+}
+.character-wizard .skill-choice-card .skill-name {
+  font-size: 0.85rem;
+  color: var(--tb-text-body);
+}
+.character-wizard .skill-choice-card .skill-rating {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--tb-blue-bright);
+}
+.character-wizard .skill-choice-card .skill-change {
+  font-size: 0.8rem;
+  color: var(--tb-green);
+}
+.character-wizard .trait-buttons,
+.character-wizard .trait-choice-buttons {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.character-wizard .trait-choice-btn,
+.character-wizard .wise-choice-btn,
+.character-wizard .wise-option-btn {
+  padding: 6px 14px;
+  background: var(--tb-bg-raised);
+  border: 2px solid var(--tb-border);
+  border-radius: var(--tb-radius, 4px);
+  cursor: pointer;
+  font-size: 0.85rem;
+  transition: all 0.15s ease;
+}
+.character-wizard .trait-choice-btn:hover,
+.character-wizard .wise-choice-btn:hover,
+.character-wizard .wise-option-btn:hover {
+  border-color: var(--tb-blue-dim);
+}
+.character-wizard .trait-choice-btn.selected,
+.character-wizard .wise-choice-btn.selected,
+.character-wizard .wise-option-btn.selected {
+  border-color: var(--tb-blue);
+  background: var(--tb-frost-bright);
+}
+.character-wizard .skill-badge,
+.character-wizard .trait-badge,
+.character-wizard .wise-badge,
+.character-wizard .spell-badge,
+.character-wizard .relic-badge,
+.character-wizard .invocation-badge,
+.character-wizard .weapon-badge,
+.character-wizard .armor-badge {
+  display: inline-block;
+  padding: 3px 8px;
+  margin: 2px;
+  background: var(--tb-frost);
+  border-radius: var(--tb-radius, 4px);
+  font-size: 0.8rem;
+  color: var(--tb-blue-bright);
+}
+.character-wizard .relic-badge {
+  color: var(--tb-amber);
+  background: color-mix(in srgb, var(--tb-amber) 10%, transparent);
+}
+.character-wizard .invocation-badge {
+  color: var(--tb-green);
+  background: color-mix(in srgb, var(--tb-green) 10%, transparent);
+}
+.character-wizard .hometown-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: 6px;
+  margin-bottom: 12px;
+}
+.character-wizard .hometown-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  padding: 10px 8px;
+  background: var(--tb-bg-raised);
+  border: 2px solid var(--tb-border);
+  border-radius: var(--tb-radius, 4px);
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+.character-wizard .hometown-card:hover {
+  border-color: var(--tb-blue-dim);
+}
+.character-wizard .hometown-card.selected {
+  border-color: var(--tb-blue);
+  background: var(--tb-frost-bright);
+}
+.character-wizard .hometown-card .hometown-name {
+  font-family: 'MedievalSharp', cursive;
+  font-size: 0.9rem;
+}
+.character-wizard .hometown-card .hometown-page {
+  font-size: 0.65rem;
+  font-style: italic;
+  color: var(--tb-text-faint);
+}
+.character-wizard .nature-preview {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 10px 14px;
+  background: var(--tb-frost);
+  border-radius: var(--tb-radius, 4px);
+  margin-bottom: 16px;
+}
+.character-wizard .nature-preview .nature-score {
+  font-family: 'MedievalSharp', cursive;
+  font-size: 1.2rem;
+  color: var(--tb-green);
+}
+.character-wizard .nature-preview .nature-descriptors {
+  font-size: 0.85rem;
+  color: var(--tb-text-dim);
+  font-style: italic;
+}
+.character-wizard .nature-question {
+  padding: 12px;
+  margin-bottom: 10px;
+  background: var(--tb-bg-raised);
+  border: 1px solid var(--tb-border-light);
+  border-radius: var(--tb-radius, 4px);
+}
+.character-wizard .nature-question.answered {
+  opacity: 0.85;
+}
+.character-wizard .nature-question .question-flavor {
+  font-size: 0.85rem;
+  color: var(--tb-text-body);
+  margin: 0 0 8px;
+  font-style: italic;
+}
+.character-wizard .nature-question .question-choices {
+  display: flex;
+  gap: 8px;
+}
+.character-wizard .nature-question .nature-choice {
+  flex: 1;
+  padding: 8px 12px;
+  background: var(--tb-bg-mid);
+  border: 2px solid var(--tb-border);
+  border-radius: var(--tb-radius, 4px);
+  cursor: pointer;
+  font-size: 0.8rem;
+  transition: all 0.15s ease;
+  text-align: center;
+}
+.character-wizard .nature-question .nature-choice:hover {
+  border-color: var(--tb-blue-dim);
+}
+.character-wizard .nature-question .nature-choice.selected {
+  border-color: var(--tb-blue);
+  background: var(--tb-frost-bright);
+  font-weight: 600;
+}
+.character-wizard .nature-question .secondary-choice {
+  margin-top: 10px;
+  padding-top: 8px;
+  border-top: 1px solid var(--tb-border-light);
+}
+.character-wizard .nature-question .secondary-choice .wise-choice-buttons,
+.character-wizard .nature-question .secondary-choice .trait-choice-buttons {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+.character-wizard .circles-preview {
+  padding: 10px 14px;
+  background: var(--tb-frost);
+  border-radius: var(--tb-radius, 4px);
+  margin-bottom: 16px;
+}
+.character-wizard .circles-preview .circles-score {
+  font-family: 'MedievalSharp', cursive;
+  font-size: 1.2rem;
+  color: var(--tb-blue-bright);
+}
+.character-wizard .circles-question {
+  padding: 10px 12px;
+  margin-bottom: 8px;
+  background: var(--tb-bg-raised);
+  border: 1px solid var(--tb-border-light);
+  border-radius: var(--tb-radius, 4px);
+}
+.character-wizard .circles-question .question-text {
+  font-size: 0.85rem;
+  color: var(--tb-text-body);
+  margin: 0 0 8px;
+}
+.character-wizard .circles-question .question-choices {
+  display: flex;
+  gap: 8px;
+}
+.character-wizard .circles-question .circles-choice {
+  flex: 1;
+  padding: 8px 12px;
+  background: var(--tb-bg-mid);
+  border: 2px solid var(--tb-border);
+  border-radius: var(--tb-radius, 4px);
+  cursor: pointer;
+  font-size: 0.8rem;
+  text-align: center;
+  transition: all 0.15s ease;
+}
+.character-wizard .circles-question .circles-choice:hover {
+  border-color: var(--tb-blue-dim);
+}
+.character-wizard .circles-question .circles-choice.selected {
+  border-color: var(--tb-blue);
+  background: var(--tb-frost-bright);
+  font-weight: 600;
+}
+.character-wizard .circles-question .circles-detail {
+  margin-top: 8px;
+}
+.character-wizard .circles-question .circles-input {
+  width: 100%;
+  padding: 6px 8px;
+  border: 1px solid var(--tb-border);
+  border-radius: var(--tb-radius, 4px);
+  background: var(--tb-bg-white);
+  font-size: 0.85rem;
+}
+.character-wizard .circles-question .circles-note {
+  font-size: 0.75rem;
+  color: var(--tb-text-faint);
+  font-style: italic;
+  margin: 6px 0 0;
+}
+.character-wizard .circles-question .circles-note.required {
+  color: var(--tb-amber);
+  font-weight: 600;
+}
+.character-wizard .pack-buttons {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+.character-wizard .pack-btn {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  padding: 14px;
+  background: var(--tb-bg-raised);
+  border: 2px solid var(--tb-border);
+  border-radius: var(--tb-radius, 4px);
+  cursor: pointer;
+  font-size: 0.95rem;
+  transition: all 0.15s ease;
+}
+.character-wizard .pack-btn:hover {
+  border-color: var(--tb-blue-dim);
+}
+.character-wizard .pack-btn.selected {
+  border-color: var(--tb-blue);
+  background: var(--tb-frost-bright);
+}
+.character-wizard .pack-btn i {
+  font-size: 1.4rem;
+  color: var(--tb-text-dim);
+}
+.character-wizard .pack-btn .pack-detail {
+  font-size: 0.7rem;
+  color: var(--tb-text-faint);
+}
+.character-wizard .roll-btn {
+  padding: 8px 16px;
+  background: var(--tb-blue);
+  border: 1px solid var(--tb-blue);
+  border-radius: var(--tb-radius, 4px);
+  color: #fff;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+.character-wizard .roll-btn:hover {
+  background: var(--tb-blue-bright);
+}
+.character-wizard .roll-result {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 12px;
+  background: var(--tb-frost);
+  border-radius: var(--tb-radius, 4px);
+  margin-bottom: 10px;
+}
+.character-wizard .roll-result .roll-value {
+  font-weight: 600;
+  color: var(--tb-text-body);
+}
+.character-wizard .roll-result .school-name {
+  font-family: 'MedievalSharp', cursive;
+  font-size: 1.05rem;
+  color: var(--tb-blue-bright);
+}
+.character-wizard .weapon-list,
+.character-wizard .armor-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+  gap: 6px;
+  margin-bottom: 12px;
+}
+.character-wizard .weapon-card,
+.character-wizard .armor-card {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 8px;
+  background: var(--tb-bg-raised);
+  border: 2px solid var(--tb-border);
+  border-radius: var(--tb-radius, 4px);
+  cursor: pointer;
+  font-size: 0.85rem;
+  transition: all 0.15s ease;
+  text-align: center;
+}
+.character-wizard .weapon-card:hover,
+.character-wizard .armor-card:hover {
+  border-color: var(--tb-blue-dim);
+}
+.character-wizard .weapon-card.selected,
+.character-wizard .armor-card.selected {
+  border-color: var(--tb-blue);
+  background: var(--tb-frost-bright);
+}
+.character-wizard .selected-summary,
+.character-wizard .class-skills-preview,
+.character-wizard .class-trait-preview {
+  margin-top: 12px;
+  padding: 10px 12px;
+  background: var(--tb-frost);
+  border-radius: var(--tb-radius, 4px);
+}
+.character-wizard .selected-summary h3,
+.character-wizard .class-skills-preview h3,
+.character-wizard .class-trait-preview h3 {
+  margin: 0 0 6px;
+  font-size: 0.85rem;
+}
+.character-wizard .selected-summary .skills-list,
+.character-wizard .class-skills-preview .skills-list,
+.character-wizard .class-trait-preview .skills-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+.character-wizard .forced-note,
+.character-wizard .no-armor-note {
+  font-size: 0.85rem;
+  color: var(--tb-text-dim);
+  font-style: italic;
+  padding: 12px;
+  background: var(--tb-frost);
+  border-radius: var(--tb-radius, 4px);
+  margin-bottom: 12px;
+}
+.character-wizard .armor-section {
+  margin-bottom: 12px;
+}
+.character-wizard .wise-input-row {
+  margin-bottom: 6px;
+}
+.character-wizard .wise-input {
+  width: 100%;
+  padding: 6px 8px;
+  border: 1px solid var(--tb-border);
+  border-radius: var(--tb-radius, 4px);
+  background: var(--tb-bg-white);
+  font-size: 0.85rem;
+}
+.character-wizard .wise-hint {
+  font-size: 0.75rem;
+  color: var(--tb-text-faint);
+  font-style: italic;
+  margin: 0 0 8px;
+}
+.character-wizard .wises-summary,
+.character-wizard .required-wises,
+.character-wizard .free-wises {
+  margin-bottom: 12px;
+}
+.character-wizard .wise-options {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.character-wizard .finishing-fields {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+.character-wizard .finishing-field {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+.character-wizard .finishing-field label {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--tb-text-dim);
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+.character-wizard .finishing-field input {
+  padding: 8px 10px;
+  border: 1px solid var(--tb-border);
+  border-radius: var(--tb-radius, 4px);
+  background: var(--tb-bg-white);
+  font-size: 0.9rem;
+  color: var(--tb-text-body);
 }
 /* ============================================ */
 /*  Grind Tracker — The Ledger                  */

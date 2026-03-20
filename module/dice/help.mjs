@@ -18,7 +18,7 @@ import { abilities, skills } from "../config.mjs";
 /* -------------------------------------------- */
 
 /**
- * Get an ability rating from an actor, handling both character (object) and NPC (flat number) data.
+ * Get an ability rating from an actor.
  * @param {Actor} actor
  * @param {string} key
  * @returns {number}
@@ -26,9 +26,7 @@ import { abilities, skills } from "../config.mjs";
 function _getAbilityRating(actor, key) {
   // Monsters store nature directly on system (no abilities object)
   if ( !actor.system.abilities ) return actor.system[key] ?? 0;
-  const data = actor.system.abilities[key];
-  if ( typeof data === "number" ) return data;
-  return data?.rating ?? 0;
+  return actor.system.abilities[key]?.rating ?? 0;
 }
 
 /**

@@ -1,0 +1,22 @@
+_id: dd00000000000018
+name: Tiara
+type: gear
+img: systems/tb2e/icons/ffffff/transparent/1x1/delapouite/tiara.svg
+system:
+  description: "Lore Master's Manual, p. 242"
+  slot: ''
+  slotIndex: 0
+  slotOptions:
+    head: 1
+  cost: 0
+  damaged: false
+  dropped: false
+  quantity: 1
+  quantityMax: 1
+  value:
+    dice: 7
+    negotiated: false
+  skillBonuses: []
+  specialRules: ''
+effects: []
+_key: '!items!dd00000000000018'

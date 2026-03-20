@@ -1,0 +1,23 @@
+_id: dd0000000000001b
+name: Jeweled Headdress
+type: gear
+img: systems/tb2e/icons/ffffff/transparent/1x1/delapouite/jewel-crown.svg
+system:
+  description: "Lore Master's Manual, p. 242"
+  slot: ''
+  slotIndex: 0
+  slotOptions:
+    head: 1
+    pack: 4
+  cost: 0
+  damaged: false
+  dropped: false
+  quantity: 1
+  quantityMax: 1
+  value:
+    dice: 10
+    negotiated: false
+  skillBonuses: []
+  specialRules: 'Also occupies neck slot when worn. Lore Master''s Manual, p. 242.'
+effects: []
+_key: '!items!dd0000000000001b'

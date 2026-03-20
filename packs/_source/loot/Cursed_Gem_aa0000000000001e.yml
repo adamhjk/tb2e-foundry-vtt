@@ -1,0 +1,22 @@
+_id: aa0000000000001e
+name: Cursed Gem
+type: gear
+img: systems/tb2e/icons/ffffff/transparent/1x1/lorc/cut-diamond.svg
+system:
+  description: "Scholar's Guide, p. 160"
+  slot: ''
+  slotIndex: 0
+  slotOptions:
+    pack: 1
+  cost: 0
+  damaged: false
+  dropped: false
+  quantity: 1
+  quantityMax: 1
+  value:
+    dice: 8
+    negotiated: false
+  skillBonuses: []
+  specialRules: "Scholar's Guide, p. 158"
+effects: []
+_key: '!items!aa0000000000001e'

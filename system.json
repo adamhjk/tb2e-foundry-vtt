@@ -60,7 +60,12 @@
     { "name": "musical-instruments", "label": "Musical Instruments", "path": "packs/musical-instruments", "type": "Item" },
     { "name": "shamanic-invocations", "label": "Shamanic Invocations", "path": "packs/shamanic-invocations", "type": "Item" },
     { "name": "shamanic-relics",      "label": "Shamanic Relics",      "path": "packs/shamanic-relics",      "type": "Item" },
-    { "name": "monsters",    "label": "Monsters",    "path": "packs/monsters",    "type": "Actor" }
+    { "name": "loot",         "label": "Loot",         "path": "packs/loot",         "type": "Item" },
+    { "name": "richer-loot", "label": "Richer Loot", "path": "packs/richer-loot", "type": "Item" },
+    { "name": "potions",      "label": "Potions",      "path": "packs/potions",      "type": "Item" },
+    { "name": "magic-items",  "label": "Magic Items",  "path": "packs/magic-items",  "type": "Item" },
+    { "name": "monsters",    "label": "Monsters",    "path": "packs/monsters",    "type": "Actor" },
+    { "name": "npcs",        "label": "NPCs",        "path": "packs/npcs",        "type": "Actor" }
   ],
   "packFolders": [
     {
@@ -79,6 +84,17 @@
         "magical-religious",
         "musical-instruments",
         "weapons"
+      ]
+    },
+    {
+      "name": "Loot",
+      "sorting": "a",
+      "color": "#c4a000",
+      "packs": [
+        "loot",
+        "richer-loot",
+        "potions",
+        "magic-items"
       ]
     },
     {

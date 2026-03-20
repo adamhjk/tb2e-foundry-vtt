@@ -1,0 +1,69 @@
+_id: f1e2d3c4b5a60018
+name: Noble
+type: npc
+img: systems/tb2e/icons/ffffff/transparent/1x1/lorc/crown.svg
+system:
+  stock: ''
+  class: ''
+  goal: ''
+  abilities:
+    nature:
+      rating: 3
+    will:
+      rating: 3
+    health:
+      rating: 6
+    resources:
+      rating: 6
+    circles:
+      rating: 4
+    precedence:
+      rating: 3
+  might: 2
+  skills:
+    - key: popinjay
+      rating: 5
+    - key: rider
+      rating: 5
+    - key: fighter
+      rating: 4
+    - key: orator
+      rating: 3
+    - key: steward
+      rating: 2
+  wises:
+    - Vassal-wise
+    - Fief-wise
+  conditions:
+    hungry: false
+    angry: false
+    afraid: false
+    exhausted: false
+    injured: false
+    sick: false
+    dead: false
+  conflict:
+    hp:
+      value: 0
+      max: 0
+    team: gm
+    weapon: ''
+  lightLevel: full
+  description: Scholar's Guide, p. 207
+prototypeToken:
+  actorLink: false
+  appendNumber: true
+  disposition: 0
+items:
+  - _id: a018000000000001
+    name: Arrogant
+    type: trait
+    system:
+      level: 1
+      isClass: false
+      beneficial: 0
+      usedAgainst: false
+      checks: 0
+    _key: '!actors.items!f1e2d3c4b5a60018.a018000000000001'
+effects: []
+_key: '!actors!f1e2d3c4b5a60018'

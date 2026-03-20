@@ -37,13 +37,17 @@
   {{!-- Level Requirements Reference --}}
   <fieldset class="level-req-section">
     <legend><i class="fa-solid fa-chart-line"></i> {{localize "TB2E.Section.LevelRequirements"}}</legend>
+    {{#if hasClassBenefits}}
+    <p class="class-benefit-ref">{{classLabel}} {{localize "TB2E.LevelBenefit.Header"}}: {{classBenefitPage}}</p>
+    {{/if}}
     <table class="level-req-table">
       <thead>
         <tr>
           <th>{{localize "TB2E.Fields.Level"}}</th>
           <th><i class="fa-solid fa-star"></i> {{localize "TB2E.Fields.Fate"}} ({{../fateSpent}} {{localize "TB2E.Fields.Spent"}})</th>
           <th><i class="fa-solid fa-mask"></i> {{localize "TB2E.Fields.Persona"}} ({{../personaSpent}} {{localize "TB2E.Fields.Spent"}})</th>
-          <th>Benefit</th>
+          <th>{{localize "TB2E.LevelBenefit.ClassBenefit"}}</th>
+          <th>{{localize "TB2E.LevelBenefit.Chosen"}}</th>
         </tr>
       </thead>
       <tbody>
@@ -52,7 +56,8 @@
           <td>{{level}}</td>
           <td class="{{#if fateMet}}met{{/if}}">{{fate}}{{#if fateMet}} &#x2713;{{else if isNextTarget}} &#x2190;{{/if}}</td>
           <td class="{{#if personaMet}}met{{/if}}">{{persona}}{{#if personaMet}} &#x2713;{{else if isNextTarget}} &#x2190;{{/if}}</td>
-          <td>{{benefit}}</td>
+          <td class="class-benefit-cell">{{#if classBenefit}}{{classBenefit}}{{else}}{{benefit}}{{/if}}</td>
+          <td><input type="text" name="system.levelChoices.{{level}}" value="{{levelChoice}}" class="level-choice-input" placeholder="—"></td>
         </tr>
         {{/each}}
       </tbody>

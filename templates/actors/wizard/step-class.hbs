@@ -1,0 +1,78 @@
+{{!-- Step 1: Class & Stock Selection --}}
+<div class="wizard-step step-class">
+  <h2 class="step-heading">{{localize "TB2E.Wizard.Step.Class"}}</h2>
+  <p class="step-instructions">{{localize "TB2E.Wizard.ClassInstructions"}}</p>
+
+  {{!-- Class Cards --}}
+  <div class="class-grid">
+    {{#each classes}}
+    <button type="button"
+            class="class-card{{#if isSelected}} selected{{/if}}"
+            data-action="selectClass" data-class-key="{{key}}">
+      <span class="class-name">{{label}}</span>
+      <span class="class-stocks">{{#each stocks}}{{this}}{{#unless @last}}, {{/unless}}{{/each}}</span>
+    </button>
+    {{/each}}
+  </div>
+
+  {{#if selectedClass}}
+  {{!-- Stock Selection (if multiple) --}}
+  {{#unless isAutoStock}}
+  <div class="stock-selection">
+    <h3>{{localize "TB2E.Wizard.ChooseStock"}}</h3>
+    <div class="stock-buttons">
+      {{#each availableStocks}}
+      <button type="button"
+              class="stock-btn{{#if isSelected}} selected{{/if}}"
+              data-action="selectStock" data-stock="{{key}}">
+        {{label}}
+      </button>
+      {{/each}}
+    </div>
+  </div>
+  {{/unless}}
+
+  {{!-- Will/Health Distribution --}}
+  <div class="ability-distribution">
+    <h3>{{localize "TB2E.Wizard.Abilities"}}</h3>
+    {{#if distributed}}
+    <div class="ability-slider-row">
+      <label class="ability-label">
+        {{localize "TB2E.Ability.Will"}}: <span class="will-display">{{willValue}}</span>
+      </label>
+      <input type="range" class="will-slider"
+             min="{{abilityMin}}" max="{{abilityMax}}" value="{{healthValue}}" step="1">
+      <label class="ability-label">
+        {{localize "TB2E.Ability.Health"}}: <span class="health-display">{{healthValue}}</span>
+      </label>
+    </div>
+    <p class="ability-hint">{{localize "TB2E.Wizard.DistributeHint"}}</p>
+    {{else}}
+    <div class="ability-fixed">
+      <span class="ability-value">{{localize "TB2E.Ability.Will"}}: {{willValue}}</span>
+      <span class="ability-value">{{localize "TB2E.Ability.Health"}}: {{healthValue}}</span>
+    </div>
+    {{/if}}
+  </div>
+
+  {{!-- Class Skills Preview --}}
+  {{#if classSkills}}
+  <div class="class-skills-preview">
+    <h3>{{localize "TB2E.Wizard.StartingSkills"}}</h3>
+    <div class="skills-list">
+      {{#each classSkills}}
+      <span class="skill-badge">{{label}} {{rating}}</span>
+      {{/each}}
+    </div>
+  </div>
+  {{/if}}
+
+  {{!-- Class Trait --}}
+  {{#if classTrait}}
+  <div class="class-trait-preview">
+    <h3>{{localize "TB2E.Wizard.ClassTrait"}}</h3>
+    <span class="trait-badge">{{classTrait}}</span>
+  </div>
+  {{/if}}
+  {{/if}}
+</div>

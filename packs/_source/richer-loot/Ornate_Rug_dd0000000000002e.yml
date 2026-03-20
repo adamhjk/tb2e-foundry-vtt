@@ -1,0 +1,22 @@
+_id: dd0000000000002e
+name: Ornate Rug
+type: gear
+img: systems/tb2e/icons/ffffff/transparent/1x1/delapouite/red-carpet.svg
+system:
+  description: "Lore Master's Manual, p. 243"
+  slot: ''
+  slotIndex: 0
+  slotOptions:
+    pack: 10
+  cost: 0
+  damaged: false
+  dropped: false
+  quantity: 1
+  quantityMax: 1
+  value:
+    dice: 8
+    negotiated: false
+  skillBonuses: []
+  specialRules: ''
+effects: []
+_key: '!items!dd0000000000002e'

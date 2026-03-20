@@ -1,0 +1,75 @@
+_id: f1e2d3c4b5a60014
+name: Innkeeper
+type: npc
+img: systems/tb2e/icons/ffffff/transparent/1x1/lorc/beer-stein.svg
+system:
+  stock: ''
+  class: ''
+  goal: ''
+  abilities:
+    nature:
+      rating: 4
+    will:
+      rating: 5
+    health:
+      rating: 3
+    resources:
+      rating: 4
+    circles:
+      rating: 5
+    precedence:
+      rating: 2
+  might: 2
+  skills:
+    - key: haggler
+      rating: 4
+    - key: persuader
+      rating: 4
+    - key: manipulator
+      rating: 2
+  wises:
+    - Eavesdropping-wise
+    - Rumor-wise
+  conditions:
+    hungry: false
+    angry: false
+    afraid: false
+    exhausted: false
+    injured: false
+    sick: false
+    dead: false
+  conflict:
+    hp:
+      value: 0
+      max: 0
+    team: gm
+    weapon: ''
+  lightLevel: full
+  description: Scholar's Guide, p. 206
+prototypeToken:
+  actorLink: false
+  appendNumber: true
+  disposition: 0
+items:
+  - _id: a014000000000001
+    name: Extrovert
+    type: trait
+    system:
+      level: 1
+      isClass: false
+      beneficial: 0
+      usedAgainst: false
+      checks: 0
+    _key: '!actors.items!f1e2d3c4b5a60014.a014000000000001'
+  - _id: a014000000000002
+    name: Keen Ear
+    type: trait
+    system:
+      level: 1
+      isClass: false
+      beneficial: 0
+      usedAgainst: false
+      checks: 0
+    _key: '!actors.items!f1e2d3c4b5a60014.a014000000000002'
+effects: []
+_key: '!actors!f1e2d3c4b5a60014'

@@ -1,0 +1,29 @@
+_id: cc00000000000005
+name: Slaughterer's Friend
+type: weapon
+img: systems/tb2e/icons/ffffff/transparent/1x1/lorc/hatchets.svg
+system:
+  description: "Scholar's Guide, p. 169"
+  slot: ''
+  slotIndex: 0
+  slotOptions:
+    wornHand: 1
+    carried: 1
+  cost: 0
+  damaged: false
+  dropped: false
+  quantity: 1
+  quantityMax: 1
+  value:
+    dice: 0
+    negotiated: false
+  wield: 1
+  conflictBonuses:
+    attack: { type: dice, value: 0 }
+    defend: { type: dice, value: 0 }
+    feint: { type: dice, value: 0 }
+    maneuver: { type: dice, value: 0 }
+  skillBonuses: []
+  specialRules: "Scholar's Guide, p. 169"
+effects: []
+_key: '!items!cc00000000000005'

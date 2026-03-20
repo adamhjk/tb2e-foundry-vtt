@@ -1,0 +1,64 @@
+_id: f1e2d3c4b5a6000a
+name: Charlatan
+type: npc
+img: systems/tb2e/icons/ffffff/transparent/1x1/lorc/cloak-dagger.svg
+system:
+  stock: ''
+  class: ''
+  goal: ''
+  abilities:
+    nature:
+      rating: 4
+    will:
+      rating: 4
+    health:
+      rating: 3
+    resources:
+      rating: 3
+    circles:
+      rating: 4
+    precedence:
+      rating: 0
+  might: 2
+  skills:
+    - key: manipulator
+      rating: 5
+    - key: persuader
+      rating: 3
+    - key: criminal
+      rating: 3
+  wises:
+    - Scam-wise
+  conditions:
+    hungry: false
+    angry: false
+    afraid: false
+    exhausted: false
+    injured: false
+    sick: false
+    dead: false
+  conflict:
+    hp:
+      value: 0
+      max: 0
+    team: gm
+    weapon: ''
+  lightLevel: full
+  description: Scholar's Guide, p. 203
+prototypeToken:
+  actorLink: false
+  appendNumber: true
+  disposition: 0
+items:
+  - _id: a00a000000000001
+    name: Clever
+    type: trait
+    system:
+      level: 1
+      isClass: false
+      beneficial: 0
+      usedAgainst: false
+      checks: 0
+    _key: '!actors.items!f1e2d3c4b5a6000a.a00a000000000001'
+effects: []
+_key: '!actors!f1e2d3c4b5a6000a'

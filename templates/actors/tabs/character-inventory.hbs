@@ -32,6 +32,7 @@
             {{else if occupied}}
             <span class="slot-item" title="{{notation}}">
               <span class="slot-item-name">{{#if lit}}{{#if nameSingular}}{{nameSingular}}{{else}}{{name}}{{/if}}{{else}}{{name}}{{/if}}</span>
+              {{#if valueLabel}}<span class="slot-value" title="{{localize "TB2E.Item.Value"}}"><i class="fa-solid fa-coins"></i> {{valueLabel}}</span>{{/if}}
               {{#if isFood}}
               <span class="slot-food-qty">
                 <button type="button" class="slot-consume-btn" data-action="consumePortion" data-item-id="{{itemId}}" title="Eat"><i class="fa-solid fa-utensils"></i></button>
@@ -100,6 +101,7 @@
             {{else if occupied}}
             <span class="slot-item" title="{{notation}}">
               <span class="slot-item-name">{{#if lit}}{{#if nameSingular}}{{nameSingular}}{{else}}{{name}}{{/if}}{{else}}{{name}}{{/if}}</span>
+              {{#if valueLabel}}<span class="slot-value" title="{{localize "TB2E.Item.Value"}}"><i class="fa-solid fa-coins"></i> {{valueLabel}}</span>{{/if}}
               {{#if isFood}}
               <span class="slot-food-qty">
                 <button type="button" class="slot-consume-btn" data-action="consumePortion" data-item-id="{{itemId}}" title="Eat"><i class="fa-solid fa-utensils"></i></button>
@@ -169,6 +171,7 @@
             {{else if occupied}}
             <span class="slot-item" title="{{notation}}">
               <span class="slot-item-name">{{#if lit}}{{#if nameSingular}}{{nameSingular}}{{else}}{{name}}{{/if}}{{else}}{{name}}{{/if}}</span>
+              {{#if valueLabel}}<span class="slot-value" title="{{localize "TB2E.Item.Value"}}"><i class="fa-solid fa-coins"></i> {{valueLabel}}</span>{{/if}}
               {{#if isFood}}
               <span class="slot-food-qty">
                 <button type="button" class="slot-consume-btn" data-action="consumePortion" data-item-id="{{itemId}}" title="Eat"><i class="fa-solid fa-utensils"></i></button>
@@ -230,6 +233,7 @@
       {{#each dropped}}
       <div class="inventory-item dropped-item draggable" data-item-id="{{itemId}}">
         <span class="slot-item-name">{{name}}</span>
+        {{#if valueLabel}}<span class="slot-value"><i class="fa-solid fa-coins"></i> {{valueLabel}}</span>{{/if}}
         <span class="slot-placements">
           {{#each placements}}
           <button type="button" class="slot-placement-btn" data-action="placeItem"
@@ -255,6 +259,7 @@
       {{#each unassigned}}
       <div class="inventory-item unassigned-item draggable" data-item-id="{{itemId}}">
         <span class="slot-item-name">{{name}}</span>
+        {{#if valueLabel}}<span class="slot-value"><i class="fa-solid fa-coins"></i> {{valueLabel}}</span>{{/if}}
         <span class="slot-placements">
           {{#each placements}}
           <button type="button" class="slot-placement-btn" data-action="placeItem"

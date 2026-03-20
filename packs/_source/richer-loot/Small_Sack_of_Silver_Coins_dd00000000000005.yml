@@ -1,0 +1,22 @@
+_id: dd00000000000005
+name: Small Sack of Silver Coins
+type: gear
+img: systems/tb2e/icons/ffffff/transparent/1x1/delapouite/coins.svg
+system:
+  description: "Lore Master's Manual, p. 242"
+  slot: ''
+  slotIndex: 0
+  slotOptions:
+    pack: 2
+  cost: 0
+  damaged: false
+  dropped: false
+  quantity: 2
+  quantityMax: 2
+  value:
+    dice: 2
+    negotiated: false
+  skillBonuses: []
+  specialRules: ''
+effects: []
+_key: '!items!dd00000000000005'

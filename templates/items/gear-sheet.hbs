@@ -21,6 +21,18 @@
     </label>
   </div>
 
+  {{!-- Value --}}
+  <div class="gear-fields">
+    <div class="field-pair">
+      <label>{{localize "TB2E.Item.Value"}}</label>
+      <input type="number" name="system.value.dice" value="{{system.value.dice}}" min="0" placeholder="0">
+    </div>
+    <label class="checkbox-field">
+      <input type="checkbox" name="system.value.negotiated" {{#if system.value.negotiated}}checked{{/if}}>
+      {{localize "TB2E.Item.ValueNegotiated"}}
+    </label>
+  </div>
+
   {{!-- Slot Options (per-location slot costs) --}}
   <fieldset class="gear-section">
     <legend>{{localize "TB2E.Item.SlotOptions"}}</legend>

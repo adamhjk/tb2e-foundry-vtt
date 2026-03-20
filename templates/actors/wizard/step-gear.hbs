@@ -1,0 +1,99 @@
+{{!-- Step 9: Gear --}}
+<div class="wizard-step step-gear">
+  <h2 class="step-heading">{{localize "TB2E.Wizard.Step.Gear"}}</h2>
+  <p class="step-instructions">{{localize "TB2E.Wizard.GearInstructions"}}</p>
+
+  {{!-- Pack Type --}}
+  <div class="pack-choice">
+    <h3>{{localize "TB2E.Wizard.ChoosePack"}}</h3>
+    <div class="pack-buttons">
+      <button type="button"
+              class="pack-btn{{#if (eq packType 'satchel')}} selected{{/if}}"
+              data-action="selectPackType" data-pack="satchel">
+        <i class="fa-solid fa-suitcase"></i>
+        {{localize "TB2E.Container.Satchel"}}
+        <span class="pack-detail">{{localize "TB2E.Wizard.SatchelSlots"}}</span>
+      </button>
+      <button type="button"
+              class="pack-btn{{#if (eq packType 'backpack')}} selected{{/if}}"
+              data-action="selectPackType" data-pack="backpack">
+        <i class="fa-solid fa-briefcase"></i>
+        {{localize "TB2E.Container.Backpack"}}
+        <span class="pack-detail">{{localize "TB2E.Wizard.BackpackSlots"}}</span>
+      </button>
+    </div>
+  </div>
+
+  {{!-- Magician: Spell School Roll --}}
+  {{#if isMagician}}
+  <div class="spell-roll-section">
+    <h3>{{localize "TB2E.Wizard.SpellSchoolTitle"}}</h3>
+    {{#if needsSpellRoll}}
+    <p>{{localize "TB2E.Wizard.SpellSchoolPrompt"}}</p>
+    <button type="button" class="roll-btn" data-action="rollSpells">
+      <i class="fa-solid fa-dice"></i> {{localize "TB2E.Wizard.RollSpells"}}
+    </button>
+    {{else}}
+    <div class="roll-result">
+      <span class="roll-value">{{localize "TB2E.Wizard.Rolled"}}: {{spellSchoolRoll}}</span>
+      <span class="school-name">{{spellSchool}}</span>
+    </div>
+    <div class="spell-list">
+      <h4>{{localize "TB2E.Wizard.StartingSpells"}}</h4>
+      {{#each spells}}
+      <span class="spell-badge">{{this}}</span>
+      {{/each}}
+    </div>
+    {{/if}}
+  </div>
+  {{/if}}
+
+  {{!-- Theurge/Shaman: Relic Roll --}}
+  {{#if isTheurge}}
+  <div class="relic-roll-section">
+    <h3>{{localize "TB2E.Wizard.RelicTitle"}}</h3>
+    {{#if needsRelicRoll}}
+    <p>{{localize "TB2E.Wizard.RelicPrompt"}}</p>
+    <button type="button" class="roll-btn" data-action="rollRelics">
+      <i class="fa-solid fa-dice"></i> {{localize "TB2E.Wizard.RollRelics"}}
+    </button>
+    {{else}}
+    <div class="roll-result">
+      <span class="roll-value">{{localize "TB2E.Wizard.Rolled"}}: {{relicRoll}}</span>
+    </div>
+    <div class="relic-list">
+      <h4>{{localize "TB2E.Section.Relics"}}</h4>
+      {{#each relics}}<span class="relic-badge">{{this}}</span>{{/each}}
+    </div>
+    <div class="invocation-list">
+      <h4>{{localize "TB2E.Wizard.StartingInvocations"}}</h4>
+      {{#each invocations}}<span class="invocation-badge">{{this}}</span>{{/each}}
+    </div>
+    {{/if}}
+  </div>
+  {{/if}}
+
+  {{#if isShaman}}
+  <div class="relic-roll-section">
+    <h3>{{localize "TB2E.Wizard.ShamanicRelicTitle"}}</h3>
+    {{#if needsRelicRoll}}
+    <p>{{localize "TB2E.Wizard.ShamanicRelicPrompt"}}</p>
+    <button type="button" class="roll-btn" data-action="rollRelics">
+      <i class="fa-solid fa-dice"></i> {{localize "TB2E.Wizard.RollRelics"}}
+    </button>
+    {{else}}
+    <div class="roll-result">
+      <span class="roll-value">{{localize "TB2E.Wizard.Rolled"}}: {{relicRoll}}</span>
+    </div>
+    <div class="relic-list">
+      <h4>{{localize "TB2E.Section.Relics"}}</h4>
+      {{#each relics}}<span class="relic-badge">{{this}}</span>{{/each}}
+    </div>
+    <div class="invocation-list">
+      <h4>{{localize "TB2E.Wizard.StartingInvocations"}}</h4>
+      {{#each invocations}}<span class="invocation-badge">{{this}}</span>{{/each}}
+    </div>
+    {{/if}}
+  </div>
+  {{/if}}
+</div>

@@ -1,0 +1,23 @@
+_id: aa0000000000002e
+name: Armband
+type: gear
+img: systems/tb2e/icons/ffffff/transparent/1x1/lorc/engagement-ring.svg
+system:
+  description: "Scholar's Guide, p. 160"
+  slot: ''
+  slotIndex: 0
+  slotOptions:
+    wornHand: 1
+    pocket: 1
+  cost: 0
+  damaged: false
+  dropped: false
+  quantity: 1
+  quantityMax: 1
+  value:
+    dice: 4
+    negotiated: false
+  skillBonuses: []
+  specialRules: ''
+effects: []
+_key: '!items!aa0000000000002e'

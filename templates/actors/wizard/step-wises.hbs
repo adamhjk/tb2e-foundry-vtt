@@ -1,0 +1,47 @@
+{{!-- Step 6: Wises --}}
+<div class="wizard-step step-wises">
+  <h2 class="step-heading">{{localize "TB2E.Wizard.Step.Wises"}}</h2>
+  <p class="step-instructions">{{localize "TB2E.Wizard.WisesInstructions"}}</p>
+  {{#if wisePage}}<p class="step-page-ref">{{wisePage}}</p>{{/if}}
+
+  {{!-- Required Wise Selection --}}
+  {{#if requiredWisePick}}
+  <div class="required-wises">
+    <h3>{{localize "TB2E.Wizard.RequiredWise"}}</h3>
+    <div class="wise-options">
+      {{#each requiredWiseOptions}}
+      <button type="button"
+              class="wise-option-btn{{#if this.isSelected}} selected{{/if}}"
+              data-action="selectRequiredWise" data-wise="{{this.name}}">
+        {{this.name}}
+      </button>
+      {{/each}}
+    </div>
+  </div>
+  {{/if}}
+
+  {{!-- Free-choice Wises --}}
+  {{#if freeWiseSlots.length}}
+  <div class="free-wises">
+    <h3>{{localize "TB2E.Wizard.FreeWise"}}</h3>
+    <p class="wise-hint">{{localize "TB2E.Wizard.WiseHint"}}</p>
+    {{#each freeWiseSlots}}
+    <div class="wise-input-row">
+      <input type="text" class="wise-input" data-wise-index="{{this.index}}"
+             value="{{this.value}}"
+             placeholder="{{localize 'TB2E.Wizard.WisePlaceholder'}}">
+    </div>
+    {{/each}}
+  </div>
+  {{/if}}
+
+  {{!-- Current Wises Summary --}}
+  {{#if currentWises.length}}
+  <div class="wises-summary">
+    <h3>{{localize "TB2E.Section.Wises"}}</h3>
+    {{#each currentWises}}
+    {{#if this}}<span class="wise-badge">{{this}}</span>{{/if}}
+    {{/each}}
+  </div>
+  {{/if}}
+</div>

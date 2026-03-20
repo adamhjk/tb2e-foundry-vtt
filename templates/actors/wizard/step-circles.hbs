@@ -1,0 +1,113 @@
+{{!-- Step 8: Circles --}}
+<div class="wizard-step step-circles">
+  <h2 class="step-heading">{{localize "TB2E.Wizard.Step.Circles"}}</h2>
+  <p class="step-instructions">{{localize "TB2E.Wizard.CirclesInstructions"}}</p>
+
+  {{!-- Circles Score Preview --}}
+  <div class="circles-preview">
+    <span class="circles-score">
+      <i class="fa-solid fa-users"></i>
+      {{localize "TB2E.Ability.Circles"}}: {{circlesScore}}
+    </span>
+  </div>
+
+  {{!-- Question 1: Friend --}}
+  <div class="circles-question">
+    <p class="question-text">{{localize "TB2E.Wizard.Circles.FriendQuestion"}}</p>
+    <div class="question-choices">
+      <button type="button"
+              class="circles-choice{{#if (eq hasFriend true)}} selected{{/if}}"
+              data-action="answerCircles" data-question="hasFriend" data-answer="yes">
+        {{localize "TB2E.Wizard.Circles.HasFriend"}}
+      </button>
+      <button type="button"
+              class="circles-choice{{#if (eq hasFriend false)}} selected{{/if}}"
+              data-action="answerCircles" data-question="hasFriend" data-answer="no">
+        {{localize "TB2E.Wizard.Circles.IsLoner"}}
+      </button>
+    </div>
+    {{#if (eq hasFriend true)}}
+    <div class="circles-detail">
+      <input type="text" class="circles-input" data-field="friend"
+             value="{{friend}}" placeholder="{{localize 'TB2E.Wizard.Circles.FriendPlaceholder'}}">
+    </div>
+    {{/if}}
+    {{#if isLoner}}
+    <p class="circles-note">{{localize "TB2E.Wizard.Circles.LonerNote"}}</p>
+    {{/if}}
+  </div>
+
+  {{!-- Question 2: Parents --}}
+  <div class="circles-question">
+    <p class="question-text">{{localize "TB2E.Wizard.Circles.ParentsQuestion"}}</p>
+    <div class="question-choices">
+      <button type="button"
+              class="circles-choice{{#if (eq hasParents true)}} selected{{/if}}"
+              data-action="answerCircles" data-question="hasParents" data-answer="yes">
+        {{localize "TB2E.Wizard.Circles.HasParents"}}
+      </button>
+      <button type="button"
+              class="circles-choice{{#if (eq hasParents false)}} selected{{/if}}"
+              data-action="answerCircles" data-question="hasParents" data-answer="no">
+        {{localize "TB2E.Wizard.Circles.IsOrphan"}}
+      </button>
+    </div>
+    {{#if (eq hasParents true)}}
+    <div class="circles-detail">
+      <input type="text" class="circles-input" data-field="parents"
+             value="{{parents}}" placeholder="{{localize 'TB2E.Wizard.Circles.ParentsPlaceholder'}}">
+    </div>
+    {{/if}}
+  </div>
+
+  {{!-- Question 3: Mentor --}}
+  <div class="circles-question">
+    <p class="question-text">{{localize "TB2E.Wizard.Circles.MentorQuestion"}}</p>
+    {{#if requiresMentor}}
+    <p class="circles-note required">{{localize "TB2E.Wizard.Circles.MentorRequired"}}</p>
+    {{/if}}
+    <div class="question-choices">
+      <button type="button"
+              class="circles-choice{{#if (eq hasMentor true)}} selected{{/if}}"
+              data-action="answerCircles" data-question="hasMentor" data-answer="yes">
+        {{localize "TB2E.Wizard.Circles.HasMentor"}}
+      </button>
+      {{#unless requiresMentor}}
+      <button type="button"
+              class="circles-choice{{#if (eq hasMentor false)}} selected{{/if}}"
+              data-action="answerCircles" data-question="hasMentor" data-answer="no">
+        {{localize "TB2E.Wizard.Circles.SelfMade"}}
+      </button>
+      {{/unless}}
+    </div>
+    {{#if (eq hasMentor true)}}
+    <div class="circles-detail">
+      <input type="text" class="circles-input" data-field="mentor"
+             value="{{mentor}}" placeholder="{{localize 'TB2E.Wizard.Circles.MentorPlaceholder'}}">
+    </div>
+    {{/if}}
+  </div>
+
+  {{!-- Question 4: Enemy --}}
+  <div class="circles-question">
+    <p class="question-text">{{localize "TB2E.Wizard.Circles.EnemyQuestion"}}</p>
+    <div class="question-choices">
+      <button type="button"
+              class="circles-choice{{#if (eq hasEnemy true)}} selected{{/if}}"
+              data-action="answerCircles" data-question="hasEnemy" data-answer="yes">
+        {{localize "TB2E.Wizard.Circles.HasEnemy"}}
+      </button>
+      <button type="button"
+              class="circles-choice{{#if (eq hasEnemy false)}} selected{{/if}}"
+              data-action="answerCircles" data-question="hasEnemy" data-answer="no">
+        {{localize "TB2E.Wizard.Circles.NoEnemy"}}
+      </button>
+    </div>
+    {{#if (eq hasEnemy true)}}
+    <div class="circles-detail">
+      <input type="text" class="circles-input" data-field="enemy"
+             value="{{enemy}}" placeholder="{{localize 'TB2E.Wizard.Circles.EnemyPlaceholder'}}">
+    </div>
+    {{/if}}
+  </div>
+</div>

@@ -28,7 +28,11 @@ export function inventoryFields(fields) {
     damaged: new fields.BooleanField({ initial: false }),
     dropped: new fields.BooleanField({ initial: false }),
     quantity: new fields.NumberField({ initial: 1, integer: true, min: 0 }),
-    quantityMax: new fields.NumberField({ initial: 1, integer: true, min: 1 })
+    quantityMax: new fields.NumberField({ initial: 1, integer: true, min: 1 }),
+    value: new fields.SchemaField({
+      dice: new fields.NumberField({ initial: 0, integer: true, min: 0 }),
+      negotiated: new fields.BooleanField({ initial: false })
+    })
   };
 }
 

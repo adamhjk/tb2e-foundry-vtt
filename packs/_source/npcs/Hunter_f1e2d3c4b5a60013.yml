@@ -1,0 +1,63 @@
+_id: f1e2d3c4b5a60013
+name: Hunter
+type: npc
+img: systems/tb2e/icons/ffffff/transparent/1x1/carl-olsen/crossbow.svg
+system:
+  stock: ''
+  class: ''
+  goal: ''
+  abilities:
+    nature:
+      rating: 3
+    will:
+      rating: 4
+    health:
+      rating: 5
+    resources:
+      rating: 2
+    circles:
+      rating: 2
+    precedence:
+      rating: 1
+  might: 2
+  skills:
+    - key: hunter
+      rating: 5
+    - key: scout
+      rating: 3
+  wises:
+    - Deer-wise
+    - Trail-wise
+  conditions:
+    hungry: false
+    angry: false
+    afraid: false
+    exhausted: false
+    injured: false
+    sick: false
+    dead: false
+  conflict:
+    hp:
+      value: 0
+      max: 0
+    team: gm
+    weapon: ''
+  lightLevel: full
+  description: Scholar's Guide, p. 206
+prototypeToken:
+  actorLink: false
+  appendNumber: true
+  disposition: 0
+items:
+  - _id: a013000000000001
+    name: Sense of Direction
+    type: trait
+    system:
+      level: 2
+      isClass: false
+      beneficial: 0
+      usedAgainst: false
+      checks: 0
+    _key: '!actors.items!f1e2d3c4b5a60013.a013000000000001'
+effects: []
+_key: '!actors!f1e2d3c4b5a60013'

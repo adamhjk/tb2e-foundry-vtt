@@ -1,0 +1,43 @@
+{{!-- Step 12: Finishing Touches --}}
+<div class="wizard-step step-finishing">
+  <h2 class="step-heading">{{localize "TB2E.Wizard.Step.Finishing"}}</h2>
+  <p class="step-instructions">{{localize "TB2E.Wizard.FinishingInstructions"}}</p>
+
+  <div class="finishing-fields">
+    {{!-- Name --}}
+    <div class="finishing-field">
+      <label>{{localize "TB2E.Fields.Name"}}</label>
+      <input type="text" class="finishing-input" data-field="name"
+             value="{{name}}" placeholder="{{localize 'TB2E.Wizard.NamePlaceholder'}}">
+    </div>
+
+    {{!-- Belief --}}
+    <div class="finishing-field">
+      <label>{{localize "TB2E.Wizard.Belief"}}</label>
+      <input type="text" class="finishing-input" data-field="belief"
+             value="{{belief}}" placeholder="{{localize 'TB2E.Wizard.BeliefPlaceholder'}}">
+    </div>
+
+    {{!-- Instinct --}}
+    <div class="finishing-field">
+      <label>{{localize "TB2E.Wizard.Instinct"}}</label>
+      <input type="text" class="finishing-input" data-field="instinct"
+             value="{{instinct}}" placeholder="{{localize 'TB2E.Wizard.InstinctPlaceholder'}}">
+    </div>
+
+    {{!-- Raiment --}}
+    <div class="finishing-field">
+      <label>{{localize "TB2E.Fields.Raiment"}}</label>
+      <input type="text" class="finishing-input" data-field="raiment"
+             value="{{raiment}}" placeholder="{{localize 'TB2E.Wizard.RaimentPlaceholder'}}">
+    </div>
+
+    {{!-- Age --}}
+    <div class="finishing-field">
+      <label>{{localize "TB2E.Fields.Age"}} ({{ageMin}}&ndash;{{ageMax}})</label>
+      <input type="number" class="finishing-input" data-field="age"
+             value="{{age}}" min="{{ageMin}}" max="{{ageMax}}">
+    </div>
+  </div>
+
+</div>

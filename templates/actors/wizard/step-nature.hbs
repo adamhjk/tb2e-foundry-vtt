@@ -1,0 +1,67 @@
+{{!-- Step 7: Nature Questions --}}
+<div class="wizard-step step-nature">
+  <h2 class="step-heading">{{localize "TB2E.Wizard.Step.Nature"}}</h2>
+  <p class="step-instructions">{{localize "TB2E.Wizard.NatureInstructions"}}</p>
+
+  {{!-- Nature Score Preview --}}
+  <div class="nature-preview">
+    <span class="nature-score">
+      <i class="fa-solid fa-leaf"></i>
+      {{localize "TB2E.Ability.Nature"}}: {{natureScore}}
+    </span>
+    <span class="nature-descriptors">
+      {{#each natureDescriptors}}{{this}}{{#unless @last}}, {{/unless}}{{/each}}
+    </span>
+  </div>
+
+  {{!-- Questions --}}
+  <div class="nature-questions">
+    {{#each natureQuestions}}
+    <div class="nature-question{{#if answered}} answered{{/if}}">
+      <p class="question-flavor">{{flavor}}</p>
+      <div class="question-choices">
+        <button type="button"
+                class="nature-choice yes{{#if (eq answer true)}} selected{{/if}}"
+                data-action="answerNature" data-question-index="{{index}}" data-answer="yes">
+          {{yesLabel}}
+        </button>
+        <button type="button"
+                class="nature-choice no{{#if (eq answer false)}} selected{{/if}}"
+                data-action="answerNature" data-question-index="{{index}}" data-answer="no">
+          {{noLabel}}
+        </button>
+      </div>
+
+      {{!-- Secondary choice: wise --}}
+      {{#if needsWiseChoice}}
+      <div class="secondary-choice">
+        <h4>{{localize "TB2E.Wizard.ChooseWise"}}</h4>
+        <div class="wise-choice-buttons">
+          {{#each wiseOptions}}
+          <button type="button" class="wise-choice-btn{{#if (eq this ../selectedNatureWise)}} selected{{/if}}"
+                  data-action="selectNatureWise" data-wise="{{this}}">
+            {{this}}
+          </button>
+          {{/each}}
+        </div>
+      </div>
+      {{/if}}
+
+      {{!-- Secondary choice: home trait replacement --}}
+      {{#if needsHomeTraitChoice}}
+      <div class="secondary-choice">
+        <h4>{{localize "TB2E.Wizard.ChooseReplacementTrait"}}</h4>
+        <div class="trait-choice-buttons">
+          {{#each homeTraitOptions}}
+          <button type="button" class="trait-choice-btn{{#if (eq this ../selectedHomeTrait)}} selected{{/if}}"
+                  data-action="selectNatureHomeTrait" data-trait="{{this}}">
+            {{this}}
+          </button>
+          {{/each}}
+        </div>
+      </div>
+      {{/if}}
+    </div>
+    {{/each}}
+  </div>
+</div>

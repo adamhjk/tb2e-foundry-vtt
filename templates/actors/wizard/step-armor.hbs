@@ -1,0 +1,60 @@
+{{!-- Step 11: Armor --}}
+<div class="wizard-step step-armor">
+  <h2 class="step-heading">{{localize "TB2E.Wizard.Step.Armor"}}</h2>
+  <p class="step-instructions">{{localize "TB2E.Wizard.ArmorInstructions"}}</p>
+
+  {{#if noArmorAllowed}}
+  <p class="no-armor-note">{{localize "TB2E.Wizard.NoArmor"}}</p>
+  {{else}}
+
+  {{!-- Body Armor --}}
+  {{#if allowedArmor.length}}
+  <div class="armor-section">
+    <h3>{{localize "TB2E.Wizard.BodyArmor"}}</h3>
+    <div class="armor-list">
+      {{#each allowedArmor}}
+      <button type="button"
+              class="armor-card{{#if isSelected}} selected{{/if}}"
+              data-action="selectArmor" data-armor="{{name}}">
+        <span class="armor-name">{{name}}</span>
+      </button>
+      {{/each}}
+    </div>
+  </div>
+  {{/if}}
+
+  {{!-- Helmet --}}
+  {{#if canHelmet}}
+  <div class="armor-section">
+    <h3>{{localize "TB2E.Armor.Helmet"}}</h3>
+    <button type="button"
+            class="armor-card{{#if helmetSelected}} selected{{/if}}"
+            data-action="selectArmor" data-armor="Helmet">
+      <span class="armor-name">{{localize "TB2E.Armor.Helmet"}}</span>
+    </button>
+  </div>
+  {{/if}}
+
+  {{!-- Shield --}}
+  {{#if canShield}}
+  <div class="armor-section">
+    <h3>{{localize "TB2E.Armor.Shield"}}</h3>
+    <button type="button"
+            class="armor-card{{#if shieldSelected}} selected{{/if}}"
+            data-action="selectArmor" data-armor="Shield">
+      <span class="armor-name">{{localize "TB2E.Armor.Shield"}}</span>
+    </button>
+  </div>
+  {{/if}}
+
+  {{/if}}
+
+  {{#if selectedArmor.length}}
+  <div class="selected-summary">
+    <h3>{{localize "TB2E.Wizard.SelectedArmor"}}</h3>
+    {{#each selectedArmor}}
+    <span class="armor-badge">{{this}}</span>
+    {{/each}}
+  </div>
+  {{/if}}
+</div>

@@ -1,0 +1,23 @@
+_id: cc0000000000001f
+name: Amulet of Stars
+type: gear
+img: systems/tb2e/icons/ffffff/transparent/1x1/delapouite/tribal-pendant.svg
+system:
+  description: "Scholar's Guide, p. 165"
+  slot: ''
+  slotIndex: 0
+  slotOptions:
+    neck: 1
+    pack: 1
+  cost: 0
+  damaged: false
+  dropped: false
+  quantity: 1
+  quantityMax: 1
+  value:
+    dice: 0
+    negotiated: false
+  skillBonuses: []
+  specialRules: "Scholar's Guide, p. 165"
+effects: []
+_key: '!items!cc0000000000001f'

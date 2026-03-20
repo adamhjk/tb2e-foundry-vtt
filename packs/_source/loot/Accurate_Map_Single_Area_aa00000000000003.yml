@@ -1,0 +1,22 @@
+_id: aa00000000000003
+name: Accurate Map (Single Area)
+type: gear
+img: systems/tb2e/icons/ffffff/transparent/1x1/lorc/treasure-map.svg
+system:
+  description: "Scholar's Guide, p. 153"
+  slot: ''
+  slotIndex: 0
+  slotOptions:
+    pack: 1
+  cost: 0
+  damaged: false
+  dropped: false
+  quantity: 1
+  quantityMax: 1
+  value:
+    dice: 0
+    negotiated: true
+  skillBonuses: []
+  specialRules: ''
+effects: []
+_key: '!items!aa00000000000003'

@@ -1,0 +1,28 @@
+{{!-- Step 10: Weapons --}}
+<div class="wizard-step step-weapons">
+  <h2 class="step-heading">{{localize "TB2E.Wizard.Step.Weapons"}}</h2>
+  <p class="step-instructions">{{localize "TB2E.Wizard.WeaponsInstructions"}}</p>
+
+  {{#if forcedDagger}}
+  <p class="forced-note">{{localize "TB2E.Wizard.ThiefDagger"}}</p>
+  {{/if}}
+
+  <div class="weapon-list">
+    {{#each allowedWeapons}}
+    <button type="button"
+            class="weapon-card{{#if isSelected}} selected{{/if}}"
+            data-action="selectWeapon" data-weapon="{{name}}">
+      <span class="weapon-name">{{name}}</span>
+    </button>
+    {{/each}}
+  </div>
+
+  {{#if selectedWeapons.length}}
+  <div class="selected-summary">
+    <h3>{{localize "TB2E.Wizard.SelectedWeapons"}}</h3>
+    {{#each selectedWeapons}}
+    <span class="weapon-badge">{{this}}</span>
+    {{/each}}
+  </div>
+  {{/if}}
+</div>

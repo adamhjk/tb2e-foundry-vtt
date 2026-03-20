@@ -1,0 +1,855 @@
+/* ============================================ */
+/*  Character Creation Wizard                   */
+/* ============================================ */
+
+.character-wizard {
+  .wizard-wrapper {
+    display: grid;
+    grid-template-columns: 200px 1fr;
+    height: 100%;
+    gap: 0;
+  }
+
+  /* -------------------------------------------- */
+  /*  Step Navigation (Left Sidebar)              */
+  /* -------------------------------------------- */
+
+  .wizard-nav {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    padding: 8px;
+    background: var(--tb-bg-mid);
+    border-right: 1px solid var(--tb-border);
+    overflow-y: auto;
+  }
+
+  .wizard-nav-step {
+    display: grid;
+    grid-template-columns: 22px 1fr;
+    align-items: center;
+    gap: 0 8px;
+    padding: 6px 10px;
+    border: 1px solid transparent;
+    border-radius: var(--tb-radius, 4px);
+    background: none;
+    color: var(--tb-text-faint);
+    font-size: 0.8rem;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    text-align: left;
+
+    &:hover:not(:disabled) {
+      background: var(--tb-bg-raised);
+      color: var(--tb-text-body);
+    }
+
+    &.current {
+      background: var(--tb-frost);
+      border-color: var(--tb-blue);
+      color: var(--tb-blue-bright);
+      font-weight: 600;
+    }
+
+    &.complete {
+      color: var(--tb-green);
+    }
+
+    &.disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+    }
+
+    .step-number {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      background: var(--tb-bg-raised);
+      font-size: 0.7rem;
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+
+    &.current .step-number {
+      background: var(--tb-blue);
+      color: #fff;
+    }
+
+    &.complete .step-number {
+      background: var(--tb-green);
+      color: #fff;
+    }
+
+    .step-label {
+      min-width: 0;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+  }
+
+  /* -------------------------------------------- */
+  /*  Main Content Area                           */
+  /* -------------------------------------------- */
+
+  .wizard-main {
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+
+  .wizard-content {
+    flex: 1;
+    overflow-y: auto;
+    padding: 16px 20px;
+  }
+
+  /* -------------------------------------------- */
+  /*  Running Summary Strip                       */
+  /* -------------------------------------------- */
+
+  .wizard-summary-strip {
+    padding: 6px 16px;
+    border-top: 1px solid var(--tb-border-light);
+    background: var(--tb-bg-mid);
+    max-height: 140px;
+    overflow-y: auto;
+
+    .summary-facts {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: baseline;
+      gap: 2px 0;
+      font-size: 0.7rem;
+      color: var(--tb-text-body);
+      line-height: 1.5;
+    }
+
+    .fact {
+      white-space: nowrap;
+      &::after { content: " \00b7  "; color: var(--tb-text-faint); }
+      &:last-child::after { content: ""; }
+
+      b { font-weight: 700; }
+      &.dim { color: var(--tb-text-dim); font-style: italic; }
+      &.trait { color: var(--tb-amber); }
+      &.weapon { color: var(--tb-steel, var(--tb-text-body)); }
+      &.armor { color: var(--tb-steel, var(--tb-text-body)); }
+    }
+
+    .summary-skill-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 3px;
+      margin-top: 4px;
+    }
+
+    .stag {
+      font-size: 0.65rem;
+      padding: 1px 5px;
+      background: var(--tb-frost);
+      border-radius: var(--tb-radius, 4px);
+      color: var(--tb-blue-bright);
+      white-space: nowrap;
+    }
+  }
+
+  /* -------------------------------------------- */
+  /*  Footer Navigation                           */
+  /* -------------------------------------------- */
+
+  .wizard-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 8px 16px;
+    border-top: 1px solid var(--tb-border);
+    background: var(--tb-bg-raised);
+  }
+
+  .wizard-page-ref {
+    font-size: 0.75rem;
+    font-style: italic;
+    color: var(--tb-text-dim);
+  }
+
+  .wizard-btn {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 14px;
+    border: 1px solid var(--tb-border);
+    border-radius: var(--tb-radius, 4px);
+    background: var(--tb-bg-raised);
+    color: var(--tb-text-body);
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: all 0.15s ease;
+
+    &:hover:not(:disabled) {
+      background: var(--tb-frost);
+      border-color: var(--tb-blue);
+    }
+
+    &:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+    }
+
+    &.finish {
+      background: var(--tb-blue);
+      border-color: var(--tb-blue);
+      color: #fff;
+
+      &:hover:not(:disabled) {
+        background: var(--tb-blue-bright);
+      }
+    }
+  }
+
+  /* -------------------------------------------- */
+  /*  Step Common Styles                          */
+  /* -------------------------------------------- */
+
+  .wizard-step {
+    h2.step-heading {
+      font-family: 'MedievalSharp', cursive;
+      font-size: 1.4rem;
+      color: var(--tb-blue-bright);
+      margin: 0 0 4px;
+    }
+
+    .step-instructions {
+      font-size: 0.85rem;
+      color: var(--tb-text-dim);
+      margin: 0 0 16px;
+    }
+
+    .step-page-ref {
+      font-size: 0.75rem;
+      font-style: italic;
+      color: var(--tb-text-faint);
+      margin: 0 0 12px;
+    }
+
+    h3 {
+      font-family: 'MedievalSharp', cursive;
+      font-size: 1.05rem;
+      color: var(--tb-text-body);
+      margin: 16px 0 8px;
+    }
+
+    h4 {
+      font-size: 0.85rem;
+      color: var(--tb-text-dim);
+      margin: 8px 0 6px;
+    }
+  }
+
+  /* -------------------------------------------- */
+  /*  Class Cards                                 */
+  /* -------------------------------------------- */
+
+  .class-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+    margin-bottom: 16px;
+  }
+
+  .class-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    padding: 14px 16px;
+    background: var(--tb-bg-raised);
+    border: 2px solid var(--tb-border);
+    border-radius: var(--tb-radius, 4px);
+    cursor: pointer;
+    transition: all 0.15s ease;
+    text-align: center;
+
+    &:hover {
+      border-color: var(--tb-blue-dim);
+      background: var(--tb-frost);
+    }
+
+    &.selected {
+      border-color: var(--tb-blue);
+      background: var(--tb-frost-bright);
+    }
+
+    .class-name {
+      font-family: 'MedievalSharp', cursive;
+      font-size: 1.05rem;
+      color: var(--tb-text-body);
+      font-weight: 600;
+    }
+
+    .class-stocks {
+      font-size: 0.7rem;
+      color: var(--tb-text-dim);
+    }
+
+  }
+
+  /* -------------------------------------------- */
+  /*  Stock Buttons                               */
+  /* -------------------------------------------- */
+
+  .stock-buttons {
+    display: flex;
+    gap: 8px;
+  }
+
+  .stock-btn {
+    padding: 8px 16px;
+    background: var(--tb-bg-raised);
+    border: 2px solid var(--tb-border);
+    border-radius: var(--tb-radius, 4px);
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: all 0.15s ease;
+
+    &:hover { border-color: var(--tb-blue-dim); }
+    &.selected {
+      border-color: var(--tb-blue);
+      background: var(--tb-frost-bright);
+    }
+  }
+
+  /* -------------------------------------------- */
+  /*  Ability Distribution                        */
+  /* -------------------------------------------- */
+
+  .ability-slider-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin: 8px 0;
+  }
+
+  .ability-label {
+    font-size: 0.9rem;
+    color: var(--tb-text-body);
+    min-width: 80px;
+  }
+
+  .will-slider {
+    flex: 1;
+    accent-color: var(--tb-blue);
+  }
+
+  .ability-hint {
+    font-size: 0.75rem;
+    color: var(--tb-text-faint);
+    font-style: italic;
+  }
+
+  .ability-fixed {
+    display: flex;
+    gap: 24px;
+
+    .ability-value {
+      font-size: 0.95rem;
+      color: var(--tb-text-body);
+      padding: 6px 12px;
+      background: var(--tb-frost);
+      border-radius: var(--tb-radius, 4px);
+    }
+  }
+
+  /* -------------------------------------------- */
+  /*  Skill / Trait Choice Cards                  */
+  /* -------------------------------------------- */
+
+  .skill-choice-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: 6px;
+  }
+
+  .skill-choice-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+    padding: 10px 8px;
+    background: var(--tb-bg-raised);
+    border: 2px solid var(--tb-border);
+    border-radius: var(--tb-radius, 4px);
+    cursor: pointer;
+    transition: all 0.15s ease;
+
+    &:hover { border-color: var(--tb-blue-dim); }
+    &.selected {
+      border-color: var(--tb-blue);
+      background: var(--tb-frost-bright);
+    }
+
+    .skill-name {
+      font-size: 0.85rem;
+      color: var(--tb-text-body);
+    }
+
+    .skill-rating {
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: var(--tb-blue-bright);
+    }
+
+    .skill-change {
+      font-size: 0.8rem;
+      color: var(--tb-green);
+    }
+  }
+
+  .trait-buttons, .trait-choice-buttons {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+
+  .trait-choice-btn, .wise-choice-btn, .wise-option-btn {
+    padding: 6px 14px;
+    background: var(--tb-bg-raised);
+    border: 2px solid var(--tb-border);
+    border-radius: var(--tb-radius, 4px);
+    cursor: pointer;
+    font-size: 0.85rem;
+    transition: all 0.15s ease;
+
+    &:hover { border-color: var(--tb-blue-dim); }
+    &.selected {
+      border-color: var(--tb-blue);
+      background: var(--tb-frost-bright);
+    }
+  }
+
+  /* -------------------------------------------- */
+  /*  Skill/Trait Badges                          */
+  /* -------------------------------------------- */
+
+  .skill-badge, .trait-badge, .wise-badge, .spell-badge, .relic-badge,
+  .invocation-badge, .weapon-badge, .armor-badge {
+    display: inline-block;
+    padding: 3px 8px;
+    margin: 2px;
+    background: var(--tb-frost);
+    border-radius: var(--tb-radius, 4px);
+    font-size: 0.8rem;
+    color: var(--tb-blue-bright);
+  }
+
+  .relic-badge { color: var(--tb-amber); background: color-mix(in srgb, var(--tb-amber) 10%, transparent); }
+  .invocation-badge { color: var(--tb-green); background: color-mix(in srgb, var(--tb-green) 10%, transparent); }
+
+  /* -------------------------------------------- */
+  /*  Hometown Cards                              */
+  /* -------------------------------------------- */
+
+  .hometown-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    gap: 6px;
+    margin-bottom: 12px;
+  }
+
+  .hometown-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+    padding: 10px 8px;
+    background: var(--tb-bg-raised);
+    border: 2px solid var(--tb-border);
+    border-radius: var(--tb-radius, 4px);
+    cursor: pointer;
+    transition: all 0.15s ease;
+
+    &:hover { border-color: var(--tb-blue-dim); }
+    &.selected {
+      border-color: var(--tb-blue);
+      background: var(--tb-frost-bright);
+    }
+
+    .hometown-name {
+      font-family: 'MedievalSharp', cursive;
+      font-size: 0.9rem;
+    }
+
+    .hometown-page {
+      font-size: 0.65rem;
+      font-style: italic;
+      color: var(--tb-text-faint);
+    }
+  }
+
+  /* -------------------------------------------- */
+  /*  Nature Questions                            */
+  /* -------------------------------------------- */
+
+  .nature-preview {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 10px 14px;
+    background: var(--tb-frost);
+    border-radius: var(--tb-radius, 4px);
+    margin-bottom: 16px;
+
+    .nature-score {
+      font-family: 'MedievalSharp', cursive;
+      font-size: 1.2rem;
+      color: var(--tb-green);
+    }
+
+    .nature-descriptors {
+      font-size: 0.85rem;
+      color: var(--tb-text-dim);
+      font-style: italic;
+    }
+  }
+
+  .nature-question {
+    padding: 12px;
+    margin-bottom: 10px;
+    background: var(--tb-bg-raised);
+    border: 1px solid var(--tb-border-light);
+    border-radius: var(--tb-radius, 4px);
+
+    &.answered {
+      opacity: 0.85;
+    }
+
+    .question-flavor {
+      font-size: 0.85rem;
+      color: var(--tb-text-body);
+      margin: 0 0 8px;
+      font-style: italic;
+    }
+
+    .question-choices {
+      display: flex;
+      gap: 8px;
+    }
+
+    .nature-choice {
+      flex: 1;
+      padding: 8px 12px;
+      background: var(--tb-bg-mid);
+      border: 2px solid var(--tb-border);
+      border-radius: var(--tb-radius, 4px);
+      cursor: pointer;
+      font-size: 0.8rem;
+      transition: all 0.15s ease;
+      text-align: center;
+
+      &:hover { border-color: var(--tb-blue-dim); }
+      &.selected {
+        border-color: var(--tb-blue);
+        background: var(--tb-frost-bright);
+        font-weight: 600;
+      }
+    }
+
+    .secondary-choice {
+      margin-top: 10px;
+      padding-top: 8px;
+      border-top: 1px solid var(--tb-border-light);
+
+      .wise-choice-buttons, .trait-choice-buttons {
+        display: flex;
+        gap: 6px;
+        flex-wrap: wrap;
+      }
+    }
+  }
+
+  /* -------------------------------------------- */
+  /*  Circles                                     */
+  /* -------------------------------------------- */
+
+  .circles-preview {
+    padding: 10px 14px;
+    background: var(--tb-frost);
+    border-radius: var(--tb-radius, 4px);
+    margin-bottom: 16px;
+
+    .circles-score {
+      font-family: 'MedievalSharp', cursive;
+      font-size: 1.2rem;
+      color: var(--tb-blue-bright);
+    }
+  }
+
+  .circles-question {
+    padding: 10px 12px;
+    margin-bottom: 8px;
+    background: var(--tb-bg-raised);
+    border: 1px solid var(--tb-border-light);
+    border-radius: var(--tb-radius, 4px);
+
+    .question-text {
+      font-size: 0.85rem;
+      color: var(--tb-text-body);
+      margin: 0 0 8px;
+    }
+
+    .question-choices {
+      display: flex;
+      gap: 8px;
+    }
+
+    .circles-choice {
+      flex: 1;
+      padding: 8px 12px;
+      background: var(--tb-bg-mid);
+      border: 2px solid var(--tb-border);
+      border-radius: var(--tb-radius, 4px);
+      cursor: pointer;
+      font-size: 0.8rem;
+      text-align: center;
+      transition: all 0.15s ease;
+
+      &:hover { border-color: var(--tb-blue-dim); }
+      &.selected {
+        border-color: var(--tb-blue);
+        background: var(--tb-frost-bright);
+        font-weight: 600;
+      }
+    }
+
+    .circles-detail {
+      margin-top: 8px;
+    }
+
+    .circles-input {
+      width: 100%;
+      padding: 6px 8px;
+      border: 1px solid var(--tb-border);
+      border-radius: var(--tb-radius, 4px);
+      background: var(--tb-bg-white);
+      font-size: 0.85rem;
+    }
+
+    .circles-note {
+      font-size: 0.75rem;
+      color: var(--tb-text-faint);
+      font-style: italic;
+      margin: 6px 0 0;
+
+      &.required {
+        color: var(--tb-amber);
+        font-weight: 600;
+      }
+    }
+  }
+
+  /* -------------------------------------------- */
+  /*  Gear                                        */
+  /* -------------------------------------------- */
+
+  .pack-buttons {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 16px;
+  }
+
+  .pack-btn {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    padding: 14px;
+    background: var(--tb-bg-raised);
+    border: 2px solid var(--tb-border);
+    border-radius: var(--tb-radius, 4px);
+    cursor: pointer;
+    font-size: 0.95rem;
+    transition: all 0.15s ease;
+
+    &:hover { border-color: var(--tb-blue-dim); }
+    &.selected {
+      border-color: var(--tb-blue);
+      background: var(--tb-frost-bright);
+    }
+
+    i { font-size: 1.4rem; color: var(--tb-text-dim); }
+    .pack-detail {
+      font-size: 0.7rem;
+      color: var(--tb-text-faint);
+    }
+  }
+
+  .roll-btn {
+    padding: 8px 16px;
+    background: var(--tb-blue);
+    border: 1px solid var(--tb-blue);
+    border-radius: var(--tb-radius, 4px);
+    color: #fff;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.15s ease;
+
+    &:hover { background: var(--tb-blue-bright); }
+  }
+
+  .roll-result {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 8px 12px;
+    background: var(--tb-frost);
+    border-radius: var(--tb-radius, 4px);
+    margin-bottom: 10px;
+
+    .roll-value {
+      font-weight: 600;
+      color: var(--tb-text-body);
+    }
+
+    .school-name {
+      font-family: 'MedievalSharp', cursive;
+      font-size: 1.05rem;
+      color: var(--tb-blue-bright);
+    }
+  }
+
+  /* -------------------------------------------- */
+  /*  Weapons & Armor                             */
+  /* -------------------------------------------- */
+
+  .weapon-list, .armor-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+    gap: 6px;
+    margin-bottom: 12px;
+  }
+
+  .weapon-card, .armor-card {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px 8px;
+    background: var(--tb-bg-raised);
+    border: 2px solid var(--tb-border);
+    border-radius: var(--tb-radius, 4px);
+    cursor: pointer;
+    font-size: 0.85rem;
+    transition: all 0.15s ease;
+    text-align: center;
+
+    &:hover { border-color: var(--tb-blue-dim); }
+    &.selected {
+      border-color: var(--tb-blue);
+      background: var(--tb-frost-bright);
+    }
+  }
+
+  .selected-summary, .class-skills-preview, .class-trait-preview {
+    margin-top: 12px;
+    padding: 10px 12px;
+    background: var(--tb-frost);
+    border-radius: var(--tb-radius, 4px);
+
+    h3 {
+      margin: 0 0 6px;
+      font-size: 0.85rem;
+    }
+
+    .skills-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px;
+    }
+  }
+
+  .forced-note, .no-armor-note {
+    font-size: 0.85rem;
+    color: var(--tb-text-dim);
+    font-style: italic;
+    padding: 12px;
+    background: var(--tb-frost);
+    border-radius: var(--tb-radius, 4px);
+    margin-bottom: 12px;
+  }
+
+  .armor-section {
+    margin-bottom: 12px;
+  }
+
+  /* -------------------------------------------- */
+  /*  Wises                                       */
+  /* -------------------------------------------- */
+
+  .wise-input-row {
+    margin-bottom: 6px;
+  }
+
+  .wise-input {
+    width: 100%;
+    padding: 6px 8px;
+    border: 1px solid var(--tb-border);
+    border-radius: var(--tb-radius, 4px);
+    background: var(--tb-bg-white);
+    font-size: 0.85rem;
+  }
+
+  .wise-hint {
+    font-size: 0.75rem;
+    color: var(--tb-text-faint);
+    font-style: italic;
+    margin: 0 0 8px;
+  }
+
+  .wises-summary, .required-wises, .free-wises {
+    margin-bottom: 12px;
+  }
+
+  .wise-options {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+
+  /* -------------------------------------------- */
+  /*  Finishing                                   */
+  /* -------------------------------------------- */
+
+  .finishing-fields {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 20px;
+  }
+
+  .finishing-field {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+
+    label {
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--tb-text-dim);
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+    }
+
+    input {
+      padding: 8px 10px;
+      border: 1px solid var(--tb-border);
+      border-radius: var(--tb-radius, 4px);
+      background: var(--tb-bg-white);
+      font-size: 0.9rem;
+      color: var(--tb-text-body);
+    }
+  }
+
+}

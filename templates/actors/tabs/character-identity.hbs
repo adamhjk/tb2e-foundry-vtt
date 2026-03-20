@@ -7,7 +7,14 @@
       {{#each whoYouAreFields}}
       <div class="field-pair">
         <label for="system-{{name}}">{{label}}</label>
-        {{#if (eq type "number")}}
+        {{#if (eq type "select")}}
+        <select id="system-{{name}}" name="system.{{name}}">
+          <option value="">—</option>
+          {{#each options}}
+          <option value="{{value}}" {{#if selected}}selected{{/if}} {{#if disabled}}disabled{{/if}}>{{label}}</option>
+          {{/each}}
+        </select>
+        {{else if (eq type "number")}}
         <input type="number" id="system-{{name}}" name="system.{{name}}" value="{{value}}" min="1" max="10">
         {{else}}
         <input type="text" id="system-{{name}}" name="system.{{name}}" value="{{value}}">

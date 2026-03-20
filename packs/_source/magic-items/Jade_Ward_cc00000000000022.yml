@@ -1,0 +1,22 @@
+_id: cc00000000000022
+name: Jade Ward
+type: gear
+img: systems/tb2e/icons/ffffff/transparent/1x1/lorc/engagement-ring.svg
+system:
+  description: "Scholar's Guide, p. 168"
+  slot: ''
+  slotIndex: 0
+  slotOptions:
+    wornHand: 1
+  cost: 0
+  damaged: false
+  dropped: false
+  quantity: 1
+  quantityMax: 1
+  value:
+    dice: 0
+    negotiated: false
+  skillBonuses: []
+  specialRules: "Scholar's Guide, p. 168"
+effects: []
+_key: '!items!cc00000000000022'

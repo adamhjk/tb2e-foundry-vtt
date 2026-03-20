@@ -1,0 +1,74 @@
+_id: f1e2d3c4b5a60028
+name: Wanderer
+type: npc
+img: systems/tb2e/icons/ffffff/transparent/1x1/lorc/walking-boot.svg
+system:
+  stock: ''
+  class: ''
+  goal: ''
+  abilities:
+    nature:
+      rating: 3
+    will:
+      rating: 4
+    health:
+      rating: 5
+    resources:
+      rating: 1
+    circles:
+      rating: 2
+    precedence:
+      rating: 0
+  might: 2
+  skills:
+    - key: pathfinder
+      rating: 5
+    - key: survivalist
+      rating: 4
+    - key: scout
+      rating: 3
+  wises:
+    - Road-wise
+  conditions:
+    hungry: false
+    angry: false
+    afraid: false
+    exhausted: false
+    injured: false
+    sick: false
+    dead: false
+  conflict:
+    hp:
+      value: 0
+      max: 0
+    team: gm
+    weapon: ''
+  lightLevel: full
+  description: Scholar's Guide, p. 211
+prototypeToken:
+  actorLink: false
+  appendNumber: true
+  disposition: 0
+items:
+  - _id: a028000000000001
+    name: Weather Sense
+    type: trait
+    system:
+      level: 2
+      isClass: false
+      beneficial: 0
+      usedAgainst: false
+      checks: 0
+    _key: '!actors.items!f1e2d3c4b5a60028.a028000000000001'
+  - _id: a028000000000002
+    name: Loner
+    type: trait
+    system:
+      level: 1
+      isClass: false
+      beneficial: 0
+      usedAgainst: false
+      checks: 0
+    _key: '!actors.items!f1e2d3c4b5a60028.a028000000000002'
+effects: []
+_key: '!actors!f1e2d3c4b5a60028'

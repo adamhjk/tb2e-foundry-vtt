@@ -1,0 +1,86 @@
+_id: f1e2d3c4b5a6001c
+name: Professor
+type: npc
+img: systems/tb2e/icons/ffffff/transparent/1x1/lorc/open-book.svg
+system:
+  stock: ''
+  class: ''
+  goal: ''
+  abilities:
+    nature:
+      rating: 4
+    will:
+      rating: 5
+    health:
+      rating: 3
+    resources:
+      rating: 3
+    circles:
+      rating: 3
+    precedence:
+      rating: 1
+  might: 2
+  skills:
+    - key: mentor
+      rating: 4
+    - key: scholar
+      rating: 4
+    - key: persuader
+      rating: 3
+    - key: manipulator
+      rating: 2
+  wises:
+    - Classics-wise
+  conditions:
+    hungry: false
+    angry: false
+    afraid: false
+    exhausted: false
+    injured: false
+    sick: false
+    dead: false
+  conflict:
+    hp:
+      value: 0
+      max: 0
+    team: gm
+    weapon: ''
+  lightLevel: full
+  description: Scholar's Guide, p. 208
+prototypeToken:
+  actorLink: false
+  appendNumber: true
+  disposition: 0
+items:
+  - _id: a01c000000000001
+    name: Wise
+    type: trait
+    system:
+      level: 1
+      isClass: false
+      beneficial: 0
+      usedAgainst: false
+      checks: 0
+    _key: '!actors.items!f1e2d3c4b5a6001c.a01c000000000001'
+  - _id: a01c000000000002
+    name: Frustrated
+    type: trait
+    system:
+      level: 1
+      isClass: false
+      beneficial: 0
+      usedAgainst: false
+      checks: 0
+    _key: '!actors.items!f1e2d3c4b5a6001c.a01c000000000002'
+  - _id: a01c000000000003
+    name: Hot
+    type: trait
+    system:
+      level: 1
+      isClass: false
+      beneficial: 0
+      usedAgainst: false
+      checks: 0
+    _key: '!actors.items!f1e2d3c4b5a6001c.a01c000000000003'
+effects: []
+_key: '!actors!f1e2d3c4b5a6001c'

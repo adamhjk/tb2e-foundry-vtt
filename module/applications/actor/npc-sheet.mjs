@@ -128,16 +128,16 @@ export default class NPCSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
 
     // Raw abilities
     context.rawAbilities = [
-      { key: "nature", label: game.i18n.localize("TB2E.Ability.Nature"), value: sys.abilities.nature },
-      { key: "will", label: game.i18n.localize("TB2E.Ability.Will"), value: sys.abilities.will },
-      { key: "health", label: game.i18n.localize("TB2E.Ability.Health"), value: sys.abilities.health }
+      { key: "nature", label: game.i18n.localize("TB2E.Ability.Nature"), value: sys.abilities.nature.rating },
+      { key: "will", label: game.i18n.localize("TB2E.Ability.Will"), value: sys.abilities.will.rating },
+      { key: "health", label: game.i18n.localize("TB2E.Ability.Health"), value: sys.abilities.health.rating }
     ];
 
     // Town abilities
     context.townAbilities = [
-      { key: "resources", label: game.i18n.localize("TB2E.Ability.Resources"), value: sys.abilities.resources },
-      { key: "circles", label: game.i18n.localize("TB2E.Ability.Circles"), value: sys.abilities.circles },
-      { key: "precedence", label: game.i18n.localize("TB2E.Ability.Precedence"), value: sys.abilities.precedence }
+      { key: "resources", label: game.i18n.localize("TB2E.Ability.Resources"), value: sys.abilities.resources.rating },
+      { key: "circles", label: game.i18n.localize("TB2E.Ability.Circles"), value: sys.abilities.circles.rating },
+      { key: "precedence", label: game.i18n.localize("TB2E.Ability.Precedence"), value: sys.abilities.precedence.rating }
     ];
 
     // All skill options for dropdown, sorted by label

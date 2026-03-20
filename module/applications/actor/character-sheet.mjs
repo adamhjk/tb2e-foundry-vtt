@@ -1,10 +1,11 @@
-import { advancementNeeded, conditions, abilities, skills, levelRequirements, stockDescriptors, containerTypes } from "../../config.mjs";
+import { advancementNeeded, conditions, abilities, skills, levelRequirements, stocks, classes, containerTypes } from "../../config.mjs";
 import { resolveSlotOptionKey, getSlotCost, getMinSlotCost, getCacheCost, formatSlotOptions } from "../../data/item/_fields.mjs";
 import { rollTest, showAdvancementDialog, castSpell, performInvocation } from "../../dice/_module.mjs";
 import { evaluateRoll, gatherHelpModifiers } from "../../dice/tb2e-roll.mjs";
 import { getEligibleHelpers } from "../../dice/help.mjs";
 import { _checkWiseAdvancement } from "../../dice/post-roll.mjs";
 import { resetTraitsForSession } from "../../session.mjs";
+import CharacterWizard from "./character-wizard.mjs";
 
 const { HandlebarsApplicationMixin } = foundry.applications.api;
 const { ActorSheetV2 } = foundry.applications.sheets;
@@ -58,7 +59,8 @@ export default class CharacterSheet extends HandlebarsApplicationMixin(ActorShee
       performInvocation: CharacterSheet.#onPerformInvocation,
       addRelic: CharacterSheet.#onAddRelic,
       deleteRelic: CharacterSheet.#onDeleteRelic,
-      setLightLevel: CharacterSheet.#onSetLightLevel
+      setLightLevel: CharacterSheet.#onSetLightLevel,
+      openWizard: CharacterSheet.#onOpenWizard
     },
     form: { submitOnChange: true },
     window: { resizable: true }
@@ -244,6 +246,10 @@ export default class CharacterSheet extends HandlebarsApplicationMixin(ActorShee
     context.personaLabel = game.i18n.localize("TB2E.Fields.Persona");
     context.checksLabel = game.i18n.localize("TB2E.Fields.Checks");
 
+    // Localized stock/class labels for the header summary.
+    context.stockLabel = stocks[sys.stock] ? game.i18n.localize(stocks[sys.stock].label) : sys.stock;
+    context.classLabel = classes[sys.class] ? game.i18n.localize(classes[sys.class].label) : sys.class;
+
     // Team toggle display.
     const team = sys.conflict.team || "party";
     context.teamClass = `team-${team}`;
@@ -333,9 +339,11 @@ export default class CharacterSheet extends HandlebarsApplicationMixin(ActorShee
       isTaxed: nature.rating < nature.max,
       canRecover: nature.rating < nature.max,
       canConserve: nature.max > 1,
-      stockLabel: game.i18n.format("TB2E.Nature.StockLabel", { stock: sys.stock || "?" }),
+      stockLabel: game.i18n.format("TB2E.Nature.StockLabel", {
+        stock: stocks[sys.stock] ? game.i18n.localize(stocks[sys.stock].label) : (sys.stock || "?")
+      }),
       descriptors: sys.natureDescriptors || [],
-      defaultDescriptors: stockDescriptors[sys.stock] || []
+      defaultDescriptors: stocks[sys.stock]?.natureDescriptors || []
     };
   }
 
@@ -561,7 +569,13 @@ export default class CharacterSheet extends HandlebarsApplicationMixin(ActorShee
       depleted: item.type === "supply" && item.system.supplyType === "light" && !item.system.lit && (item.system.turnsRemaining ?? 0) <= 0,
       nameSingular: item.system.nameSingular || "",
       turnsRemaining: item.system.turnsRemaining ?? 0,
-      hasQuantity: (item.system.quantityMax ?? 1) > 1
+      hasQuantity: (item.system.quantityMax ?? 1) > 1,
+      valueLabel: (() => {
+        const val = item.system.value ?? {};
+        if ( (val.dice ?? 0) > 0 ) return `${val.dice}D`;
+        if ( val.negotiated ) return "X";
+        return "";
+      })()
     };
   }
 
@@ -573,6 +587,14 @@ export default class CharacterSheet extends HandlebarsApplicationMixin(ActorShee
     context.currentLevel = sys.level;
     context.fateSpent = sys.fate.spent;
     context.personaSpent = sys.persona.spent;
+
+    // Class-specific level benefits.
+    const classCfg = classes[sys.class];
+    context.hasClassBenefits = !!classCfg;
+    if ( classCfg ) {
+      context.classLabel = game.i18n.localize(classCfg.label);
+      context.classBenefitPage = classCfg.levelBenefitPage;
+    }
 
     // Find the next target level (first level whose requirements aren't both met).
     let nextTarget = null;
@@ -587,11 +609,14 @@ export default class CharacterSheet extends HandlebarsApplicationMixin(ActorShee
       const level = Number(lvl);
       const fateMet = sys.fate.spent >= req.fate;
       const personaMet = sys.persona.spent >= req.persona;
+      const classBenefitKey = classCfg?.levelBenefits?.[level];
       return {
         level,
         fate: req.fate,
         persona: req.persona,
         benefit: game.i18n.localize(req.benefit),
+        classBenefit: classBenefitKey ? game.i18n.localize(classBenefitKey) : null,
+        levelChoice: sys.levelChoices?.[level] || "",
         fateMet,
         personaMet,
         bothMet: fateMet && personaMet,
@@ -761,9 +786,26 @@ export default class CharacterSheet extends HandlebarsApplicationMixin(ActorShee
 
   _prepareWhoYouAreFields() {
     const sys = this.document.system;
+    const currentClass = sys.class;
+    const currentStock = sys.stock;
+
+    // Build stock options, filtering by current class if set.
+    const classCfg = classes[currentClass];
+    const stockOptions = Object.entries(stocks).map(([key, cfg]) => {
+      const allowed = classCfg ? classCfg.stocks.includes(key) : true;
+      return { value: key, label: game.i18n.localize(cfg.label), selected: key === currentStock, disabled: !allowed };
+    });
+
+    // Build class options, filtering by current stock if set.
+    const stockCfg = stocks[currentStock];
+    const classOptions = Object.entries(classes).map(([key, cfg]) => {
+      const allowed = stockCfg ? cfg.stocks.includes(currentStock) : true;
+      return { value: key, label: game.i18n.localize(cfg.label), selected: key === currentClass, disabled: !allowed };
+    });
+
     return [
-      { name: "stock", label: game.i18n.localize("TB2E.Fields.Stock"), value: sys.stock, type: "text" },
-      { name: "class", label: game.i18n.localize("TB2E.Fields.Class"), value: sys.class, type: "text" },
+      { name: "stock", label: game.i18n.localize("TB2E.Fields.Stock"), value: currentStock, type: "select", options: stockOptions },
+      { name: "class", label: game.i18n.localize("TB2E.Fields.Class"), value: currentClass, type: "select", options: classOptions },
       { name: "age", label: game.i18n.localize("TB2E.Fields.Age"), value: sys.age, type: "text" },
       { name: "home", label: game.i18n.localize("TB2E.Fields.Home"), value: sys.home, type: "text" },
       { name: "raiment", label: game.i18n.localize("TB2E.Fields.Raiment"), value: sys.raiment, type: "text" },
@@ -2088,5 +2130,13 @@ export default class CharacterSheet extends HandlebarsApplicationMixin(ActorShee
     const descriptors = [...(this.document.system.natureDescriptors || [])];
     descriptors.splice(index, 1);
     this.document.update({ "system.natureDescriptors": descriptors });
+  }
+
+  /**
+   * Open the character creation wizard.
+   * @this {CharacterSheet}
+   */
+  static #onOpenWizard() {
+    new CharacterWizard(this.document).render(true);
   }
 }

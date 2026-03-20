@@ -1,0 +1,23 @@
+_id: cc0000000000000b
+name: Enchanted Helmet
+type: armor
+img: systems/tb2e/icons/ffffff/transparent/1x1/lorc/crested-helmet.svg
+system:
+  description: "Scholar's Guide, p. 157"
+  slot: ''
+  slotIndex: 0
+  slotOptions:
+    head: 1
+  cost: 0
+  damaged: false
+  dropped: false
+  quantity: 1
+  quantityMax: 1
+  value:
+    dice: 0
+    negotiated: false
+  armorType: helmet
+  absorbs: 2
+  specialRules: "Scholar's Guide, p. 157"
+effects: []
+_key: '!items!cc0000000000000b'

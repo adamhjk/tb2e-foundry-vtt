@@ -9,14 +9,26 @@ export default class NPCData extends foundry.abstract.TypeDataModel {
       class: new fields.StringField(),
       goal: new fields.StringField(),
 
-      // ---- Abilities (flat ratings, no advancement) ----
+      // ---- Abilities (object shape matching characters, no advancement) ----
       abilities: new fields.SchemaField({
-        nature: new fields.NumberField({ initial: 1, integer: true, min: 0 }),
-        will: new fields.NumberField({ initial: 1, integer: true, min: 0 }),
-        health: new fields.NumberField({ initial: 1, integer: true, min: 0 }),
-        resources: new fields.NumberField({ initial: 0, integer: true, min: 0 }),
-        circles: new fields.NumberField({ initial: 0, integer: true, min: 0 }),
-        precedence: new fields.NumberField({ initial: 0, integer: true, min: 0 })
+        nature: new fields.SchemaField({
+          rating: new fields.NumberField({ initial: 1, integer: true, min: 0 })
+        }),
+        will: new fields.SchemaField({
+          rating: new fields.NumberField({ initial: 1, integer: true, min: 0 })
+        }),
+        health: new fields.SchemaField({
+          rating: new fields.NumberField({ initial: 1, integer: true, min: 0 })
+        }),
+        resources: new fields.SchemaField({
+          rating: new fields.NumberField({ initial: 0, integer: true, min: 0 })
+        }),
+        circles: new fields.SchemaField({
+          rating: new fields.NumberField({ initial: 0, integer: true, min: 0 })
+        }),
+        precedence: new fields.SchemaField({
+          rating: new fields.NumberField({ initial: 0, integer: true, min: 0 })
+        })
       }),
 
       // ---- Might (default 2 for regular folks) ----

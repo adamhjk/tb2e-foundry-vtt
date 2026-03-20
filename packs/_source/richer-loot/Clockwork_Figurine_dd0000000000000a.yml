@@ -1,0 +1,22 @@
+_id: dd0000000000000a
+name: Clockwork Figurine
+type: gear
+img: systems/tb2e/icons/ffffff/transparent/1x1/lorc/clockwork.svg
+system:
+  description: "Lore Master's Manual, p. 242"
+  slot: ''
+  slotIndex: 0
+  slotOptions:
+    pack: 2
+  cost: 0
+  damaged: false
+  dropped: false
+  quantity: 1
+  quantityMax: 1
+  value:
+    dice: 7
+    negotiated: false
+  skillBonuses: []
+  specialRules: ''
+effects: []
+_key: '!items!dd0000000000000a'

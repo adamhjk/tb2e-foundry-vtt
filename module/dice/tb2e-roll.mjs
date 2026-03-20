@@ -51,8 +51,7 @@ function _resolveRollData(actor, type, key) {
   const label = game.i18n.localize(cfg.label);
   if ( type === "ability" ) {
     const data = actor.system.abilities[key];
-    const dice = typeof data === "number" ? data : data.rating;
-    return { label, dice };
+    return { label, dice: data.rating };
   }
   const skillData = actor.system.skills;
   if ( Array.isArray(skillData) ) {
@@ -130,9 +129,14 @@ export function gatherHelpModifiers(helpers) {
  * @returns {{ isBL: boolean, blAbilityKey: string|null, blAbilityLabel: string|null, blDice: number }|null}
  */
 function _detectBeginnersLuck(actor, type, key) {
-  if ( type !== "skill" || actor.type !== "character" ) return null;
-  const skillData = actor.system.skills[key];
-  if ( !skillData || skillData.rating > 0 ) return null;
+  if ( type !== "skill" || (actor.type !== "character" && actor.type !== "npc") ) return null;
+  const skillStore = actor.system.skills;
+  if ( Array.isArray(skillStore) ) {
+    const entry = skillStore.find(s => s.key === key);
+    if ( entry?.rating > 0 ) return null;
+  } else {
+    if ( !skillStore[key] || skillStore[key].rating > 0 ) return null;
+  }
 
   const skillCfg = skills[key];
   const blAbilityKey = skillCfg.bl === "H" ? "health" : "will";
@@ -417,7 +421,7 @@ async function _showRollDialog({
   const hasGearSupplies = gearItems.length > 0 || supplyItems.length > 0;
 
   // Ability choices for disposition mode
-  const abilityChoices = isCharacter ? ["health", "will", "nature"]
+  const abilityChoices = (isCharacter || actor?.type === "npc") ? ["health", "will", "nature"]
     .filter(k => abilities[k] && actor.system.abilities[k])
     .map(k => ({
       key: k,
@@ -1549,7 +1553,8 @@ async function _handleDispositionRoll({ actor, type, key, label, baseDice, poolS
   // Look up ability rating from actor
   const abilityKey = config.dispositionAbilityKey || "health";
   const abilityCfg = abilities[abilityKey];
-  const abilityRating = (actor.type === "monster") ? 0 : (actor.system.abilities[abilityKey]?.rating || 0);
+  const rawAbility = actor.system.abilities?.[abilityKey];
+  const abilityRating = (actor.type === "monster") ? 0 : (rawAbility?.rating || 0);
   const abilityLabel = abilityCfg ? game.i18n.localize(abilityCfg.label) : abilityKey;
 
   // Store raw successes (no obstacle for disposition)

@@ -1,0 +1,22 @@
+_id: dd00000000000036
+name: Scroll of Ordination
+type: gear
+img: systems/tb2e/icons/ffffff/transparent/1x1/lorc/tied-scroll.svg
+system:
+  description: "Lore Master's Manual, p. 244"
+  slot: ''
+  slotIndex: 0
+  slotOptions:
+    pack: 1
+  cost: 0
+  damaged: false
+  dropped: false
+  quantity: 1
+  quantityMax: 1
+  value:
+    dice: 0
+    negotiated: true
+  skillBonuses: []
+  specialRules: 'Lore Master''s Manual, p. 244.'
+effects: []
+_key: '!items!dd00000000000036'

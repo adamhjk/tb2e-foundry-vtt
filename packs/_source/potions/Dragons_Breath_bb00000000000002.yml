@@ -1,0 +1,24 @@
+_id: bb00000000000002
+name: Dragon's Breath
+type: supply
+img: systems/tb2e/icons/ffffff/transparent/1x1/lorc/standing-potion.svg
+system:
+  description: "Scholar's Guide, p. 158"
+  slot: ''
+  slotIndex: 0
+  slotOptions:
+    pack: 1
+  cost: 0
+  damaged: false
+  dropped: false
+  quantity: 1
+  quantityMax: 1
+  value:
+    dice: 0
+    negotiated: false
+  supplyType: other
+  turnsRemaining: 0
+  skillBonuses: []
+  specialRules: "Scholar's Guide, p. 158"
+effects: []
+_key: '!items!bb00000000000002'

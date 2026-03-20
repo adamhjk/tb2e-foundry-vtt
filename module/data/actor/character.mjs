@@ -13,8 +13,8 @@ export default class CharacterData extends foundry.abstract.TypeDataModel {
 
     return {
       // ---- Who You Are ----
-      stock: new fields.StringField(),
-      class: new fields.StringField(),
+      stock: new fields.StringField({ blank: true }),
+      class: new fields.StringField({ blank: true }),
       age: new fields.StringField(),
       home: new fields.StringField(),
       raiment: new fields.StringField(),
@@ -32,6 +32,17 @@ export default class CharacterData extends foundry.abstract.TypeDataModel {
 
       // ---- Biography ----
       bio: new fields.StringField(),
+      levelChoices: new fields.SchemaField({
+        2: new fields.StringField(),
+        3: new fields.StringField(),
+        4: new fields.StringField(),
+        5: new fields.StringField(),
+        6: new fields.StringField(),
+        7: new fields.StringField(),
+        8: new fields.StringField(),
+        9: new fields.StringField(),
+        10: new fields.StringField()
+      }),
 
       // ---- Fate & Persona ----
       fate: new fields.SchemaField({

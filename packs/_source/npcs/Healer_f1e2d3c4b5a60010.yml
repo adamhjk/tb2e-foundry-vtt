@@ -1,0 +1,63 @@
+_id: f1e2d3c4b5a60010
+name: Healer
+type: npc
+img: systems/tb2e/icons/ffffff/transparent/1x1/delapouite/caduceus.svg
+system:
+  stock: ''
+  class: ''
+  goal: ''
+  abilities:
+    nature:
+      rating: 4
+    will:
+      rating: 5
+    health:
+      rating: 4
+    resources:
+      rating: 5
+    circles:
+      rating: 4
+    precedence:
+      rating: 1
+  might: 2
+  skills:
+    - key: healer
+      rating: 5
+    - key: alchemist
+      rating: 2
+  wises:
+    - Sickness-wise
+    - Herb-wise
+  conditions:
+    hungry: false
+    angry: false
+    afraid: false
+    exhausted: false
+    injured: false
+    sick: false
+    dead: false
+  conflict:
+    hp:
+      value: 0
+      max: 0
+    team: gm
+    weapon: ''
+  lightLevel: full
+  description: Scholar's Guide, p. 205
+prototypeToken:
+  actorLink: false
+  appendNumber: true
+  disposition: 0
+items:
+  - _id: a010000000000001
+    name: Calm
+    type: trait
+    system:
+      level: 1
+      isClass: false
+      beneficial: 0
+      usedAgainst: false
+      checks: 0
+    _key: '!actors.items!f1e2d3c4b5a60010.a010000000000001'
+effects: []
+_key: '!actors!f1e2d3c4b5a60010'

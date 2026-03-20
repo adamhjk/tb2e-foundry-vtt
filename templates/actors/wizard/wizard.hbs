@@ -1,0 +1,131 @@
+{{!-- Character Creation Wizard — Main Shell --}}
+<div class="wizard-wrapper">
+
+  {{!-- Step Navigation (left sidebar) --}}
+  <nav class="wizard-nav">
+    {{#each steps}}
+    <button type="button"
+            class="wizard-nav-step{{#if isCurrent}} current{{/if}}{{#if isComplete}} complete{{/if}}{{#unless isAccessible}} disabled{{/unless}}"
+            data-action="goToStep" data-step="{{id}}"
+            {{#unless isAccessible}}disabled{{/unless}}>
+      <span class="step-number">
+        {{#if isComplete}}<i class="fa-solid fa-check"></i>{{else}}{{number}}{{/if}}
+      </span>
+      <span class="step-label">{{label}}</span>
+    </button>
+    {{/each}}
+  </nav>
+
+  {{!-- Content Panel --}}
+  <div class="wizard-main">
+    <div class="wizard-content">
+      {{#if isClassStep}}
+      {{> "systems/tb2e/templates/actors/wizard/step-class.hbs"}}
+      {{/if}}
+
+      {{#if isUpbringingStep}}
+      {{> "systems/tb2e/templates/actors/wizard/step-upbringing.hbs"}}
+      {{/if}}
+
+      {{#if isHometownStep}}
+      {{> "systems/tb2e/templates/actors/wizard/step-hometown.hbs"}}
+      {{/if}}
+
+      {{#if isSocialStep}}
+      {{> "systems/tb2e/templates/actors/wizard/step-social.hbs"}}
+      {{/if}}
+
+      {{#if isSpecialtyStep}}
+      {{> "systems/tb2e/templates/actors/wizard/step-specialty.hbs"}}
+      {{/if}}
+
+      {{#if isWisesStep}}
+      {{> "systems/tb2e/templates/actors/wizard/step-wises.hbs"}}
+      {{/if}}
+
+      {{#if isNatureStep}}
+      {{> "systems/tb2e/templates/actors/wizard/step-nature.hbs"}}
+      {{/if}}
+
+      {{#if isCirclesStep}}
+      {{> "systems/tb2e/templates/actors/wizard/step-circles.hbs"}}
+      {{/if}}
+
+      {{#if isGearStep}}
+      {{> "systems/tb2e/templates/actors/wizard/step-gear.hbs"}}
+      {{/if}}
+
+      {{#if isWeaponsStep}}
+      {{> "systems/tb2e/templates/actors/wizard/step-weapons.hbs"}}
+      {{/if}}
+
+      {{#if isArmorStep}}
+      {{> "systems/tb2e/templates/actors/wizard/step-armor.hbs"}}
+      {{/if}}
+
+      {{#if isFinishingStep}}
+      {{> "systems/tb2e/templates/actors/wizard/step-finishing.hbs"}}
+      {{/if}}
+    </div>
+
+    {{!-- Running Summary Strip --}}
+    {{#if summary.class}}
+    <div class="wizard-summary-strip">
+      <div class="summary-facts">
+        <span class="fact"><b>{{summary.class}}</b> {{summary.stock}}</span>
+        {{#if summary.will}}<span class="fact">W {{summary.will}}</span>{{/if}}
+        {{#if summary.health}}<span class="fact">H {{summary.health}}</span>{{/if}}
+        {{#if summary.hometown}}<span class="fact">{{summary.hometown}}</span>{{/if}}
+        {{#if summary.classTrait}}<span class="fact trait">{{summary.classTrait}}</span>{{/if}}
+        {{#if summary.stockTrait}}<span class="fact trait">{{summary.stockTrait}}</span>{{/if}}
+        {{#if summary.homeTrait}}<span class="fact trait">{{summary.homeTrait}}</span>{{/if}}
+        {{#if summary.natureScore}}<span class="fact">Nature {{summary.natureScore}}</span>{{/if}}
+        {{#if summary.descriptors.length}}
+        <span class="fact dim">{{#each summary.descriptors}}{{this}}{{#unless @last}}, {{/unless}}{{/each}}</span>
+        {{/if}}
+        {{#if summary.circles}}<span class="fact">Circles {{summary.circles}}</span>{{/if}}
+        {{#if summary.circleNames.length}}
+        <span class="fact dim">{{#each summary.circleNames}}{{this}}{{#unless @last}}, {{/unless}}{{/each}}</span>
+        {{/if}}
+        {{#if summary.wises.length}}
+        <span class="fact dim">{{#each summary.wises}}{{this}}{{#unless @last}}, {{/unless}}{{/each}}</span>
+        {{/if}}
+        {{#if summary.weapons.length}}
+        <span class="fact weapon">{{#each summary.weapons}}{{this}}{{#unless @last}}, {{/unless}}{{/each}}</span>
+        {{/if}}
+        {{#if summary.armor.length}}
+        <span class="fact armor">{{#each summary.armor}}{{this}}{{#unless @last}}, {{/unless}}{{/each}}</span>
+        {{/if}}
+      </div>
+      {{#if summary.skills.length}}
+      <div class="summary-skill-tags">
+        {{#each summary.skills}}
+        <span class="stag">{{label}} {{rating}}</span>
+        {{/each}}
+      </div>
+      {{/if}}
+    </div>
+    {{/if}}
+
+    {{!-- Footer Navigation --}}
+    <footer class="wizard-footer">
+      <button type="button" class="wizard-btn prev" data-action="prev"
+              {{#unless canPrev}}disabled{{/unless}}>
+        <i class="fa-solid fa-chevron-left"></i> {{localize "TB2E.Wizard.Prev"}}
+      </button>
+      <span class="wizard-page-ref">{{currentPage}}</span>
+      {{#if isLastStep}}
+      <button type="button" class="wizard-btn finish" data-action="finish"
+              {{#unless canFinish}}disabled{{/unless}}>
+        <i class="fa-solid fa-wand-magic-sparkles"></i> {{localize "TB2E.Wizard.Finish"}}
+      </button>
+      {{else}}
+      <button type="button" class="wizard-btn next" data-action="next"
+              {{#unless canNext}}disabled{{/unless}}>
+        {{localize "TB2E.Wizard.Next"}} <i class="fa-solid fa-chevron-right"></i>
+      </button>
+      {{/if}}
+    </footer>
+  </div>
+
+</div>

@@ -1,0 +1,86 @@
+_id: f1e2d3c4b5a60025
+name: Stonemason
+type: npc
+img: systems/tb2e/icons/ffffff/transparent/1x1/delapouite/chisel.svg
+system:
+  stock: ''
+  class: ''
+  goal: ''
+  abilities:
+    nature:
+      rating: 3
+    will:
+      rating: 3
+    health:
+      rating: 6
+    resources:
+      rating: 5
+    circles:
+      rating: 3
+    precedence:
+      rating: 2
+  might: 2
+  skills:
+    - key: stonemason
+      rating: 5
+    - key: laborer
+      rating: 3
+    - key: carpenter
+      rating: 2
+  wises:
+    - Stone-wise
+    - Chisel-wise
+    - Quarry-wise
+  conditions:
+    hungry: false
+    angry: false
+    afraid: false
+    exhausted: false
+    injured: false
+    sick: false
+    dead: false
+  conflict:
+    hp:
+      value: 0
+      max: 0
+    team: gm
+    weapon: ''
+  lightLevel: full
+  description: Scholar's Guide, p. 210
+prototypeToken:
+  actorLink: false
+  appendNumber: true
+  disposition: 0
+items:
+  - _id: a025000000000001
+    name: Rough Hands
+    type: trait
+    system:
+      level: 2
+      isClass: false
+      beneficial: 0
+      usedAgainst: false
+      checks: 0
+    _key: '!actors.items!f1e2d3c4b5a60025.a025000000000001'
+  - _id: a025000000000002
+    name: Strong
+    type: trait
+    system:
+      level: 1
+      isClass: false
+      beneficial: 0
+      usedAgainst: false
+      checks: 0
+    _key: '!actors.items!f1e2d3c4b5a60025.a025000000000002'
+  - _id: a025000000000003
+    name: Clever
+    type: trait
+    system:
+      level: 1
+      isClass: false
+      beneficial: 0
+      usedAgainst: false
+      checks: 0
+    _key: '!actors.items!f1e2d3c4b5a60025.a025000000000003'
+effects: []
+_key: '!actors!f1e2d3c4b5a60025'

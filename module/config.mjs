@@ -446,14 +446,94 @@ export const maneuverEffects = {
 };
 
 /**
- * Default nature descriptors per stock.
- * @enum {string[]}
+ * Character stocks with nature descriptors and page references.
+ * @enum {object}
  */
-export const stockDescriptors = {
-  Human: ["Boasting", "Demanding", "Running"],
-  Dwarf: ["Delving", "Crafting", "Avenging Grudges"],
-  Elf: ["Singing", "Remembering", "Hiding"],
-  Halfling: ["Sneaking", "Riddling", "Merrymaking"]
+export const stocks = {
+  halfling:   { label: "TB2E.Stock.Halfling",   page: "DH p.33",  natureDescriptors: ["Sneaking", "Riddling", "Merrymaking"] },
+  human:      { label: "TB2E.Stock.Human",      page: "DH p.34",  natureDescriptors: ["Boasting", "Demanding", "Running"] },
+  dwarf:      { label: "TB2E.Stock.Dwarf",      page: "DH p.35",  natureDescriptors: ["Delving", "Crafting", "Avenging Grudges"] },
+  elf:        { label: "TB2E.Stock.Elf",        page: "DH p.36",  natureDescriptors: ["Singing", "Remembering", "Hiding"] },
+  changeling: { label: "TB2E.Stock.Changeling", page: "LMM p.9",  natureDescriptors: ["Tricking", "Boasting", "Breaking"] }
+};
+
+/**
+ * Character classes with stock constraints and level benefits.
+ * @enum {object}
+ */
+export const classes = {
+  burglar: {
+    label: "TB2E.Class.Burglar", page: "DH p.26", stocks: ["halfling"], levelBenefitPage: "DH pp.113-115",
+    levelBenefits: {
+      2: "TB2E.ClassBenefit.Burglar.2", 3: "TB2E.ClassBenefit.Burglar.3", 4: "TB2E.ClassBenefit.Burglar.4",
+      5: "TB2E.ClassBenefit.Burglar.5", 6: "TB2E.ClassBenefit.Burglar.6", 7: "TB2E.ClassBenefit.Burglar.7",
+      8: "TB2E.ClassBenefit.Burglar.8", 9: "TB2E.ClassBenefit.Burglar.9", 10: "TB2E.ClassBenefit.Burglar.10"
+    }
+  },
+  magician: {
+    label: "TB2E.Class.Magician", page: "DH p.26", stocks: ["human", "changeling"], levelBenefitPage: "DH pp.115-119",
+    levelBenefits: {
+      2: "TB2E.ClassBenefit.Magician.2", 3: "TB2E.ClassBenefit.Magician.3", 4: "TB2E.ClassBenefit.Magician.4",
+      5: "TB2E.ClassBenefit.Magician.5", 6: "TB2E.ClassBenefit.Magician.6", 7: "TB2E.ClassBenefit.Magician.7",
+      8: "TB2E.ClassBenefit.Magician.8", 9: "TB2E.ClassBenefit.Magician.9", 10: "TB2E.ClassBenefit.Magician.10"
+    }
+  },
+  outcast: {
+    label: "TB2E.Class.Outcast", page: "DH p.26", stocks: ["dwarf"], levelBenefitPage: "DH pp.119-121",
+    levelBenefits: {
+      2: "TB2E.ClassBenefit.Outcast.2", 3: "TB2E.ClassBenefit.Outcast.3", 4: "TB2E.ClassBenefit.Outcast.4",
+      5: "TB2E.ClassBenefit.Outcast.5", 6: "TB2E.ClassBenefit.Outcast.6", 7: "TB2E.ClassBenefit.Outcast.7",
+      8: "TB2E.ClassBenefit.Outcast.8", 9: "TB2E.ClassBenefit.Outcast.9", 10: "TB2E.ClassBenefit.Outcast.10"
+    }
+  },
+  ranger: {
+    label: "TB2E.Class.Ranger", page: "DH p.27", stocks: ["elf"], levelBenefitPage: "DH pp.122-125",
+    levelBenefits: {
+      2: "TB2E.ClassBenefit.Ranger.2", 3: "TB2E.ClassBenefit.Ranger.3", 4: "TB2E.ClassBenefit.Ranger.4",
+      5: "TB2E.ClassBenefit.Ranger.5", 6: "TB2E.ClassBenefit.Ranger.6", 7: "TB2E.ClassBenefit.Ranger.7",
+      8: "TB2E.ClassBenefit.Ranger.8", 9: "TB2E.ClassBenefit.Ranger.9", 10: "TB2E.ClassBenefit.Ranger.10"
+    }
+  },
+  theurge: {
+    label: "TB2E.Class.Theurge", page: "DH p.27", stocks: ["human", "changeling"], levelBenefitPage: "DH pp.125-128",
+    levelBenefits: {
+      2: "TB2E.ClassBenefit.Theurge.2", 3: "TB2E.ClassBenefit.Theurge.3", 4: "TB2E.ClassBenefit.Theurge.4",
+      5: "TB2E.ClassBenefit.Theurge.5", 6: "TB2E.ClassBenefit.Theurge.6", 7: "TB2E.ClassBenefit.Theurge.7",
+      8: "TB2E.ClassBenefit.Theurge.8", 9: "TB2E.ClassBenefit.Theurge.9", 10: "TB2E.ClassBenefit.Theurge.10"
+    }
+  },
+  warrior: {
+    label: "TB2E.Class.Warrior", page: "DH p.27", stocks: ["human", "changeling"], levelBenefitPage: "DH pp.129-131",
+    levelBenefits: {
+      2: "TB2E.ClassBenefit.Warrior.2", 3: "TB2E.ClassBenefit.Warrior.3", 4: "TB2E.ClassBenefit.Warrior.4",
+      5: "TB2E.ClassBenefit.Warrior.5", 6: "TB2E.ClassBenefit.Warrior.6", 7: "TB2E.ClassBenefit.Warrior.7",
+      8: "TB2E.ClassBenefit.Warrior.8", 9: "TB2E.ClassBenefit.Warrior.9", 10: "TB2E.ClassBenefit.Warrior.10"
+    }
+  },
+  shaman: {
+    label: "TB2E.Class.Shaman", page: "LMM p.11", stocks: ["human", "changeling"], levelBenefitPage: "LMM pp.15-18",
+    levelBenefits: {
+      2: "TB2E.ClassBenefit.Shaman.2", 3: "TB2E.ClassBenefit.Shaman.3", 4: "TB2E.ClassBenefit.Shaman.4",
+      5: "TB2E.ClassBenefit.Shaman.5", 6: "TB2E.ClassBenefit.Shaman.6", 7: "TB2E.ClassBenefit.Shaman.7",
+      8: "TB2E.ClassBenefit.Shaman.8", 9: "TB2E.ClassBenefit.Shaman.9", 10: "TB2E.ClassBenefit.Shaman.10"
+    }
+  },
+  skald: {
+    label: "TB2E.Class.Skald", page: "LMM p.13", stocks: ["human", "changeling"], levelBenefitPage: "LMM pp.19-22",
+    levelBenefits: {
+      2: "TB2E.ClassBenefit.Skald.2", 3: "TB2E.ClassBenefit.Skald.3", 4: "TB2E.ClassBenefit.Skald.4",
+      5: "TB2E.ClassBenefit.Skald.5", 6: "TB2E.ClassBenefit.Skald.6", 7: "TB2E.ClassBenefit.Skald.7",
+      8: "TB2E.ClassBenefit.Skald.8", 9: "TB2E.ClassBenefit.Skald.9", 10: "TB2E.ClassBenefit.Skald.10"
+    }
+  },
+  thief: {
+    label: "TB2E.Class.Thief", page: "LMM p.14", stocks: ["human", "changeling"], levelBenefitPage: "LMM pp.23-26",
+    levelBenefits: {
+      2: "TB2E.ClassBenefit.Thief.2", 3: "TB2E.ClassBenefit.Thief.3", 4: "TB2E.ClassBenefit.Thief.4",
+      5: "TB2E.ClassBenefit.Thief.5", 6: "TB2E.ClassBenefit.Thief.6", 7: "TB2E.ClassBenefit.Thief.7",
+      8: "TB2E.ClassBenefit.Thief.8", 9: "TB2E.ClassBenefit.Thief.9", 10: "TB2E.ClassBenefit.Thief.10"
+    }
+  }
 };
 
 /**
@@ -514,6 +594,6 @@ export const castingTimes = {
 export default {
   conditions, abilities, skills, advancementNeeded, levelRequirements,
   conflictTypes, conflictActions, conflictInteractions, conflictObstacles, maneuverEffects,
-  stockDescriptors, armorTypes, containerTypes, liquidTypes, supplyTypes, wieldTypes,
+  stocks, classes, armorTypes, containerTypes, liquidTypes, supplyTypes, wieldTypes,
   spellCircles, castingTypes, castingTimes, invocationCircles, relicTiers
 };

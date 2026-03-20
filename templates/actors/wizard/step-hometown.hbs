@@ -1,0 +1,52 @@
+{{!-- Step 3: Hometown --}}
+<div class="wizard-step step-hometown">
+  <h2 class="step-heading">{{localize "TB2E.Wizard.Step.Hometown"}}</h2>
+  <p class="step-instructions">{{localize "TB2E.Wizard.HometownInstructions"}}</p>
+
+  {{!-- Settlement Type --}}
+  <div class="hometown-grid">
+    {{#each hometowns}}
+    <button type="button"
+            class="hometown-card{{#if isSelected}} selected{{/if}}"
+            data-action="selectHometown" data-hometown="{{key}}">
+      <span class="hometown-name">{{label}}</span>
+      <span class="hometown-page">{{page}}</span>
+    </button>
+    {{/each}}
+  </div>
+
+  {{!-- Skill Choice (for selected hometown) --}}
+  {{#if hometownSkills}}
+  <div class="hometown-skill-choice">
+    <h3>{{localize "TB2E.Wizard.ChooseSkill"}}</h3>
+    <div class="skill-choice-grid">
+      {{#each hometownSkills}}
+      <button type="button"
+              class="skill-choice-card{{#if isSelected}} selected{{/if}}"
+              data-action="selectHometownSkill" data-skill="{{key}}">
+        <span class="skill-name">{{label}}</span>
+        {{#if isIncrease}}
+        <span class="skill-change">{{currentRating}} &rarr; {{newRating}}</span>
+        {{else}}
+        <span class="skill-rating">{{newRating}}</span>
+        {{/if}}
+      </button>
+      {{/each}}
+    </div>
+  </div>
+
+  {{!-- Trait Choice --}}
+  <div class="hometown-trait-choice">
+    <h3>{{localize "TB2E.Wizard.ChooseTrait"}}</h3>
+    <div class="trait-buttons">
+      {{#each hometownTraits}}
+      <button type="button"
+              class="trait-choice-btn{{#if isSelected}} selected{{/if}}"
+              data-action="selectHomeTrait" data-trait="{{name}}">
+        {{name}}
+      </button>
+      {{/each}}
+    </div>
+  </div>
+  {{/if}}
+</div>

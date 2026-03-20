@@ -14,6 +14,10 @@
   <div class="header-fields">
     <div class="header-top-row">
       <img class="torchbearer-logo" src="systems/tb2e/assets/torchbearer-logo.png" alt="Torchbearer">
+      <button type="button" class="wizard-launch-btn" data-action="openWizard"
+              title="{{localize 'TB2E.Wizard.LaunchTooltip'}}">
+        <i class="fa-solid fa-wand-magic-sparkles"></i> {{localize "TB2E.Wizard.Launch"}}
+      </button>
       <button type="button" class="session-reset-btn" data-action="resetSession"
               title="{{localize 'TB2E.Session.ResetTooltip'}}">
         <i class="fa-solid fa-rotate"></i> {{localize "TB2E.Session.Reset"}}
@@ -34,8 +38,8 @@
            placeholder="{{localize 'TB2E.Fields.Name'}}" class="character-name">
     <div class="header-summary">
       <span class="summary-line">
-        {{#if system.stock}}{{system.stock}}{{/if}}
-        {{#if system.class}} {{system.class}}{{/if}}
+        {{#if stockLabel}}{{stockLabel}}{{/if}}
+        {{#if classLabel}} {{classLabel}}{{/if}}
         {{#if system.level}} Lv.{{system.level}}{{/if}}
       </span>
       {{#if system.goal}}

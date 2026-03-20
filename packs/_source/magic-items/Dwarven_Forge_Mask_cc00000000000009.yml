@@ -1,0 +1,23 @@
+_id: cc00000000000009
+name: Dwarven Forge Mask
+type: armor
+img: systems/tb2e/icons/ffffff/transparent/1x1/lorc/horned-helm.svg
+system:
+  description: "Scholar's Guide, pp. 166-167"
+  slot: ''
+  slotIndex: 0
+  slotOptions:
+    head: 1
+  cost: 0
+  damaged: false
+  dropped: false
+  quantity: 1
+  quantityMax: 1
+  value:
+    dice: 0
+    negotiated: false
+  armorType: helmet
+  absorbs: 1
+  specialRules: "Scholar's Guide, pp. 166-167"
+effects: []
+_key: '!items!cc00000000000009'

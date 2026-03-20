@@ -1,0 +1,65 @@
+_id: f1e2d3c4b5a60026
+name: Tanner
+type: npc
+img: systems/tb2e/icons/ffffff/transparent/1x1/delapouite/animal-hide.svg
+system:
+  stock: ''
+  class: ''
+  goal: ''
+  abilities:
+    nature:
+      rating: 3
+    will:
+      rating: 3
+    health:
+      rating: 5
+    resources:
+      rating: 4
+    circles:
+      rating: 2
+    precedence:
+      rating: 1
+  might: 2
+  skills:
+    - key: tanner
+      rating: 5
+    - key: haggler
+      rating: 3
+    - key: laborer
+      rating: 2
+  wises:
+    - Leather-wise
+    - Piss-wise
+  conditions:
+    hungry: false
+    angry: false
+    afraid: false
+    exhausted: false
+    injured: false
+    sick: false
+    dead: false
+  conflict:
+    hp:
+      value: 0
+      max: 0
+    team: gm
+    weapon: ''
+  lightLevel: full
+  description: Scholar's Guide, p. 210
+prototypeToken:
+  actorLink: false
+  appendNumber: true
+  disposition: 0
+items:
+  - _id: a026000000000001
+    name: Stubborn
+    type: trait
+    system:
+      level: 1
+      isClass: false
+      beneficial: 0
+      usedAgainst: false
+      checks: 0
+    _key: '!actors.items!f1e2d3c4b5a60026.a026000000000001'
+effects: []
+_key: '!actors!f1e2d3c4b5a60026'
