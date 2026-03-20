@@ -479,7 +479,8 @@ async function _showRollDialog({
   const natureState = { withinNature: true };
 
   const result = await foundry.applications.api.DialogV2.wait({
-    window: { title: dialogTitle },
+    window: { title: dialogTitle, resizable: true },
+    position: { width: 480, height: 600 },
     classes: ["tb2e", "roll-dialog"],
     content,
     render: (event, dialog) => {
@@ -766,6 +767,16 @@ async function _showRollDialog({
                   );
                 }
               }
+              // Update earn annotation
+              for ( const r of traitRows ) {
+                const earnEl = r.querySelector(".trait-earn");
+                if ( earnEl ) earnEl.textContent = "";
+              }
+              if ( traitState.mode === "against" && traitState.itemId ) {
+                const activeRow = form.querySelector(`.trait-row[data-trait-id="${traitState.itemId}"]`);
+                const earnEl = activeRow?.querySelector(".trait-earn");
+                if ( earnEl ) earnEl.textContent = traitState.againstType === "opponent-bonus" ? "2 chks" : "1 chk";
+              }
               renderModifierList();
               updateSummary();
             });
@@ -937,6 +948,13 @@ async function _showRollDialog({
             : "TB2E.Roll.Independent"
         );
 
+        // Update ref bar data for mode toggle
+        const MODE_PAGES = { independent: "SG p.31", versus: "SG p.31", disposition: "SG p.62" };
+        const MODE_REF_LABELS = { independent: "Independent Test", versus: "Versus Test", disposition: "Disposition Roll" };
+        modeToggle.dataset.page = MODE_PAGES[newMode];
+        const modeRefLabel = modeToggle.querySelector(".ref-label");
+        if ( modeRefLabel ) modeRefLabel.textContent = MODE_REF_LABELS[newMode];
+
         // Show/hide fields based on mode
         obstacleField.classList.toggle("hidden", newMode !== "independent");
         challengeField.classList.toggle("hidden", newMode !== "versus");
@@ -992,6 +1010,31 @@ async function _showRollDialog({
       // Initial render
       renderModifierList();
       updateSummary();
+
+      // Collapsible section headings
+      for ( const heading of form.querySelectorAll(".collapsible > .section-heading, .collapsible > .helpers-heading") ) {
+        const chevron = document.createElement("i");
+        chevron.className = "fa-solid fa-chevron-right section-chevron";
+        heading.appendChild(chevron);
+        heading.addEventListener("click", () => {
+          heading.parentElement.classList.toggle("collapsed");
+        });
+      }
+
+      // Wire up the reference bar hover
+      const refBarText = form.querySelector(".roll-ref-text");
+      if ( refBarText ) {
+        const placeholder = refBarText.textContent;
+        for ( const el of form.querySelectorAll("[data-page]") ) {
+          el.addEventListener("mouseenter", () => {
+            const label = el.querySelector(".ref-label")?.textContent?.trim() || "";
+            refBarText.textContent = label ? `${label} — ${el.dataset.page}` : el.dataset.page;
+          });
+          el.addEventListener("mouseleave", () => {
+            refBarText.textContent = placeholder;
+          });
+        }
+      }
     },
     buttons: [
       {

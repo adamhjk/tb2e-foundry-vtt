@@ -113,34 +113,11 @@
   }
 
   .conflict-bonuses-table {
-    width: 100%;
-    border-collapse: collapse;
+    .mixin-tb-table();
     margin: 0.5rem 0;
 
-    th {
-      font-size: 0.7rem;
-      text-transform: uppercase;
-      letter-spacing: 0.04em;
-      color: var(--tb-text-faint);
-      text-align: left;
-      padding: 0.2rem 0.3rem;
-      border-bottom: 1px solid var(--tb-border);
-    }
-
-    td {
-      padding: 0.2rem 0.3rem;
-    }
-
-    select {
-      font-size: 0.8rem;
-      padding: 0.15rem;
-    }
-
-    input[type="number"] {
-      width: 3rem;
-      text-align: center;
-      font-size: 0.85rem;
-    }
+    select { font-size: 0.8rem; padding: 0.15rem; }
+    input[type="number"] { width: 3rem; text-align: center; font-size: 0.85rem; }
   }
 
   .spell-circle-select {
@@ -171,32 +148,12 @@
   }
 
   .factor-options-table {
-    width: 100%;
-    border-collapse: collapse;
-    font-size: 0.85rem;
+    .mixin-tb-table();
     margin-bottom: 0.3rem;
 
-    th {
-      font-family: var(--tb-font-heading);
-      font-size: 0.75rem;
-      text-transform: uppercase;
-      letter-spacing: 0.06em;
-      color: var(--tb-text-faint);
-      padding: 0.2rem 0.3rem;
-      text-align: left;
-    }
-
     td {
-      padding: 0.15rem 0.3rem;
-
-      input[type="text"] {
-        width: 100%;
-      }
-
-      input[type="number"] {
-        width: 3.5rem;
-        text-align: center;
-      }
+      input[type="text"] { width: 100%; }
+      input[type="number"] { width: 3.5rem; text-align: center; }
     }
   }
 

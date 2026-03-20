@@ -1,12 +1,48 @@
 /* -------------------------------------------- */
-/*  Roll Dialog                                 */
+/*  Roll Dialog — Scrollable Layout             */
 /* -------------------------------------------- */
 
+/* form.dialog-form fills section.window-content (flex: 1 on a flex child, not height: 100%) */
+.tb2e.roll-dialog .window-content > form {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+/* div.dialog-content wraps our content — must also flex-fill */
+.tb2e.roll-dialog .dialog-content {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+/* Our form root — fills dialog-content */
 .tb2e.roll-dialog .tb2e-roll-dialog-form {
   display: flex;
   flex-direction: column;
-  gap: 0.75rem;
+  gap: 0.5rem;
   padding: 0.5rem 0;
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+}
+
+/* -------------------------------------------- */
+/*  Roll Dialog — Scrollable Body               */
+/* -------------------------------------------- */
+
+.tb2e.roll-dialog .roll-dialog-body {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  padding-right: 2px; /* prevent scrollbar clipping content */
 }
 
 .tb2e.roll-dialog .roll-dialog-header {
@@ -107,10 +143,12 @@
   align-items: center;
   gap: 0.35rem;
   font-family: var(--tb-font-heading);
-  font-size: 0.8rem;
+  font-size: 0.95rem;
   text-transform: uppercase;
   letter-spacing: 0.06em;
-  color: var(--tb-text-faint);
+  color: var(--tb-text-dim);
+  border-bottom: 1px solid var(--tb-border-light);
+  padding-bottom: 0.2rem;
 }
 
 .tb2e.roll-dialog .helpers-heading i {
@@ -272,6 +310,40 @@
 
 .tb2e.roll-dialog .roll-option input[type="checkbox"] {
   accent-color: var(--tb-blue-bright);
+}
+
+/* Custom checkbox styling — roll dialog doesn't have .sheet class,
+   so the elements.less .tb2e.sheet rules don't apply here */
+.tb2e.roll-dialog input[type="checkbox"] {
+  appearance: none !important;
+  -webkit-appearance: none !important;
+  width: 1rem;
+  height: 1rem;
+  border: 1.5px solid var(--tb-blue);
+  border-radius: 3px;
+  background: transparent;
+  cursor: pointer;
+  transition: background 0.15s, border-color 0.15s;
+  flex-shrink: 0;
+  vertical-align: middle;
+}
+
+.tb2e.roll-dialog input[type="checkbox"]:hover {
+  background: var(--tb-blue-glow);
+}
+
+.tb2e.roll-dialog input[type="checkbox"]:checked {
+  background: var(--tb-blue);
+  border-color: var(--tb-blue);
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 16 16' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M3 8.5l3.5 3.5 6-7' stroke='%23ffffff' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 70%;
+}
+
+.tb2e.roll-dialog input[type="checkbox"]:focus-visible {
+  outline: 2px solid var(--tb-blue);
+  outline-offset: 2px;
 }
 
 .tb2e.roll-dialog .roll-dialog-summary {
@@ -483,10 +555,12 @@
   align-items: center;
   gap: 0.35rem;
   font-family: var(--tb-font-heading);
-  font-size: 0.8rem;
+  font-size: 0.95rem;
   text-transform: uppercase;
   letter-spacing: 0.06em;
-  color: var(--tb-text-faint);
+  color: var(--tb-text-dim);
+  border-bottom: 1px solid var(--tb-border-light);
+  padding-bottom: 0.2rem;
 }
 
 .tb2e.roll-dialog .section-heading i {
@@ -501,7 +575,7 @@
 
 .tb2e.roll-dialog .trait-row {
   display: grid;
-  grid-template-columns: 1fr auto auto auto;
+  grid-template-columns: 1fr auto auto auto auto;
   align-items: center;
   gap: 0.4rem;
   padding: 0.2rem 0.4rem;
@@ -873,6 +947,39 @@
 }
 
 /* -------------------------------------------- */
+/*  Collapsible Sections                        */
+/* -------------------------------------------- */
+
+.tb2e.roll-dialog {
+  .collapsible > .section-heading,
+  .collapsible > .helpers-heading {
+    cursor: pointer;
+    user-select: none;
+  }
+
+  .collapsible > .section-heading .section-chevron,
+  .collapsible > .helpers-heading .section-chevron {
+    margin-left: auto;
+    font-size: 0.65rem;
+    color: var(--tb-text-faint);
+    transition: transform 0.15s ease;
+    flex-shrink: 0;
+  }
+
+  .collapsible:not(.collapsed) .section-chevron {
+    transform: rotate(90deg);
+  }
+
+  .section-body {
+    padding: 0.35rem 0.1rem 0;
+  }
+
+  .collapsible.collapsed .section-body {
+    display: none;
+  }
+}
+
+/* -------------------------------------------- */
 /*  Utility                                     */
 /* -------------------------------------------- */
 
@@ -936,4 +1043,52 @@
 .tb2e.roll-dialog .roll-dialog-challenge select {
   font-size: 0.9rem;
   padding: 0.4rem 0.5rem;
+}
+
+/* -------------------------------------------- */
+/*  Roll Dialog — Reference Bar                 */
+/* -------------------------------------------- */
+
+.tb2e.roll-dialog .roll-ref-bar {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.15rem 0.5rem;
+  background: var(--tb-bg-dark);
+  border-radius: var(--tb-radius);
+  font-size: 0.75rem;
+  min-height: 1.4rem;
+  color: var(--tb-text-faint);
+  font-style: italic;
+}
+
+.tb2e.roll-dialog .roll-ref-bar i {
+  color: var(--tb-blue-dim);
+  font-size: 0.7rem;
+  flex-shrink: 0;
+}
+
+/* "earn X check(s)" label shown when trait is used against yourself */
+.tb2e.roll-dialog .trait-earn {
+  font-size: 0.65rem;
+  color: var(--tb-amber);
+  font-style: italic;
+  white-space: nowrap;
+  min-width: 2.5rem;
+  text-align: center;
+}
+
+/* Visually hidden label used as text source for ref bar hover */
+.tb2e.roll-dialog .ref-label {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+}
+
+/* Help cursor for any element with a page reference */
+.tb2e.roll-dialog [data-page] {
+  cursor: help;
 }

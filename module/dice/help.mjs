@@ -81,17 +81,29 @@ export function getEligibleHelpers({ actor, type, key, testContext = {}, candida
   if ( candidates ) {
     pool = candidates;
   } else {
-    // Build pool from scene tokens so unlinked actors are included.
+    // Primary: scene tokens (preserves unlinked-actor support and token-name display).
     // Helpers must be on the same conflict team as the roller.
     const rollerTeam = actor.system.conflict?.team ?? "party";
     const rollerTokenId = actor.isToken ? actor.token?.id : null;
-    pool = (canvas?.scene?.tokens ?? []).filter(t => {
+    const scenePool = (canvas?.scene?.tokens ?? []).filter(t => {
       if ( !t.actor ) return false;
       // Exclude the roller: by token ID for unlinked tokens (so other tokens sharing the
       // same base actor are NOT excluded), or by actorId for linked actors.
       if ( rollerTokenId ? t.id === rollerTokenId : t.actorId === actor.id ) return false;
       return (t.actor.system.conflict?.team ?? "party") === rollerTeam;
     });
+
+    if ( scenePool.length > 0 ) {
+      pool = scenePool;
+    } else {
+      // Fallback: no tokens in scene — use game.actors for all characters and NPCs
+      // on the same conflict team.
+      pool = game.actors.filter(a => {
+        if ( a.id === actor.id ) return false;
+        if ( a.type !== "character" && a.type !== "npc" ) return false;
+        return (a.system.conflict?.team ?? "party") === rollerTeam;
+      });
+    }
   }
 
   const results = [];

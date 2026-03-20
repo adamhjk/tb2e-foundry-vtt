@@ -75,12 +75,12 @@
 
     &.current .step-number {
       background: var(--tb-blue);
-      color: #fff;
+      color: var(--tb-text-on-accent);
     }
 
     &.complete .step-number {
       background: var(--tb-green);
-      color: #fff;
+      color: var(--tb-text-on-accent);
     }
 
     .step-label {
@@ -202,7 +202,7 @@
     &.finish {
       background: var(--tb-blue);
       border-color: var(--tb-blue);
-      color: #fff;
+      color: var(--tb-text-on-accent);
 
       &:hover:not(:disabled) {
         background: var(--tb-blue-bright);
@@ -692,7 +692,7 @@
     background: var(--tb-blue);
     border: 1px solid var(--tb-blue);
     border-radius: var(--tb-radius, 4px);
-    color: #fff;
+    color: var(--tb-text-on-accent);
     font-size: 0.9rem;
     cursor: pointer;
     transition: all 0.15s ease;

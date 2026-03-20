@@ -141,6 +141,11 @@
   background: var(--tb-frost);
 }
 
+.panel-tab:focus-visible {
+  outline: 2px solid var(--tb-blue);
+  outline-offset: -2px;
+}
+
 .panel-tab.active {
   color: var(--tb-blue);
   font-weight: bold;
@@ -246,6 +251,11 @@
 
 .panel-action-btn:hover:not(:disabled) {
   background: linear-gradient(135deg, var(--tb-blue-bright), var(--tb-blue));
+}
+
+.panel-action-btn:focus-visible {
+  outline: 2px solid var(--tb-blue);
+  outline-offset: 2px;
 }
 
 .panel-action-btn:disabled {
@@ -516,10 +526,15 @@
   border: none;
   border-radius: 6px;
   background: linear-gradient(90deg, var(--tb-blue), var(--tb-blue-bright));
-  color: #fff;
+  color: var(--tb-text-on-accent);
   cursor: pointer;
   transition: background 0.2s, opacity 0.2s, box-shadow 0.2s;
-  box-shadow: 0 2px 6px rgba(37, 99, 235, 0.2);
+  box-shadow: 0 2px 6px var(--tb-blue-glow-strong);
+}
+
+.setup-next-btn:focus-visible {
+  outline: 2px solid var(--tb-blue);
+  outline-offset: 2px;
 }
 
 .setup-next-label {
@@ -537,7 +552,7 @@
 
 .setup-next-btn:hover:not(:disabled) {
   background: linear-gradient(90deg, var(--tb-blue-bright), var(--tb-blue));
-  box-shadow: 0 3px 10px rgba(37, 99, 235, 0.35);
+  box-shadow: 0 3px 10px var(--tb-blue-glow-strong);
 }
 
 .setup-next-btn:hover:not(:disabled) i {
@@ -1014,19 +1029,19 @@
 /* Per-action colors */
 .action-card-attack         { color: var(--tb-attack-hue); border-color: var(--tb-attack-light); background: var(--tb-attack-bg); }
 .action-card-attack:hover:not(:disabled)  { border-color: var(--tb-attack-hue); }
-.action-card-attack.selected { background: var(--tb-attack-hue); color: #fff; border-color: var(--tb-attack-hue); box-shadow: 0 2px 8px rgba(190,18,60,0.3); }
+.action-card-attack.selected { background: var(--tb-attack-hue); color: var(--tb-text-on-accent); border-color: var(--tb-attack-hue); box-shadow: 0 2px 8px var(--tb-attack-glow); }
 
 .action-card-defend         { color: var(--tb-defend-hue); border-color: var(--tb-defend-light); background: var(--tb-defend-bg); }
 .action-card-defend:hover:not(:disabled)  { border-color: var(--tb-defend-hue); }
-.action-card-defend.selected { background: var(--tb-defend-hue); color: #fff; border-color: var(--tb-defend-hue); box-shadow: 0 2px 8px rgba(37,99,235,0.3); }
+.action-card-defend.selected { background: var(--tb-defend-hue); color: var(--tb-text-on-accent); border-color: var(--tb-defend-hue); box-shadow: 0 2px 8px var(--tb-defend-glow); }
 
 .action-card-feint          { color: var(--tb-feint-hue); border-color: var(--tb-feint-light); background: var(--tb-feint-bg); }
 .action-card-feint:hover:not(:disabled)   { border-color: var(--tb-feint-hue); }
-.action-card-feint.selected { background: var(--tb-feint-hue); color: #fff; border-color: var(--tb-feint-hue); box-shadow: 0 2px 8px rgba(147,51,234,0.3); }
+.action-card-feint.selected { background: var(--tb-feint-hue); color: var(--tb-text-on-accent); border-color: var(--tb-feint-hue); box-shadow: 0 2px 8px var(--tb-feint-glow); }
 
 .action-card-maneuver          { color: var(--tb-maneuver-hue); border-color: var(--tb-maneuver-light); background: var(--tb-maneuver-bg); }
 .action-card-maneuver:hover:not(:disabled)    { border-color: var(--tb-maneuver-hue); }
-.action-card-maneuver.selected { background: var(--tb-maneuver-hue); color: #fff; border-color: var(--tb-maneuver-hue); box-shadow: 0 2px 8px rgba(217,119,6,0.3); }
+.action-card-maneuver.selected { background: var(--tb-maneuver-hue); color: var(--tb-text-on-accent); border-color: var(--tb-maneuver-hue); box-shadow: 0 2px 8px var(--tb-maneuver-glow); }
 
 /* ---- Locked View: Card Flip ---- */
 
@@ -1177,7 +1192,7 @@
 }
 
 .resolve-action.current .resolve-action-header {
-  background: linear-gradient(135deg, var(--tb-blue-glow), rgba(37,99,235,0.08));
+  background: linear-gradient(135deg, var(--tb-blue-glow), var(--tb-blue-glow));
 }
 
 .resolve-action-num {
@@ -1706,10 +1721,10 @@
 
 .setup-next-btn.danger {
   background: linear-gradient(90deg, var(--tb-red), var(--tb-red-dim));
-  box-shadow: 0 2px 6px rgba(239, 68, 68, 0.2);
+  box-shadow: 0 2px 6px var(--tb-red-glow);
 }
 
 .setup-next-btn.danger:hover:not(:disabled) {
-  background: linear-gradient(90deg, var(--tb-red-bright, #f87171), var(--tb-red));
-  box-shadow: 0 3px 10px rgba(239, 68, 68, 0.35);
+  background: linear-gradient(90deg, var(--tb-red-bright), var(--tb-red));
+  box-shadow: 0 3px 10px var(--tb-red-glow-bright);
 }

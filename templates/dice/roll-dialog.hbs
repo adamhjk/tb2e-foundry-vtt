@@ -1,18 +1,35 @@
 <div class="tb2e-roll-dialog-form">
   <div class="roll-dialog-header">
-    <button type="button" class="roll-dialog-badge roll-dialog-mode-toggle">
+    <button type="button" class="roll-dialog-badge roll-dialog-mode-toggle" data-page="{{#if isDisposition}}SG p.62{{else}}SG p.31{{/if}}">
+      <span class="ref-label">{{#if isDisposition}}Disposition Roll{{else}}Independent Test{{/if}}</span>
       <span class="mode-label">{{#if isDisposition}}{{dispositionLabel}}{{else}}{{independentLabel}}{{/if}}</span>
       <i class="fa-solid fa-caret-down mode-caret"></i>
     </button>
     <input type="hidden" name="mode" value="{{#if isDisposition}}disposition{{else}}independent{{/if}}">
     {{#if blInfo}}
-    <span class="roll-dialog-badge bl-badge">
-      <i class="fa-solid fa-graduation-cap"></i> BL: {{blInfo.blAbilityLabel}}
+    <span class="roll-dialog-badge bl-badge" data-page="DH p.58"
+      title="Beginner's Luck (Dungeoneer's Handbook pp. 58–59) — base dice, help, and wises are halved (round up) before traits and persona are added">
+      <span class="ref-label">Beginner's Luck</span>
+      <i class="fa-solid fa-graduation-cap"></i> BL: {{blInfo.blAbilityLabel}} (÷2)
     </span>
     {{/if}}
     <h3 class="roll-dialog-title">{{label}}</h3>
   </div>
 
+  <div class="roll-ref-bar">
+    <i class="fa-solid fa-book-open"></i>
+    <span class="roll-ref-text">Hover a section for rules reference</span>
+  </div>
+
+  <div class="roll-dialog-options {{#if isDisposition}}hidden{{/if}}">
+    <label class="roll-option" data-page="DH p.107">
+      <span class="ref-label">Advancement</span>
+      <input type="checkbox" name="logAdvancement" checked>
+      <span>{{advancementLabel}}</span>
+    </label>
+  </div>
+
+  <div class="roll-dialog-body">
   <div class="roll-dialog-fields">
     <div class="roll-field">
       <label for="poolSize">{{dicePoolLabel}}</label>
@@ -42,46 +59,62 @@
     </select>
   </div>
 
+  {{! Manual Modifier Add }}
+  <div class="roll-dialog-manual">
+    <button type="button" class="add-modifier-btn">
+      <i class="fa-solid fa-plus"></i> Add Manual Modifier
+    </button>
+  </div>
+
   {{! Unified Modifier List — dynamically populated by JS }}
   <div class="roll-dialog-modifiers"></div>
 
   {{! Trait Selector (characters only) }}
   {{#if hasTraits}}
-  <div class="roll-dialog-traits">
-    <div class="section-heading">
+  <div class="roll-dialog-traits collapsible collapsed">
+    <div class="section-heading" data-page="DH p.79">
+      <span class="ref-label">Traits</span>
       <i class="fa-solid fa-fingerprint"></i>
-      <span>Traits</span>
+      <span>Traits (Use For or Against yourself)</span>
     </div>
+    <div class="section-body">
     <div class="traits-list">
       {{#each traits}}
       <div class="trait-row" data-trait-id="{{itemId}}">
         <span class="trait-name">{{name}}</span>
         <span class="trait-level">L{{level}}</span>
         <div class="trait-mode">
-          <button type="button" class="trait-btn" data-mode="benefit" {{#if benefitDisabled}}disabled{{/if}} title="{{#if isL3}}+1s on pass{{else}}+1D benefit{{/if}}">
-            {{#if isL3}}+1s{{else}}+1D{{/if}}
+          <button type="button" class="trait-btn" data-mode="benefit" {{#if benefitDisabled}}disabled{{/if}}
+            title="{{#if isL3}}For yourself — +1 success on a pass or tie{{else}}For yourself — +1D this roll{{/if}}">
+            {{#if isL3}}For +1s{{else}}For +1D{{/if}}
           </button>
-          <button type="button" class="trait-btn" data-mode="against" data-against-type="penalty" {{#if againstDisabled}}disabled{{/if}} title="-1D against (earn 1 check)">
-            &minus;1D
+          <button type="button" class="trait-btn" data-mode="against" data-against-type="penalty" {{#if againstDisabled}}disabled{{/if}}
+            title="Against yourself — suffer −1D, earn 1 check">
+            Against −1D
           </button>
-          <button type="button" class="trait-btn trait-btn-versus hidden" data-mode="against" data-against-type="opponent-bonus" {{#if againstDisabled}}disabled{{/if}} title="+2D to opponent (earn 2 checks)">
-            +2D opp
+          <button type="button" class="trait-btn trait-btn-versus hidden" data-mode="against" data-against-type="opponent-bonus" {{#if againstDisabled}}disabled{{/if}}
+            title="Against yourself (versus) — opponent gets +2D, earn 2 checks">
+            Opp. +2D
           </button>
         </div>
+        <span class="trait-earn"></span>
         <span class="trait-uses">{{#unless isL3}}{{beneficial}}/{{maxBeneficial}}{{/unless}}</span>
       </div>
       {{/each}}
+    </div>
     </div>
   </div>
   {{/if}}
 
   {{! Gear & Supplies Section }}
   {{#if hasGearSupplies}}
-  <div class="roll-dialog-gear">
-    <div class="section-heading">
+  <div class="roll-dialog-gear collapsible collapsed">
+    <div class="section-heading" data-page="DH p.58">
+      <span class="ref-label">Gear &amp; Supplies</span>
       <i class="fa-solid fa-gear"></i>
       <span>Gear &amp; Supplies</span>
     </div>
+    <div class="section-body">
     <div class="gear-supply-list">
       {{#each gearItems}}
       <button type="button" class="gear-bonus-toggle" data-item-id="{{itemId}}" data-item-name="{{name}}">
@@ -98,16 +131,19 @@
       </button>
       {{/each}}
     </div>
+    </div>
   </div>
   {{/if}}
 
   {{! Direct Nature Test — Within/Outside Descriptors }}
   {{#if isDirectNatureTest}}
-  <div class="roll-dialog-nature">
-    <div class="section-heading">
+  <div class="roll-dialog-nature collapsible collapsed">
+    <div class="section-heading" data-page="DH p.67">
+      <span class="ref-label">Nature Descriptors</span>
       <i class="fa-solid fa-paw"></i>
       <span>{{localize "TB2E.Nature.DescriptorsRef"}}</span>
     </div>
+    <div class="section-body">
     <div class="nature-descriptor-chips">
       {{#each natureDescriptors}}
       <span class="nature-ref-chip">{{this}}</span>
@@ -119,15 +155,21 @@
         <span class="nature-switch-thumb"></span>
       </span>
     </button>
+    </div>
   </div>
   {{/if}}
 
   {{! Persona Controls (characters only) }}
   {{#if showPersona}}
-  <div class="roll-dialog-persona">
-    <div class="section-heading">
+  <div class="roll-dialog-persona collapsible collapsed">
+    <div class="section-heading" data-page="SG p.87">
+      <span class="ref-label">Spend Persona</span>
       <i class="fa-solid fa-star"></i>
-      <span>Persona</span>
+      <span>Spend Persona (Gain Advantage or Channel Your Nature)</span>
+    </div>
+    <div class="section-body">
+    <div class="persona-total">
+      Total Cost: <strong class="persona-total-value">0</strong> / {{personaAvailable}} Persona
     </div>
     <div class="persona-controls">
       <div class="persona-advantage">
@@ -137,12 +179,12 @@
           <span class="stepper-value" data-field="personaAdvantage">0</span>
           <button type="button" class="stepper-btn" data-delta="1">+</button>
         </div>
-        <span class="persona-hint">+1D each</span>
+        <span class="persona-hint">+1D each per Persona</span>
       </div>
       {{#unless hideChannelNature}}
       <label class="persona-channel">
         <input type="checkbox" name="channelNature">
-        <span>Channel Nature (+{{natureRating}}D)</span>
+        <span>Channel Your Nature (+{{natureRating}}D)</span>
       </label>
       {{#if channelNatureDescriptors.length}}
       <div class="channel-nature-descriptors">
@@ -152,36 +194,20 @@
       </div>
       {{/if}}
       {{/unless}}
-      <div class="persona-total">
-        Cost: <strong class="persona-total-value">0</strong> / {{personaAvailable}} persona
-      </div>
     </div>
-  </div>
-  {{/if}}
-
-  {{! Wise Selector (characters only, disabled when angry) }}
-  {{#if hasWises}}
-  <div class="roll-dialog-wises">
-    <div class="section-heading">
-      <i class="fa-solid fa-hat-wizard"></i>
-      <span>Related Wise</span>
     </div>
-    <select name="wise">
-      <option value="-1">None</option>
-      {{#each wises}}
-      <option value="{{@index}}">{{name}}</option>
-      {{/each}}
-    </select>
   </div>
   {{/if}}
 
   {{#if hasHelpers}}
-  <div class="roll-dialog-helpers">
-    <div class="helpers-heading">
+  <div class="roll-dialog-helpers collapsible collapsed">
+    <div class="helpers-heading" data-page="SG p.36">
+      <span class="ref-label">Helping</span>
       <i class="fa-solid fa-handshake-angle"></i>
-      <span>{{helpLabel}}</span>
+      <span>Help &amp; Synergy</span>
       {{#if isAfraid}}<span class="helpers-disabled">(Afraid)</span>{{/if}}
     </div>
+    <div class="section-body">
     {{#unless isAfraid}}
     {{#if pcHelpers.length}}
     <div class="helpers-list">
@@ -226,16 +252,38 @@
     </details>
     {{/if}}
     {{/unless}}
+    </div>
+  </div>
+  {{/if}}
+
+  {{! Wise Selector (characters only, disabled when angry) }}
+  {{#if hasWises}}
+  <div class="roll-dialog-wises collapsible collapsed">
+    <div class="section-heading" data-page="DH p.77">
+      <span class="ref-label">Wises</span>
+      <i class="fa-solid fa-hat-wizard"></i>
+      <span>Related Wise (Enables Of Course! and Deeper Understanding)</span>
+    </div>
+    <div class="section-body">
+    <select name="wise">
+      <option value="-1">None</option>
+      {{#each wises}}
+      <option value="{{@index}}">{{name}}</option>
+      {{/each}}
+    </select>
+    </div>
   </div>
   {{/if}}
 
   {{! Wise Aid (I Am Wise) }}
   {{#if hasWiseAiders}}
-  <div class="roll-dialog-wise-aid">
-    <div class="section-heading">
+  <div class="roll-dialog-wise-aid collapsible collapsed">
+    <div class="section-heading" data-page="DH p.77">
+      <span class="ref-label">I Am Wise</span>
       <i class="fa-solid fa-lightbulb"></i>
       <span>{{localize "TB2E.WiseAid.Heading"}}</span>
     </div>
+    <div class="section-body">
     <div class="wise-aid-list">
       {{#each wiseAiders}}
       <button type="button" class="wise-aid-toggle" data-helper-id="{{id}}" data-helper-name="{{name}}" data-wise-index="{{wiseIndex}}" data-wise-name="{{wiseName}}">
@@ -245,21 +293,11 @@
       </button>
       {{/each}}
     </div>
+    </div>
   </div>
   {{/if}}
 
-  {{! Manual Modifier Add }}
-  <div class="roll-dialog-manual">
-    <button type="button" class="add-modifier-btn">
-      <i class="fa-solid fa-plus"></i> Add Modifier
-    </button>
-  </div>
 
-  <div class="roll-dialog-options {{#if isDisposition}}hidden{{/if}}">
-    <label class="roll-option">
-      <input type="checkbox" name="logAdvancement" checked>
-      <span>{{advancementLabel}}</span>
-    </label>
   </div>
 
   <div class="roll-dialog-summary">

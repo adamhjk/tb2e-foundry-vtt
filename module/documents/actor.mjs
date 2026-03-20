@@ -13,6 +13,27 @@ export default class TB2EActor extends Actor {
   }
 
   /** @override */
+  async _preUpdate(data, options, user) {
+    if ( (await super._preUpdate(data, options, user)) === false ) return false;
+    if ( data.name !== undefined ) {
+      foundry.utils.mergeObject(data, { prototypeToken: { name: data.name } });
+    }
+  }
+
+  /** @override */
+  _onUpdate(data, options, userId) {
+    super._onUpdate(data, options, userId);
+    if ( data.name !== undefined && game.user.isGM ) {
+      for ( const scene of game.scenes ) {
+        const updates = scene.tokens
+          .filter(t => t.actorId === this.id)
+          .map(t => ({ _id: t.id, name: data.name }));
+        if ( updates.length ) scene.updateEmbeddedDocuments("Token", updates);
+      }
+    }
+  }
+
+  /** @override */
   async _preCreate(data, options, user) {
     if ( (await super._preCreate(data, options, user)) === false ) return false;
 

@@ -130,46 +130,24 @@
 /* NPC Tables (traits) */
 
 .tb2e.sheet.npc .npc-table {
-  width: 100%;
-  border-collapse: collapse;
-  font-size: 0.85rem;
-}
+  .mixin-tb-table();
 
-.tb2e.sheet.npc .npc-table th {
-  font-family: var(--tb-font-heading);
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
-  font-size: 0.75rem;
-  color: var(--tb-text-dim);
-  padding: 0.3rem 0.25rem;
-  text-align: left;
-  border-bottom: 1px solid var(--tb-border);
-}
+  input, select {
+    width: 100%;
+    font-size: 0.85rem;
+    padding: 0.25rem 0.35rem;
+  }
 
-.tb2e.sheet.npc .npc-table td {
-  padding: 0.25rem 0.25rem;
-}
+  .col-rating {
+    width: 4rem;
+    text-align: center;
+    input { text-align: center; max-width: none; }
+  }
 
-.tb2e.sheet.npc .npc-table input,
-.tb2e.sheet.npc .npc-table select {
-  width: 100%;
-  font-size: 0.85rem;
-  padding: 0.25rem 0.35rem;
-}
-
-.tb2e.sheet.npc .npc-table .col-rating {
-  width: 4rem;
-  text-align: center;
-}
-
-.tb2e.sheet.npc .npc-table .col-rating input {
-  text-align: center;
-  max-width: none;
-}
-
-.tb2e.sheet.npc .npc-table .col-action {
-  width: 2rem;
-  text-align: center;
+  .col-action {
+    width: 2rem;
+    text-align: center;
+  }
 }
 
 /* NPC Wises */

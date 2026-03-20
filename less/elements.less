@@ -121,6 +121,118 @@
 }
 
 /* -------------------------------------------- */
+/*  Checkboxes — Custom (bypasses Foundry)      */
+/* -------------------------------------------- */
+
+/* Suppress Foundry's FontAwesome pseudo-elements for all TB2E applications */
+.tb2e input[type="checkbox"]::before,
+.tb2e input[type="checkbox"]::after {
+  content: none !important;
+}
+
+.tb2e.sheet input[type="checkbox"] {
+  appearance: none !important;
+  -webkit-appearance: none !important;
+  -moz-appearance: none !important;
+  width: 1rem;
+  height: 1rem;
+  border: 1.5px solid var(--tb-blue);
+  border-radius: 3px;
+  background: transparent;
+  cursor: pointer;
+  transition: background 0.15s, border-color 0.15s;
+  flex-shrink: 0;
+  vertical-align: middle;
+}
+
+.tb2e.sheet input[type="checkbox"]:hover {
+  background: var(--tb-blue-glow);
+}
+
+.tb2e.sheet input[type="checkbox"]:checked {
+  appearance: none !important;
+  -webkit-appearance: none !important;
+  background: var(--tb-blue);
+  border-color: var(--tb-blue);
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 16 16' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M3 8.5l3.5 3.5 6-7' stroke='%23ffffff' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 70%;
+}
+
+/* Dark theme: --tb-blue is #60a5fa (pastel), use near-black checkmark for contrast */
+body.theme-dark .tb2e.sheet input[type="checkbox"]:checked,
+.themed.theme-dark .tb2e.sheet input[type="checkbox"]:checked,
+.themed.theme-dark.tb2e.sheet input[type="checkbox"]:checked {
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 16 16' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M3 8.5l3.5 3.5 6-7' stroke='%230f172a' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+}
+
+.tb2e.sheet input[type="checkbox"]:focus-visible {
+  outline: 2px solid var(--tb-blue);
+  outline-offset: 2px;
+}
+
+/* -------------------------------------------- */
+/*  Button Focus & Disabled States             */
+/* -------------------------------------------- */
+
+.tb2e.sheet button:focus-visible,
+.tb2e.sheet [role="button"]:focus-visible {
+  outline: 2px solid var(--tb-blue);
+  outline-offset: 2px;
+}
+
+.tb2e.sheet input:disabled,
+.tb2e.sheet select:disabled,
+.tb2e.sheet textarea:disabled,
+.tb2e.sheet button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* -------------------------------------------- */
+/*  Shared Table Style Mixin                    */
+/* -------------------------------------------- */
+
+.mixin-tb-table() {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0 3px;
+  font-size: 0.85rem;
+
+  th {
+    background: linear-gradient(135deg, var(--tb-bg-dark), var(--tb-bg-darkest));
+    font-family: var(--tb-font-heading);
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--tb-text-dim);
+    padding: 0.3rem 0.4rem;
+    border-bottom: 2px solid var(--tb-border);
+    text-align: left;
+  }
+
+  tbody tr { background: var(--tb-bg-surface); }
+
+  td {
+    padding: 0.25rem 0.4rem;
+    border-top: 1px solid var(--tb-border);
+    border-bottom: 1px solid var(--tb-border);
+    vertical-align: middle;
+
+    &:first-child {
+      border-left: 1px solid var(--tb-border);
+      border-radius: var(--tb-radius) 0 0 var(--tb-radius);
+    }
+
+    &:last-child {
+      border-right: 1px solid var(--tb-border);
+      border-radius: 0 var(--tb-radius) var(--tb-radius) 0;
+    }
+  }
+}
+
+/* -------------------------------------------- */
 /*  What You Fight For — Conviction Fields      */
 /* -------------------------------------------- */
 

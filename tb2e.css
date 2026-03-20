@@ -26,19 +26,26 @@
   /* Advancement bubbles */
   --tb-pass-color: #2563eb;
   --tb-fail-color: #ea580c;
+  --tb-fail-glow: rgba(234, 88, 12, 0.3);
   /* Conflict action accent colors */
   --tb-attack-hue: #be123c;
   --tb-attack-light: #fecdd3;
   --tb-attack-bg: #fff1f2;
+  --tb-attack-glow: rgba(190, 18, 60, 0.3);
   --tb-defend-hue: #1d4ed8;
   --tb-defend-light: #bfdbfe;
   --tb-defend-bg: #eff6ff;
+  --tb-defend-glow: rgba(29, 78, 216, 0.3);
   --tb-feint-hue: #7c3aed;
   --tb-feint-light: #ddd6fe;
   --tb-feint-bg: #f5f3ff;
+  --tb-feint-glow: rgba(124, 58, 237, 0.3);
   --tb-maneuver-hue: #15803d;
   --tb-maneuver-light: #bbf7d0;
   --tb-maneuver-bg: #f0fdf4;
+  --tb-maneuver-glow: rgba(21, 128, 61, 0.3);
+  /* Text on colored accent backgrounds */
+  --tb-text-on-accent: #ffffff;
   /* Interaction badges */
   --tb-interaction-independent: #ca8a04;
   --tb-interaction-independent-bg: #fefce8;
@@ -78,8 +85,8 @@
   /* Text — slate tones */
   --tb-text-bright: #0f172a;
   --tb-text-body: #1e293b;
-  --tb-text-dim: #64748b;
-  --tb-text-faint: #94a3b8;
+  --tb-text-dim: #546278;
+  --tb-text-faint: #5e6e80;
   /* Accent — fjord blue */
   --tb-blue: #2563eb;
   --tb-blue-bright: #3b82f6;
@@ -181,8 +188,8 @@ body.theme-light :is(
   /* Text — slate tones */
   --tb-text-bright: #0f172a;
   --tb-text-body: #1e293b;
-  --tb-text-dim: #64748b;
-  --tb-text-faint: #94a3b8;
+  --tb-text-dim: #546278;
+  --tb-text-faint: #5e6e80;
   /* Accent — fjord blue */
   --tb-blue: #2563eb;
   --tb-blue-bright: #3b82f6;
@@ -279,8 +286,8 @@ body.theme-dark :is(
   --tb-bg-white: #1e293b;
   --tb-text-bright: #f1f5f9;
   --tb-text-body: #e2e8f0;
-  --tb-text-dim: #94a3b8;
-  --tb-text-faint: #64748b;
+  --tb-text-dim: #aabece;
+  --tb-text-faint: #98afc6;
   --tb-blue: #60a5fa;
   --tb-blue-bright: #93c5fd;
   --tb-blue-dim: #60a5fa;
@@ -368,8 +375,8 @@ body.theme-dark :is(
   /* Text — slate tones */
   --tb-text-bright: #0f172a;
   --tb-text-body: #1e293b;
-  --tb-text-dim: #64748b;
-  --tb-text-faint: #94a3b8;
+  --tb-text-dim: #546278;
+  --tb-text-faint: #5e6e80;
   /* Accent — fjord blue */
   --tb-blue: #2563eb;
   --tb-blue-bright: #3b82f6;
@@ -467,8 +474,8 @@ body.theme-dark :is(
   --tb-bg-white: #1e293b;
   --tb-text-bright: #f1f5f9;
   --tb-text-body: #e2e8f0;
-  --tb-text-dim: #94a3b8;
-  --tb-text-faint: #64748b;
+  --tb-text-dim: #aabece;
+  --tb-text-faint: #98afc6;
   --tb-blue: #60a5fa;
   --tb-blue-bright: #93c5fd;
   --tb-blue-dim: #60a5fa;
@@ -641,6 +648,69 @@ body.theme-dark :is(
   outline: none;
   box-shadow: 0 0 0 2px var(--tb-blue-glow);
 }
+/* -------------------------------------------- */
+/*  Checkboxes — Custom (bypasses Foundry)      */
+/* -------------------------------------------- */
+/* Suppress Foundry's FontAwesome pseudo-elements for all TB2E applications */
+.tb2e input[type="checkbox"]::before,
+.tb2e input[type="checkbox"]::after {
+  content: none !important;
+}
+.tb2e.sheet input[type="checkbox"] {
+  appearance: none !important;
+  -webkit-appearance: none !important;
+  -moz-appearance: none !important;
+  width: 1rem;
+  height: 1rem;
+  border: 1.5px solid var(--tb-blue);
+  border-radius: 3px;
+  background: transparent;
+  cursor: pointer;
+  transition: background 0.15s, border-color 0.15s;
+  flex-shrink: 0;
+  vertical-align: middle;
+}
+.tb2e.sheet input[type="checkbox"]:hover {
+  background: var(--tb-blue-glow);
+}
+.tb2e.sheet input[type="checkbox"]:checked {
+  appearance: none !important;
+  -webkit-appearance: none !important;
+  background: var(--tb-blue);
+  border-color: var(--tb-blue);
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 16 16' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M3 8.5l3.5 3.5 6-7' stroke='%23ffffff' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 70%;
+}
+/* Dark theme: --tb-blue is #60a5fa (pastel), use near-black checkmark for contrast */
+body.theme-dark .tb2e.sheet input[type="checkbox"]:checked,
+.themed.theme-dark .tb2e.sheet input[type="checkbox"]:checked,
+.themed.theme-dark.tb2e.sheet input[type="checkbox"]:checked {
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 16 16' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M3 8.5l3.5 3.5 6-7' stroke='%230f172a' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+}
+.tb2e.sheet input[type="checkbox"]:focus-visible {
+  outline: 2px solid var(--tb-blue);
+  outline-offset: 2px;
+}
+/* -------------------------------------------- */
+/*  Button Focus & Disabled States             */
+/* -------------------------------------------- */
+.tb2e.sheet button:focus-visible,
+.tb2e.sheet [role="button"]:focus-visible {
+  outline: 2px solid var(--tb-blue);
+  outline-offset: 2px;
+}
+.tb2e.sheet input:disabled,
+.tb2e.sheet select:disabled,
+.tb2e.sheet textarea:disabled,
+.tb2e.sheet button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+/* -------------------------------------------- */
+/*  Shared Table Style Mixin                    */
+/* -------------------------------------------- */
 /* -------------------------------------------- */
 /*  What You Fight For — Conviction Fields      */
 /* -------------------------------------------- */
@@ -928,7 +998,7 @@ body.theme-dark .tb2e.sheet .torchbearer-logo,
   background: var(--tb-frost);
   border-color: var(--tb-blue);
   outline: none;
-  box-shadow: 0 0 0 1px var(--tb-blue-glow);
+  box-shadow: 0 0 0 2px var(--tb-blue-glow);
 }
 .tb2e.sheet .character-name::placeholder {
   color: var(--tb-text-faint);
@@ -1876,6 +1946,7 @@ body.theme-dark .tb2e.sheet .torchbearer-logo,
 .tb2e.sheet .relics-table th,
 .tb2e.sheet .allies-table th,
 .tb2e.sheet .level-req-table th {
+  background: linear-gradient(135deg, var(--tb-bg-dark), var(--tb-bg-darkest));
   font-family: var(--tb-font-heading);
   font-size: 0.8rem;
   text-transform: uppercase;
@@ -1925,11 +1996,6 @@ body.theme-dark .tb2e.sheet .torchbearer-logo,
   width: 100%;
   padding: 0.2rem 0.3rem;
   font-size: 0.85rem;
-}
-.tb2e.sheet .spells-table input[type="checkbox"],
-.tb2e.sheet .invocations-table input[type="checkbox"],
-.tb2e.sheet .relics-table input[type="checkbox"] {
-  accent-color: var(--tb-blue);
 }
 .tb2e.sheet .input-sm {
   max-width: 3.5rem;
@@ -2043,6 +2109,7 @@ body.theme-dark .tb2e.sheet .torchbearer-logo,
 .tb2e.sheet .spellbooks-section .spellbook-name-input:focus {
   border-color: var(--tb-blue);
   outline: none;
+  box-shadow: 0 0 0 2px var(--tb-blue-glow);
 }
 .tb2e.sheet .spellbooks-section .spellbook-counter {
   font-family: var(--tb-font-heading);
@@ -2628,20 +2695,38 @@ body.theme-dark .tb2e.sheet .torchbearer-logo,
 }
 .tb2e.spell-sheet .conflict-bonuses-table {
   width: 100%;
-  border-collapse: collapse;
+  border-collapse: separate;
+  border-spacing: 0 3px;
+  font-size: 0.85rem;
   margin: 0.5rem 0;
 }
 .tb2e.spell-sheet .conflict-bonuses-table th {
-  font-size: 0.7rem;
+  background: linear-gradient(135deg, var(--tb-bg-dark), var(--tb-bg-darkest));
+  font-family: var(--tb-font-heading);
+  font-size: 0.8rem;
   text-transform: uppercase;
-  letter-spacing: 0.04em;
-  color: var(--tb-text-faint);
+  letter-spacing: 0.06em;
+  color: var(--tb-text-dim);
+  padding: 0.3rem 0.4rem;
+  border-bottom: 2px solid var(--tb-border);
   text-align: left;
-  padding: 0.2rem 0.3rem;
-  border-bottom: 1px solid var(--tb-border);
+}
+.tb2e.spell-sheet .conflict-bonuses-table tbody tr {
+  background: var(--tb-bg-surface);
 }
 .tb2e.spell-sheet .conflict-bonuses-table td {
-  padding: 0.2rem 0.3rem;
+  padding: 0.25rem 0.4rem;
+  border-top: 1px solid var(--tb-border);
+  border-bottom: 1px solid var(--tb-border);
+  vertical-align: middle;
+}
+.tb2e.spell-sheet .conflict-bonuses-table td:first-child {
+  border-left: 1px solid var(--tb-border);
+  border-radius: var(--tb-radius) 0 0 var(--tb-radius);
+}
+.tb2e.spell-sheet .conflict-bonuses-table td:last-child {
+  border-right: 1px solid var(--tb-border);
+  border-radius: 0 var(--tb-radius) var(--tb-radius) 0;
 }
 .tb2e.spell-sheet .conflict-bonuses-table select {
   font-size: 0.8rem;
@@ -2676,21 +2761,38 @@ body.theme-dark .tb2e.sheet .torchbearer-logo,
 }
 .tb2e.spell-sheet .factor-options-table {
   width: 100%;
-  border-collapse: collapse;
+  border-collapse: separate;
+  border-spacing: 0 3px;
   font-size: 0.85rem;
   margin-bottom: 0.3rem;
 }
 .tb2e.spell-sheet .factor-options-table th {
+  background: linear-gradient(135deg, var(--tb-bg-dark), var(--tb-bg-darkest));
   font-family: var(--tb-font-heading);
-  font-size: 0.75rem;
+  font-size: 0.8rem;
   text-transform: uppercase;
   letter-spacing: 0.06em;
-  color: var(--tb-text-faint);
-  padding: 0.2rem 0.3rem;
+  color: var(--tb-text-dim);
+  padding: 0.3rem 0.4rem;
+  border-bottom: 2px solid var(--tb-border);
   text-align: left;
 }
+.tb2e.spell-sheet .factor-options-table tbody tr {
+  background: var(--tb-bg-surface);
+}
 .tb2e.spell-sheet .factor-options-table td {
-  padding: 0.15rem 0.3rem;
+  padding: 0.25rem 0.4rem;
+  border-top: 1px solid var(--tb-border);
+  border-bottom: 1px solid var(--tb-border);
+  vertical-align: middle;
+}
+.tb2e.spell-sheet .factor-options-table td:first-child {
+  border-left: 1px solid var(--tb-border);
+  border-radius: var(--tb-radius) 0 0 var(--tb-radius);
+}
+.tb2e.spell-sheet .factor-options-table td:last-child {
+  border-right: 1px solid var(--tb-border);
+  border-radius: 0 var(--tb-radius) var(--tb-radius) 0;
 }
 .tb2e.spell-sheet .factor-options-table td input[type="text"] {
   width: 100%;
@@ -2842,20 +2944,38 @@ body.theme-dark .tb2e.sheet .torchbearer-logo,
 }
 .tb2e.invocation-sheet .conflict-bonuses-table {
   width: 100%;
-  border-collapse: collapse;
+  border-collapse: separate;
+  border-spacing: 0 3px;
+  font-size: 0.85rem;
   margin: 0.5rem 0;
 }
 .tb2e.invocation-sheet .conflict-bonuses-table th {
-  font-size: 0.7rem;
+  background: linear-gradient(135deg, var(--tb-bg-dark), var(--tb-bg-darkest));
+  font-family: var(--tb-font-heading);
+  font-size: 0.8rem;
   text-transform: uppercase;
-  letter-spacing: 0.04em;
-  color: var(--tb-text-faint);
+  letter-spacing: 0.06em;
+  color: var(--tb-text-dim);
+  padding: 0.3rem 0.4rem;
+  border-bottom: 2px solid var(--tb-border);
   text-align: left;
-  padding: 0.2rem 0.3rem;
-  border-bottom: 1px solid var(--tb-border);
+}
+.tb2e.invocation-sheet .conflict-bonuses-table tbody tr {
+  background: var(--tb-bg-surface);
 }
 .tb2e.invocation-sheet .conflict-bonuses-table td {
-  padding: 0.2rem 0.3rem;
+  padding: 0.25rem 0.4rem;
+  border-top: 1px solid var(--tb-border);
+  border-bottom: 1px solid var(--tb-border);
+  vertical-align: middle;
+}
+.tb2e.invocation-sheet .conflict-bonuses-table td:first-child {
+  border-left: 1px solid var(--tb-border);
+  border-radius: var(--tb-radius) 0 0 var(--tb-radius);
+}
+.tb2e.invocation-sheet .conflict-bonuses-table td:last-child {
+  border-right: 1px solid var(--tb-border);
+  border-radius: 0 var(--tb-radius) var(--tb-radius) 0;
 }
 .tb2e.invocation-sheet .conflict-bonuses-table select {
   font-size: 0.8rem;
@@ -2890,21 +3010,38 @@ body.theme-dark .tb2e.sheet .torchbearer-logo,
 }
 .tb2e.invocation-sheet .factor-options-table {
   width: 100%;
-  border-collapse: collapse;
+  border-collapse: separate;
+  border-spacing: 0 3px;
   font-size: 0.85rem;
   margin-bottom: 0.3rem;
 }
 .tb2e.invocation-sheet .factor-options-table th {
+  background: linear-gradient(135deg, var(--tb-bg-dark), var(--tb-bg-darkest));
   font-family: var(--tb-font-heading);
-  font-size: 0.75rem;
+  font-size: 0.8rem;
   text-transform: uppercase;
   letter-spacing: 0.06em;
-  color: var(--tb-text-faint);
-  padding: 0.2rem 0.3rem;
+  color: var(--tb-text-dim);
+  padding: 0.3rem 0.4rem;
+  border-bottom: 2px solid var(--tb-border);
   text-align: left;
 }
+.tb2e.invocation-sheet .factor-options-table tbody tr {
+  background: var(--tb-bg-surface);
+}
 .tb2e.invocation-sheet .factor-options-table td {
-  padding: 0.15rem 0.3rem;
+  padding: 0.25rem 0.4rem;
+  border-top: 1px solid var(--tb-border);
+  border-bottom: 1px solid var(--tb-border);
+  vertical-align: middle;
+}
+.tb2e.invocation-sheet .factor-options-table td:first-child {
+  border-left: 1px solid var(--tb-border);
+  border-radius: var(--tb-radius) 0 0 var(--tb-radius);
+}
+.tb2e.invocation-sheet .factor-options-table td:last-child {
+  border-right: 1px solid var(--tb-border);
+  border-radius: 0 var(--tb-radius) var(--tb-radius) 0;
 }
 .tb2e.invocation-sheet .factor-options-table td input[type="text"] {
   width: 100%;
@@ -2954,13 +3091,46 @@ body.theme-dark .tb2e.sheet .torchbearer-logo,
   flex: 2;
 }
 /* -------------------------------------------- */
-/*  Roll Dialog                                 */
+/*  Roll Dialog — Scrollable Layout             */
 /* -------------------------------------------- */
+/* form.dialog-form fills section.window-content (flex: 1 on a flex child, not height: 100%) */
+.tb2e.roll-dialog .window-content > form {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+/* div.dialog-content wraps our content — must also flex-fill */
+.tb2e.roll-dialog .dialog-content {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+/* Our form root — fills dialog-content */
 .tb2e.roll-dialog .tb2e-roll-dialog-form {
   display: flex;
   flex-direction: column;
-  gap: 0.75rem;
+  gap: 0.5rem;
   padding: 0.5rem 0;
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+}
+/* -------------------------------------------- */
+/*  Roll Dialog — Scrollable Body               */
+/* -------------------------------------------- */
+.tb2e.roll-dialog .roll-dialog-body {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  padding-right: 2px;
+  /* prevent scrollbar clipping content */
 }
 .tb2e.roll-dialog .roll-dialog-header {
   display: flex;
@@ -3047,10 +3217,12 @@ body.theme-dark .tb2e.sheet .torchbearer-logo,
   align-items: center;
   gap: 0.35rem;
   font-family: var(--tb-font-heading);
-  font-size: 0.8rem;
+  font-size: 0.95rem;
   text-transform: uppercase;
   letter-spacing: 0.06em;
-  color: var(--tb-text-faint);
+  color: var(--tb-text-dim);
+  border-bottom: 1px solid var(--tb-border-light);
+  padding-bottom: 0.2rem;
 }
 .tb2e.roll-dialog .helpers-heading i {
   color: var(--tb-green);
@@ -3191,6 +3363,36 @@ body.theme-dark .tb2e.sheet .torchbearer-logo,
 }
 .tb2e.roll-dialog .roll-option input[type="checkbox"] {
   accent-color: var(--tb-blue-bright);
+}
+/* Custom checkbox styling — roll dialog doesn't have .sheet class,
+   so the elements.less .tb2e.sheet rules don't apply here */
+.tb2e.roll-dialog input[type="checkbox"] {
+  appearance: none !important;
+  -webkit-appearance: none !important;
+  width: 1rem;
+  height: 1rem;
+  border: 1.5px solid var(--tb-blue);
+  border-radius: 3px;
+  background: transparent;
+  cursor: pointer;
+  transition: background 0.15s, border-color 0.15s;
+  flex-shrink: 0;
+  vertical-align: middle;
+}
+.tb2e.roll-dialog input[type="checkbox"]:hover {
+  background: var(--tb-blue-glow);
+}
+.tb2e.roll-dialog input[type="checkbox"]:checked {
+  background: var(--tb-blue);
+  border-color: var(--tb-blue);
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 16 16' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M3 8.5l3.5 3.5 6-7' stroke='%23ffffff' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 70%;
+}
+.tb2e.roll-dialog input[type="checkbox"]:focus-visible {
+  outline: 2px solid var(--tb-blue);
+  outline-offset: 2px;
 }
 .tb2e.roll-dialog .roll-dialog-summary {
   display: flex;
@@ -3369,10 +3571,12 @@ body.theme-dark .tb2e.sheet .torchbearer-logo,
   align-items: center;
   gap: 0.35rem;
   font-family: var(--tb-font-heading);
-  font-size: 0.8rem;
+  font-size: 0.95rem;
   text-transform: uppercase;
   letter-spacing: 0.06em;
-  color: var(--tb-text-faint);
+  color: var(--tb-text-dim);
+  border-bottom: 1px solid var(--tb-border-light);
+  padding-bottom: 0.2rem;
 }
 .tb2e.roll-dialog .section-heading i {
   font-size: 0.75rem;
@@ -3384,7 +3588,7 @@ body.theme-dark .tb2e.sheet .torchbearer-logo,
 }
 .tb2e.roll-dialog .trait-row {
   display: grid;
-  grid-template-columns: 1fr auto auto auto;
+  grid-template-columns: 1fr auto auto auto auto;
   align-items: center;
   gap: 0.4rem;
   padding: 0.2rem 0.4rem;
@@ -3699,6 +3903,31 @@ body.theme-dark .tb2e.sheet .torchbearer-logo,
   font-style: italic;
 }
 /* -------------------------------------------- */
+/*  Collapsible Sections                        */
+/* -------------------------------------------- */
+.tb2e.roll-dialog .collapsible > .section-heading,
+.tb2e.roll-dialog .collapsible > .helpers-heading {
+  cursor: pointer;
+  user-select: none;
+}
+.tb2e.roll-dialog .collapsible > .section-heading .section-chevron,
+.tb2e.roll-dialog .collapsible > .helpers-heading .section-chevron {
+  margin-left: auto;
+  font-size: 0.65rem;
+  color: var(--tb-text-faint);
+  transition: transform 0.15s ease;
+  flex-shrink: 0;
+}
+.tb2e.roll-dialog .collapsible:not(.collapsed) .section-chevron {
+  transform: rotate(90deg);
+}
+.tb2e.roll-dialog .section-body {
+  padding: 0.35rem 0.1rem 0;
+}
+.tb2e.roll-dialog .collapsible.collapsed .section-body {
+  display: none;
+}
+/* -------------------------------------------- */
 /*  Utility                                     */
 /* -------------------------------------------- */
 .hidden {
@@ -3752,6 +3981,48 @@ body.theme-dark .tb2e.sheet .torchbearer-logo,
 .tb2e.roll-dialog .roll-dialog-challenge select {
   font-size: 0.9rem;
   padding: 0.4rem 0.5rem;
+}
+/* -------------------------------------------- */
+/*  Roll Dialog — Reference Bar                 */
+/* -------------------------------------------- */
+.tb2e.roll-dialog .roll-ref-bar {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.15rem 0.5rem;
+  background: var(--tb-bg-dark);
+  border-radius: var(--tb-radius);
+  font-size: 0.75rem;
+  min-height: 1.4rem;
+  color: var(--tb-text-faint);
+  font-style: italic;
+}
+.tb2e.roll-dialog .roll-ref-bar i {
+  color: var(--tb-blue-dim);
+  font-size: 0.7rem;
+  flex-shrink: 0;
+}
+/* "earn X check(s)" label shown when trait is used against yourself */
+.tb2e.roll-dialog .trait-earn {
+  font-size: 0.65rem;
+  color: var(--tb-amber);
+  font-style: italic;
+  white-space: nowrap;
+  min-width: 2.5rem;
+  text-align: center;
+}
+/* Visually hidden label used as text source for ref bar hover */
+.tb2e.roll-dialog .ref-label {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+}
+/* Help cursor for any element with a page reference */
+.tb2e.roll-dialog [data-page] {
+  cursor: help;
 }
 /* -------------------------------------------- */
 /*  Advancement Dialog                          */
@@ -4147,7 +4418,7 @@ body.theme-dark .tb2e.sheet .torchbearer-logo,
 .tb2e-chat-card .die-sun {
   background: var(--tb-fail-color);
   color: var(--tb-bg-white);
-  box-shadow: 0 0 6px rgba(234, 88, 12, 0.3);
+  box-shadow: 0 0 6px var(--tb-fail-glow);
 }
 /* -------------------------------------------- */
 /*  Tally                                       */
@@ -4990,6 +5261,10 @@ body.theme-dark .tb2e.sheet .torchbearer-logo,
 }
 .tb2e-conflict-footer .conflict-control:hover:not(:disabled) {
   background: linear-gradient(135deg, var(--tb-blue-bright), var(--tb-blue));
+}
+.tb2e-conflict-footer .conflict-control:focus-visible {
+  outline: 2px solid var(--tb-blue);
+  outline-offset: 2px;
 }
 .tb2e-conflict-footer .conflict-control:disabled {
   opacity: 0.5;
@@ -5980,6 +6255,10 @@ body.theme-dark .tb2e.sheet .torchbearer-logo,
   color: var(--tb-blue);
   background: var(--tb-frost);
 }
+.panel-tab:focus-visible {
+  outline: 2px solid var(--tb-blue);
+  outline-offset: -2px;
+}
 .panel-tab.active {
   color: var(--tb-blue);
   font-weight: bold;
@@ -6071,6 +6350,10 @@ body.theme-dark .tb2e.sheet .torchbearer-logo,
 }
 .panel-action-btn:hover:not(:disabled) {
   background: linear-gradient(135deg, var(--tb-blue-bright), var(--tb-blue));
+}
+.panel-action-btn:focus-visible {
+  outline: 2px solid var(--tb-blue);
+  outline-offset: 2px;
 }
 .panel-action-btn:disabled {
   opacity: 0.5;
@@ -6300,10 +6583,14 @@ body.theme-dark .tb2e.sheet .torchbearer-logo,
   border: none;
   border-radius: 6px;
   background: linear-gradient(90deg, var(--tb-blue), var(--tb-blue-bright));
-  color: #fff;
+  color: var(--tb-text-on-accent);
   cursor: pointer;
   transition: background 0.2s, opacity 0.2s, box-shadow 0.2s;
-  box-shadow: 0 2px 6px rgba(37, 99, 235, 0.2);
+  box-shadow: 0 2px 6px var(--tb-blue-glow-strong);
+}
+.setup-next-btn:focus-visible {
+  outline: 2px solid var(--tb-blue);
+  outline-offset: 2px;
 }
 .setup-next-label {
   font-family: var(--tb-font-heading);
@@ -6318,7 +6605,7 @@ body.theme-dark .tb2e.sheet .torchbearer-logo,
 }
 .setup-next-btn:hover:not(:disabled) {
   background: linear-gradient(90deg, var(--tb-blue-bright), var(--tb-blue));
-  box-shadow: 0 3px 10px rgba(37, 99, 235, 0.35);
+  box-shadow: 0 3px 10px var(--tb-blue-glow-strong);
 }
 .setup-next-btn:hover:not(:disabled) i {
   transform: translateX(4px);
@@ -6733,9 +7020,9 @@ body.theme-dark .tb2e.sheet .torchbearer-logo,
 }
 .action-card-attack.selected {
   background: var(--tb-attack-hue);
-  color: #fff;
+  color: var(--tb-text-on-accent);
   border-color: var(--tb-attack-hue);
-  box-shadow: 0 2px 8px rgba(190, 18, 60, 0.3);
+  box-shadow: 0 2px 8px var(--tb-attack-glow);
 }
 .action-card-defend {
   color: var(--tb-defend-hue);
@@ -6747,9 +7034,9 @@ body.theme-dark .tb2e.sheet .torchbearer-logo,
 }
 .action-card-defend.selected {
   background: var(--tb-defend-hue);
-  color: #fff;
+  color: var(--tb-text-on-accent);
   border-color: var(--tb-defend-hue);
-  box-shadow: 0 2px 8px rgba(37, 99, 235, 0.3);
+  box-shadow: 0 2px 8px var(--tb-defend-glow);
 }
 .action-card-feint {
   color: var(--tb-feint-hue);
@@ -6761,9 +7048,9 @@ body.theme-dark .tb2e.sheet .torchbearer-logo,
 }
 .action-card-feint.selected {
   background: var(--tb-feint-hue);
-  color: #fff;
+  color: var(--tb-text-on-accent);
   border-color: var(--tb-feint-hue);
-  box-shadow: 0 2px 8px rgba(147, 51, 234, 0.3);
+  box-shadow: 0 2px 8px var(--tb-feint-glow);
 }
 .action-card-maneuver {
   color: var(--tb-maneuver-hue);
@@ -6775,9 +7062,9 @@ body.theme-dark .tb2e.sheet .torchbearer-logo,
 }
 .action-card-maneuver.selected {
   background: var(--tb-maneuver-hue);
-  color: #fff;
+  color: var(--tb-text-on-accent);
   border-color: var(--tb-maneuver-hue);
-  box-shadow: 0 2px 8px rgba(217, 119, 6, 0.3);
+  box-shadow: 0 2px 8px var(--tb-maneuver-glow);
 }
 /* ---- Locked View: Card Flip ---- */
 .script-group-header.clickable {
@@ -6912,7 +7199,7 @@ body.theme-dark .tb2e.sheet .torchbearer-logo,
   background: linear-gradient(135deg, var(--tb-bg-dark), var(--tb-bg-darkest));
 }
 .resolve-action.current .resolve-action-header {
-  background: linear-gradient(135deg, var(--tb-blue-glow), rgba(37, 99, 235, 0.08));
+  background: linear-gradient(135deg, var(--tb-blue-glow), var(--tb-blue-glow));
 }
 .resolve-action-num {
   font-family: var(--tb-font-heading);
@@ -7357,11 +7644,11 @@ body.theme-dark .tb2e.sheet .torchbearer-logo,
 /* ---- Danger variant of next-button ---- */
 .setup-next-btn.danger {
   background: linear-gradient(90deg, var(--tb-red), var(--tb-red-dim));
-  box-shadow: 0 2px 6px rgba(239, 68, 68, 0.2);
+  box-shadow: 0 2px 6px var(--tb-red-glow);
 }
 .setup-next-btn.danger:hover:not(:disabled) {
-  background: linear-gradient(90deg, var(--tb-red-bright, #f87171), var(--tb-red));
-  box-shadow: 0 3px 10px rgba(239, 68, 68, 0.35);
+  background: linear-gradient(90deg, var(--tb-red-bright), var(--tb-red));
+  box-shadow: 0 3px 10px var(--tb-red-glow-bright);
 }
 /* ============================================ */
 /*  Monster Sheet                               */
@@ -7486,21 +7773,37 @@ body.theme-dark .tb2e.sheet .torchbearer-logo,
 /* Weapons Table */
 .tb2e.sheet.monster .weapons-table {
   width: 100%;
-  border-collapse: collapse;
+  border-collapse: separate;
+  border-spacing: 0 3px;
   font-size: 0.85rem;
 }
 .tb2e.sheet.monster .weapons-table th {
+  background: linear-gradient(135deg, var(--tb-bg-dark), var(--tb-bg-darkest));
   font-family: var(--tb-font-heading);
+  font-size: 0.8rem;
   text-transform: uppercase;
   letter-spacing: 0.06em;
-  font-size: 0.75rem;
   color: var(--tb-text-dim);
-  padding: 0.3rem 0.25rem;
+  padding: 0.3rem 0.4rem;
+  border-bottom: 2px solid var(--tb-border);
   text-align: left;
-  border-bottom: 1px solid var(--tb-border);
+}
+.tb2e.sheet.monster .weapons-table tbody tr {
+  background: var(--tb-bg-surface);
 }
 .tb2e.sheet.monster .weapons-table td {
-  padding: 0.25rem 0.25rem;
+  padding: 0.25rem 0.4rem;
+  border-top: 1px solid var(--tb-border);
+  border-bottom: 1px solid var(--tb-border);
+  vertical-align: middle;
+}
+.tb2e.sheet.monster .weapons-table td:first-child {
+  border-left: 1px solid var(--tb-border);
+  border-radius: var(--tb-radius) 0 0 var(--tb-radius);
+}
+.tb2e.sheet.monster .weapons-table td:last-child {
+  border-right: 1px solid var(--tb-border);
+  border-radius: 0 var(--tb-radius) var(--tb-radius) 0;
 }
 .tb2e.sheet.monster .weapons-table input {
   width: 100%;
@@ -7759,21 +8062,37 @@ body.theme-dark .tb2e.sheet .torchbearer-logo,
 /* NPC Tables (traits) */
 .tb2e.sheet.npc .npc-table {
   width: 100%;
-  border-collapse: collapse;
+  border-collapse: separate;
+  border-spacing: 0 3px;
   font-size: 0.85rem;
 }
 .tb2e.sheet.npc .npc-table th {
+  background: linear-gradient(135deg, var(--tb-bg-dark), var(--tb-bg-darkest));
   font-family: var(--tb-font-heading);
+  font-size: 0.8rem;
   text-transform: uppercase;
   letter-spacing: 0.06em;
-  font-size: 0.75rem;
   color: var(--tb-text-dim);
-  padding: 0.3rem 0.25rem;
+  padding: 0.3rem 0.4rem;
+  border-bottom: 2px solid var(--tb-border);
   text-align: left;
-  border-bottom: 1px solid var(--tb-border);
+}
+.tb2e.sheet.npc .npc-table tbody tr {
+  background: var(--tb-bg-surface);
 }
 .tb2e.sheet.npc .npc-table td {
-  padding: 0.25rem 0.25rem;
+  padding: 0.25rem 0.4rem;
+  border-top: 1px solid var(--tb-border);
+  border-bottom: 1px solid var(--tb-border);
+  vertical-align: middle;
+}
+.tb2e.sheet.npc .npc-table td:first-child {
+  border-left: 1px solid var(--tb-border);
+  border-radius: var(--tb-radius) 0 0 var(--tb-radius);
+}
+.tb2e.sheet.npc .npc-table td:last-child {
+  border-right: 1px solid var(--tb-border);
+  border-radius: 0 var(--tb-radius) var(--tb-radius) 0;
 }
 .tb2e.sheet.npc .npc-table input,
 .tb2e.sheet.npc .npc-table select {
@@ -7990,11 +8309,11 @@ body.theme-dark .tb2e.sheet .torchbearer-logo,
 }
 .character-wizard .wizard-nav-step.current .step-number {
   background: var(--tb-blue);
-  color: #fff;
+  color: var(--tb-text-on-accent);
 }
 .character-wizard .wizard-nav-step.complete .step-number {
   background: var(--tb-green);
-  color: #fff;
+  color: var(--tb-text-on-accent);
 }
 .character-wizard .wizard-nav-step .step-label {
   min-width: 0;
@@ -8105,7 +8424,7 @@ body.theme-dark .tb2e.sheet .torchbearer-logo,
 .character-wizard .wizard-btn.finish {
   background: var(--tb-blue);
   border-color: var(--tb-blue);
-  color: #fff;
+  color: var(--tb-text-on-accent);
 }
 .character-wizard .wizard-btn.finish:hover:not(:disabled) {
   background: var(--tb-blue-bright);
@@ -8524,7 +8843,7 @@ body.theme-dark .tb2e.sheet .torchbearer-logo,
   background: var(--tb-blue);
   border: 1px solid var(--tb-blue);
   border-radius: var(--tb-radius, 4px);
-  color: #fff;
+  color: var(--tb-text-on-accent);
   font-size: 0.9rem;
   cursor: pointer;
   transition: all 0.15s ease;
@@ -8745,8 +9064,9 @@ body.theme-dark .tb2e.sheet .torchbearer-logo,
   margin: 0;
 }
 .grind-ledger .turn-number-input:focus {
-  outline: 1px solid var(--tb-border);
+  outline: none;
   border-radius: 4px;
+  box-shadow: 0 0 0 2px var(--tb-blue-glow);
 }
 .grind-ledger .turn-number-input.grind {
   color: var(--tb-red);
