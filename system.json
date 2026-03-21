@@ -65,7 +65,8 @@
     { "name": "potions",      "label": "Potions",      "path": "packs/potions",      "type": "Item" },
     { "name": "magic-items",  "label": "Magic Items",  "path": "packs/magic-items",  "type": "Item" },
     { "name": "monsters",    "label": "Monsters",    "path": "packs/monsters",    "type": "Actor" },
-    { "name": "npcs",        "label": "NPCs",        "path": "packs/npcs",        "type": "Actor" }
+    { "name": "npcs",        "label": "NPCs",        "path": "packs/npcs",        "type": "Actor" },
+    { "name": "iconic-characters", "label": "Iconic Characters", "path": "packs/iconic-characters", "type": "Actor" }
   ],
   "packFolders": [
     {

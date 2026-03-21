@@ -1,0 +1,366 @@
+_id: ca04000000000000
+name: Gerald
+type: character
+img: systems/tb2e/icons/ffffff/transparent/1x1/delapouite/lockpicks.svg
+system:
+  stock: Halfling
+  class: Burglar
+  age: '30'
+  home: Busy Crossroads
+  raiment: Red scarf
+  parents: Per & Lara
+  mentor: Elisabet, scavenger
+  friend: Lindis, ranger
+  enemy: ''
+  belief: It doesn't harm anyone if I take a little for myself from those who have more than they need.
+  goal: I will impress my comrades with my cleverness.
+  instinct: Always prepare a good meal when we return to camp.
+  abilities:
+    will:
+      rating: 5
+    health:
+      rating: 3
+    nature:
+      rating: 6
+      max: 6
+    resources:
+      rating: 0
+    circles:
+      rating: 4
+  might: 3
+  natureDescriptors:
+    - Sneaking
+    - Riddling
+    - Merrymaking
+  skills:
+    cook:
+      rating: 3
+    criminal:
+      rating: 3
+    fighter:
+      rating: 3
+    scavenger:
+      rating: 3
+    haggler:
+      rating: 2
+    hunter:
+      rating: 2
+    manipulator:
+      rating: 2
+    scout:
+      rating: 2
+  wises:
+    - name: Needs a Little Salt-wise
+      pass: false
+      fail: false
+      fate: false
+      persona: false
+    - name: Secret Door-wise
+      pass: false
+      fail: false
+      fate: false
+      persona: false
+  memoryPalaceSlots: 0
+  urdr:
+    capacity: 0
+    burden: 0
+prototypeToken:
+  actorLink: true
+  appendNumber: false
+  disposition: 1
+items:
+  - _id: ca04000000000001
+    name: Hidden Depths
+    type: trait
+    system:
+      level: 1
+      isClass: false
+      beneficial: 0
+      usedAgainst: false
+      checks: 0
+    _key: '!actors.items!ca04000000000000.ca04000000000001'
+  - _id: ca04000000000002
+    name: Quick-Witted
+    type: trait
+    system:
+      level: 1
+      isClass: false
+      beneficial: 0
+      usedAgainst: false
+      checks: 0
+    _key: '!actors.items!ca04000000000000.ca04000000000002'
+  - _id: ca04000000000003
+    name: Helmet
+    type: armor
+    img: systems/tb2e/icons/ffffff/transparent/1x1/lorc/heavy-helm.svg
+    system:
+      description: Dungeoneer's Handbook, p. 150
+      slot: ''
+      slotIndex: 0
+      slotOptions:
+        head: 1
+      cost: 2
+      damaged: false
+      dropped: false
+      quantity: 1
+      quantityMax: 1
+      armorType: helmet
+      absorbs: 1
+      specialRules: Dungeoneer's Handbook, p. 150
+    effects: []
+    _key: '!actors.items!ca04000000000000.ca04000000000003'
+  - _id: ca04000000000004
+    name: Sling
+    type: weapon
+    img: systems/tb2e/icons/ffffff/transparent/1x1/delapouite/sling.svg
+    system:
+      description: Dungeoneer's Handbook, p. 159
+      slot: ''
+      slotIndex: 0
+      slotOptions:
+        pouch: 1
+      cost: 1
+      damaged: false
+      dropped: false
+      quantity: 1
+      quantityMax: 1
+      wield: 1
+      conflictBonuses:
+        attack:
+          type: dice
+          value: 0
+        defend:
+          type: dice
+          value: 0
+        feint:
+          type: dice
+          value: 0
+        maneuver:
+          type: dice
+          value: 2
+      skillBonuses: []
+      specialRules: "+2D to Maneuver, except against opponents wielding a bow or crossbow. Ammunition occupies one slot in a pouch; it can be lost through a twist."
+    effects: []
+    _key: '!actors.items!ca04000000000000.ca04000000000004'
+  - _id: ca04000000000005
+    name: Leather Armor
+    type: armor
+    img: systems/tb2e/icons/ffffff/transparent/1x1/delapouite/leather-armor.svg
+    system:
+      description: Dungeoneer's Handbook, p. 151
+      slot: ''
+      slotIndex: 0
+      slotOptions:
+        torso: 1
+      cost: 2
+      damaged: false
+      dropped: false
+      quantity: 1
+      quantityMax: 1
+      armorType: leather
+      absorbs: 1
+      specialRules: Dungeoneer's Handbook, p. 151
+    effects: []
+    _key: '!actors.items!ca04000000000000.ca04000000000005'
+  - _id: ca04000000000006
+    name: Backpack
+    type: container
+    img: systems/tb2e/icons/ffffff/transparent/1x1/delapouite/backpack.svg
+    system:
+      description: Dungeoneer's Handbook, p. 152
+      slot: ''
+      slotIndex: 0
+      slotOptions:
+        torso: 2
+      cost: 2
+      damaged: false
+      dropped: false
+      quantity: 1
+      quantityMax: 1
+      containerKey: ''
+      containerSlots: 6
+      containerType: backpack
+      lost: false
+    effects: []
+    _key: '!actors.items!ca04000000000000.ca04000000000006'
+  - _id: ca04000000000007
+    name: Pouch, Belt
+    type: container
+    img: systems/tb2e/icons/ffffff/transparent/1x1/seregacthtuf/pouch-with-beads.svg
+    system:
+      description: Dungeoneer's Handbook, p. 152
+      slot: ''
+      slotIndex: 0
+      slotOptions:
+        belt: 1
+        pack: 1
+      cost: 1
+      damaged: false
+      dropped: false
+      quantity: 1
+      quantityMax: 1
+      containerKey: ''
+      containerSlots: 1
+      containerType: pouch
+      lost: false
+    effects: []
+    _key: '!actors.items!ca04000000000000.ca04000000000007'
+  - _id: ca04000000000008
+    name: Waterskin
+    type: container
+    img: systems/tb2e/icons/ffffff/transparent/1x1/delapouite/waterskin.svg
+    system:
+      description: Dungeoneer's Handbook, p. 152
+      slot: ''
+      slotIndex: 0
+      slotOptions:
+        belt: 1
+        pack: 1
+      cost: 1
+      damaged: false
+      dropped: false
+      quantity: 1
+      quantityMax: 1
+      containerKey: ''
+      containerSlots: 0
+      containerType: waterskin
+      liquidType: water
+      lost: false
+    effects: []
+    _key: '!actors.items!ca04000000000000.ca04000000000008'
+  - _id: ca04000000000009
+    name: Thieves' Tools
+    type: gear
+    img: systems/tb2e/icons/ffffff/transparent/1x1/delapouite/lockpicks.svg
+    system:
+      description: Dungeoneer's Handbook, p. 153
+      slot: ''
+      slotIndex: 0
+      slotOptions:
+        pack: 1
+      cost: 4
+      damaged: false
+      dropped: false
+      quantity: 1
+      quantityMax: 1
+      skillBonuses:
+        - skill: criminal
+          value: 1
+          condition: Picking locks
+        - skill: sapper
+          value: 1
+          condition: Disarming traps
+      specialRules: ''
+    effects: []
+    _key: '!actors.items!ca04000000000000.ca04000000000009'
+  - _id: ca0400000000000a
+    name: Rations, Fresh
+    type: supply
+    img: systems/tb2e/icons/ffffff/transparent/1x1/delapouite/bread.svg
+    system:
+      description: Dungeoneer's Handbook, p. 154
+      slot: ''
+      slotIndex: 0
+      slotOptions:
+        pack: 1
+      cost: 1
+      damaged: false
+      dropped: false
+      quantity: 2
+      quantityMax: 2
+      supplyType: food
+      turnsRemaining: 0
+      skillBonuses: []
+    effects: []
+    _key: '!actors.items!ca04000000000000.ca0400000000000a'
+  - _id: ca0400000000000b
+    name: Rope
+    type: gear
+    img: systems/tb2e/icons/ffffff/transparent/1x1/delapouite/rope-coil.svg
+    system:
+      description: Dungeoneer's Handbook, p. 153
+      slot: ''
+      slotIndex: 0
+      slotOptions:
+        torso: 1
+        pack: 2
+      cost: 2
+      damaged: false
+      dropped: false
+      quantity: 1
+      quantityMax: 1
+      skillBonuses:
+        - skill: dungeoneer
+          value: 1
+          condition: Climbing
+        - skill: health
+          value: 1
+          condition: Climbing
+      specialRules: ''
+    effects: []
+    _key: '!actors.items!ca04000000000000.ca0400000000000b'
+  - _id: ca0400000000000c
+    name: Sack, Small
+    type: container
+    img: systems/tb2e/icons/ffffff/transparent/1x1/lorc/knapsack.svg
+    system:
+      description: Dungeoneer's Handbook, p. 152
+      slot: ''
+      slotIndex: 0
+      slotOptions:
+        pack: 1
+      cost: 1
+      damaged: false
+      dropped: false
+      quantity: 1
+      quantityMax: 1
+      containerKey: ''
+      containerSlots: 2
+      containerType: smallSack
+      lost: false
+    effects: []
+    _key: '!actors.items!ca04000000000000.ca0400000000000c'
+  - _id: ca0400000000000d
+    name: Sack, Small
+    type: container
+    img: systems/tb2e/icons/ffffff/transparent/1x1/lorc/knapsack.svg
+    system:
+      description: Dungeoneer's Handbook, p. 152
+      slot: ''
+      slotIndex: 0
+      slotOptions:
+        pack: 1
+      cost: 1
+      damaged: false
+      dropped: false
+      quantity: 1
+      quantityMax: 1
+      containerKey: ''
+      containerSlots: 2
+      containerType: smallSack
+      lost: false
+    effects: []
+    _key: '!actors.items!ca04000000000000.ca0400000000000d'
+  - _id: ca0400000000000e
+    name: Candles
+    type: supply
+    img: systems/tb2e/icons/ffffff/transparent/1x1/delapouite/candles.svg
+    system:
+      description: "Dungeoneer's Handbook, p. 154; Scholar's Guide, pp. 42\u201343"
+      slot: ''
+      slotIndex: 0
+      slotOptions:
+        pack: 1
+      cost: 1
+      damaged: false
+      dropped: false
+      quantity: 4
+      quantityMax: 4
+      supplyType: light
+      turnsRemaining: 4
+      lit: false
+      nameSingular: Candle
+      skillBonuses: []
+    _key: '!actors.items!ca04000000000000.ca0400000000000e'
+effects: []
+_key: '!actors!ca04000000000000'

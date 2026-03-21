@@ -1,0 +1,442 @@
+_id: ca02000000000000
+name: Beren of Carcaroth
+type: character
+img: systems/tb2e/icons/ffffff/transparent/1x1/delapouite/sharp-axe.svg
+system:
+  stock: Dwarf
+  class: Outcast
+  age: '51'
+  home: Religious Bastion
+  raiment: Sky blue hood
+  parents: Orphaned
+  mentor: ''
+  friend: Trinit, scholar
+  enemy: Hsark, theurge
+  belief: "There's naught for me but blood and treasure, spent and earned."
+  goal: I will loot this tomb for all it's worth.
+  instinct: Always look out for Karolina when dungeoneering.
+  abilities:
+    will:
+      rating: 3
+    health:
+      rating: 5
+    nature:
+      rating: 5
+      max: 5
+    resources:
+      rating: 0
+    circles:
+      rating: 3
+  might: 3
+  natureDescriptors:
+    - Delving
+    - Crafting
+    - Avenging Grudges
+  skills:
+    fighter:
+      rating: 4
+    dungeoneer:
+      rating: 3
+    manipulator:
+      rating: 3
+    armorer:
+      rating: 2
+    orator:
+      rating: 2
+    sapper:
+      rating: 2
+    scholar:
+      rating: 2
+    scout:
+      rating: 2
+  wises:
+    - name: Shrewd Appraisal-wise
+      pass: false
+      fail: false
+      fate: false
+      persona: false
+    - name: Lying-wise
+      pass: false
+      fail: false
+      fate: false
+      persona: false
+  memoryPalaceSlots: 0
+  urdr:
+    capacity: 0
+    burden: 0
+prototypeToken:
+  actorLink: true
+  appendNumber: false
+  disposition: 1
+items:
+  - _id: ca02000000000001
+    name: Born of Earth and Stone
+    type: trait
+    system:
+      level: 2
+      isClass: true
+      beneficial: 0
+      usedAgainst: false
+      checks: 0
+    _key: '!actors.items!ca02000000000000.ca02000000000001'
+  - _id: ca02000000000002
+    name: Scarred
+    type: trait
+    system:
+      level: 1
+      isClass: false
+      beneficial: 0
+      usedAgainst: false
+      checks: 0
+    _key: '!actors.items!ca02000000000000.ca02000000000002'
+  - _id: ca02000000000003
+    name: Hand Axe
+    type: weapon
+    img: systems/tb2e/icons/ffffff/transparent/1x1/delapouite/sharp-axe.svg
+    system:
+      description: Dungeoneer's Handbook, p. 158
+      slot: ''
+      slotIndex: 0
+      slotOptions:
+        carried: 1
+        belt: 1
+        pack: 2
+      cost: 1
+      damaged: false
+      dropped: false
+      quantity: 1
+      quantityMax: 1
+      wield: 1
+      conflictBonuses:
+        attack:
+          type: dice
+          value: 0
+        defend:
+          type: dice
+          value: 0
+        feint:
+          type: dice
+          value: 0
+        maneuver:
+          type: dice
+          value: 0
+      skillBonuses: []
+      specialRules: "May be thrown once per fight, turning an independent Attack action into a versus test (not against opponents wielding a bow, crossbow or sling). After throwing, you count as disarmed until you equip another weapon between rounds."
+    effects: []
+    _key: '!actors.items!ca02000000000000.ca02000000000003'
+  - _id: ca02000000000004
+    name: Shield
+    type: weapon
+    img: systems/tb2e/icons/ffffff/transparent/1x1/willdabeast/round-shield.svg
+    system:
+      description: Dungeoneer's Handbook, p. 158
+      slot: ''
+      slotIndex: 0
+      slotOptions:
+        carried: 1
+        torso: 1
+      cost: 1
+      damaged: false
+      dropped: false
+      quantity: 1
+      quantityMax: 1
+      wield: 1
+      conflictBonuses:
+        attack:
+          type: dice
+          value: 0
+        defend:
+          type: dice
+          value: 2
+        feint:
+          type: dice
+          value: 0
+        maneuver:
+          type: dice
+          value: 0
+      skillBonuses: []
+      specialRules: "+2D to Defend. May be used to absorb one point of damage once; the shield is then destroyed. Shields are cumbersome — carrying one may cause weariness and increases the obstacle to recover from exhaustion."
+    effects: []
+    _key: '!actors.items!ca02000000000000.ca02000000000004'
+  - _id: ca02000000000005
+    name: Leather Armor
+    type: armor
+    img: systems/tb2e/icons/ffffff/transparent/1x1/delapouite/leather-armor.svg
+    system:
+      description: Dungeoneer's Handbook, p. 151
+      slot: ''
+      slotIndex: 0
+      slotOptions:
+        torso: 1
+      cost: 2
+      damaged: false
+      dropped: false
+      quantity: 1
+      quantityMax: 1
+      armorType: leather
+      absorbs: 1
+      specialRules: Dungeoneer's Handbook, p. 151
+    effects: []
+    _key: '!actors.items!ca02000000000000.ca02000000000005'
+  - _id: ca02000000000006
+    name: Backpack
+    type: container
+    img: systems/tb2e/icons/ffffff/transparent/1x1/delapouite/backpack.svg
+    system:
+      description: Dungeoneer's Handbook, p. 152
+      slot: ''
+      slotIndex: 0
+      slotOptions:
+        torso: 2
+      cost: 2
+      damaged: false
+      dropped: false
+      quantity: 1
+      quantityMax: 1
+      containerKey: ''
+      containerSlots: 6
+      containerType: backpack
+      lost: false
+    effects: []
+    _key: '!actors.items!ca02000000000000.ca02000000000006'
+  - _id: ca02000000000007
+    name: Pouch, Belt
+    type: container
+    img: systems/tb2e/icons/ffffff/transparent/1x1/seregacthtuf/pouch-with-beads.svg
+    system:
+      description: Dungeoneer's Handbook, p. 152
+      slot: ''
+      slotIndex: 0
+      slotOptions:
+        belt: 1
+        pack: 1
+      cost: 1
+      damaged: false
+      dropped: false
+      quantity: 1
+      quantityMax: 1
+      containerKey: ''
+      containerSlots: 1
+      containerType: pouch
+      lost: false
+    effects: []
+    _key: '!actors.items!ca02000000000000.ca02000000000007'
+  - _id: ca02000000000008
+    name: Waterskin
+    type: container
+    img: systems/tb2e/icons/ffffff/transparent/1x1/delapouite/waterskin.svg
+    system:
+      description: Dungeoneer's Handbook, p. 152
+      slot: ''
+      slotIndex: 0
+      slotOptions:
+        belt: 1
+        pack: 1
+      cost: 1
+      damaged: false
+      dropped: false
+      quantity: 1
+      quantityMax: 1
+      containerKey: ''
+      containerSlots: 0
+      containerType: waterskin
+      liquidType: water
+      lost: false
+    effects: []
+    _key: '!actors.items!ca02000000000000.ca02000000000008'
+  - _id: ca02000000000009
+    name: Shoes
+    type: gear
+    img: systems/tb2e/icons/ffffff/transparent/1x1/delapouite/ballerina-shoes.svg
+    system:
+      description: Dungeoneer's Handbook, p. 239
+      slot: ''
+      slotIndex: 0
+      slotOptions:
+        feet: 1
+      cost: 1
+      damaged: false
+      dropped: false
+      quantity: 1
+      quantityMax: 1
+      skillBonuses: []
+      specialRules: ''
+    effects: []
+    _key: '!actors.items!ca02000000000000.ca02000000000009'
+  - _id: ca0200000000000a
+    name: Hammer
+    type: gear
+    img: systems/tb2e/icons/ffffff/transparent/1x1/delapouite/3d-hammer.svg
+    system:
+      description: Dungeoneer's Handbook, p. 153
+      slot: ''
+      slotIndex: 0
+      slotOptions:
+        carried: 1
+        pack: 1
+      cost: 2
+      damaged: false
+      dropped: false
+      quantity: 1
+      quantityMax: 1
+      skillBonuses: []
+      specialRules: ''
+    effects: []
+    _key: '!actors.items!ca02000000000000.ca0200000000000a'
+  - _id: ca0200000000000b
+    name: Rations, Preserved
+    type: supply
+    img: systems/tb2e/icons/ffffff/transparent/1x1/darkzaitzev/fish-cooked.svg
+    system:
+      description: Dungeoneer's Handbook, p. 154
+      slot: ''
+      slotIndex: 0
+      slotOptions:
+        pack: 1
+      cost: 2
+      damaged: false
+      dropped: false
+      quantity: 3
+      quantityMax: 3
+      supplyType: food
+      turnsRemaining: 0
+      skillBonuses: []
+    effects: []
+    _key: '!actors.items!ca02000000000000.ca0200000000000b'
+  - _id: ca0200000000000c
+    name: Rope
+    type: gear
+    img: systems/tb2e/icons/ffffff/transparent/1x1/delapouite/rope-coil.svg
+    system:
+      description: Dungeoneer's Handbook, p. 153
+      slot: ''
+      slotIndex: 0
+      slotOptions:
+        torso: 1
+        pack: 2
+      cost: 2
+      damaged: false
+      dropped: false
+      quantity: 1
+      quantityMax: 1
+      skillBonuses:
+        - skill: dungeoneer
+          value: 1
+          condition: Climbing
+        - skill: health
+          value: 1
+          condition: Climbing
+      specialRules: ''
+    effects: []
+    _key: '!actors.items!ca02000000000000.ca0200000000000c'
+  - _id: ca0200000000000d
+    name: Sack, Small
+    type: container
+    img: systems/tb2e/icons/ffffff/transparent/1x1/lorc/knapsack.svg
+    system:
+      description: Dungeoneer's Handbook, p. 152
+      slot: ''
+      slotIndex: 0
+      slotOptions:
+        pack: 1
+      cost: 1
+      damaged: false
+      dropped: false
+      quantity: 1
+      quantityMax: 1
+      containerKey: ''
+      containerSlots: 2
+      containerType: smallSack
+      lost: false
+    effects: []
+    _key: '!actors.items!ca02000000000000.ca0200000000000d'
+  - _id: ca0200000000000e
+    name: Sack, Small
+    type: container
+    img: systems/tb2e/icons/ffffff/transparent/1x1/lorc/knapsack.svg
+    system:
+      description: Dungeoneer's Handbook, p. 152
+      slot: ''
+      slotIndex: 0
+      slotOptions:
+        pack: 1
+      cost: 1
+      damaged: false
+      dropped: false
+      quantity: 1
+      quantityMax: 1
+      containerKey: ''
+      containerSlots: 2
+      containerType: smallSack
+      lost: false
+    effects: []
+    _key: '!actors.items!ca02000000000000.ca0200000000000e'
+  - _id: ca0200000000000f
+    name: Iron Spikes
+    type: gear
+    img: systems/tb2e/icons/ffffff/transparent/1x1/lorc/nails.svg
+    system:
+      description: Dungeoneer's Handbook, p. 153
+      slot: ''
+      slotIndex: 0
+      slotOptions:
+        pack: 1
+      cost: 1
+      damaged: false
+      dropped: false
+      quantity: 6
+      quantityMax: 6
+      skillBonuses:
+        - skill: dungeoneer
+          value: 1
+          condition: Wedging, climbing, anchoring or prying
+      specialRules: ''
+    effects: []
+    _key: '!actors.items!ca02000000000000.ca0200000000000f'
+  - _id: ca02000000000010
+    name: Signet Ring
+    type: gear
+    img: systems/tb2e/icons/ffffff/transparent/1x1/lorc/engagement-ring.svg
+    system:
+      description: Scholar's Guide, p. 160
+      slot: ''
+      slotIndex: 0
+      slotOptions:
+        wornHand: 1
+        pocket: 1
+      cost: 0
+      damaged: false
+      dropped: false
+      quantity: 1
+      quantityMax: 1
+      value:
+        dice: 1
+        negotiated: false
+      skillBonuses: []
+      specialRules: ''
+    effects: []
+    _key: '!actors.items!ca02000000000000.ca02000000000010'
+  - _id: ca02000000000011
+    name: Pouch of Gold Coins
+    type: gear
+    img: systems/tb2e/icons/ffffff/transparent/1x1/delapouite/coins.svg
+    system:
+      description: Scholar's Guide, p. 159
+      slot: ''
+      slotIndex: 0
+      slotOptions:
+        pack: 1
+      cost: 0
+      damaged: false
+      dropped: false
+      quantity: 1
+      quantityMax: 1
+      value:
+        dice: 2
+        negotiated: false
+      skillBonuses: []
+      specialRules: ''
+    effects: []
+    _key: '!actors.items!ca02000000000000.ca02000000000011'
+effects: []
+_key: '!actors!ca02000000000000'

@@ -1,0 +1,449 @@
+_id: ca09000000000000
+name: Tiziri
+type: character
+img: systems/tb2e/icons/ffffff/transparent/1x1/lorc/plain-dagger.svg
+system:
+  stock: Human
+  class: Thief
+  age: '18'
+  home: Busy Crossroads
+  raiment: Purple-striped turban
+  parents: Orphaned
+  mentor: Tin Hinan, dungeoneer
+  friend: Corin, outrider
+  enemy: Hall, magician
+  belief: Cleverness succeeds where might fails.
+  goal: ''
+  instinct: Always search for secret doors when exploring dungeons.
+  abilities:
+    will:
+      rating: 5
+    health:
+      rating: 3
+    nature:
+      rating: 5
+      max: 5
+    resources:
+      rating: 0
+    circles:
+      rating: 4
+  might: 3
+  natureDescriptors:
+    - Boasting
+    - Demanding
+    - Running
+  skills:
+    haggler:
+      rating: 4
+    criminal:
+      rating: 3
+    manipulator:
+      rating: 3
+    scout:
+      rating: 3
+    dungeoneer:
+      rating: 2
+    fighter:
+      rating: 2
+    persuader:
+      rating: 2
+    sapper:
+      rating: 2
+  wises:
+    - name: Secret Door-wise
+      pass: false
+      fail: false
+      fate: false
+      persona: false
+  memoryPalaceSlots: 0
+  urdr:
+    capacity: 0
+    burden: 0
+prototypeToken:
+  actorLink: true
+  appendNumber: false
+  disposition: 1
+items:
+  - _id: ca09000000000001
+    name: Devil May Care
+    type: trait
+    system:
+      level: 1
+      isClass: false
+      beneficial: 0
+      usedAgainst: false
+      checks: 0
+    _key: '!actors.items!ca09000000000000.ca09000000000001'
+  - _id: ca09000000000002
+    name: Quick-Witted
+    type: trait
+    system:
+      level: 1
+      isClass: false
+      beneficial: 0
+      usedAgainst: false
+      checks: 0
+    _key: '!actors.items!ca09000000000000.ca09000000000002'
+  - _id: ca09000000000003
+    name: Dagger
+    type: weapon
+    img: systems/tb2e/icons/ffffff/transparent/1x1/lorc/plain-dagger.svg
+    system:
+      description: Dungeoneer's Handbook, p. 158
+      slot: ''
+      slotIndex: 0
+      slotOptions:
+        carried: 1
+        belt: 1
+        neck: 1
+      cost: 1
+      damaged: false
+      dropped: false
+      quantity: 1
+      quantityMax: 1
+      wield: 1
+      conflictBonuses:
+        attack:
+          type: dice
+          value: 0
+        defend:
+          type: dice
+          value: 0
+        feint:
+          type: dice
+          value: 0
+        maneuver:
+          type: dice
+          value: 0
+      skillBonuses: []
+      specialRules: "A successful Maneuver with a dagger counts as a disarm against an opponent wielding a spear, polearm, halberd, sling, bow, or crossbow."
+    effects: []
+    _key: '!actors.items!ca09000000000000.ca09000000000003'
+  - _id: ca09000000000004
+    name: Cloak
+    type: gear
+    img: systems/tb2e/icons/ffffff/transparent/1x1/lorc/cowled.svg
+    system:
+      description: Dungeoneer's Handbook, p. 151
+      slot: ''
+      slotIndex: 0
+      slotOptions:
+        torso: 1
+        carried: 1
+        pack: 2
+      cost: 2
+      damaged: false
+      dropped: false
+      quantity: 1
+      quantityMax: 1
+      skillBonuses: []
+      specialRules: ''
+    effects: []
+    _key: '!actors.items!ca09000000000000.ca09000000000004'
+  - _id: ca09000000000005
+    name: Satchel
+    type: container
+    img: systems/tb2e/icons/ffffff/transparent/1x1/delapouite/shoulder-bag.svg
+    system:
+      description: Dungeoneer's Handbook, p. 152
+      slot: ''
+      slotIndex: 0
+      slotOptions:
+        torso: 1
+      cost: 1
+      damaged: false
+      dropped: false
+      quantity: 1
+      quantityMax: 1
+      containerKey: ''
+      containerSlots: 3
+      containerType: satchel
+      lost: false
+    effects: []
+    _key: '!actors.items!ca09000000000000.ca09000000000005'
+  - _id: ca09000000000006
+    name: Sack, Large
+    type: container
+    img: systems/tb2e/icons/ffffff/transparent/1x1/delapouite/duffel-bag.svg
+    system:
+      description: Dungeoneer's Handbook, p. 152
+      slot: ''
+      slotIndex: 0
+      slotOptions:
+        carried: 2
+      cost: 2
+      damaged: false
+      dropped: false
+      quantity: 1
+      quantityMax: 1
+      containerKey: ''
+      containerSlots: 6
+      containerType: largeSack
+      lost: false
+    effects: []
+    _key: '!actors.items!ca09000000000000.ca09000000000006'
+  - _id: ca09000000000007
+    name: Pouch, Belt
+    type: container
+    img: systems/tb2e/icons/ffffff/transparent/1x1/seregacthtuf/pouch-with-beads.svg
+    system:
+      description: Dungeoneer's Handbook, p. 152
+      slot: ''
+      slotIndex: 0
+      slotOptions:
+        belt: 1
+        pack: 1
+      cost: 1
+      damaged: false
+      dropped: false
+      quantity: 1
+      quantityMax: 1
+      containerKey: ''
+      containerSlots: 1
+      containerType: pouch
+      lost: false
+    effects: []
+    _key: '!actors.items!ca09000000000000.ca09000000000007'
+  - _id: ca09000000000008
+    name: Waterskin
+    type: container
+    img: systems/tb2e/icons/ffffff/transparent/1x1/delapouite/waterskin.svg
+    system:
+      description: Dungeoneer's Handbook, p. 152
+      slot: ''
+      slotIndex: 0
+      slotOptions:
+        belt: 1
+        pack: 1
+      cost: 1
+      damaged: false
+      dropped: false
+      quantity: 1
+      quantityMax: 1
+      containerKey: ''
+      containerSlots: 0
+      containerType: waterskin
+      liquidType: water
+      lost: false
+    effects: []
+    _key: '!actors.items!ca09000000000000.ca09000000000008'
+  - _id: ca09000000000009
+    name: Shoes
+    type: gear
+    img: systems/tb2e/icons/ffffff/transparent/1x1/delapouite/ballerina-shoes.svg
+    system:
+      description: Dungeoneer's Handbook, p. 239
+      slot: ''
+      slotIndex: 0
+      slotOptions:
+        feet: 1
+      cost: 1
+      damaged: false
+      dropped: false
+      quantity: 1
+      quantityMax: 1
+      skillBonuses: []
+      specialRules: ''
+    effects: []
+    _key: '!actors.items!ca09000000000000.ca09000000000009'
+  - _id: ca0900000000000a
+    name: Thieves' Tools
+    type: gear
+    img: systems/tb2e/icons/ffffff/transparent/1x1/delapouite/lockpicks.svg
+    system:
+      description: Dungeoneer's Handbook, p. 153
+      slot: ''
+      slotIndex: 0
+      slotOptions:
+        pack: 1
+      cost: 4
+      damaged: false
+      dropped: false
+      quantity: 1
+      quantityMax: 1
+      skillBonuses:
+        - skill: criminal
+          value: 1
+          condition: Picking locks
+        - skill: sapper
+          value: 1
+          condition: Disarming traps
+      specialRules: ''
+    effects: []
+    _key: '!actors.items!ca09000000000000.ca0900000000000a'
+  - _id: ca0900000000000b
+    name: Rations, Preserved
+    type: supply
+    img: systems/tb2e/icons/ffffff/transparent/1x1/darkzaitzev/fish-cooked.svg
+    system:
+      description: Dungeoneer's Handbook, p. 154
+      slot: ''
+      slotIndex: 0
+      slotOptions:
+        pack: 1
+      cost: 2
+      damaged: false
+      dropped: false
+      quantity: 3
+      quantityMax: 3
+      supplyType: food
+      turnsRemaining: 0
+      skillBonuses: []
+    effects: []
+    _key: '!actors.items!ca09000000000000.ca0900000000000b'
+  - _id: ca0900000000000c
+    name: Bottle of Wine
+    type: container
+    img: systems/tb2e/icons/ffffff/transparent/1x1/delapouite/water-bottle.svg
+    system:
+      description: Dungeoneer's Handbook, p. 152
+      slot: ''
+      slotIndex: 0
+      slotOptions:
+        carried: 1
+        pack: 2
+      cost: 1
+      damaged: false
+      dropped: false
+      quantity: 1
+      quantityMax: 1
+      containerKey: ''
+      containerSlots: 0
+      containerType: bottle
+      liquidType: wine
+      lost: false
+    effects: []
+    _key: '!actors.items!ca09000000000000.ca0900000000000c'
+  - _id: ca0900000000000d
+    name: Iron Spikes
+    type: gear
+    img: systems/tb2e/icons/ffffff/transparent/1x1/lorc/nails.svg
+    system:
+      description: Dungeoneer's Handbook, p. 153
+      slot: ''
+      slotIndex: 0
+      slotOptions:
+        pack: 1
+      cost: 1
+      damaged: false
+      dropped: false
+      quantity: 6
+      quantityMax: 6
+      skillBonuses:
+        - skill: dungeoneer
+          value: 1
+          condition: Wedging, climbing, anchoring or prying
+      specialRules: ''
+    effects: []
+    _key: '!actors.items!ca09000000000000.ca0900000000000d'
+  - _id: ca0900000000000e
+    name: Hammer
+    type: gear
+    img: systems/tb2e/icons/ffffff/transparent/1x1/delapouite/3d-hammer.svg
+    system:
+      description: Dungeoneer's Handbook, p. 153
+      slot: ''
+      slotIndex: 0
+      slotOptions:
+        carried: 1
+        pack: 1
+      cost: 2
+      damaged: false
+      dropped: false
+      quantity: 1
+      quantityMax: 1
+      skillBonuses: []
+      specialRules: ''
+    effects: []
+    _key: '!actors.items!ca09000000000000.ca0900000000000e'
+  - _id: ca0900000000000f
+    name: Candles
+    type: supply
+    img: systems/tb2e/icons/ffffff/transparent/1x1/delapouite/candles.svg
+    system:
+      description: "Dungeoneer's Handbook, p. 154; Scholar's Guide, pp. 42\u201343"
+      slot: ''
+      slotIndex: 0
+      slotOptions:
+        pack: 1
+      cost: 1
+      damaged: false
+      dropped: false
+      quantity: 4
+      quantityMax: 4
+      supplyType: light
+      turnsRemaining: 4
+      lit: false
+      nameSingular: Candle
+      skillBonuses: []
+    _key: '!actors.items!ca09000000000000.ca0900000000000f'
+  - _id: ca09000000000010
+    name: Tinderbox
+    type: gear
+    img: systems/tb2e/icons/ffffff/transparent/1x1/delapouite/flint-spark.svg
+    system:
+      description: Dungeoneer's Handbook, p. 154
+      slot: ''
+      slotIndex: 0
+      slotOptions:
+        pack: 1
+      cost: 1
+      damaged: false
+      dropped: false
+      quantity: 1
+      quantityMax: 1
+      skillBonuses:
+        - skill: survivalist
+          value: 1
+          condition: Starting fires in bad conditions
+      specialRules: ''
+    effects: []
+    _key: '!actors.items!ca09000000000000.ca09000000000010'
+  - _id: ca09000000000011
+    name: Grappling Hook
+    type: gear
+    img: systems/tb2e/icons/ffffff/transparent/1x1/lorc/grapple.svg
+    system:
+      description: Dungeoneer's Handbook, p. 153
+      slot: ''
+      slotIndex: 0
+      slotOptions:
+        carried: 1
+        pack: 2
+      cost: 3
+      damaged: false
+      dropped: false
+      quantity: 1
+      quantityMax: 1
+      skillBonuses:
+        - skill: dungeoneer
+          value: 1
+          condition: Climbing (with rope)
+      specialRules: ''
+    effects: []
+    _key: '!actors.items!ca09000000000000.ca09000000000011'
+  - _id: ca09000000000012
+    name: Father's Seal
+    type: gear
+    img: systems/tb2e/icons/ffffff/transparent/1x1/delapouite/tribal-pendant.svg
+    system:
+      description: Scholar's Guide, p. 160
+      slot: ''
+      slotIndex: 0
+      slotOptions:
+        neck: 1
+        pocket: 1
+      cost: 0
+      damaged: false
+      dropped: false
+      quantity: 1
+      quantityMax: 1
+      value:
+        dice: 1
+        negotiated: false
+      skillBonuses: []
+      specialRules: ''
+    effects: []
+    _key: '!actors.items!ca09000000000000.ca09000000000012'
+effects: []
+_key: '!actors!ca09000000000000'

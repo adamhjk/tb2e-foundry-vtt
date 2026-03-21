@@ -1,0 +1,295 @@
+_id: ca03000000000000
+name: Taika
+type: character
+img: systems/tb2e/icons/ffffff/transparent/1x1/delapouite/bow-arrow.svg
+system:
+  stock: Elf
+  class: Ranger
+  age: '73'
+  home: Elfhome
+  raiment: Green tunic
+  parents: Laras & Sanna
+  mentor: Ulla, scout
+  friend: Tua, healer
+  enemy: ''
+  belief: I must help my comrades consider every angle before making a decision.
+  goal: I will determine what evil haunts this place.
+  instinct: Always identify the capabilities of new creatures I encounter.
+  abilities:
+    will:
+      rating: 4
+    health:
+      rating: 4
+    nature:
+      rating: 4
+      max: 4
+    resources:
+      rating: 0
+    circles:
+      rating: 4
+  might: 3
+  natureDescriptors:
+    - Singing
+    - Remembering
+    - Hiding
+  skills:
+    scout:
+      rating: 4
+    fighter:
+      rating: 3
+    pathfinder:
+      rating: 3
+    healer:
+      rating: 2
+    hunter:
+      rating: 2
+    loremaster:
+      rating: 2
+    persuader:
+      rating: 2
+    survivalist:
+      rating: 2
+  wises:
+    - name: Elven Lore-wise
+      pass: false
+      fail: false
+      fate: false
+      persona: false
+    - name: Tracks-wise
+      pass: false
+      fail: false
+      fate: false
+      persona: false
+  memoryPalaceSlots: 0
+  urdr:
+    capacity: 0
+    burden: 0
+prototypeToken:
+  actorLink: true
+  appendNumber: false
+  disposition: 1
+items:
+  - _id: ca03000000000001
+    name: First Born
+    type: trait
+    system:
+      level: 2
+      isClass: true
+      beneficial: 0
+      usedAgainst: false
+      checks: 0
+    _key: '!actors.items!ca03000000000000.ca03000000000001'
+  - _id: ca03000000000002
+    name: Fiery
+    type: trait
+    system:
+      level: 1
+      isClass: false
+      beneficial: 0
+      usedAgainst: false
+      checks: 0
+    _key: '!actors.items!ca03000000000000.ca03000000000002'
+  - _id: ca03000000000003
+    name: Bow
+    type: weapon
+    img: systems/tb2e/icons/ffffff/transparent/1x1/delapouite/bow-arrow.svg
+    system:
+      description: Dungeoneer's Handbook, p. 156
+      slot: ''
+      slotIndex: 0
+      slotOptions:
+        carried: 1
+        quiver: 1
+      cost: 3
+      damaged: false
+      dropped: false
+      quantity: 1
+      quantityMax: 1
+      wield: 2
+      conflictBonuses:
+        attack:
+          type: dice
+          value: 0
+        defend:
+          type: dice
+          value: 0
+        feint:
+          type: dice
+          value: 0
+        maneuver:
+          type: dice
+          value: 2
+      skillBonuses: []
+      specialRules: "Grants +2D to Maneuver. Once per conflict, you may count Attack against Attack as a versus test, not independent. Bypasses leather armor. Cannot be used once the wielder is engaged in hand-to-hand combat. Purchasing a bow includes a quiver and arrows."
+    effects: []
+    _key: '!actors.items!ca03000000000000.ca03000000000003'
+  - _id: ca03000000000004
+    name: Quiver
+    type: container
+    img: systems/tb2e/icons/ffffff/transparent/1x1/delapouite/quiver.svg
+    system:
+      description: Dungeoneer's Handbook, p. 152
+      slot: ''
+      slotIndex: 0
+      slotOptions:
+        torso: 1
+        belt: 2
+      cost: 1
+      damaged: false
+      dropped: false
+      quantity: 1
+      quantityMax: 1
+      containerKey: ''
+      containerSlots: 3
+      containerType: quiver
+      lost: false
+    effects: []
+    _key: '!actors.items!ca03000000000000.ca03000000000004'
+  - _id: ca03000000000005
+    name: Leather Armor
+    type: armor
+    img: systems/tb2e/icons/ffffff/transparent/1x1/delapouite/leather-armor.svg
+    system:
+      description: Dungeoneer's Handbook, p. 151
+      slot: ''
+      slotIndex: 0
+      slotOptions:
+        torso: 1
+      cost: 2
+      damaged: false
+      dropped: false
+      quantity: 1
+      quantityMax: 1
+      armorType: leather
+      absorbs: 1
+      specialRules: Dungeoneer's Handbook, p. 151
+    effects: []
+    _key: '!actors.items!ca03000000000000.ca03000000000005'
+  - _id: ca03000000000006
+    name: Satchel
+    type: container
+    img: systems/tb2e/icons/ffffff/transparent/1x1/delapouite/shoulder-bag.svg
+    system:
+      description: Dungeoneer's Handbook, p. 152
+      slot: ''
+      slotIndex: 0
+      slotOptions:
+        torso: 1
+      cost: 1
+      damaged: false
+      dropped: false
+      quantity: 1
+      quantityMax: 1
+      containerKey: ''
+      containerSlots: 3
+      containerType: satchel
+      lost: false
+    effects: []
+    _key: '!actors.items!ca03000000000000.ca03000000000006'
+  - _id: ca03000000000007
+    name: Waterskin
+    type: container
+    img: systems/tb2e/icons/ffffff/transparent/1x1/delapouite/waterskin.svg
+    system:
+      description: Dungeoneer's Handbook, p. 152
+      slot: ''
+      slotIndex: 0
+      slotOptions:
+        belt: 1
+        pack: 1
+      cost: 1
+      damaged: false
+      dropped: false
+      quantity: 1
+      quantityMax: 1
+      containerKey: ''
+      containerSlots: 0
+      containerType: waterskin
+      liquidType: water
+      lost: false
+    effects: []
+    _key: '!actors.items!ca03000000000000.ca03000000000007'
+  - _id: ca03000000000008
+    name: Shoes
+    type: gear
+    img: systems/tb2e/icons/ffffff/transparent/1x1/delapouite/ballerina-shoes.svg
+    system:
+      description: Dungeoneer's Handbook, p. 239
+      slot: ''
+      slotIndex: 0
+      slotOptions:
+        feet: 1
+      cost: 1
+      damaged: false
+      dropped: false
+      quantity: 1
+      quantityMax: 1
+      skillBonuses: []
+      specialRules: ''
+    effects: []
+    _key: '!actors.items!ca03000000000000.ca03000000000008'
+  - _id: ca03000000000009
+    name: Rations, Preserved
+    type: supply
+    img: systems/tb2e/icons/ffffff/transparent/1x1/darkzaitzev/fish-cooked.svg
+    system:
+      description: Dungeoneer's Handbook, p. 154
+      slot: ''
+      slotIndex: 0
+      slotOptions:
+        pack: 1
+      cost: 2
+      damaged: false
+      dropped: false
+      quantity: 3
+      quantityMax: 3
+      supplyType: food
+      turnsRemaining: 0
+      skillBonuses: []
+    effects: []
+    _key: '!actors.items!ca03000000000000.ca03000000000009'
+  - _id: ca0300000000000a
+    name: Torches
+    type: supply
+    img: systems/tb2e/icons/ffffff/transparent/1x1/delapouite/torch.svg
+    system:
+      description: "Dungeoneer's Handbook, p. 154; Scholar's Guide, pp. 42\u201343"
+      slot: ''
+      slotIndex: 0
+      slotOptions:
+        carried: 1
+        pack: 1
+      cost: 2
+      damaged: false
+      dropped: false
+      quantity: 4
+      quantityMax: 4
+      supplyType: light
+      turnsRemaining: 2
+      lit: false
+      nameSingular: Torch
+      skillBonuses: []
+    _key: '!actors.items!ca03000000000000.ca0300000000000a'
+  - _id: ca0300000000000b
+    name: Sack, Large
+    type: container
+    img: systems/tb2e/icons/ffffff/transparent/1x1/delapouite/duffel-bag.svg
+    system:
+      description: Dungeoneer's Handbook, p. 152
+      slot: ''
+      slotIndex: 0
+      slotOptions:
+        carried: 2
+      cost: 2
+      damaged: false
+      dropped: false
+      quantity: 1
+      quantityMax: 1
+      containerKey: ''
+      containerSlots: 6
+      containerType: largeSack
+      lost: false
+    effects: []
+    _key: '!actors.items!ca03000000000000.ca0300000000000b'
+effects: []
+_key: '!actors!ca03000000000000'

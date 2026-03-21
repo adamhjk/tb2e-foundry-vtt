@@ -1,0 +1,381 @@
+_id: ca06000000000000
+name: Ulrik
+type: character
+img: systems/tb2e/icons/ffffff/transparent/1x1/delapouite/flanged-mace.svg
+system:
+  stock: Human
+  class: Theurge
+  age: '17'
+  home: Bustling Metropolis
+  raiment: Golden pantaloons
+  parents: Orphaned
+  mentor: Fleinn the Golden
+  friend: Una, haggler
+  enemy: Hsark, theurge
+  belief: "I'll do whatever it takes to get ahead in this world, and wear a smile doing it."
+  goal: I will master the evil spirits within this tomb.
+  instinct: Always check for traps before picking a lock.
+  abilities:
+    will:
+      rating: 3
+    health:
+      rating: 5
+    nature:
+      rating: 5
+      max: 5
+    resources:
+      rating: 0
+    circles:
+      rating: 4
+  might: 3
+  natureDescriptors:
+    - Boasting
+    - Demanding
+    - Running
+  skills:
+    criminal:
+      rating: 3
+    fighter:
+      rating: 3
+    healer:
+      rating: 3
+    orator:
+      rating: 3
+    ritualist:
+      rating: 3
+    haggler:
+      rating: 2
+    manipulator:
+      rating: 2
+    theologian:
+      rating: 2
+  wises:
+    - name: Trap-wise
+      pass: false
+      fail: false
+      fate: false
+      persona: false
+  memoryPalaceSlots: 0
+  urdr:
+    capacity: 1
+    burden: 0
+prototypeToken:
+  actorLink: true
+  appendNumber: false
+  disposition: 1
+items:
+  - _id: ca06000000000001
+    name: Touched by the Gods
+    type: trait
+    system:
+      level: 1
+      isClass: true
+      beneficial: 0
+      usedAgainst: false
+      checks: 0
+    _key: '!actors.items!ca06000000000000.ca06000000000001'
+  - _id: ca06000000000002
+    name: Loner
+    type: trait
+    system:
+      level: 1
+      isClass: false
+      beneficial: 0
+      usedAgainst: false
+      checks: 0
+    _key: '!actors.items!ca06000000000000.ca06000000000002'
+  - _id: ca06000000000003
+    name: Shield
+    type: weapon
+    img: systems/tb2e/icons/ffffff/transparent/1x1/willdabeast/round-shield.svg
+    system:
+      description: Dungeoneer's Handbook, p. 158
+      slot: ''
+      slotIndex: 0
+      slotOptions:
+        carried: 1
+        torso: 1
+      cost: 1
+      damaged: false
+      dropped: false
+      quantity: 1
+      quantityMax: 1
+      wield: 1
+      conflictBonuses:
+        attack:
+          type: dice
+          value: 0
+        defend:
+          type: dice
+          value: 2
+        feint:
+          type: dice
+          value: 0
+        maneuver:
+          type: dice
+          value: 0
+      skillBonuses: []
+      specialRules: "+2D to Defend. May be used to absorb one point of damage once; the shield is then destroyed. Shields are cumbersome — carrying one may cause weariness and increases the obstacle to recover from exhaustion."
+    effects: []
+    _key: '!actors.items!ca06000000000000.ca06000000000003'
+  - _id: ca06000000000004
+    name: Mace
+    type: weapon
+    img: systems/tb2e/icons/ffffff/transparent/1x1/delapouite/flanged-mace.svg
+    system:
+      description: Dungeoneer's Handbook, p. 158
+      slot: ''
+      slotIndex: 0
+      slotOptions:
+        carried: 1
+        belt: 1
+      cost: 2
+      damaged: false
+      dropped: false
+      quantity: 1
+      quantityMax: 1
+      wield: 1
+      conflictBonuses:
+        attack:
+          type: dice
+          value: 0
+        defend:
+          type: dice
+          value: 0
+        feint:
+          type: dice
+          value: 0
+        maneuver:
+          type: dice
+          value: 0
+      skillBonuses: []
+      specialRules: "Bypasses the protection of chain armor. Increases the likelihood that plate armor is damaged."
+    effects: []
+    _key: '!actors.items!ca06000000000000.ca06000000000004'
+  - _id: ca06000000000005
+    name: Satchel
+    type: container
+    img: systems/tb2e/icons/ffffff/transparent/1x1/delapouite/shoulder-bag.svg
+    system:
+      description: Dungeoneer's Handbook, p. 152
+      slot: ''
+      slotIndex: 0
+      slotOptions:
+        torso: 1
+      cost: 1
+      damaged: false
+      dropped: false
+      quantity: 1
+      quantityMax: 1
+      containerKey: ''
+      containerSlots: 3
+      containerType: satchel
+      lost: false
+    effects: []
+    _key: '!actors.items!ca06000000000000.ca06000000000005'
+  - _id: ca06000000000006
+    name: Pouch, Belt
+    type: container
+    img: systems/tb2e/icons/ffffff/transparent/1x1/seregacthtuf/pouch-with-beads.svg
+    system:
+      description: Dungeoneer's Handbook, p. 152
+      slot: ''
+      slotIndex: 0
+      slotOptions:
+        belt: 1
+        pack: 1
+      cost: 1
+      damaged: false
+      dropped: false
+      quantity: 1
+      quantityMax: 1
+      containerKey: ''
+      containerSlots: 1
+      containerType: pouch
+      lost: false
+    effects: []
+    _key: '!actors.items!ca06000000000000.ca06000000000006'
+  - _id: ca06000000000007
+    name: Waterskin
+    type: container
+    img: systems/tb2e/icons/ffffff/transparent/1x1/delapouite/waterskin.svg
+    system:
+      description: Dungeoneer's Handbook, p. 152
+      slot: ''
+      slotIndex: 0
+      slotOptions:
+        belt: 1
+        pack: 1
+      cost: 1
+      damaged: false
+      dropped: false
+      quantity: 1
+      quantityMax: 1
+      containerKey: ''
+      containerSlots: 0
+      containerType: waterskin
+      liquidType: water
+      lost: false
+    effects: []
+    _key: '!actors.items!ca06000000000000.ca06000000000007'
+  - _id: ca06000000000008
+    name: Shoes
+    type: gear
+    img: systems/tb2e/icons/ffffff/transparent/1x1/delapouite/ballerina-shoes.svg
+    system:
+      description: Dungeoneer's Handbook, p. 239
+      slot: ''
+      slotIndex: 0
+      slotOptions:
+        feet: 1
+      cost: 1
+      damaged: false
+      dropped: false
+      quantity: 1
+      quantityMax: 1
+      skillBonuses: []
+      specialRules: ''
+    effects: []
+    _key: '!actors.items!ca06000000000000.ca06000000000008'
+  - _id: ca06000000000009
+    name: Thieves' Tools
+    type: gear
+    img: systems/tb2e/icons/ffffff/transparent/1x1/delapouite/lockpicks.svg
+    system:
+      description: Dungeoneer's Handbook, p. 153
+      slot: ''
+      slotIndex: 0
+      slotOptions:
+        pack: 1
+      cost: 4
+      damaged: false
+      dropped: false
+      quantity: 1
+      quantityMax: 1
+      skillBonuses:
+        - skill: criminal
+          value: 1
+          condition: Picking locks
+        - skill: sapper
+          value: 1
+          condition: Disarming traps
+      specialRules: ''
+    effects: []
+    _key: '!actors.items!ca06000000000000.ca06000000000009'
+  - _id: ca0600000000000a
+    name: Torches
+    type: supply
+    img: systems/tb2e/icons/ffffff/transparent/1x1/delapouite/torch.svg
+    system:
+      description: "Dungeoneer's Handbook, p. 154; Scholar's Guide, pp. 42\u201343"
+      slot: ''
+      slotIndex: 0
+      slotOptions:
+        carried: 1
+        pack: 1
+      cost: 2
+      damaged: false
+      dropped: false
+      quantity: 4
+      quantityMax: 4
+      supplyType: light
+      turnsRemaining: 2
+      lit: false
+      nameSingular: Torch
+      skillBonuses: []
+    _key: '!actors.items!ca06000000000000.ca0600000000000a'
+  - _id: ca0600000000000b
+    name: Bottle of Wine
+    type: container
+    img: systems/tb2e/icons/ffffff/transparent/1x1/delapouite/water-bottle.svg
+    system:
+      description: Dungeoneer's Handbook, p. 152
+      slot: ''
+      slotIndex: 0
+      slotOptions:
+        carried: 1
+        pack: 2
+      cost: 1
+      damaged: false
+      dropped: false
+      quantity: 1
+      quantityMax: 1
+      containerKey: ''
+      containerSlots: 0
+      containerType: bottle
+      liquidType: wine
+      lost: false
+    effects: []
+    _key: '!actors.items!ca06000000000000.ca0600000000000b'
+  - _id: ca0600000000000c
+    name: Bone Knitting Needles
+    type: relic
+    img: systems/tb2e/icons/ffffff/transparent/1x1/delapouite/chisel.svg
+    system:
+      description: "Dungeoneer's Handbook, p. 209"
+      slot: ''
+      slotIndex: 0
+      slotOptions:
+        head: 1
+        pack: 1
+      cost: 0
+      damaged: false
+      dropped: false
+      quantity: 1
+      quantityMax: 1
+      relicTier: minor
+      linkedInvocations:
+        - Bone Knitter
+      linkedCircle: null
+      immortal: ''
+      lore: ''
+    effects: []
+    _key: '!actors.items!ca06000000000000.ca0600000000000c'
+  - _id: ca0600000000000d
+    name: Spindle or Distaff Marked with the Rune of Fate
+    type: relic
+    img: systems/tb2e/icons/ffffff/transparent/1x1/delapouite/sewing-string.svg
+    system:
+      description: "Lore Master's Manual, p. 42"
+      slot: ''
+      slotIndex: 0
+      slotOptions:
+        pack: 1
+      cost: 0
+      damaged: false
+      dropped: false
+      quantity: 1
+      quantityMax: 1
+      relicTier: minor
+      linkedInvocations:
+        - Mudra of Fate
+      linkedCircle: null
+      immortal: Fate
+      lore: ''
+    effects: []
+    _key: '!actors.items!ca06000000000000.ca0600000000000d'
+  - _id: ca0600000000000e
+    name: Silver Chain
+    type: gear
+    img: systems/tb2e/icons/ffffff/transparent/1x1/delapouite/tribal-pendant.svg
+    system:
+      description: Scholar's Guide, p. 160
+      slot: ''
+      slotIndex: 0
+      slotOptions:
+        neck: 1
+        pocket: 1
+      cost: 0
+      damaged: false
+      dropped: false
+      quantity: 1
+      quantityMax: 1
+      value:
+        dice: 1
+        negotiated: false
+      skillBonuses: []
+      specialRules: ''
+    effects: []
+    _key: '!actors.items!ca06000000000000.ca0600000000000e'
+effects: []
+_key: '!actors!ca06000000000000'

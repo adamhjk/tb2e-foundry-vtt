@@ -1,0 +1,397 @@
+_id: ca01000000000000
+name: Karolina
+type: character
+img: systems/tb2e/icons/ffffff/transparent/1x1/lorc/barbed-spear.svg
+system:
+  stock: Human
+  class: Warrior
+  age: '19'
+  home: Remote Village
+  raiment: Bearskin cloak
+  parents: Orphaned
+  mentor: Gudrun, hunter
+  friend: Njall, weaver
+  enemy: Grimkell, warrior
+  belief: I am the bulwark that stands between my friends and harm.
+  goal: I will find out what happened to Jora.
+  instinct: Always go hunting when we make camp.
+  abilities:
+    will:
+      rating: 4
+    health:
+      rating: 4
+    nature:
+      rating: 3
+      max: 3
+    resources:
+      rating: 0
+    circles:
+      rating: 4
+  might: 3
+  natureDescriptors:
+    - Boasting
+    - Demanding
+    - Running
+  skills:
+    fighter:
+      rating: 4
+    hunter:
+      rating: 4
+    pathfinder:
+      rating: 3
+    carpenter:
+      rating: 2
+    commander:
+      rating: 2
+    mentor:
+      rating: 2
+    persuader:
+      rating: 2
+    rider:
+      rating: 2
+  wises:
+    - name: Field Dressing-wise
+      pass: false
+      fail: false
+      fate: false
+      persona: false
+    - name: Dwarf-wise
+      pass: false
+      fail: false
+      fate: false
+      persona: false
+  memoryPalaceSlots: 0
+  urdr:
+    capacity: 0
+    burden: 0
+prototypeToken:
+  actorLink: true
+  appendNumber: false
+  disposition: 1
+items:
+  - _id: ca01000000000001
+    name: Heart of Battle
+    type: trait
+    system:
+      level: 2
+      isClass: true
+      beneficial: 0
+      usedAgainst: false
+      checks: 0
+    _key: '!actors.items!ca01000000000000.ca01000000000001'
+  - _id: ca01000000000002
+    name: Defender
+    type: trait
+    system:
+      level: 1
+      isClass: false
+      beneficial: 0
+      usedAgainst: false
+      checks: 0
+    _key: '!actors.items!ca01000000000000.ca01000000000002'
+  - _id: ca01000000000003
+    name: Spear
+    type: weapon
+    img: systems/tb2e/icons/ffffff/transparent/1x1/lorc/barbed-spear.svg
+    system:
+      description: Dungeoneer's Handbook, p. 159
+      slot: ''
+      slotIndex: 0
+      slotOptions:
+        carried: 1
+      cost: 1
+      damaged: false
+      dropped: false
+      quantity: 1
+      quantityMax: 1
+      wield: 1
+      conflictBonuses:
+        attack:
+          type: dice
+          value: 0
+        defend:
+          type: dice
+          value: 0
+        feint:
+          type: dice
+          value: 0
+        maneuver:
+          type: dice
+          value: 1
+      skillBonuses: []
+      specialRules: "+1D to Maneuver. In narrow corridors or tight confines, also grants +1D to Defend. Bypasses leather armor. May be thrown to turn an independent Attack into a versus test (not against bow, crossbow or sling); you count as disarmed after throwing."
+    effects: []
+    _key: '!actors.items!ca01000000000000.ca01000000000003'
+  - _id: ca01000000000004
+    name: Shield
+    type: weapon
+    img: systems/tb2e/icons/ffffff/transparent/1x1/willdabeast/round-shield.svg
+    system:
+      description: Dungeoneer's Handbook, p. 158
+      slot: ''
+      slotIndex: 0
+      slotOptions:
+        carried: 1
+        torso: 1
+      cost: 1
+      damaged: false
+      dropped: false
+      quantity: 1
+      quantityMax: 1
+      wield: 1
+      conflictBonuses:
+        attack:
+          type: dice
+          value: 0
+        defend:
+          type: dice
+          value: 2
+        feint:
+          type: dice
+          value: 0
+        maneuver:
+          type: dice
+          value: 0
+      skillBonuses: []
+      specialRules: "+2D to Defend. May be used to absorb one point of damage once; the shield is then destroyed. Shields are cumbersome — carrying one may cause weariness and increases the obstacle to recover from exhaustion."
+    effects: []
+    _key: '!actors.items!ca01000000000000.ca01000000000004'
+  - _id: ca01000000000005
+    name: Leather Armor
+    type: armor
+    img: systems/tb2e/icons/ffffff/transparent/1x1/delapouite/leather-armor.svg
+    system:
+      description: Dungeoneer's Handbook, p. 151
+      slot: ''
+      slotIndex: 0
+      slotOptions:
+        torso: 1
+      cost: 2
+      damaged: false
+      dropped: false
+      quantity: 1
+      quantityMax: 1
+      armorType: leather
+      absorbs: 1
+      specialRules: Dungeoneer's Handbook, p. 151
+    effects: []
+    _key: '!actors.items!ca01000000000000.ca01000000000005'
+  - _id: ca01000000000006
+    name: Satchel
+    type: container
+    img: systems/tb2e/icons/ffffff/transparent/1x1/delapouite/shoulder-bag.svg
+    system:
+      description: Dungeoneer's Handbook, p. 152
+      slot: ''
+      slotIndex: 0
+      slotOptions:
+        torso: 1
+      cost: 1
+      damaged: false
+      dropped: false
+      quantity: 1
+      quantityMax: 1
+      containerKey: ''
+      containerSlots: 3
+      containerType: satchel
+      lost: false
+    effects: []
+    _key: '!actors.items!ca01000000000000.ca01000000000006'
+  - _id: ca01000000000007
+    name: Pouch, Belt
+    type: container
+    img: systems/tb2e/icons/ffffff/transparent/1x1/seregacthtuf/pouch-with-beads.svg
+    system:
+      description: Dungeoneer's Handbook, p. 152
+      slot: ''
+      slotIndex: 0
+      slotOptions:
+        belt: 1
+        pack: 1
+      cost: 1
+      damaged: false
+      dropped: false
+      quantity: 1
+      quantityMax: 1
+      containerKey: ''
+      containerSlots: 1
+      containerType: pouch
+      lost: false
+    effects: []
+    _key: '!actors.items!ca01000000000000.ca01000000000007'
+  - _id: ca01000000000008
+    name: Pouch, Belt
+    type: container
+    img: systems/tb2e/icons/ffffff/transparent/1x1/seregacthtuf/pouch-with-beads.svg
+    system:
+      description: Dungeoneer's Handbook, p. 152
+      slot: ''
+      slotIndex: 0
+      slotOptions:
+        belt: 1
+        pack: 1
+      cost: 1
+      damaged: false
+      dropped: false
+      quantity: 1
+      quantityMax: 1
+      containerKey: ''
+      containerSlots: 1
+      containerType: pouch
+      lost: false
+    effects: []
+    _key: '!actors.items!ca01000000000000.ca01000000000008'
+  - _id: ca01000000000009
+    name: Wineskin
+    type: container
+    img: systems/tb2e/icons/ffffff/transparent/1x1/delapouite/waterskin.svg
+    system:
+      description: Dungeoneer's Handbook, p. 152
+      slot: ''
+      slotIndex: 0
+      slotOptions:
+        belt: 1
+        pack: 1
+      cost: 1
+      damaged: false
+      dropped: false
+      quantity: 1
+      quantityMax: 1
+      containerKey: ''
+      containerSlots: 0
+      containerType: waterskin
+      liquidType: wine
+      lost: false
+    effects: []
+    _key: '!actors.items!ca01000000000000.ca01000000000009'
+  - _id: ca0100000000000a
+    name: Shoes
+    type: gear
+    img: systems/tb2e/icons/ffffff/transparent/1x1/delapouite/ballerina-shoes.svg
+    system:
+      description: Dungeoneer's Handbook, p. 239
+      slot: ''
+      slotIndex: 0
+      slotOptions:
+        feet: 1
+      cost: 1
+      damaged: false
+      dropped: false
+      quantity: 1
+      quantityMax: 1
+      skillBonuses: []
+      specialRules: ''
+    effects: []
+    _key: '!actors.items!ca01000000000000.ca0100000000000a'
+  - _id: ca0100000000000b
+    name: Tinderbox
+    type: gear
+    img: systems/tb2e/icons/ffffff/transparent/1x1/delapouite/flint-spark.svg
+    system:
+      description: Dungeoneer's Handbook, p. 154
+      slot: ''
+      slotIndex: 0
+      slotOptions:
+        pack: 1
+      cost: 1
+      damaged: false
+      dropped: false
+      quantity: 1
+      quantityMax: 1
+      skillBonuses:
+        - skill: survivalist
+          value: 1
+          condition: Starting fires in bad conditions
+      specialRules: ''
+    effects: []
+    _key: '!actors.items!ca01000000000000.ca0100000000000b'
+  - _id: ca0100000000000c
+    name: Rations, Preserved
+    type: supply
+    img: systems/tb2e/icons/ffffff/transparent/1x1/darkzaitzev/fish-cooked.svg
+    system:
+      description: Dungeoneer's Handbook, p. 154
+      slot: ''
+      slotIndex: 0
+      slotOptions:
+        pack: 1
+      cost: 2
+      damaged: false
+      dropped: false
+      quantity: 3
+      quantityMax: 3
+      supplyType: food
+      turnsRemaining: 0
+      skillBonuses: []
+    effects: []
+    _key: '!actors.items!ca01000000000000.ca0100000000000c'
+  - _id: ca0100000000000d
+    name: Torches
+    type: supply
+    img: systems/tb2e/icons/ffffff/transparent/1x1/delapouite/torch.svg
+    system:
+      description: "Dungeoneer's Handbook, p. 154; Scholar's Guide, pp. 42\u201343"
+      slot: ''
+      slotIndex: 0
+      slotOptions:
+        carried: 1
+        pack: 1
+      cost: 2
+      damaged: false
+      dropped: false
+      quantity: 4
+      quantityMax: 4
+      supplyType: light
+      turnsRemaining: 2
+      lit: false
+      nameSingular: Torch
+      skillBonuses: []
+    _key: '!actors.items!ca01000000000000.ca0100000000000d'
+  - _id: ca0100000000000e
+    name: Bottle of Wine
+    type: container
+    img: systems/tb2e/icons/ffffff/transparent/1x1/delapouite/water-bottle.svg
+    system:
+      description: Dungeoneer's Handbook, p. 152
+      slot: ''
+      slotIndex: 0
+      slotOptions:
+        carried: 1
+        pack: 2
+      cost: 1
+      damaged: false
+      dropped: false
+      quantity: 1
+      quantityMax: 1
+      containerKey: ''
+      containerSlots: 0
+      containerType: bottle
+      liquidType: wine
+      lost: false
+    effects: []
+    _key: '!actors.items!ca01000000000000.ca0100000000000e'
+  - _id: ca0100000000000f
+    name: Cameo Necklace
+    type: gear
+    img: systems/tb2e/icons/ffffff/transparent/1x1/delapouite/tribal-pendant.svg
+    system:
+      description: Scholar's Guide, p. 160
+      slot: ''
+      slotIndex: 0
+      slotOptions:
+        neck: 1
+        pocket: 1
+      cost: 0
+      damaged: false
+      dropped: false
+      quantity: 1
+      quantityMax: 1
+      value:
+        dice: 1
+        negotiated: false
+      skillBonuses: []
+      specialRules: ''
+    effects: []
+    _key: '!actors.items!ca01000000000000.ca0100000000000f'
+effects: []
+_key: '!actors!ca01000000000000'

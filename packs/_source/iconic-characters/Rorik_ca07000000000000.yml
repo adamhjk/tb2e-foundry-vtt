@@ -1,0 +1,419 @@
+_id: ca07000000000000
+name: "R\xF6rik"
+type: character
+img: systems/tb2e/icons/ffffff/transparent/1x1/caro-asercion/spinning-wheel.svg
+system:
+  stock: Human
+  class: Shaman
+  age: '21'
+  home: Remote Village
+  raiment: Bearskin hat
+  parents: Orphaned
+  mentor: Aliinna, healer
+  friend: Kearte, carpenter
+  enemy: Harek Bear-Killer
+  belief: Strong wine quiets the voices of the spirits.
+  goal: ''
+  instinct: Always purify myself in camp (preferably with wine).
+  abilities:
+    will:
+      rating: 3
+    health:
+      rating: 5
+    nature:
+      rating: 5
+      max: 5
+    resources:
+      rating: 0
+    circles:
+      rating: 4
+  might: 3
+  natureDescriptors:
+    - Boasting
+    - Demanding
+    - Running
+  skills:
+    ritualist:
+      rating: 4
+    healer:
+      rating: 3
+    theologian:
+      rating: 3
+    survivalist:
+      rating: 3
+    carpenter:
+      rating: 2
+    fighter:
+      rating: 2
+    manipulator:
+      rating: 2
+    scavenger:
+      rating: 2
+  wises:
+    - name: Goblin-wise
+      pass: false
+      fail: false
+      fate: false
+      persona: false
+  memoryPalaceSlots: 0
+  urdr:
+    capacity: 0
+    burden: 0
+prototypeToken:
+  actorLink: true
+  appendNumber: false
+  disposition: 1
+items:
+  - _id: ca07000000000001
+    name: Between Two Worlds
+    type: trait
+    system:
+      level: 1
+      isClass: true
+      beneficial: 0
+      usedAgainst: false
+      checks: 0
+    _key: '!actors.items!ca07000000000000.ca07000000000001'
+  - _id: ca07000000000002
+    name: Rough Hands
+    type: trait
+    system:
+      level: 1
+      isClass: false
+      beneficial: 0
+      usedAgainst: false
+      checks: 0
+    _key: '!actors.items!ca07000000000000.ca07000000000002'
+  - _id: ca07000000000003
+    name: Hand Axe
+    type: weapon
+    img: systems/tb2e/icons/ffffff/transparent/1x1/delapouite/sharp-axe.svg
+    system:
+      description: Dungeoneer's Handbook, p. 158
+      slot: ''
+      slotIndex: 0
+      slotOptions:
+        carried: 1
+        belt: 1
+        pack: 2
+      cost: 1
+      damaged: false
+      dropped: false
+      quantity: 1
+      quantityMax: 1
+      wield: 1
+      conflictBonuses:
+        attack:
+          type: dice
+          value: 0
+        defend:
+          type: dice
+          value: 0
+        feint:
+          type: dice
+          value: 0
+        maneuver:
+          type: dice
+          value: 0
+      skillBonuses: []
+      specialRules: "May be thrown once per fight, turning an independent Attack action into a versus test (not against opponents wielding a bow, crossbow or sling). After throwing, you count as disarmed until you equip another weapon between rounds."
+    effects: []
+    _key: '!actors.items!ca07000000000000.ca07000000000003'
+  - _id: ca07000000000004
+    name: Shield
+    type: weapon
+    img: systems/tb2e/icons/ffffff/transparent/1x1/willdabeast/round-shield.svg
+    system:
+      description: Dungeoneer's Handbook, p. 158
+      slot: ''
+      slotIndex: 0
+      slotOptions:
+        carried: 1
+        torso: 1
+      cost: 1
+      damaged: false
+      dropped: false
+      quantity: 1
+      quantityMax: 1
+      wield: 1
+      conflictBonuses:
+        attack:
+          type: dice
+          value: 0
+        defend:
+          type: dice
+          value: 2
+        feint:
+          type: dice
+          value: 0
+        maneuver:
+          type: dice
+          value: 0
+      skillBonuses: []
+      specialRules: "+2D to Defend. May be used to absorb one point of damage once; the shield is then destroyed. Shields are cumbersome — carrying one may cause weariness and increases the obstacle to recover from exhaustion."
+    effects: []
+    _key: '!actors.items!ca07000000000000.ca07000000000004'
+  - _id: ca07000000000005
+    name: Cloak
+    type: gear
+    img: systems/tb2e/icons/ffffff/transparent/1x1/lorc/cowled.svg
+    system:
+      description: Dungeoneer's Handbook, p. 151
+      slot: ''
+      slotIndex: 0
+      slotOptions:
+        torso: 1
+        carried: 1
+        pack: 2
+      cost: 2
+      damaged: false
+      dropped: false
+      quantity: 1
+      quantityMax: 1
+      skillBonuses: []
+      specialRules: ''
+    effects: []
+    _key: '!actors.items!ca07000000000000.ca07000000000005'
+  - _id: ca07000000000006
+    name: Satchel
+    type: container
+    img: systems/tb2e/icons/ffffff/transparent/1x1/delapouite/shoulder-bag.svg
+    system:
+      description: Dungeoneer's Handbook, p. 152
+      slot: ''
+      slotIndex: 0
+      slotOptions:
+        torso: 1
+      cost: 1
+      damaged: false
+      dropped: false
+      quantity: 1
+      quantityMax: 1
+      containerKey: ''
+      containerSlots: 3
+      containerType: satchel
+      lost: false
+    effects: []
+    _key: '!actors.items!ca07000000000000.ca07000000000006'
+  - _id: ca07000000000007
+    name: Pouch, Belt
+    type: container
+    img: systems/tb2e/icons/ffffff/transparent/1x1/seregacthtuf/pouch-with-beads.svg
+    system:
+      description: Dungeoneer's Handbook, p. 152
+      slot: ''
+      slotIndex: 0
+      slotOptions:
+        belt: 1
+        pack: 1
+      cost: 1
+      damaged: false
+      dropped: false
+      quantity: 1
+      quantityMax: 1
+      containerKey: ''
+      containerSlots: 1
+      containerType: pouch
+      lost: false
+    effects: []
+    _key: '!actors.items!ca07000000000000.ca07000000000007'
+  - _id: ca07000000000008
+    name: Wineskin
+    type: container
+    img: systems/tb2e/icons/ffffff/transparent/1x1/delapouite/waterskin.svg
+    system:
+      description: Dungeoneer's Handbook, p. 152
+      slot: ''
+      slotIndex: 0
+      slotOptions:
+        belt: 1
+        pack: 1
+      cost: 1
+      damaged: false
+      dropped: false
+      quantity: 1
+      quantityMax: 1
+      containerKey: ''
+      containerSlots: 0
+      containerType: waterskin
+      liquidType: wine
+      lost: false
+    effects: []
+    _key: '!actors.items!ca07000000000000.ca07000000000008'
+  - _id: ca07000000000009
+    name: Wineskin
+    type: container
+    img: systems/tb2e/icons/ffffff/transparent/1x1/delapouite/waterskin.svg
+    system:
+      description: Dungeoneer's Handbook, p. 152
+      slot: ''
+      slotIndex: 0
+      slotOptions:
+        belt: 1
+        pack: 1
+      cost: 1
+      damaged: false
+      dropped: false
+      quantity: 1
+      quantityMax: 1
+      containerKey: ''
+      containerSlots: 0
+      containerType: waterskin
+      liquidType: wine
+      lost: false
+    effects: []
+    _key: '!actors.items!ca07000000000000.ca07000000000009'
+  - _id: ca0700000000000a
+    name: Shoes
+    type: gear
+    img: systems/tb2e/icons/ffffff/transparent/1x1/delapouite/ballerina-shoes.svg
+    system:
+      description: Dungeoneer's Handbook, p. 239
+      slot: ''
+      slotIndex: 0
+      slotOptions:
+        feet: 1
+      cost: 1
+      damaged: false
+      dropped: false
+      quantity: 1
+      quantityMax: 1
+      skillBonuses: []
+      specialRules: ''
+    effects: []
+    _key: '!actors.items!ca07000000000000.ca0700000000000a'
+  - _id: ca0700000000000b
+    name: Tinderbox
+    type: gear
+    img: systems/tb2e/icons/ffffff/transparent/1x1/delapouite/flint-spark.svg
+    system:
+      description: Dungeoneer's Handbook, p. 154
+      slot: ''
+      slotIndex: 0
+      slotOptions:
+        pack: 1
+      cost: 1
+      damaged: false
+      dropped: false
+      quantity: 1
+      quantityMax: 1
+      skillBonuses:
+        - skill: survivalist
+          value: 1
+          condition: Starting fires in bad conditions
+      specialRules: ''
+    effects: []
+    _key: '!actors.items!ca07000000000000.ca0700000000000b'
+  - _id: ca0700000000000c
+    name: Rations, Preserved
+    type: supply
+    img: systems/tb2e/icons/ffffff/transparent/1x1/darkzaitzev/fish-cooked.svg
+    system:
+      description: Dungeoneer's Handbook, p. 154
+      slot: ''
+      slotIndex: 0
+      slotOptions:
+        pack: 1
+      cost: 2
+      damaged: false
+      dropped: false
+      quantity: 3
+      quantityMax: 3
+      supplyType: food
+      turnsRemaining: 0
+      skillBonuses: []
+    effects: []
+    _key: '!actors.items!ca07000000000000.ca0700000000000c'
+  - _id: ca0700000000000d
+    name: Bottle of Wine
+    type: container
+    img: systems/tb2e/icons/ffffff/transparent/1x1/delapouite/water-bottle.svg
+    system:
+      description: Dungeoneer's Handbook, p. 152
+      slot: ''
+      slotIndex: 0
+      slotOptions:
+        carried: 1
+        pack: 2
+      cost: 1
+      damaged: false
+      dropped: false
+      quantity: 1
+      quantityMax: 1
+      containerKey: ''
+      containerSlots: 0
+      containerType: bottle
+      liquidType: wine
+      lost: false
+    effects: []
+    _key: '!actors.items!ca07000000000000.ca0700000000000d'
+  - _id: ca0700000000000e
+    name: Preserved Tongue of a Liar
+    type: relic
+    img: systems/tb2e/icons/ffffff/transparent/1x1/delapouite/snake-tongue.svg
+    system:
+      description: "Lore Master's Manual, p. 43"
+      slot: ''
+      slotIndex: 0
+      slotOptions:
+        neck: 1
+      cost: 0
+      damaged: false
+      dropped: false
+      quantity: 1
+      quantityMax: 1
+      relicTier: minor
+      linkedInvocations:
+        - "Vafrudnir's Silver Tongue"
+      linkedCircle: null
+      immortal: Vafrudnir
+      lore: ''
+    effects: []
+    _key: '!actors.items!ca07000000000000.ca0700000000000e'
+  - _id: ca0700000000000f
+    name: Spindle or Distaff Marked with the Rune of Fate
+    type: relic
+    img: systems/tb2e/icons/ffffff/transparent/1x1/delapouite/sewing-string.svg
+    system:
+      description: "Lore Master's Manual, p. 42"
+      slot: ''
+      slotIndex: 0
+      slotOptions:
+        pack: 1
+      cost: 0
+      damaged: false
+      dropped: false
+      quantity: 1
+      quantityMax: 1
+      relicTier: minor
+      linkedInvocations:
+        - Mudra of Fate
+      linkedCircle: null
+      immortal: Fate
+      lore: ''
+    effects: []
+    _key: '!actors.items!ca07000000000000.ca0700000000000f'
+  - _id: ca07000000000010
+    name: Father's Gold Tooth
+    type: gear
+    img: systems/tb2e/icons/ffffff/transparent/1x1/lorc/tooth.svg
+    system:
+      description: Scholar's Guide, p. 160
+      slot: ''
+      slotIndex: 0
+      slotOptions:
+        pocket: 1
+      cost: 0
+      damaged: false
+      dropped: false
+      quantity: 1
+      quantityMax: 1
+      value:
+        dice: 1
+        negotiated: false
+      skillBonuses: []
+      specialRules: ''
+    effects: []
+    _key: '!actors.items!ca07000000000000.ca07000000000010'
+effects: []
+_key: '!actors!ca07000000000000'

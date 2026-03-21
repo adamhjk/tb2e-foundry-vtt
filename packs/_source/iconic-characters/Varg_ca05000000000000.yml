@@ -1,0 +1,503 @@
+_id: ca05000000000000
+name: Varg
+type: character
+img: systems/tb2e/icons/ffffff/transparent/1x1/lorc/compass.svg
+system:
+  stock: Human
+  class: Magician
+  age: '21'
+  home: Wizard's Tower
+  raiment: Purple cloak
+  parents: Orphaned
+  mentor: Solveig the Eye
+  friend: Ban, magician
+  enemy: Hall, magician
+  belief: No one crosses me without paying the price.
+  goal: I will discover secret lore hidden in the tomb.
+  instinct: Always map our progress when we camp.
+  abilities:
+    will:
+      rating: 5
+    health:
+      rating: 3
+    nature:
+      rating: 4
+      max: 4
+    resources:
+      rating: 0
+    circles:
+      rating: 4
+  might: 3
+  natureDescriptors:
+    - Boasting
+    - Demanding
+    - Running
+  skills:
+    arcanist:
+      rating: 4
+    alchemist:
+      rating: 3
+    cartographer:
+      rating: 3
+    loremaster:
+      rating: 3
+    survivalist:
+      rating: 3
+    manipulator:
+      rating: 2
+    scholar:
+      rating: 2
+  wises:
+    - name: Skirmish-wise
+      pass: false
+      fail: false
+      fate: false
+      persona: false
+    - name: Politics-wise
+      pass: false
+      fail: false
+      fate: false
+      persona: false
+  memoryPalaceSlots: 1
+  urdr:
+    capacity: 0
+    burden: 0
+prototypeToken:
+  actorLink: true
+  appendNumber: false
+  disposition: 1
+items:
+  - _id: ca05000000000001
+    name: Thoughtful
+    type: trait
+    system:
+      level: 1
+      isClass: false
+      beneficial: 0
+      usedAgainst: false
+      checks: 0
+    _key: '!actors.items!ca05000000000000.ca05000000000001'
+  - _id: ca05000000000002
+    name: "Wizard's Sight"
+    type: trait
+    system:
+      level: 2
+      isClass: true
+      beneficial: 0
+      usedAgainst: false
+      checks: 0
+    _key: '!actors.items!ca05000000000000.ca05000000000002'
+  - _id: ca05000000000003
+    name: Dagger
+    type: weapon
+    img: systems/tb2e/icons/ffffff/transparent/1x1/lorc/plain-dagger.svg
+    system:
+      description: Dungeoneer's Handbook, p. 158
+      slot: ''
+      slotIndex: 0
+      slotOptions:
+        carried: 1
+        belt: 1
+        neck: 1
+      cost: 1
+      damaged: false
+      dropped: false
+      quantity: 1
+      quantityMax: 1
+      wield: 1
+      conflictBonuses:
+        attack:
+          type: dice
+          value: 0
+        defend:
+          type: dice
+          value: 0
+        feint:
+          type: dice
+          value: 0
+        maneuver:
+          type: dice
+          value: 0
+      skillBonuses: []
+      specialRules: "A successful Maneuver with a dagger counts as a disarm against an opponent wielding a spear, polearm, halberd, sling, bow, or crossbow."
+    effects: []
+    _key: '!actors.items!ca05000000000000.ca05000000000003'
+  - _id: ca05000000000004
+    name: Cloak
+    type: gear
+    img: systems/tb2e/icons/ffffff/transparent/1x1/lorc/cowled.svg
+    system:
+      description: Dungeoneer's Handbook, p. 151
+      slot: ''
+      slotIndex: 0
+      slotOptions:
+        torso: 1
+        carried: 1
+        pack: 2
+      cost: 2
+      damaged: false
+      dropped: false
+      quantity: 1
+      quantityMax: 1
+      skillBonuses: []
+      specialRules: ''
+    effects: []
+    _key: '!actors.items!ca05000000000000.ca05000000000004'
+  - _id: ca05000000000005
+    name: Backpack
+    type: container
+    img: systems/tb2e/icons/ffffff/transparent/1x1/delapouite/backpack.svg
+    system:
+      description: Dungeoneer's Handbook, p. 152
+      slot: ''
+      slotIndex: 0
+      slotOptions:
+        torso: 2
+      cost: 2
+      damaged: false
+      dropped: false
+      quantity: 1
+      quantityMax: 1
+      containerKey: ''
+      containerSlots: 6
+      containerType: backpack
+      lost: false
+    effects: []
+    _key: '!actors.items!ca05000000000000.ca05000000000005'
+  - _id: ca05000000000006
+    name: Pouch, Belt
+    type: container
+    img: systems/tb2e/icons/ffffff/transparent/1x1/seregacthtuf/pouch-with-beads.svg
+    system:
+      description: Dungeoneer's Handbook, p. 152
+      slot: ''
+      slotIndex: 0
+      slotOptions:
+        belt: 1
+        pack: 1
+      cost: 1
+      damaged: false
+      dropped: false
+      quantity: 1
+      quantityMax: 1
+      containerKey: ''
+      containerSlots: 1
+      containerType: pouch
+      lost: false
+    effects: []
+    _key: '!actors.items!ca05000000000000.ca05000000000006'
+  - _id: ca05000000000007
+    name: Waterskin
+    type: container
+    img: systems/tb2e/icons/ffffff/transparent/1x1/delapouite/waterskin.svg
+    system:
+      description: Dungeoneer's Handbook, p. 152
+      slot: ''
+      slotIndex: 0
+      slotOptions:
+        belt: 1
+        pack: 1
+      cost: 1
+      damaged: false
+      dropped: false
+      quantity: 1
+      quantityMax: 1
+      containerKey: ''
+      containerSlots: 0
+      containerType: waterskin
+      liquidType: water
+      lost: false
+    effects: []
+    _key: '!actors.items!ca05000000000000.ca05000000000007'
+  - _id: ca05000000000008
+    name: Shoes
+    type: gear
+    img: systems/tb2e/icons/ffffff/transparent/1x1/delapouite/ballerina-shoes.svg
+    system:
+      description: Dungeoneer's Handbook, p. 239
+      slot: ''
+      slotIndex: 0
+      slotOptions:
+        feet: 1
+      cost: 1
+      damaged: false
+      dropped: false
+      quantity: 1
+      quantityMax: 1
+      skillBonuses: []
+      specialRules: ''
+    effects: []
+    _key: '!actors.items!ca05000000000000.ca05000000000008'
+  - _id: ca05000000000009
+    name: Candles
+    type: supply
+    img: systems/tb2e/icons/ffffff/transparent/1x1/delapouite/candles.svg
+    system:
+      description: "Dungeoneer's Handbook, p. 154; Scholar's Guide, pp. 42\u201343"
+      slot: ''
+      slotIndex: 0
+      slotOptions:
+        pack: 1
+      cost: 1
+      damaged: false
+      dropped: false
+      quantity: 4
+      quantityMax: 4
+      supplyType: light
+      turnsRemaining: 4
+      lit: false
+      nameSingular: Candle
+      skillBonuses: []
+    _key: '!actors.items!ca05000000000000.ca05000000000009'
+  - _id: ca0500000000000a
+    name: Tinderbox
+    type: gear
+    img: systems/tb2e/icons/ffffff/transparent/1x1/delapouite/flint-spark.svg
+    system:
+      description: Dungeoneer's Handbook, p. 154
+      slot: ''
+      slotIndex: 0
+      slotOptions:
+        pack: 1
+      cost: 1
+      damaged: false
+      dropped: false
+      quantity: 1
+      quantityMax: 1
+      skillBonuses:
+        - skill: survivalist
+          value: 1
+          condition: Starting fires in bad conditions
+      specialRules: ''
+    effects: []
+    _key: '!actors.items!ca05000000000000.ca0500000000000a'
+  - _id: ca0500000000000b
+    name: Rations, Preserved
+    type: supply
+    img: systems/tb2e/icons/ffffff/transparent/1x1/darkzaitzev/fish-cooked.svg
+    system:
+      description: Dungeoneer's Handbook, p. 154
+      slot: ''
+      slotIndex: 0
+      slotOptions:
+        pack: 1
+      cost: 2
+      damaged: false
+      dropped: false
+      quantity: 3
+      quantityMax: 3
+      supplyType: food
+      turnsRemaining: 0
+      skillBonuses: []
+    effects: []
+    _key: '!actors.items!ca05000000000000.ca0500000000000b'
+  - _id: ca0500000000000c
+    name: Rope
+    type: gear
+    img: systems/tb2e/icons/ffffff/transparent/1x1/delapouite/rope-coil.svg
+    system:
+      description: Dungeoneer's Handbook, p. 153
+      slot: ''
+      slotIndex: 0
+      slotOptions:
+        torso: 1
+        pack: 2
+      cost: 2
+      damaged: false
+      dropped: false
+      quantity: 1
+      quantityMax: 1
+      skillBonuses:
+        - skill: dungeoneer
+          value: 1
+          condition: Climbing
+        - skill: health
+          value: 1
+          condition: Climbing
+      specialRules: ''
+    effects: []
+    _key: '!actors.items!ca05000000000000.ca0500000000000c'
+  - _id: ca0500000000000d
+    name: Bronze Bracelet
+    type: gear
+    img: systems/tb2e/icons/ffffff/transparent/1x1/lorc/engagement-ring.svg
+    system:
+      description: Scholar's Guide, p. 160
+      slot: ''
+      slotIndex: 0
+      slotOptions:
+        wornHand: 1
+        pocket: 1
+      cost: 0
+      damaged: false
+      dropped: false
+      quantity: 1
+      quantityMax: 1
+      value:
+        dice: 1
+        negotiated: false
+      skillBonuses: []
+      specialRules: ''
+    effects: []
+    _key: '!actors.items!ca05000000000000.ca0500000000000d'
+  - _id: ca0500000000000e
+    name: "Wayfinder's Friend"
+    type: spell
+    img: systems/tb2e/icons/ffffff/transparent/1x1/lorc/compass.svg
+    system:
+      description: "Dungeoneer's Handbook, p. 190"
+      circle: 1
+      castingType: factors
+      fixedObstacle: 0
+      obstacleNote: ''
+      castingTime: free
+      duration: One turn
+      factors:
+        - name: Weather
+          options:
+            - label: Overcast
+              value: 1
+            - label: Light snow or rain
+              value: 2
+            - label: Squall
+              value: 3
+            - label: Storm
+              value: 4
+        - name: Terrain
+          options:
+            - label: Roads or rivers
+              value: 0
+            - label: Fields or streams
+              value: 1
+            - label: Forests or hills
+              value: 2
+            - label: Mountains or broken terrain
+              value: 3
+      factorNote: "For wayfinding, use Arcanist in place of Pathfinder or Sailor (navigational tests only). Compass uses factors below."
+      swapSkill: ''
+      swapConflictTypes: []
+      versusDefense: ''
+      mightPenalty: false
+      materials: ''
+      focus: "A sunstone [pack 1]"
+      scribeObstacle: 2
+      learnObstacle: 2
+      conflictBonuses:
+        attack:
+          type: dice
+          value: 0
+        defend:
+          type: dice
+          value: 0
+        feint:
+          type: dice
+          value: 0
+        maneuver:
+          type: dice
+          value: 0
+      conflictQualities: []
+      specialRules: ''
+      library: false
+      spellbook: false
+      memorized: true
+      cast: false
+      scroll: false
+    effects: []
+    _key: '!actors.items!ca05000000000000.ca0500000000000e'
+  - _id: ca0500000000000f
+    name: "Wizard's \xC6gis"
+    type: spell
+    img: systems/tb2e/icons/ffffff/transparent/1x1/delapouite/attached-shield.svg
+    system:
+      description: "Dungeoneer's Handbook, p. 191"
+      circle: 1
+      castingType: skillSwap
+      fixedObstacle: 0
+      obstacleNote: ''
+      castingTime: free
+      duration: One conflict
+      factors: []
+      factorNote: ''
+      swapSkill: fighter
+      swapConflictTypes:
+        - kill
+        - capture
+        - driveOff
+      versusDefense: ''
+      mightPenalty: false
+      materials: ''
+      focus: "A chrysoprase ring or pendant [worn/hand or neck]"
+      scribeObstacle: 1
+      learnObstacle: 2
+      conflictBonuses:
+        attack:
+          type: dice
+          value: 0
+        defend:
+          type: success
+          value: 2
+        feint:
+          type: dice
+          value: 0
+        maneuver:
+          type: dice
+          value: 0
+      conflictQualities:
+        - name: Indestructible
+          description: "+2s to Defend"
+        - name: Arcane Surge
+          description: "If your Defend action is successful, the opposing team suffers -1D to its next action."
+      specialRules: ''
+      library: false
+      spellbook: false
+      memorized: true
+      cast: false
+      scroll: false
+    effects: []
+    _key: '!actors.items!ca05000000000000.ca0500000000000f'
+  - _id: ca05000000000010
+    name: Word of Binding
+    type: spell
+    img: systems/tb2e/icons/ffffff/transparent/1x1/lorc/crossed-chains.svg
+    system:
+      description: "Dungeoneer's Handbook, p. 192"
+      circle: 1
+      castingType: fixed
+      fixedObstacle: 3
+      obstacleNote: ''
+      castingTime: free
+      duration: One phase plus one phase per margin of success
+      factors: []
+      factorNote: ''
+      swapSkill: ''
+      swapConflictTypes: []
+      versusDefense: ''
+      mightPenalty: false
+      materials: ''
+      focus: "Iron links in a chain [worn/neck, pack 1 or carried 1]"
+      scribeObstacle: 1
+      learnObstacle: 2
+      conflictBonuses:
+        attack:
+          type: dice
+          value: 0
+        defend:
+          type: dice
+          value: 0
+        feint:
+          type: dice
+          value: 0
+        maneuver:
+          type: dice
+          value: 0
+      conflictQualities: []
+      specialRules: ''
+      library: false
+      spellbook: false
+      memorized: true
+      cast: false
+      scroll: false
+    effects: []
+    _key: '!actors.items!ca05000000000000.ca05000000000010'
+effects: []
+_key: '!actors!ca05000000000000'
