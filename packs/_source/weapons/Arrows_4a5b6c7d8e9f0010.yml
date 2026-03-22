@@ -1,0 +1,22 @@
+_id: 4a5b6c7d8e9f0010
+name: Arrows
+type: supply
+img: systems/tb2e/icons/ffffff/transparent/1x1/delapouite/arrow-cluster.svg
+system:
+  description: "Dungeoneer's Handbook, p. 156"
+  slot: ''
+  slotIndex: 0
+  slotOptions:
+    quiver: 1
+  cost: 1
+  damaged: false
+  dropped: false
+  quantity: 1
+  quantityMax: 1
+  supplyType: ammunition
+  turnsRemaining: 0
+  lit: false
+  nameSingular: Arrows
+  skillBonuses: []
+effects: []
+_key: '!items!4a5b6c7d8e9f0010'

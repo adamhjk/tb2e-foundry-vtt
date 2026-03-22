@@ -1,0 +1,37 @@
+_id: a00000000000001c
+name: Apotheosis of the Lords of Law
+type: invocation
+img: systems/tb2e/icons/ffffff/transparent/1x1/lorc/scales.svg
+system:
+  description: "Dungeoneer's Handbook, p. 224"
+  circle: 3
+  castingType: factors
+  factors:
+    - name: Type of Conflict
+      options:
+        - label: Banish
+          value: 2
+        - label: Abjure
+          value: 3
+        - label: Bind
+          value: 4
+    - name: Breadth
+      options:
+        - label: Self
+          value: 0
+        - label: Another
+          value: 1
+        - label: Small group
+          value: 3
+  invocationTime: 1
+  invocationTimeWithRelic: 0
+  duration: One turn
+  burden: 4
+  burdenWithRelic: 3
+  relic: The Scepter of Rule
+  relicInventory: carried 1, belt 1, wielded 1
+  sacramental: ''
+  mightPenalty: true
+  performed: false
+effects: []
+_key: '!items!a00000000000001c'

@@ -1,0 +1,21 @@
+_id: a00000000000000e
+name: Wisdom of the Mother
+type: invocation
+img: systems/tb2e/icons/ffffff/transparent/1x1/lorc/book-cover.svg
+system:
+  description: "Dungeoneer's Handbook, p. 214"
+  circle: 1
+  castingType: fixed
+  fixedObstacle: 3
+  invocationTime: 1
+  invocationTimeWithRelic: 0
+  duration: One turn
+  burden: 2
+  burdenWithRelic: 1
+  relic: Tally sticks carved with the names of the Immortals
+  relicInventory: pack 1
+  sacramental: ''
+  mightPenalty: true
+  performed: false
+effects: []
+_key: '!items!a00000000000000e'

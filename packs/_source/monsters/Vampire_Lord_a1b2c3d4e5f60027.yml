@@ -1,7 +1,7 @@
 _id: a1b2c3d4e5f60027
 name: Vampire Lord
 type: monster
-img: systems/tb2e/icons/ffffff/transparent/1x1/delapouite/resting-vampire.svg
+img: systems/tb2e/assets/tokens/vampire-lord.webp
 system:
   nature: 7
   natureDescriptors: Hunting, Scheming, Subjugating
@@ -80,6 +80,8 @@ prototypeToken:
   actorLink: false
   appendNumber: true
   disposition: -1
+  texture:
+    src: systems/tb2e/assets/tokens/vampire-lord.webp
 items: []
 effects: []
 _key: '!actors!a1b2c3d4e5f60027'

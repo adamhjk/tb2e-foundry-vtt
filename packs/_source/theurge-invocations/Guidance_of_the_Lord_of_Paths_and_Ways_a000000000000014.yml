@@ -1,0 +1,37 @@
+_id: a000000000000014
+name: Guidance of the Lord of Paths and Ways
+type: invocation
+img: systems/tb2e/icons/ffffff/transparent/1x1/lorc/compass.svg
+system:
+  description: "Dungeoneer's Handbook, p. 219"
+  circle: 2
+  castingType: factors
+  factors:
+    - name: Terrain
+      options:
+        - label: Moors, plains, or tundra
+          value: 1
+        - label: Desert, forest, or hills
+          value: 2
+        - label: Jungle, mountains, or wetlands
+          value: 3
+    - name: Travelers
+      options:
+        - label: One person
+          value: 1
+        - label: Small group
+          value: 2
+        - label: Caravan or company
+          value: 3
+  invocationTime: 2
+  invocationTimeWithRelic: 1
+  duration: Phase
+  burden: 3
+  burdenWithRelic: 2
+  relic: Sol's Disc
+  relicInventory: worn/neck or carried 1
+  sacramental: ''
+  mightPenalty: true
+  performed: false
+effects: []
+_key: '!items!a000000000000014'

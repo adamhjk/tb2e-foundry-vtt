@@ -1,0 +1,24 @@
+_id: b000000000000021
+name: Sword of the Lady of Valor
+type: relic
+img: systems/tb2e/icons/ffffff/transparent/1x1/delapouite/ancient-sword.svg
+system:
+  description: "Dungeoneer's Handbook, p. 228"
+  slot: ''
+  slotIndex: 0
+  slotOptions:
+    carried: 1
+    belt: 1
+  cost: 0
+  damaged: false
+  dropped: false
+  quantity: 1
+  quantityMax: 1
+  relicTier: minor
+  linkedInvocations:
+    - Sanction of the Lady of Valor
+  linkedCircle: null
+  immortal: Lady of Valor
+  lore: ''
+effects: []
+_key: '!items!b000000000000021'

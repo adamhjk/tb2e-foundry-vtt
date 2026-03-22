@@ -1,10 +1,11 @@
 _id: ca06000000000000
 name: Ulrik
 type: character
-img: systems/tb2e/icons/ffffff/transparent/1x1/delapouite/flanged-mace.svg
+img: systems/tb2e/assets/tokens/ulrik.webp
 system:
-  stock: Human
-  class: Theurge
+  stock: human
+  class: theurge
+  specialty: healer
   age: '17'
   home: Bustling Metropolis
   raiment: Golden pantaloons
@@ -63,6 +64,8 @@ prototypeToken:
   actorLink: true
   appendNumber: false
   disposition: 1
+  texture:
+    src: systems/tb2e/assets/tokens/ulrik.webp
 items:
   - _id: ca06000000000001
     name: Touched by the Gods
@@ -90,7 +93,7 @@ items:
     img: systems/tb2e/icons/ffffff/transparent/1x1/willdabeast/round-shield.svg
     system:
       description: Dungeoneer's Handbook, p. 158
-      slot: ''
+      slot: torso
       slotIndex: 0
       slotOptions:
         carried: 1
@@ -124,8 +127,8 @@ items:
     img: systems/tb2e/icons/ffffff/transparent/1x1/delapouite/flanged-mace.svg
     system:
       description: Dungeoneer's Handbook, p. 158
-      slot: ''
-      slotIndex: 0
+      slot: belt
+      slotIndex: 1
       slotOptions:
         carried: 1
         belt: 1
@@ -158,8 +161,8 @@ items:
     img: systems/tb2e/icons/ffffff/transparent/1x1/delapouite/shoulder-bag.svg
     system:
       description: Dungeoneer's Handbook, p. 152
-      slot: ''
-      slotIndex: 0
+      slot: torso
+      slotIndex: 1
       slotOptions:
         torso: 1
       cost: 1
@@ -179,7 +182,7 @@ items:
     img: systems/tb2e/icons/ffffff/transparent/1x1/seregacthtuf/pouch-with-beads.svg
     system:
       description: Dungeoneer's Handbook, p. 152
-      slot: ''
+      slot: belt
       slotIndex: 0
       slotOptions:
         belt: 1
@@ -201,8 +204,8 @@ items:
     img: systems/tb2e/icons/ffffff/transparent/1x1/delapouite/waterskin.svg
     system:
       description: Dungeoneer's Handbook, p. 152
-      slot: ''
-      slotIndex: 0
+      slot: belt
+      slotIndex: 2
       slotOptions:
         belt: 1
         pack: 1
@@ -214,7 +217,7 @@ items:
       containerKey: ''
       containerSlots: 0
       containerType: waterskin
-      liquidType: water
+      liquidType: wine
       lost: false
     effects: []
     _key: '!actors.items!ca06000000000000.ca06000000000007'
@@ -224,7 +227,7 @@ items:
     img: systems/tb2e/icons/ffffff/transparent/1x1/delapouite/ballerina-shoes.svg
     system:
       description: Dungeoneer's Handbook, p. 239
-      slot: ''
+      slot: feet
       slotIndex: 0
       slotOptions:
         feet: 1
@@ -243,10 +246,11 @@ items:
     img: systems/tb2e/icons/ffffff/transparent/1x1/delapouite/lockpicks.svg
     system:
       description: Dungeoneer's Handbook, p. 153
-      slot: ''
+      slot: ca06000000000006
       slotIndex: 0
       slotOptions:
         pack: 1
+        pouch: 1
       cost: 4
       damaged: false
       dropped: false
@@ -268,8 +272,8 @@ items:
     img: systems/tb2e/icons/ffffff/transparent/1x1/delapouite/torch.svg
     system:
       description: "Dungeoneer's Handbook, p. 154; Scholar's Guide, pp. 42\u201343"
-      slot: ''
-      slotIndex: 0
+      slot: ca06000000000005
+      slotIndex: 2
       slotOptions:
         carried: 1
         pack: 1
@@ -290,7 +294,7 @@ items:
     img: systems/tb2e/icons/ffffff/transparent/1x1/delapouite/water-bottle.svg
     system:
       description: Dungeoneer's Handbook, p. 152
-      slot: ''
+      slot: ca06000000000005
       slotIndex: 0
       slotOptions:
         carried: 1
@@ -298,8 +302,8 @@ items:
       cost: 1
       damaged: false
       dropped: false
-      quantity: 1
-      quantityMax: 1
+      quantity: 2
+      quantityMax: 2
       containerKey: ''
       containerSlots: 0
       containerType: bottle
@@ -313,7 +317,7 @@ items:
     img: systems/tb2e/icons/ffffff/transparent/1x1/delapouite/chisel.svg
     system:
       description: "Dungeoneer's Handbook, p. 209"
-      slot: ''
+      slot: head
       slotIndex: 0
       slotOptions:
         head: 1
@@ -336,11 +340,12 @@ items:
     type: relic
     img: systems/tb2e/icons/ffffff/transparent/1x1/delapouite/sewing-string.svg
     system:
-      description: "Lore Master's Manual, p. 42"
-      slot: ''
+      description: "Dungeoneer's Handbook, p. 212"
+      slot: neck
       slotIndex: 0
       slotOptions:
         pack: 1
+        neck: 1
       cost: 0
       damaged: false
       dropped: false
@@ -360,11 +365,12 @@ items:
     img: systems/tb2e/icons/ffffff/transparent/1x1/delapouite/tribal-pendant.svg
     system:
       description: Scholar's Guide, p. 160
-      slot: ''
+      slot: hand-R
       slotIndex: 0
       slotOptions:
         neck: 1
         pocket: 1
+        wornHand: 1
       cost: 0
       damaged: false
       dropped: false
@@ -377,5 +383,68 @@ items:
       specialRules: ''
     effects: []
     _key: '!actors.items!ca06000000000000.ca0600000000000e'
+  - _id: ca0600000000000f
+    name: Bone Knitter
+    type: invocation
+    img: systems/tb2e/icons/ffffff/transparent/1x1/delapouite/arm-bandage.svg
+    system:
+      description: "Dungeoneer's Handbook, p. 209"
+      circle: 1
+      castingType: fixed
+      fixedObstacle: 3
+      invocationTime: 1
+      invocationTimeWithRelic: 0
+      duration: One turn
+      burden: 2
+      burdenWithRelic: 1
+      relic: A set of bone knitting needles
+      relicInventory: worn/head or pack 1
+      sacramental: ''
+      mightPenalty: true
+      performed: false
+    effects: []
+    _key: '!actors.items!ca06000000000000.ca0600000000000f'
+  - _id: ca06000000000010
+    name: Mudra of Fate
+    type: invocation
+    img: systems/tb2e/icons/ffffff/transparent/1x1/lorc/barbed-star.svg
+    system:
+      description: "Dungeoneer's Handbook, p. 212"
+      circle: 1
+      castingType: fixed
+      fixedObstacle: 3
+      obstacleNote: ''
+      invocationTime: 1
+      invocationTimeWithRelic: 0
+      duration: One turn
+      factors: []
+      factorNote: ''
+      versusDefense: ''
+      mightPenalty: true
+      sacramental: ''
+      relic: A spindle or distaff marked with the rune of Fate
+      relicInventory: pack 1
+      burden: 2
+      burdenWithRelic: 1
+      swapSkill: ''
+      swapConflictTypes: []
+      conflictBonuses:
+        attack:
+          type: dice
+          value: 0
+        defend:
+          type: dice
+          value: 0
+        feint:
+          type: dice
+          value: 0
+        maneuver:
+          type: dice
+          value: 0
+      conflictQualities: []
+      specialRules: ''
+      performed: false
+    effects: []
+    _key: '!actors.items!ca06000000000000.ca06000000000010'
 effects: []
 _key: '!actors!ca06000000000000'

@@ -1,0 +1,23 @@
+_id: b000000000000005
+name: Mantle Embroidered with the Lady of Valor
+type: relic
+img: systems/tb2e/icons/ffffff/transparent/1x1/lorc/tattered-banner.svg
+system:
+  description: "Dungeoneer's Handbook, p. 211"
+  slot: ''
+  slotIndex: 0
+  slotOptions:
+    head: 1
+  cost: 0
+  damaged: false
+  dropped: false
+  quantity: 1
+  quantityMax: 1
+  relicTier: minor
+  linkedInvocations:
+    - Inspiring Aura
+  linkedCircle: null
+  immortal: Lady of Valor
+  lore: ''
+effects: []
+_key: '!items!b000000000000005'

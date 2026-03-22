@@ -1,10 +1,11 @@
 _id: ca09000000000000
 name: Tiziri
 type: character
-img: systems/tb2e/icons/ffffff/transparent/1x1/lorc/plain-dagger.svg
+img: systems/tb2e/assets/tokens/tiziri.webp
 system:
-  stock: Human
-  class: Thief
+  stock: human
+  class: thief
+  specialty: dungeoneer
   age: '18'
   home: Busy Crossroads
   raiment: Purple-striped turban
@@ -63,6 +64,8 @@ prototypeToken:
   actorLink: true
   appendNumber: false
   disposition: 1
+  texture:
+    src: systems/tb2e/assets/tokens/tiziri.webp
 items:
   - _id: ca09000000000001
     name: Devil May Care
@@ -90,8 +93,8 @@ items:
     img: systems/tb2e/icons/ffffff/transparent/1x1/lorc/plain-dagger.svg
     system:
       description: Dungeoneer's Handbook, p. 158
-      slot: ''
-      slotIndex: 0
+      slot: belt
+      slotIndex: 2
       slotOptions:
         carried: 1
         belt: 1
@@ -125,7 +128,7 @@ items:
     img: systems/tb2e/icons/ffffff/transparent/1x1/lorc/cowled.svg
     system:
       description: Dungeoneer's Handbook, p. 151
-      slot: ''
+      slot: torso
       slotIndex: 0
       slotOptions:
         torso: 1
@@ -146,8 +149,8 @@ items:
     img: systems/tb2e/icons/ffffff/transparent/1x1/delapouite/shoulder-bag.svg
     system:
       description: Dungeoneer's Handbook, p. 152
-      slot: ''
-      slotIndex: 0
+      slot: torso
+      slotIndex: 1
       slotOptions:
         torso: 1
       cost: 1
@@ -167,8 +170,8 @@ items:
     img: systems/tb2e/icons/ffffff/transparent/1x1/delapouite/duffel-bag.svg
     system:
       description: Dungeoneer's Handbook, p. 152
-      slot: ''
-      slotIndex: 0
+      slot: hand-R
+      slotIndex: 1
       slotOptions:
         carried: 2
       cost: 2
@@ -188,7 +191,7 @@ items:
     img: systems/tb2e/icons/ffffff/transparent/1x1/seregacthtuf/pouch-with-beads.svg
     system:
       description: Dungeoneer's Handbook, p. 152
-      slot: ''
+      slot: belt
       slotIndex: 0
       slotOptions:
         belt: 1
@@ -210,8 +213,8 @@ items:
     img: systems/tb2e/icons/ffffff/transparent/1x1/delapouite/waterskin.svg
     system:
       description: Dungeoneer's Handbook, p. 152
-      slot: ''
-      slotIndex: 0
+      slot: belt
+      slotIndex: 1
       slotOptions:
         belt: 1
         pack: 1
@@ -223,7 +226,7 @@ items:
       containerKey: ''
       containerSlots: 0
       containerType: waterskin
-      liquidType: water
+      liquidType: wine
       lost: false
     effects: []
     _key: '!actors.items!ca09000000000000.ca09000000000008'
@@ -233,7 +236,7 @@ items:
     img: systems/tb2e/icons/ffffff/transparent/1x1/delapouite/ballerina-shoes.svg
     system:
       description: Dungeoneer's Handbook, p. 239
-      slot: ''
+      slot: feet
       slotIndex: 0
       slotOptions:
         feet: 1
@@ -252,10 +255,11 @@ items:
     img: systems/tb2e/icons/ffffff/transparent/1x1/delapouite/lockpicks.svg
     system:
       description: Dungeoneer's Handbook, p. 153
-      slot: ''
+      slot: ca09000000000007
       slotIndex: 0
       slotOptions:
         pack: 1
+        pouch: 1
       cost: 4
       damaged: false
       dropped: false
@@ -277,7 +281,7 @@ items:
     img: systems/tb2e/icons/ffffff/transparent/1x1/darkzaitzev/fish-cooked.svg
     system:
       description: Dungeoneer's Handbook, p. 154
-      slot: ''
+      slot: ca09000000000005
       slotIndex: 0
       slotOptions:
         pack: 1
@@ -297,16 +301,16 @@ items:
     img: systems/tb2e/icons/ffffff/transparent/1x1/delapouite/water-bottle.svg
     system:
       description: Dungeoneer's Handbook, p. 152
-      slot: ''
-      slotIndex: 0
+      slot: ca09000000000005
+      slotIndex: 1
       slotOptions:
         carried: 1
         pack: 2
       cost: 1
       damaged: false
       dropped: false
-      quantity: 1
-      quantityMax: 1
+      quantity: 2
+      quantityMax: 2
       containerKey: ''
       containerSlots: 0
       containerType: bottle
@@ -320,7 +324,7 @@ items:
     img: systems/tb2e/icons/ffffff/transparent/1x1/lorc/nails.svg
     system:
       description: Dungeoneer's Handbook, p. 153
-      slot: ''
+      slot: ca09000000000006
       slotIndex: 0
       slotOptions:
         pack: 1
@@ -342,8 +346,8 @@ items:
     img: systems/tb2e/icons/ffffff/transparent/1x1/delapouite/3d-hammer.svg
     system:
       description: Dungeoneer's Handbook, p. 153
-      slot: ''
-      slotIndex: 0
+      slot: ca09000000000006
+      slotIndex: 1
       slotOptions:
         carried: 1
         pack: 1
@@ -362,8 +366,8 @@ items:
     img: systems/tb2e/icons/ffffff/transparent/1x1/delapouite/candles.svg
     system:
       description: "Dungeoneer's Handbook, p. 154; Scholar's Guide, pp. 42\u201343"
-      slot: ''
-      slotIndex: 0
+      slot: ca09000000000006
+      slotIndex: 2
       slotOptions:
         pack: 1
       cost: 1
@@ -383,8 +387,8 @@ items:
     img: systems/tb2e/icons/ffffff/transparent/1x1/delapouite/flint-spark.svg
     system:
       description: Dungeoneer's Handbook, p. 154
-      slot: ''
-      slotIndex: 0
+      slot: ca09000000000006
+      slotIndex: 3
       slotOptions:
         pack: 1
       cost: 1
@@ -405,8 +409,8 @@ items:
     img: systems/tb2e/icons/ffffff/transparent/1x1/lorc/grapple.svg
     system:
       description: Dungeoneer's Handbook, p. 153
-      slot: ''
-      slotIndex: 0
+      slot: ca09000000000006
+      slotIndex: 4
       slotOptions:
         carried: 1
         pack: 2
@@ -428,7 +432,7 @@ items:
     img: systems/tb2e/icons/ffffff/transparent/1x1/delapouite/tribal-pendant.svg
     system:
       description: Scholar's Guide, p. 160
-      slot: ''
+      slot: neck
       slotIndex: 0
       slotOptions:
         neck: 1
@@ -445,5 +449,31 @@ items:
       specialRules: ''
     effects: []
     _key: '!actors.items!ca09000000000000.ca09000000000012'
+  - _id: ca09000000000013
+    name: Rope
+    type: gear
+    img: systems/tb2e/icons/ffffff/transparent/1x1/delapouite/rope-coil.svg
+    system:
+      description: Dungeoneer's Handbook, p. 153
+      slot: torso
+      slotIndex: 2
+      slotOptions:
+        torso: 1
+        pack: 2
+      cost: 2
+      damaged: false
+      dropped: false
+      quantity: 1
+      quantityMax: 1
+      skillBonuses:
+        - skill: dungeoneer
+          value: 1
+          condition: Climbing
+        - skill: health
+          value: 1
+          condition: Climbing
+      specialRules: ''
+    effects: []
+    _key: '!actors.items!ca09000000000000.ca09000000000013'
 effects: []
 _key: '!actors!ca09000000000000'

@@ -1,0 +1,24 @@
+_id: b00000000000001f
+name: Amulet of Sol the Daystar
+type: relic
+img: systems/tb2e/icons/ffffff/transparent/1x1/lorc/sun.svg
+system:
+  description: "Dungeoneer's Handbook, p. 226"
+  slot: ''
+  slotIndex: 0
+  slotOptions:
+    neck: 1
+    carried: 1
+  cost: 0
+  damaged: false
+  dropped: false
+  quantity: 1
+  quantityMax: 1
+  relicTier: minor
+  linkedInvocations:
+    - Extirpation
+  linkedCircle: null
+  immortal: Sol
+  lore: ''
+effects: []
+_key: '!items!b00000000000001f'

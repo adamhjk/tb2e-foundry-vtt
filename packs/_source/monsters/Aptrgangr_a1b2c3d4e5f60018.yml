@@ -1,7 +1,7 @@
 _id: a1b2c3d4e5f60018
 name: Aptrgangr
 type: monster
-img: systems/tb2e/icons/ffffff/transparent/1x1/delapouite/mummy-head.svg
+img: systems/tb2e/assets/tokens/aptrgangr.webp
 system:
   nature: 3
   natureDescriptors: Devouring Flesh, Hunting, Shambling
@@ -56,6 +56,8 @@ prototypeToken:
   actorLink: false
   appendNumber: true
   disposition: -1
+  texture:
+    src: systems/tb2e/assets/tokens/aptrgangr.webp
 items: []
 effects: []
 _key: '!actors!a1b2c3d4e5f60018'

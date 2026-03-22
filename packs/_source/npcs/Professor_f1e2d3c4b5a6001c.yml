@@ -1,7 +1,7 @@
 _id: f1e2d3c4b5a6001c
 name: Professor
 type: npc
-img: systems/tb2e/icons/ffffff/transparent/1x1/lorc/open-book.svg
+img: systems/tb2e/assets/tokens/professor.webp
 system:
   stock: ''
   class: ''
@@ -51,6 +51,8 @@ prototypeToken:
   actorLink: false
   appendNumber: true
   disposition: 0
+  texture:
+    src: systems/tb2e/assets/tokens/professor.webp
 items:
   - _id: a01c000000000001
     name: Wise

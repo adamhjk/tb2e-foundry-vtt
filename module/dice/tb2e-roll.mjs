@@ -395,9 +395,14 @@ async function _showRollDialog({
   const hideChannelNature = !showPersona;
   const natureRating = isCharacter ? actor.system.abilities.nature.rating : 0;
 
-  // Direct nature test: show within/outside descriptors toggle
-  const isDirectNatureTest = isCharacter && type === "ability" && key === "nature";
-  const natureDescriptors = isDirectNatureTest ? (actor.system.natureDescriptors || []) : [];
+  // Direct nature test or monster disposition: show within/outside descriptors toggle
+  const isMonsterDisposition = disposition && actor?.type === "monster";
+  const isDirectNatureTest = (isCharacter && type === "ability" && key === "nature") || isMonsterDisposition;
+  const natureDescriptors = isDirectNatureTest
+    ? (isMonsterDisposition
+      ? (testContext.monsterNatureDescriptors || [])
+      : (actor.system.natureDescriptors || []))
+    : [];
   // Also provide descriptors as reference when channel nature is available
   const channelNatureDescriptors = (isCharacter && !isResourcesOrCircles)
     ? (actor.system.natureDescriptors || []) : [];
@@ -421,20 +426,34 @@ async function _showRollDialog({
   const hasGearSupplies = gearItems.length > 0 || supplyItems.length > 0;
 
   // Ability choices for disposition mode
-  const abilityChoices = (isCharacter || actor?.type === "npc") ? ["health", "will", "nature"]
-    .filter(k => abilities[k] && actor.system.abilities[k])
-    .map(k => ({
-      key: k,
-      label: game.i18n.localize(abilities[k].label),
-      rating: actor.system.abilities[k]?.rating ?? 0,
-      selected: k === (testContext.dispositionAbility || "health")
-    })) : [];
+  let abilityChoices;
+  if ( isMonsterDisposition ) {
+    // Monsters always use Nature as the base ability for disposition.
+    abilityChoices = [{
+      key: "nature",
+      label: game.i18n.localize("TB2E.Ability.Nature"),
+      rating: actor.system.nature,
+      selected: true
+    }];
+  } else if ( isCharacter || actor?.type === "npc" ) {
+    abilityChoices = ["health", "will", "nature"]
+      .filter(k => abilities[k] && actor.system.abilities[k])
+      .map(k => ({
+        key: k,
+        label: game.i18n.localize(abilities[k].label),
+        rating: actor.system.abilities[k]?.rating ?? 0,
+        selected: k === (testContext.dispositionAbility || "health")
+      }));
+  } else {
+    abilityChoices = [];
+  }
 
   const content = await foundry.applications.handlebars.renderTemplate(
     "systems/tb2e/templates/dice/roll-dialog.hbs", {
       label, dice,
       isDisposition: disposition,
-      dispositionLocked: !!testContext.dispositionAbility,
+      isConflict: !!testContext.isConflict,
+      dispositionLocked: !!testContext.dispositionAbility || isMonsterDisposition,
       abilityChoices,
       dispositionLabel: game.i18n.localize("TB2E.Roll.Disposition"),
       dispositionAbilityLabel: game.i18n.localize("TB2E.Roll.DispositionAbility"),
@@ -445,7 +464,7 @@ async function _showRollDialog({
       hasWises, wises: wiseData,
       showPersona, personaAvailable,
       hideChannelNature, natureRating,
-      isDirectNatureTest, natureDescriptors, channelNatureDescriptors,
+      isDirectNatureTest, isMonsterDisposition, natureDescriptors, channelNatureDescriptors,
       blInfo,
       isAfraid, isAngry,
       hasGearSupplies, gearItems, supplyItems,
@@ -835,6 +854,13 @@ async function _showRollDialog({
             }
             withinToggle.classList.toggle("within", natureState.withinNature);
             withinToggle.classList.toggle("outside", !natureState.withinNature);
+            // Monster disposition: within = full Nature, outside = half Nature.
+            if ( isMonsterDisposition ) {
+              const poolInput = form.elements.poolSize;
+              poolInput.value = natureState.withinNature ? dice : Math.ceil(dice / 2);
+              renderModifierList();
+              updateSummary();
+            }
           });
         }
       }
@@ -959,7 +985,7 @@ async function _showRollDialog({
         obstacleField.classList.toggle("hidden", newMode !== "independent");
         challengeField.classList.toggle("hidden", newMode !== "versus");
         if ( abilityField ) abilityField.classList.toggle("hidden", newMode !== "disposition");
-        if ( advancementField ) advancementField.classList.toggle("hidden", newMode === "disposition");
+        if ( advancementField ) advancementField.classList.toggle("hidden", newMode === "disposition" || !!testContext.isConflict);
 
         // Show/hide +2D opponent buttons based on versus mode
         for ( const btn of form.querySelectorAll(".trait-btn-versus") ) {
@@ -1116,7 +1142,7 @@ async function _showRollDialog({
             poolSize: baseDice + totalDiceBonus,
             obstacle: baseObstacle + obBonus,
             baseObstacle,
-            logAdvancement: form.elements.logAdvancement.checked,
+            logAdvancement: testContext.isConflict ? false : form.elements.logAdvancement.checked,
             mode: form.elements.mode.value,
             challengeMessageId: form.elements.challengeMessageId.value,
             selectedHelpers,
@@ -1201,7 +1227,7 @@ export async function rollTest({ actor, type, key, testContext = {} }) {
     ...(testContext.contextModifiers || [])
   ];
   const availableHelpers = getEligibleHelpers({ actor, type, key, testContext, candidates: testContext.candidates });
-  const availableWiseAiders = getEligibleWiseAiders({ actor, testContext });
+  const availableWiseAiders = getEligibleWiseAiders({ actor, testContext, candidates: testContext.candidates });
 
   // Backpack factor: +1 Ob for Fighter/Dungeoneer when carrying a backpack (not for disposition — no obstacle)
   if ( type === "skill" && (key === "fighter" || key === "dungeoneer") && !testContext.isDisposition && _checkBackpackEquipped(actor) ) {
@@ -1402,6 +1428,7 @@ function _buildRollFlags({ actor, type, key, label, baseDice, poolSize, successe
     deeperUsed: false,
     ofCourseUsed: false,
     testContext: config.testContext ? {
+      isConflict: config.testContext.isConflict ?? null,
       spellId: config.testContext.spellId ?? null,
       spellName: config.testContext.spellName ?? null,
       castingSource: config.testContext.castingSource ?? null,
@@ -1597,8 +1624,15 @@ async function _handleDispositionRoll({ actor, type, key, label, baseDice, poolS
   const abilityKey = config.dispositionAbilityKey || "health";
   const abilityCfg = abilities[abilityKey];
   const rawAbility = actor.system.abilities?.[abilityKey];
-  const abilityRating = (actor.type === "monster") ? 0 : (rawAbility?.rating || 0);
-  const abilityLabel = abilityCfg ? game.i18n.localize(abilityCfg.label) : abilityKey;
+  let abilityRating, abilityLabel;
+  if ( actor.type === "monster" ) {
+    // Monsters always add full Nature to disposition (SG p.172).
+    abilityRating = actor.system.nature;
+    abilityLabel = game.i18n.localize("TB2E.Ability.Nature");
+  } else {
+    abilityRating = rawAbility?.rating || 0;
+    abilityLabel = abilityCfg ? game.i18n.localize(abilityCfg.label) : abilityKey;
+  }
 
   // Store raw successes (no obstacle for disposition)
   rollFlags.roll.successes = successes;

@@ -1,0 +1,21 @@
+_id: a00000000000001e
+name: Byrnie of the Disir
+type: invocation
+img: systems/tb2e/icons/ffffff/transparent/1x1/delapouite/abdominal-armor.svg
+system:
+  description: "Dungeoneer's Handbook, p. 224"
+  circle: 3
+  castingType: fixed
+  fixedObstacle: 4
+  invocationTime: 1
+  invocationTimeWithRelic: 0
+  duration: One conflict
+  burden: 4
+  burdenWithRelic: 3
+  relic: A tattoo of the rune of Fate, inked with blood drawn from a stone
+  relicInventory: (body)
+  sacramental: ''
+  mightPenalty: true
+  performed: false
+effects: []
+_key: '!items!a00000000000001e'

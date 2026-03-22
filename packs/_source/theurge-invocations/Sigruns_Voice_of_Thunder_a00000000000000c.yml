@@ -1,0 +1,21 @@
+_id: a00000000000000c
+name: Sigrun's Voice of Thunder
+type: invocation
+img: systems/tb2e/icons/ffffff/transparent/1x1/lorc/lightning-storm.svg
+system:
+  description: "Dungeoneer's Handbook, p. 213"
+  circle: 1
+  castingType: fixed
+  fixedObstacle: 2
+  invocationTime: 1
+  invocationTimeWithRelic: 0
+  duration: One turn
+  burden: 2
+  burdenWithRelic: 1
+  relic: A shield painted with Sigrun's runes
+  relicInventory: carried 1 or worn/torso 1
+  sacramental: ''
+  mightPenalty: true
+  performed: false
+effects: []
+_key: '!items!a00000000000000c'

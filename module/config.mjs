@@ -24,10 +24,10 @@ export const conditions = {
 export const abilities = {
   will:       { label: "TB2E.Ability.Will",       group: "raw",     page: "DH p.58" },
   health:     { label: "TB2E.Ability.Health",     group: "raw",     page: "DH p.59" },
-  might:      { label: "TB2E.Ability.Might",      group: "raw", rollable: false, page: "DH p.64" },
   nature:     { label: "TB2E.Ability.Nature",     group: "raw",     page: "DH p.65" },
   resources:  { label: "TB2E.Ability.Resources",  group: "town",    page: "DH p.60" },
   circles:    { label: "TB2E.Ability.Circles",    group: "town",    page: "DH p.61" },
+  might:      { label: "TB2E.Ability.Might",      group: "town", rollable: false, page: "DH p.64" },
   precedence: { label: "TB2E.Ability.Precedence", group: "town", rollable: false, page: "DH p.62" }
 };
 

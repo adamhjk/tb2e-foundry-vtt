@@ -1,0 +1,33 @@
+_id: a00000000000000f
+name: Benediction of the Lords of Creation
+type: invocation
+img: systems/tb2e/icons/ffffff/transparent/1x1/lorc/star-swirl.svg
+system:
+  description: "Dungeoneer's Handbook, p. 215"
+  circle: 2
+  castingType: factors
+  factors:
+    - name: Breadth
+      options:
+        - label: Alleviate your own exhaustion
+          value: 2
+        - label: Alleviate the exhaustion of another
+          value: 3
+        - label: Alleviate exhaustion from two people
+          value: 4
+        - label: Alleviate exhaustion from a small group
+          value: 5
+        - label: Alleviate exhaustion from a large group
+          value: 6
+  invocationTime: 2
+  invocationTimeWithRelic: 1
+  duration: Instantaneous
+  burden: 3
+  burdenWithRelic: 2
+  relic: A vial of perfume
+  relicInventory: pocket or worn/neck
+  sacramental: ''
+  mightPenalty: true
+  performed: false
+effects: []
+_key: '!items!a00000000000000f'

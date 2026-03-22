@@ -1,10 +1,11 @@
 _id: ca03000000000000
 name: Taika
 type: character
-img: systems/tb2e/icons/ffffff/transparent/1x1/delapouite/bow-arrow.svg
+img: systems/tb2e/assets/tokens/taika.webp
 system:
-  stock: Elf
-  class: Ranger
+  stock: elf
+  class: ranger
+  specialty: scout
   age: '73'
   home: Elfhome
   raiment: Green tunic
@@ -68,6 +69,8 @@ prototypeToken:
   actorLink: true
   appendNumber: false
   disposition: 1
+  texture:
+    src: systems/tb2e/assets/tokens/taika.webp
 items:
   - _id: ca03000000000001
     name: First Born
@@ -95,8 +98,8 @@ items:
     img: systems/tb2e/icons/ffffff/transparent/1x1/delapouite/bow-arrow.svg
     system:
       description: Dungeoneer's Handbook, p. 156
-      slot: ''
-      slotIndex: 0
+      slot: hand-R
+      slotIndex: 1
       slotOptions:
         carried: 1
         quiver: 1
@@ -129,8 +132,8 @@ items:
     img: systems/tb2e/icons/ffffff/transparent/1x1/delapouite/quiver.svg
     system:
       description: Dungeoneer's Handbook, p. 152
-      slot: ''
-      slotIndex: 0
+      slot: belt
+      slotIndex: 1
       slotOptions:
         torso: 1
         belt: 2
@@ -151,7 +154,7 @@ items:
     img: systems/tb2e/icons/ffffff/transparent/1x1/delapouite/leather-armor.svg
     system:
       description: Dungeoneer's Handbook, p. 151
-      slot: ''
+      slot: torso
       slotIndex: 0
       slotOptions:
         torso: 1
@@ -171,8 +174,8 @@ items:
     img: systems/tb2e/icons/ffffff/transparent/1x1/delapouite/shoulder-bag.svg
     system:
       description: Dungeoneer's Handbook, p. 152
-      slot: ''
-      slotIndex: 0
+      slot: torso
+      slotIndex: 1
       slotOptions:
         torso: 1
       cost: 1
@@ -192,7 +195,7 @@ items:
     img: systems/tb2e/icons/ffffff/transparent/1x1/delapouite/waterskin.svg
     system:
       description: Dungeoneer's Handbook, p. 152
-      slot: ''
+      slot: belt
       slotIndex: 0
       slotOptions:
         belt: 1
@@ -205,7 +208,7 @@ items:
       containerKey: ''
       containerSlots: 0
       containerType: waterskin
-      liquidType: water
+      liquidType: wine
       lost: false
     effects: []
     _key: '!actors.items!ca03000000000000.ca03000000000007'
@@ -215,7 +218,7 @@ items:
     img: systems/tb2e/icons/ffffff/transparent/1x1/delapouite/ballerina-shoes.svg
     system:
       description: Dungeoneer's Handbook, p. 239
-      slot: ''
+      slot: feet
       slotIndex: 0
       slotOptions:
         feet: 1
@@ -234,8 +237,8 @@ items:
     img: systems/tb2e/icons/ffffff/transparent/1x1/darkzaitzev/fish-cooked.svg
     system:
       description: Dungeoneer's Handbook, p. 154
-      slot: ''
-      slotIndex: 0
+      slot: ca03000000000006
+      slotIndex: 1
       slotOptions:
         pack: 1
       cost: 2
@@ -254,7 +257,7 @@ items:
     img: systems/tb2e/icons/ffffff/transparent/1x1/delapouite/torch.svg
     system:
       description: "Dungeoneer's Handbook, p. 154; Scholar's Guide, pp. 42\u201343"
-      slot: ''
+      slot: ca03000000000006
       slotIndex: 0
       slotOptions:
         carried: 1
@@ -276,10 +279,11 @@ items:
     img: systems/tb2e/icons/ffffff/transparent/1x1/delapouite/duffel-bag.svg
     system:
       description: Dungeoneer's Handbook, p. 152
-      slot: ''
-      slotIndex: 0
+      slot: ca03000000000006
+      slotIndex: 2
       slotOptions:
         carried: 2
+        pack: 1
       cost: 2
       damaged: false
       dropped: false
@@ -291,5 +295,27 @@ items:
       lost: false
     effects: []
     _key: '!actors.items!ca03000000000000.ca0300000000000b'
+  - _id: ca0300000000000c
+    name: Arrows
+    type: supply
+    img: systems/tb2e/icons/ffffff/transparent/1x1/delapouite/arrow-cluster.svg
+    system:
+      description: "Dungeoneer's Handbook, p. 156"
+      slot: ca03000000000004
+      slotIndex: 1
+      slotOptions:
+        quiver: 1
+      cost: 1
+      damaged: false
+      dropped: false
+      quantity: 1
+      quantityMax: 1
+      supplyType: ammunition
+      turnsRemaining: 0
+      lit: false
+      nameSingular: Arrows
+      skillBonuses: []
+    effects: []
+    _key: '!actors.items!ca03000000000000.ca0300000000000c'
 effects: []
 _key: '!actors!ca03000000000000'

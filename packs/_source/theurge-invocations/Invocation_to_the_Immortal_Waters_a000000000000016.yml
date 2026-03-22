@@ -1,0 +1,39 @@
+_id: a000000000000016
+name: Invocation to the Immortal Waters
+type: invocation
+img: systems/tb2e/icons/ffffff/transparent/1x1/lorc/water-splash.svg
+system:
+  description: "Dungeoneer's Handbook, p. 220"
+  circle: 2
+  castingType: factors
+  factors:
+    - name: Breadth
+      options:
+        - label: Self
+          value: 0
+        - label: Another
+          value: 1
+        - label: Two people
+          value: 2
+        - label: Small group
+          value: 3
+    - name: Duration
+      options:
+        - label: One turn
+          value: 1
+        - label: Two turns
+          value: 2
+        - label: Phase
+          value: 3
+  invocationTime: 2
+  invocationTimeWithRelic: 1
+  duration: Variable
+  burden: 3
+  burdenWithRelic: 2
+  relic: A lock of Njor's hair
+  relicInventory: worn/neck or pocket
+  sacramental: ''
+  mightPenalty: true
+  performed: false
+effects: []
+_key: '!items!a000000000000016'

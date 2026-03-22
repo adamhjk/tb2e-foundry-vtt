@@ -1,0 +1,21 @@
+_id: a000000000000023
+name: Malison of the Lords of Terror
+type: invocation
+img: systems/tb2e/icons/ffffff/transparent/1x1/lorc/screaming.svg
+system:
+  description: "Dungeoneer's Handbook, p. 227"
+  circle: 3
+  castingType: versus
+  versusDefense: nature
+  invocationTime: 1
+  invocationTimeWithRelic: 0
+  duration: Two turns
+  burden: 4
+  burdenWithRelic: 3
+  relic: A terrifying standard of bones and flesh
+  relicInventory: carried 1, pack 4
+  sacramental: ''
+  mightPenalty: true
+  performed: false
+effects: []
+_key: '!items!a000000000000023'

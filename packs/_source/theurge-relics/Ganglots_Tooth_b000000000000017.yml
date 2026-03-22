@@ -1,0 +1,24 @@
+_id: b000000000000017
+name: Ganglot's Tooth
+type: relic
+img: systems/tb2e/icons/ffffff/transparent/1x1/delapouite/bone-knife.svg
+system:
+  description: "Dungeoneer's Handbook, p. 221"
+  slot: ''
+  slotIndex: 0
+  slotOptions:
+    neck: 1
+    pocket: 1
+  cost: 0
+  damaged: false
+  dropped: false
+  quantity: 1
+  quantityMax: 1
+  relicTier: minor
+  linkedInvocations:
+    - Prayer to the Lords of Silence
+  linkedCircle: null
+  immortal: ''
+  lore: ''
+effects: []
+_key: '!items!b000000000000017'

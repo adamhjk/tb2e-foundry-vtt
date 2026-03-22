@@ -1,10 +1,11 @@
 _id: ca07000000000000
 name: "R\xF6rik"
 type: character
-img: systems/tb2e/icons/ffffff/transparent/1x1/caro-asercion/spinning-wheel.svg
+img: systems/tb2e/assets/tokens/rorik.webp
 system:
-  stock: Human
-  class: Shaman
+  stock: human
+  class: shaman
+  specialty: healer
   age: '21'
   home: Remote Village
   raiment: Bearskin hat
@@ -57,12 +58,14 @@ system:
       persona: false
   memoryPalaceSlots: 0
   urdr:
-    capacity: 0
+    capacity: 1
     burden: 0
 prototypeToken:
   actorLink: true
   appendNumber: false
   disposition: 1
+  texture:
+    src: systems/tb2e/assets/tokens/rorik.webp
 items:
   - _id: ca07000000000001
     name: Between Two Worlds
@@ -90,7 +93,7 @@ items:
     img: systems/tb2e/icons/ffffff/transparent/1x1/delapouite/sharp-axe.svg
     system:
       description: Dungeoneer's Handbook, p. 158
-      slot: ''
+      slot: belt
       slotIndex: 0
       slotOptions:
         carried: 1
@@ -125,7 +128,7 @@ items:
     img: systems/tb2e/icons/ffffff/transparent/1x1/willdabeast/round-shield.svg
     system:
       description: Dungeoneer's Handbook, p. 158
-      slot: ''
+      slot: torso
       slotIndex: 0
       slotOptions:
         carried: 1
@@ -159,8 +162,8 @@ items:
     img: systems/tb2e/icons/ffffff/transparent/1x1/lorc/cowled.svg
     system:
       description: Dungeoneer's Handbook, p. 151
-      slot: ''
-      slotIndex: 0
+      slot: torso
+      slotIndex: 1
       slotOptions:
         torso: 1
         carried: 1
@@ -180,8 +183,8 @@ items:
     img: systems/tb2e/icons/ffffff/transparent/1x1/delapouite/shoulder-bag.svg
     system:
       description: Dungeoneer's Handbook, p. 152
-      slot: ''
-      slotIndex: 0
+      slot: torso
+      slotIndex: 2
       slotOptions:
         torso: 1
       cost: 1
@@ -201,8 +204,8 @@ items:
     img: systems/tb2e/icons/ffffff/transparent/1x1/seregacthtuf/pouch-with-beads.svg
     system:
       description: Dungeoneer's Handbook, p. 152
-      slot: ''
-      slotIndex: 0
+      slot: belt
+      slotIndex: 2
       slotOptions:
         belt: 1
         pack: 1
@@ -223,8 +226,8 @@ items:
     img: systems/tb2e/icons/ffffff/transparent/1x1/delapouite/waterskin.svg
     system:
       description: Dungeoneer's Handbook, p. 152
-      slot: ''
-      slotIndex: 0
+      slot: hand-R
+      slotIndex: 1
       slotOptions:
         belt: 1
         pack: 1
@@ -246,8 +249,8 @@ items:
     img: systems/tb2e/icons/ffffff/transparent/1x1/delapouite/waterskin.svg
     system:
       description: Dungeoneer's Handbook, p. 152
-      slot: ''
-      slotIndex: 0
+      slot: belt
+      slotIndex: 1
       slotOptions:
         belt: 1
         pack: 1
@@ -269,7 +272,7 @@ items:
     img: systems/tb2e/icons/ffffff/transparent/1x1/delapouite/ballerina-shoes.svg
     system:
       description: Dungeoneer's Handbook, p. 239
-      slot: ''
+      slot: feet
       slotIndex: 0
       slotOptions:
         feet: 1
@@ -288,10 +291,11 @@ items:
     img: systems/tb2e/icons/ffffff/transparent/1x1/delapouite/flint-spark.svg
     system:
       description: Dungeoneer's Handbook, p. 154
-      slot: ''
+      slot: ca07000000000007
       slotIndex: 0
       slotOptions:
         pack: 1
+        pouch: 1
       cost: 1
       damaged: false
       dropped: false
@@ -310,7 +314,7 @@ items:
     img: systems/tb2e/icons/ffffff/transparent/1x1/darkzaitzev/fish-cooked.svg
     system:
       description: Dungeoneer's Handbook, p. 154
-      slot: ''
+      slot: ca07000000000006
       slotIndex: 0
       slotOptions:
         pack: 1
@@ -330,16 +334,16 @@ items:
     img: systems/tb2e/icons/ffffff/transparent/1x1/delapouite/water-bottle.svg
     system:
       description: Dungeoneer's Handbook, p. 152
-      slot: ''
-      slotIndex: 0
+      slot: ca07000000000006
+      slotIndex: 1
       slotOptions:
         carried: 1
         pack: 2
       cost: 1
       damaged: false
       dropped: false
-      quantity: 1
-      quantityMax: 1
+      quantity: 2
+      quantityMax: 2
       containerKey: ''
       containerSlots: 0
       containerType: bottle
@@ -353,7 +357,7 @@ items:
     img: systems/tb2e/icons/ffffff/transparent/1x1/delapouite/snake-tongue.svg
     system:
       description: "Lore Master's Manual, p. 43"
-      slot: ''
+      slot: neck
       slotIndex: 0
       slotOptions:
         neck: 1
@@ -376,10 +380,11 @@ items:
     img: systems/tb2e/icons/ffffff/transparent/1x1/delapouite/sewing-string.svg
     system:
       description: "Lore Master's Manual, p. 42"
-      slot: ''
-      slotIndex: 0
+      slot: hand-L
+      slotIndex: 1
       slotOptions:
         pack: 1
+        carried: 1
       cost: 0
       damaged: false
       dropped: false
@@ -399,7 +404,7 @@ items:
     img: systems/tb2e/icons/ffffff/transparent/1x1/lorc/tooth.svg
     system:
       description: Scholar's Guide, p. 160
-      slot: ''
+      slot: pocket
       slotIndex: 0
       slotOptions:
         pocket: 1
@@ -415,5 +420,89 @@ items:
       specialRules: ''
     effects: []
     _key: '!actors.items!ca07000000000000.ca07000000000010'
+  - _id: ca07000000000011
+    name: "Vafrudnir's Silver Tongue"
+    type: invocation
+    img: systems/tb2e/icons/ffffff/transparent/1x1/lorc/lizard-tongue.svg
+    system:
+      description: "Lore Master's Manual, p. 43"
+      circle: 1
+      castingType: fixed
+      fixedObstacle: 3
+      obstacleNote: ''
+      invocationTime: 1
+      invocationTimeWithRelic: 0
+      duration: One turn
+      factors: []
+      factorNote: ''
+      versusDefense: ''
+      mightPenalty: true
+      sacramental: ''
+      relic: The preserved tongue of a liar, hung from the neck
+      relicInventory: worn/neck
+      burden: 2
+      burdenWithRelic: 1
+      swapSkill: ''
+      swapConflictTypes: []
+      conflictBonuses:
+        attack:
+          type: dice
+          value: 0
+        defend:
+          type: dice
+          value: 0
+        feint:
+          type: dice
+          value: 0
+        maneuver:
+          type: dice
+          value: 0
+      conflictQualities: []
+      specialRules: ''
+      performed: false
+    effects: []
+    _key: '!actors.items!ca07000000000000.ca07000000000011'
+  - _id: ca07000000000012
+    name: Mudra of Fate
+    type: invocation
+    img: systems/tb2e/icons/ffffff/transparent/1x1/lorc/barbed-star.svg
+    system:
+      description: "Lore Master's Manual, p. 42"
+      circle: 1
+      castingType: fixed
+      fixedObstacle: 3
+      obstacleNote: ''
+      invocationTime: 1
+      invocationTimeWithRelic: 0
+      duration: One turn
+      factors: []
+      factorNote: ''
+      versusDefense: ''
+      mightPenalty: true
+      sacramental: ''
+      relic: A spindle or distaff marked with the rune of Fate
+      relicInventory: pack 1
+      burden: 2
+      burdenWithRelic: 1
+      swapSkill: ''
+      swapConflictTypes: []
+      conflictBonuses:
+        attack:
+          type: dice
+          value: 0
+        defend:
+          type: dice
+          value: 0
+        feint:
+          type: dice
+          value: 0
+        maneuver:
+          type: dice
+          value: 0
+      conflictQualities: []
+      specialRules: ''
+      performed: false
+    effects: []
+    _key: '!actors.items!ca07000000000000.ca07000000000012'
 effects: []
 _key: '!actors!ca07000000000000'

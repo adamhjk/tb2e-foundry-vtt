@@ -2,7 +2,7 @@
 
   <div class="skills-grid">
     {{#each skills}}
-    <div class="skill-row rollable{{#if hasRating}} has-rating{{/if}}" data-action="rollTest" data-type="skill" data-key="{{key}}" data-page="{{page}}">
+    <div class="skill-row rollable{{#if hasRating}} has-rating{{/if}}{{#if isSpecialty}} specialty{{/if}}" data-action="rollTest" data-type="skill" data-key="{{key}}" data-page="{{page}}">
       <span class="skill-name">{{label}}</span>
       <span class="skill-bl" title="Beginner's Luck: {{bl}}">{{bl}}</span>
       {{#if canAdvance}}

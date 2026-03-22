@@ -1,0 +1,24 @@
+_id: b000000000000015
+name: Crown of the Lords of Law
+type: relic
+img: systems/tb2e/icons/ffffff/transparent/1x1/lorc/crown.svg
+system:
+  description: "Dungeoneer's Handbook, p. 220"
+  slot: ''
+  slotIndex: 0
+  slotOptions:
+    head: 1
+  cost: 0
+  damaged: false
+  dropped: false
+  quantity: 1
+  quantityMax: 1
+  relicTier: minor
+  linkedInvocations:
+    - Interlocution of the Lords of Law
+    - Wrath of the Lords of Law
+  linkedCircle: null
+  immortal: Lords of Law
+  lore: ''
+effects: []
+_key: '!items!b000000000000015'

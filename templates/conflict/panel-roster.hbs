@@ -1,7 +1,7 @@
 {{!-- Roster Strip --}}
 <div class="panel-roster">
   {{#each roster}}
-  <div class="roster-entry {{#if this.knockedOut}}knocked-out{{/if}}">
+  <div class="roster-entry {{#if this.knockedOut}}knocked-out{{/if}} {{#if this.isGMTeam}}gm-team{{/if}}">
     <img class="roster-img" src="{{this.img}}" alt="{{this.name}}">
     <span class="roster-name">{{this.name}}</span>
     {{#if this.weapon}}

@@ -8,6 +8,7 @@ system:
   slotIndex: 0
   slotOptions:
     carried: 2
+    pack: 1
   cost: 2
   damaged: false
   dropped: false

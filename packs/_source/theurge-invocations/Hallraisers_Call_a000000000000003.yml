@@ -1,0 +1,21 @@
+_id: a000000000000003
+name: Hallraiser's Call
+type: invocation
+img: systems/tb2e/icons/ffffff/transparent/1x1/lorc/hunting-horn.svg
+system:
+  description: "Dungeoneer's Handbook, p. 211"
+  circle: 1
+  castingType: fixed
+  fixedObstacle: 3
+  invocationTime: 2
+  invocationTimeWithRelic: 1
+  duration: One turn
+  burden: 2
+  burdenWithRelic: 1
+  relic: A ram's horn found on the highest mountain pass
+  relicInventory: pack 1
+  sacramental: ''
+  mightPenalty: true
+  performed: false
+effects: []
+_key: '!items!a000000000000003'

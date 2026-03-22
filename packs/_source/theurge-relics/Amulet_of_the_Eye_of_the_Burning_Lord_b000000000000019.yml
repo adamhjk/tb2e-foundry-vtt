@@ -1,0 +1,23 @@
+_id: b000000000000019
+name: Amulet of the Eye of the Burning Lord
+type: relic
+img: systems/tb2e/icons/ffffff/transparent/1x1/lorc/burning-eye.svg
+system:
+  description: "Dungeoneer's Handbook, p. 222"
+  slot: ''
+  slotIndex: 0
+  slotOptions:
+    neck: 1
+  cost: 0
+  damaged: false
+  dropped: false
+  quantity: 1
+  quantityMax: 1
+  relicTier: minor
+  linkedInvocations:
+    - Supplication to the Burning Lord
+  linkedCircle: null
+  immortal: Lord of Fire
+  lore: ''
+effects: []
+_key: '!items!b000000000000019'

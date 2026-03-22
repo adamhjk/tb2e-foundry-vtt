@@ -1,0 +1,31 @@
+_id: a000000000000010
+name: Catholicon of the Lord of Plagues
+type: invocation
+img: systems/tb2e/icons/ffffff/transparent/1x1/lorc/fire-breath.svg
+system:
+  description: "Dungeoneer's Handbook, p. 216"
+  circle: 2
+  castingType: factors
+  factors:
+    - name: Breadth
+      options:
+        - label: Cure thyself of sickness
+          value: 4
+        - label: Cure another of sickness
+          value: 5
+        - label: Cure two characters
+          value: 6
+        - label: Cure a small group or party
+          value: 7
+  invocationTime: 2
+  invocationTimeWithRelic: 1
+  duration: Instantaneous
+  burden: 3
+  burdenWithRelic: 2
+  relic: The skull of Saint Barnabås
+  relicInventory: carried 1 or pack 1
+  sacramental: ''
+  mightPenalty: true
+  performed: false
+effects: []
+_key: '!items!a000000000000010'

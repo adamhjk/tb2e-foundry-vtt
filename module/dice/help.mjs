@@ -37,6 +37,7 @@ function _getAbilityRating(actor, key) {
  */
 function _getSkillRating(actor, key) {
   const skillData = actor.system.skills;
+  if ( !skillData ) return 0;
   if ( Array.isArray(skillData) ) {
     const entry = skillData.find(s => s.key === key);
     return entry?.rating ?? 0;
@@ -89,18 +90,20 @@ export function getEligibleHelpers({ actor, type, key, testContext = {}, candida
       if ( !t.actor ) return false;
       // Exclude the roller: by token ID for unlinked tokens (so other tokens sharing the
       // same base actor are NOT excluded), or by actorId for linked actors.
-      if ( rollerTokenId ? t.id === rollerTokenId : t.actorId === actor.id ) return false;
+      if ( rollerTokenId ) {
+        if ( t.id === rollerTokenId ) return false;
+      } else if ( t.actorLink ) {
+        if ( t.actorId === actor.id ) return false;
+      }
       return (t.actor.system.conflict?.team ?? "party") === rollerTeam;
     });
 
     if ( scenePool.length > 0 ) {
       pool = scenePool;
     } else {
-      // Fallback: no tokens in scene — use game.actors for all characters and NPCs
-      // on the same conflict team.
+      // Fallback: no tokens in scene — use game.actors on the same conflict team.
       pool = game.actors.filter(a => {
         if ( a.id === actor.id ) return false;
-        if ( a.type !== "character" && a.type !== "npc" ) return false;
         return (a.system.conflict?.team ?? "party") === rollerTeam;
       });
     }
@@ -113,9 +116,10 @@ export function getEligibleHelpers({ actor, type, key, testContext = {}, candida
     // Combatant.name resolves to the token name (e.g. "Kobold (1)"); Actor.name is actor name.
     const candidate = raw.actor ?? raw;
 
-    // Skip the roller — only needed for default pool path; when candidates is
-    // explicitly provided the caller has already excluded the roller by combatant ID.
-    if ( !candidates && candidate.id === actor.id ) continue;
+    // Skip the roller — only needed for the game.actors fallback pool; when candidates
+    // is explicitly provided the caller has already excluded the roller by combatant ID,
+    // and scene tokens are excluded by token ID in the pool filter above.
+    if ( !candidates && !raw.actorId && candidate.id === actor.id ) continue;
 
     // Check blocking conditions
     const { blocked } = isBlockedFromHelping(candidate);
@@ -168,14 +172,10 @@ export function getEligibleWiseAiders({ actor, testContext = {}, candidates }) {
   if ( candidates ) {
     pool = candidates;
   } else {
-    const sceneActorIds = new Set(
-      (canvas?.scene?.tokens ?? []).map(t => t.actorId).filter(Boolean)
-    );
+    const rollerTeam = actor.system.conflict?.team ?? "party";
     pool = game.actors.filter(a => {
       if ( a.id === actor.id ) return false;
-      if ( a.type === "character" ) return true;
-      if ( a.type === "npc" ) return sceneActorIds.has(a.id);
-      return false;
+      return (a.system.conflict?.team ?? "party") === rollerTeam;
     });
   }
 

@@ -1,7 +1,7 @@
 _id: f1e2d3c4b5a60026
 name: Tanner
 type: npc
-img: systems/tb2e/icons/ffffff/transparent/1x1/delapouite/animal-hide.svg
+img: systems/tb2e/assets/tokens/tanner.webp
 system:
   stock: ''
   class: ''
@@ -50,6 +50,8 @@ prototypeToken:
   actorLink: false
   appendNumber: true
   disposition: 0
+  texture:
+    src: systems/tb2e/assets/tokens/tanner.webp
 items:
   - _id: a026000000000001
     name: Stubborn

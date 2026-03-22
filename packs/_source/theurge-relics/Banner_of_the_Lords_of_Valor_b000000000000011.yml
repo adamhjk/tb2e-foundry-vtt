@@ -1,0 +1,24 @@
+_id: b000000000000011
+name: Banner of the Lords of Valor
+type: relic
+img: systems/tb2e/icons/ffffff/transparent/1x1/delapouite/knight-banner.svg
+system:
+  description: "Dungeoneer's Handbook, p. 216"
+  slot: ''
+  slotIndex: 0
+  slotOptions:
+    carried: 1
+    pack: 1
+  cost: 0
+  damaged: false
+  dropped: false
+  quantity: 1
+  quantityMax: 1
+  relicTier: minor
+  linkedInvocations:
+    - Chant of the Lords of Valor
+  linkedCircle: null
+  immortal: Lords of Valor
+  lore: ''
+effects: []
+_key: '!items!b000000000000011'

@@ -21,7 +21,7 @@
     <span class="roll-ref-text">Hover a section for rules reference</span>
   </div>
 
-  <div class="roll-dialog-options {{#if isDisposition}}hidden{{/if}}">
+  <div class="roll-dialog-options {{#if isDisposition}}hidden{{else}}{{#if isConflict}}hidden{{/if}}{{/if}}">
     <label class="roll-option" data-page="DH p.107">
       <span class="ref-label">Advancement</span>
       <input type="checkbox" name="logAdvancement" checked>

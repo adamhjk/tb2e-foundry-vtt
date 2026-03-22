@@ -1,7 +1,7 @@
 _id: f1e2d3c4b5a60007
 name: Captain
 type: npc
-img: systems/tb2e/icons/ffffff/transparent/1x1/delapouite/gauntlet.svg
+img: systems/tb2e/assets/tokens/captain.webp
 system:
   stock: ''
   class: ''
@@ -59,6 +59,8 @@ prototypeToken:
   actorLink: false
   appendNumber: true
   disposition: 0
+  texture:
+    src: systems/tb2e/assets/tokens/captain.webp
 items:
   - _id: a007000000000001
     name: Defender

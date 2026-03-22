@@ -1,0 +1,24 @@
+_id: b000000000000012
+name: Heavy Leather Gloves Inscribed with Sigils of the Lords of Forges
+type: relic
+img: systems/tb2e/icons/ffffff/transparent/1x1/delapouite/gloves.svg
+system:
+  description: "Dungeoneer's Handbook, p. 217"
+  slot: ''
+  slotIndex: 0
+  slotOptions:
+    pack: 1
+    hands: 2
+  cost: 0
+  damaged: false
+  dropped: false
+  quantity: 1
+  quantityMax: 1
+  relicTier: minor
+  linkedInvocations:
+    - Cloak of the Lord of Forges
+  linkedCircle: null
+  immortal: Lords of Forges
+  lore: ''
+effects: []
+_key: '!items!b000000000000012'

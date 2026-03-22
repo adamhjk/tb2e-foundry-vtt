@@ -1,10 +1,11 @@
 _id: ca04000000000000
 name: Gerald
 type: character
-img: systems/tb2e/icons/ffffff/transparent/1x1/delapouite/lockpicks.svg
+img: systems/tb2e/assets/tokens/gerald.webp
 system:
-  stock: Halfling
-  class: Burglar
+  stock: halfling
+  class: burglar
+  specialty: scavenger
   age: '30'
   home: Busy Crossroads
   raiment: Red scarf
@@ -68,6 +69,8 @@ prototypeToken:
   actorLink: true
   appendNumber: false
   disposition: 1
+  texture:
+    src: systems/tb2e/assets/tokens/gerald.webp
 items:
   - _id: ca04000000000001
     name: Hidden Depths
@@ -95,7 +98,7 @@ items:
     img: systems/tb2e/icons/ffffff/transparent/1x1/lorc/heavy-helm.svg
     system:
       description: Dungeoneer's Handbook, p. 150
-      slot: ''
+      slot: head
       slotIndex: 0
       slotOptions:
         head: 1
@@ -115,7 +118,7 @@ items:
     img: systems/tb2e/icons/ffffff/transparent/1x1/delapouite/sling.svg
     system:
       description: Dungeoneer's Handbook, p. 159
-      slot: ''
+      slot: ca04000000000007
       slotIndex: 0
       slotOptions:
         pouch: 1
@@ -148,7 +151,7 @@ items:
     img: systems/tb2e/icons/ffffff/transparent/1x1/delapouite/leather-armor.svg
     system:
       description: Dungeoneer's Handbook, p. 151
-      slot: ''
+      slot: torso
       slotIndex: 0
       slotOptions:
         torso: 1
@@ -168,8 +171,8 @@ items:
     img: systems/tb2e/icons/ffffff/transparent/1x1/delapouite/backpack.svg
     system:
       description: Dungeoneer's Handbook, p. 152
-      slot: ''
-      slotIndex: 0
+      slot: torso
+      slotIndex: 1
       slotOptions:
         torso: 2
       cost: 2
@@ -189,7 +192,7 @@ items:
     img: systems/tb2e/icons/ffffff/transparent/1x1/seregacthtuf/pouch-with-beads.svg
     system:
       description: Dungeoneer's Handbook, p. 152
-      slot: ''
+      slot: belt
       slotIndex: 0
       slotOptions:
         belt: 1
@@ -211,8 +214,8 @@ items:
     img: systems/tb2e/icons/ffffff/transparent/1x1/delapouite/waterskin.svg
     system:
       description: Dungeoneer's Handbook, p. 152
-      slot: ''
-      slotIndex: 0
+      slot: belt
+      slotIndex: 1
       slotOptions:
         belt: 1
         pack: 1
@@ -224,7 +227,7 @@ items:
       containerKey: ''
       containerSlots: 0
       containerType: waterskin
-      liquidType: water
+      liquidType: wine
       lost: false
     effects: []
     _key: '!actors.items!ca04000000000000.ca04000000000008'
@@ -234,7 +237,7 @@ items:
     img: systems/tb2e/icons/ffffff/transparent/1x1/delapouite/lockpicks.svg
     system:
       description: Dungeoneer's Handbook, p. 153
-      slot: ''
+      slot: ca04000000000006
       slotIndex: 0
       slotOptions:
         pack: 1
@@ -259,8 +262,8 @@ items:
     img: systems/tb2e/icons/ffffff/transparent/1x1/delapouite/bread.svg
     system:
       description: Dungeoneer's Handbook, p. 154
-      slot: ''
-      slotIndex: 0
+      slot: ca04000000000006
+      slotIndex: 1
       slotOptions:
         pack: 1
       cost: 1
@@ -279,8 +282,8 @@ items:
     img: systems/tb2e/icons/ffffff/transparent/1x1/delapouite/rope-coil.svg
     system:
       description: Dungeoneer's Handbook, p. 153
-      slot: ''
-      slotIndex: 0
+      slot: ca04000000000006
+      slotIndex: 2
       slotOptions:
         torso: 1
         pack: 2
@@ -305,50 +308,29 @@ items:
     img: systems/tb2e/icons/ffffff/transparent/1x1/lorc/knapsack.svg
     system:
       description: Dungeoneer's Handbook, p. 152
-      slot: ''
-      slotIndex: 0
+      slot: ca04000000000006
+      slotIndex: 4
       slotOptions:
         pack: 1
       cost: 1
       damaged: false
       dropped: false
-      quantity: 1
-      quantityMax: 1
+      quantity: 2
+      quantityMax: 2
       containerKey: ''
       containerSlots: 2
       containerType: smallSack
       lost: false
     effects: []
     _key: '!actors.items!ca04000000000000.ca0400000000000c'
-  - _id: ca0400000000000d
-    name: Sack, Small
-    type: container
-    img: systems/tb2e/icons/ffffff/transparent/1x1/lorc/knapsack.svg
-    system:
-      description: Dungeoneer's Handbook, p. 152
-      slot: ''
-      slotIndex: 0
-      slotOptions:
-        pack: 1
-      cost: 1
-      damaged: false
-      dropped: false
-      quantity: 1
-      quantityMax: 1
-      containerKey: ''
-      containerSlots: 2
-      containerType: smallSack
-      lost: false
-    effects: []
-    _key: '!actors.items!ca04000000000000.ca0400000000000d'
   - _id: ca0400000000000e
     name: Candles
     type: supply
     img: systems/tb2e/icons/ffffff/transparent/1x1/delapouite/candles.svg
     system:
       description: "Dungeoneer's Handbook, p. 154; Scholar's Guide, pp. 42\u201343"
-      slot: ''
-      slotIndex: 0
+      slot: ca04000000000006
+      slotIndex: 5
       slotOptions:
         pack: 1
       cost: 1

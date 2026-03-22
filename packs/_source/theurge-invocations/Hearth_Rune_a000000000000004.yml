@@ -1,0 +1,21 @@
+_id: a000000000000004
+name: Hearth Rune
+type: invocation
+img: systems/tb2e/icons/ffffff/transparent/1x1/lorc/rune-stone.svg
+system:
+  description: "Dungeoneer's Handbook, p. 211"
+  circle: 1
+  castingType: fixed
+  fixedObstacle: 3
+  invocationTime: 2
+  invocationTimeWithRelic: 1
+  duration: One turn
+  burden: 2
+  burdenWithRelic: 1
+  relic: A ring of runed keys
+  relicInventory: pocket
+  sacramental: ''
+  mightPenalty: true
+  performed: false
+effects: []
+_key: '!items!a000000000000004'

@@ -23,6 +23,7 @@ export default class CharacterData extends foundry.abstract.TypeDataModel {
       friend: new fields.StringField(),
       enemy: new fields.StringField(),
       level: new fields.NumberField({ initial: 1, integer: true, min: 1, max: 10 }),
+      specialty: new fields.StringField({ blank: true }),
 
       // ---- What You Fight For ----
       belief: new fields.StringField(),

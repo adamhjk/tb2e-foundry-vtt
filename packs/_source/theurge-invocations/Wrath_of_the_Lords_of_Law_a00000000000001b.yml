@@ -1,0 +1,21 @@
+_id: a00000000000001b
+name: Wrath of the Lords of Law
+type: invocation
+img: systems/tb2e/icons/ffffff/transparent/1x1/lorc/lightning-storm.svg
+system:
+  description: "Dungeoneer's Handbook, p. 223"
+  circle: 2
+  castingType: versus
+  versusDefense: nature
+  invocationTime: 1
+  invocationTimeWithRelic: 0
+  duration: Two turns
+  burden: 3
+  burdenWithRelic: 2
+  relic: Crown of the Lords of Law
+  relicInventory: worn/head
+  sacramental: ''
+  mightPenalty: true
+  performed: false
+effects: []
+_key: '!items!a00000000000001b'

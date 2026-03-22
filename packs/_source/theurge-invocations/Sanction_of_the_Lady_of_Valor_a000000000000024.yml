@@ -1,0 +1,21 @@
+_id: a000000000000024
+name: Sanction of the Lady of Valor
+type: invocation
+img: systems/tb2e/icons/ffffff/transparent/1x1/delapouite/sword-brandish.svg
+system:
+  description: "Dungeoneer's Handbook, p. 228"
+  circle: 3
+  castingType: fixed
+  fixedObstacle: 3
+  invocationTime: 1
+  invocationTimeWithRelic: 0
+  duration: One turn
+  burden: 4
+  burdenWithRelic: 3
+  relic: The sword of the Lady of Valor
+  relicInventory: carried 1, belt 1; wielded 1
+  sacramental: ''
+  mightPenalty: true
+  performed: false
+effects: []
+_key: '!items!a000000000000024'

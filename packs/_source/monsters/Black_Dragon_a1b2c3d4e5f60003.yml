@@ -1,7 +1,7 @@
 _id: a1b2c3d4e5f60003
 name: Black Dragon
 type: monster
-img: systems/tb2e/icons/ffffff/transparent/1x1/lorc/dragon-spiral.svg
+img: systems/tb2e/assets/tokens/black-dragon.webp
 system:
   nature: 9
   natureDescriptors: Devastating, Lurking, Hoarding
@@ -74,6 +74,8 @@ prototypeToken:
   actorLink: false
   appendNumber: true
   disposition: -1
+  texture:
+    src: systems/tb2e/assets/tokens/black-dragon.webp
 items: []
 effects: []
 _key: '!actors!a1b2c3d4e5f60003'

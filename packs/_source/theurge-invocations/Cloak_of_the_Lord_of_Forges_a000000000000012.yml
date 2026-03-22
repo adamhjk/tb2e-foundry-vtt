@@ -1,0 +1,39 @@
+_id: a000000000000012
+name: Cloak of the Lord of Forges
+type: invocation
+img: systems/tb2e/icons/ffffff/transparent/1x1/lorc/anvil.svg
+system:
+  description: "Dungeoneer's Handbook, p. 217"
+  circle: 2
+  castingType: factors
+  factors:
+    - name: Breadth
+      options:
+        - label: Shield yourself
+          value: 1
+        - label: Shield another
+          value: 2
+        - label: Shield two people
+          value: 3
+        - label: Shield a small group
+          value: 4
+    - name: Duration
+      options:
+        - label: One turn
+          value: 0
+        - label: Two turns
+          value: 1
+        - label: Phase
+          value: 2
+  invocationTime: 2
+  invocationTimeWithRelic: 1
+  duration: Variable
+  burden: 3
+  burdenWithRelic: 2
+  relic: A pair of heavy leather gloves inscribed with the sigils of the Lords of Forges
+  relicInventory: pack 1 or worn/hands 2
+  sacramental: ''
+  mightPenalty: true
+  performed: false
+effects: []
+_key: '!items!a000000000000012'

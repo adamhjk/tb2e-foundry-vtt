@@ -1,0 +1,23 @@
+_id: b00000000000000d
+name: Silver Replica of Sigtyr's Scepter
+type: relic
+img: systems/tb2e/icons/ffffff/transparent/1x1/delapouite/bird-scepter.svg
+system:
+  description: "Dungeoneer's Handbook, p. 214"
+  slot: ''
+  slotIndex: 0
+  slotOptions:
+    neck: 1
+  cost: 0
+  damaged: false
+  dropped: false
+  quantity: 1
+  quantityMax: 1
+  relicTier: minor
+  linkedInvocations:
+    - "Sigtyr's Arresting Speech"
+  linkedCircle: null
+  immortal: Sigtyr
+  lore: ''
+effects: []
+_key: '!items!b00000000000000d'

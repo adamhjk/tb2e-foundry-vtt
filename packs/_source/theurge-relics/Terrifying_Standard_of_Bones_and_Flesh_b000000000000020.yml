@@ -1,0 +1,24 @@
+_id: b000000000000020
+name: Terrifying Standard of Bones and Flesh
+type: relic
+img: systems/tb2e/icons/ffffff/transparent/1x1/delapouite/vertical-banner.svg
+system:
+  description: "Dungeoneer's Handbook, p. 227"
+  slot: ''
+  slotIndex: 0
+  slotOptions:
+    carried: 1
+    pack: 4
+  cost: 0
+  damaged: false
+  dropped: false
+  quantity: 1
+  quantityMax: 1
+  relicTier: minor
+  linkedInvocations:
+    - Malison of the Lords of Terror
+  linkedCircle: null
+  immortal: Lords of Terror
+  lore: ''
+effects: []
+_key: '!items!b000000000000020'

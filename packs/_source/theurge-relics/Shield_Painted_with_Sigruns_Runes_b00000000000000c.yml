@@ -1,0 +1,24 @@
+_id: b00000000000000c
+name: Shield Painted with Sigrun's Runes
+type: relic
+img: systems/tb2e/icons/ffffff/transparent/1x1/lorc/bordered-shield.svg
+system:
+  description: "Dungeoneer's Handbook, p. 213"
+  slot: ''
+  slotIndex: 0
+  slotOptions:
+    carried: 1
+    torso: 1
+  cost: 0
+  damaged: false
+  dropped: false
+  quantity: 1
+  quantityMax: 1
+  relicTier: minor
+  linkedInvocations:
+    - "Sigrun's Voice of Thunder"
+  linkedCircle: null
+  immortal: Sigrun
+  lore: ''
+effects: []
+_key: '!items!b00000000000000c'

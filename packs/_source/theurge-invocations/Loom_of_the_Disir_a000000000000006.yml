@@ -1,0 +1,21 @@
+_id: a000000000000006
+name: Loom of the Disir
+type: invocation
+img: systems/tb2e/icons/ffffff/transparent/1x1/caro-asercion/spinning-wheel.svg
+system:
+  description: "Dungeoneer's Handbook, p. 211"
+  circle: 1
+  castingType: fixed
+  fixedObstacle: 2
+  invocationTime: 2
+  invocationTimeWithRelic: 1
+  duration: One turn
+  burden: 2
+  burdenWithRelic: 1
+  relic: A rune-scribed shuttlecock
+  relicInventory: pack 1
+  sacramental: ''
+  mightPenalty: true
+  performed: false
+effects: []
+_key: '!items!a000000000000006'

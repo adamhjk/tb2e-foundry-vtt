@@ -1,7 +1,7 @@
 _id: a1b2c3d4e5f6000d
 name: Guardian Statue
 type: monster
-img: systems/tb2e/icons/ffffff/transparent/1x1/delapouite/colombian-statue.svg
+img: systems/tb2e/assets/tokens/guardian-statue.webp
 system:
   nature: 5
   natureDescriptors: Guarding, Smashing, Avenging
@@ -74,6 +74,8 @@ prototypeToken:
   actorLink: false
   appendNumber: true
   disposition: -1
+  texture:
+    src: systems/tb2e/assets/tokens/guardian-statue.webp
 items: []
 effects: []
 _key: '!actors!a1b2c3d4e5f6000d'

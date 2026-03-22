@@ -28,6 +28,7 @@
 
     {{!-- Roll Area --}}
     {{#unless this.hasRolled}}
+      {{!-- Show roll area for: characters with a chosen skill, or unlisted monster conflicts --}}
       {{#if this.chosenSkill}}
       <div class="disp-roll-area">
         <span class="disp-roll-info">
@@ -39,6 +40,19 @@
         </button>
         {{/if}}
       </div>
+      {{else}}
+      {{#if this.isMonsterGroup}}{{#unless this.isListedConflict}}
+      <div class="disp-roll-area">
+        <span class="disp-roll-info">
+          {{this.skillLabel}} {{this.abilityLabel}}
+        </span>
+        {{#if this.canRoll}}
+        <button type="button" class="panel-action-btn" data-action="rollDisposition">
+          <i class="fa-solid fa-dice"></i> {{localize "TB2E.Conflict.Roll"}}
+        </button>
+        {{/if}}
+      </div>
+      {{/unless}}{{/if}}
       {{/if}}
       {{#if @root.isGM}}
       <div class="disp-gm-flat">
@@ -94,6 +108,18 @@
     <div class="disp-distributed-badge">
       <i class="fa-solid fa-check"></i> {{localize "TB2E.Conflict.Distributed"}}
     </div>
+    <ul class="dist-list distributed-readonly">
+      {{#each this.distributedValues}}
+      <li class="dist-row">
+        <span class="dist-name">
+          {{#if this.isCaptain}}<i class="fa-solid fa-star"></i>{{/if}}
+          {{#if this.isBoss}}<i class="fa-solid fa-shield dist-boss-icon"></i>{{/if}}
+          {{this.name}}
+        </span>
+        <span class="dist-readonly-value">{{this.hp}}</span>
+      </li>
+      {{/each}}
+    </ul>
     {{/unless}}
 
     {{/unless}}

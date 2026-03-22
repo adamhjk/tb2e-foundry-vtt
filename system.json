@@ -8,6 +8,7 @@
   },
   "esmodules": ["tb2e.mjs"],
   "styles": ["tb2e.css"],
+  "background": "systems/tb2e/assets/tb2e-background.png",
   "relationships": {},
   "languages": [
     {
@@ -66,7 +67,8 @@
     { "name": "magic-items",  "label": "Magic Items",  "path": "packs/magic-items",  "type": "Item" },
     { "name": "monsters",    "label": "Monsters",    "path": "packs/monsters",    "type": "Actor" },
     { "name": "npcs",        "label": "NPCs",        "path": "packs/npcs",        "type": "Actor" },
-    { "name": "iconic-characters", "label": "Iconic Characters", "path": "packs/iconic-characters", "type": "Actor" }
+    { "name": "iconic-characters", "label": "Iconic Characters", "path": "packs/iconic-characters", "type": "Actor" },
+    { "name": "phase-scenes", "label": "Phase Scenes", "path": "packs/phase-scenes", "type": "Scene" }
   ],
   "packFolders": [
     {

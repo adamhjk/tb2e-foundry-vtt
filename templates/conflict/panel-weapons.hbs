@@ -9,8 +9,9 @@
       <li class="weapon-row {{#if this.knockedOut}}knocked-out{{/if}}">
         <img class="weapon-combatant-img" src="{{this.img}}" alt="{{this.name}}">
         <span class="weapon-combatant-name">{{this.name}}</span>
+        <div class="weapon-controls">
         {{#if this.knockedOut}}
-        <span class="weapon-ko"><i class="fa-solid fa-skull"></i></span>
+          <span class="weapon-ko"><i class="fa-solid fa-skull"></i></span>
         {{else if this.canEdit}}
           <select class="weapon-select" data-combatant-id="{{this.id}}">
             <option value="">{{localize "TB2E.Conflict.WeaponChoose"}}</option>
@@ -41,6 +42,7 @@
           <span class="weapon-display">{{this.weapon}}</span>
           {{/if}}
         {{/if}}
+        </div>
       </li>
       {{/each}}
     </ul>

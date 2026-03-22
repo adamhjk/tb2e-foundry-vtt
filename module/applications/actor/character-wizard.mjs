@@ -1187,6 +1187,7 @@ export default class CharacterWizard extends HandlebarsApplicationMixin(Applicat
       "system.abilities.nature.max": nature,
       "system.abilities.resources.rating": resources,
       "system.abilities.circles.rating": circles,
+      "system.specialty": s.specialty || "",
       "system.might": 1,
       "system.natureDescriptors": descriptors,
       "system.wises": wisesData,

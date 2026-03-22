@@ -1,0 +1,21 @@
+_id: a000000000000009
+name: Plow Blessing
+type: invocation
+img: systems/tb2e/icons/ffffff/transparent/1x1/lorc/wheat.svg
+system:
+  description: "Dungeoneer's Handbook, p. 212"
+  circle: 1
+  castingType: fixed
+  fixedObstacle: 2
+  invocationTime: 2
+  invocationTimeWithRelic: 1
+  duration: One turn
+  burden: 2
+  burdenWithRelic: 1
+  relic: A sacred bowl
+  relicInventory: pack 1
+  sacramental: ''
+  mightPenalty: true
+  performed: false
+effects: []
+_key: '!items!a000000000000009'

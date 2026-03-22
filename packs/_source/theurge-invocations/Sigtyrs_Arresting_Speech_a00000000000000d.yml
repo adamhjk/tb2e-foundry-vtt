@@ -1,0 +1,21 @@
+_id: a00000000000000d
+name: Sigtyr's Arresting Speech
+type: invocation
+img: systems/tb2e/icons/ffffff/transparent/1x1/lorc/scales.svg
+system:
+  description: "Dungeoneer's Handbook, p. 214"
+  circle: 1
+  castingType: fixed
+  fixedObstacle: 3
+  invocationTime: 1
+  invocationTimeWithRelic: 0
+  duration: One turn
+  burden: 2
+  burdenWithRelic: 1
+  relic: A silver replica of Sigtyr's scepter
+  relicInventory: worn/neck
+  sacramental: ''
+  mightPenalty: true
+  performed: false
+effects: []
+_key: '!items!a00000000000000d'

@@ -1,0 +1,49 @@
+_id: a000000000000022
+name: Foundation of the Lords of Law
+type: invocation
+img: systems/tb2e/icons/ffffff/transparent/1x1/delapouite/ancient-columns.svg
+system:
+  description: "Dungeoneer's Handbook, p. 226"
+  circle: 3
+  castingType: factors
+  factors:
+    - name: Camp Size
+      options:
+        - label: Small camp
+          value: 1
+        - label: Medium camp
+          value: 2
+        - label: Large camp
+          value: 3
+        - label: Steading
+          value: 4
+        - label: Remote village
+          value: 5
+    - name: Water Source
+      options:
+        - label: Basin or spring
+          value: 1
+        - label: Well
+          value: 2
+        - label: Pond or stream
+          value: 3
+        - label: River or lake
+          value: 4
+    - name: Location
+      options:
+        - label: Above ground
+          value: 1
+        - label: Below ground
+          value: 2
+  invocationTime: 1
+  invocationTimeWithRelic: 0
+  duration: One conflict
+  burden: 4
+  burdenWithRelic: 3
+  relic: Sigtyr's Scepter of Rule
+  relicInventory: belt 1, pack 2 or carried 1
+  sacramental: ''
+  mightPenalty: true
+  performed: false
+effects: []
+_key: '!items!a000000000000022'

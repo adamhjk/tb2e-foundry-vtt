@@ -153,11 +153,16 @@ export default class ConflictTracker extends CombatTracker {
         });
       }
 
+      const isPartyGroup = members.some(c => {
+        const a = c.actor;
+        return a?.type === "character" || a?.system.conflict?.team === "party";
+      });
       context.groups.push({
         id: group.id,
         name: group.name,
         combatants,
         captainId: groupData.captainId || null,
+        isPartyGroup,
         hasDisposition,
         currentDisposition: currentDisp,
         maxDisposition: maxDisp,

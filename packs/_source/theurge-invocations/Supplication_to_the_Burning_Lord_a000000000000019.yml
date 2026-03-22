@@ -1,0 +1,21 @@
+_id: a000000000000019
+name: Supplication to the Burning Lord
+type: invocation
+img: systems/tb2e/icons/ffffff/transparent/1x1/lorc/campfire.svg
+system:
+  description: "Dungeoneer's Handbook, p. 222"
+  circle: 2
+  castingType: fixed
+  fixedObstacle: 3
+  invocationTime: 1
+  invocationTimeWithRelic: 0
+  duration: Phase
+  burden: 3
+  burdenWithRelic: 2
+  relic: Amulet of the Eye of the Burning Lord
+  relicInventory: worn/neck
+  sacramental: ''
+  mightPenalty: true
+  performed: false
+effects: []
+_key: '!items!a000000000000019'

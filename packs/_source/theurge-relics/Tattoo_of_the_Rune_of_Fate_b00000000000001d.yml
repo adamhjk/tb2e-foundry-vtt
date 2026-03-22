@@ -1,0 +1,22 @@
+_id: b00000000000001d
+name: Tattoo of the Rune of Fate
+type: relic
+img: systems/tb2e/icons/ffffff/transparent/1x1/delapouite/sewing-string.svg
+system:
+  description: "Dungeoneer's Handbook, p. 224"
+  slot: ''
+  slotIndex: 0
+  slotOptions: {}
+  cost: 0
+  damaged: false
+  dropped: false
+  quantity: 1
+  quantityMax: 1
+  relicTier: minor
+  linkedInvocations:
+    - Byrnie of the Disir
+  linkedCircle: null
+  immortal: Disir
+  lore: ''
+effects: []
+_key: '!items!b00000000000001d'

@@ -1,0 +1,22 @@
+_id: a000000000000021
+name: Extirpation
+type: invocation
+img: systems/tb2e/icons/ffffff/transparent/1x1/lorc/holy-symbol.svg
+system:
+  description: "Dungeoneer's Handbook, p. 226"
+  circle: 3
+  castingType: fixed
+  fixedObstacle: 0
+  obstacleNote: 'Ob = total Might of target undead (see DH p. 226)'
+  invocationTime: 1
+  invocationTimeWithRelic: 0
+  duration: Instantaneous
+  burden: 4
+  burdenWithRelic: 3
+  relic: Amulet of Sol the Daystar
+  relicInventory: worn/neck or carried 1
+  sacramental: ''
+  mightPenalty: true
+  performed: false
+effects: []
+_key: '!items!a000000000000021'

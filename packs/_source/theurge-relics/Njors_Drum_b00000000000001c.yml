@@ -1,0 +1,23 @@
+_id: b00000000000001c
+name: Njor's Drum
+type: relic
+img: systems/tb2e/icons/ffffff/transparent/1x1/delapouite/drum.svg
+system:
+  description: "Dungeoneer's Handbook, p. 224"
+  slot: ''
+  slotIndex: 0
+  slotOptions:
+    carried: 1
+  cost: 0
+  damaged: false
+  dropped: false
+  quantity: 1
+  quantityMax: 1
+  relicTier: minor
+  linkedInvocations:
+    - Blessing of the Lord of Winds
+  linkedCircle: null
+  immortal: Njor
+  lore: ''
+effects: []
+_key: '!items!b00000000000001c'

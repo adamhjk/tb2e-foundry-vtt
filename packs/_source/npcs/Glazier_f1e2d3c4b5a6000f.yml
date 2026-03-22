@@ -1,7 +1,7 @@
 _id: f1e2d3c4b5a6000f
 name: Glazier
 type: npc
-img: systems/tb2e/icons/ffffff/transparent/1x1/delapouite/amphora.svg
+img: systems/tb2e/assets/tokens/glazier.webp
 system:
   stock: ''
   class: ''
@@ -49,6 +49,8 @@ prototypeToken:
   actorLink: false
   appendNumber: true
   disposition: 0
+  texture:
+    src: systems/tb2e/assets/tokens/glazier.webp
 items:
   - _id: a00f000000000001
     name: Thoughtful

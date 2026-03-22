@@ -12,6 +12,8 @@ const { ActorSheetV2 } = foundry.applications.sheets;
 
 export default class CharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
 
+  static #FIXED_SLOTS = new Set(["head", "neck", "hand-L", "hand-R", "torso", "belt", "feet", "pocket"]);
+
   static DEFAULT_OPTIONS = {
     classes: ["tb2e", "sheet", "actor", "character"],
     position: { width: 800, height: 750 },
@@ -46,6 +48,7 @@ export default class CharacterSheet extends HandlebarsApplicationMixin(ActorShee
       deleteItem: CharacterSheet.#onDeleteItem,
       createItem: CharacterSheet.#onCreateItem,
       toggleLiquidType: CharacterSheet.#onToggleLiquidType,
+      splitBundle: CharacterSheet.#onSplitBundle,
       toggleSpellField: CharacterSheet.#onToggleSpellField,
       addSpell: CharacterSheet.#onAddSpell,
       deleteSpell: CharacterSheet.#onDeleteSpell,
@@ -307,7 +310,10 @@ export default class CharacterSheet extends HandlebarsApplicationMixin(ActorShee
 
     for ( const [key, cfg] of Object.entries(abilities) ) {
       if ( cfg.rollable === false ) {
-        const entry = { key, label: game.i18n.localize(cfg.label), rollable: false, page: cfg.page };
+        const inAbilities = key in sys.abilities;
+        const path = inAbilities ? `system.abilities.${key}` : `system.${key}`;
+        const value = inAbilities ? sys.abilities[key] : sys[key];
+        const entry = { key, label: game.i18n.localize(cfg.label), rollable: false, page: cfg.page, path, value };
         if ( cfg.group === "raw" ) context.rawAbilities.push(entry);
         else context.townAbilities.push(entry);
         continue;
@@ -370,7 +376,8 @@ export default class CharacterSheet extends HandlebarsApplicationMixin(ActorShee
         learning: data.learning ?? 0,
         isLearning,
         learningArray: isLearning ? this.#buildBubbles(data.learning ?? 0, sys.abilities.nature.max) : [],
-        page: cfg.page
+        page: cfg.page,
+        isSpecialty: key === sys.specialty
       };
     });
   }
@@ -420,12 +427,14 @@ export default class CharacterSheet extends HandlebarsApplicationMixin(ActorShee
 
     // Build dynamic container slot groups from equipped container items.
     const containerGroups = [];
-    const containers = (actor.itemTypes.container || []).filter(c => c.system.slot && !c.system.dropped && !c.system.lost);
+    const containers = (actor.itemTypes.container || []).filter(c =>
+      CharacterSheet.#FIXED_SLOTS.has(c.system.slot) && !c.system.dropped && !c.system.lost && (c.system.quantityMax ?? 1) === 1
+    );
     for ( const c of containers ) {
       // Liquid containers don't provide inventory slot groups.
       const cType = CONFIG.TB2E.containerTypes[c.system.containerType];
       if ( cType?.liquid ) continue;
-      const cKey = c.system.containerKey || `container-${c.id}`;
+      const cKey = c.system.containerKey || c.id;
       containerGroups.push({
         key: cKey,
         label: c.name,
@@ -560,6 +569,7 @@ export default class CharacterSheet extends HandlebarsApplicationMixin(ActorShee
       quantityMax: item.system.quantityMax ?? 1,
       isContainer: item.type === "container",
       isLiquidContainer: item.type === "container" && !!CONFIG.TB2E.containerTypes[item.system.containerType]?.liquid,
+      isSplittableBundle: item.type === "container" && (item.system.quantityMax ?? 1) > 1,
       liquidType: item.system.liquidType ?? "water",
       liquidTypeLabel: game.i18n.localize(CONFIG.TB2E.liquidTypes[item.system.liquidType]?.label ?? "TB2E.Liquid.Water"),
       isSupply: item.type === "supply",
@@ -803,9 +813,15 @@ export default class CharacterSheet extends HandlebarsApplicationMixin(ActorShee
       return { value: key, label: game.i18n.localize(cfg.label), selected: key === currentClass, disabled: !allowed };
     });
 
+    // Build specialty skill options.
+    const specialtyOptions = Object.entries(skills).map(([key, cfg]) => ({
+      value: key, label: game.i18n.localize(cfg.label), selected: key === sys.specialty
+    }));
+
     return [
       { name: "stock", label: game.i18n.localize("TB2E.Fields.Stock"), value: currentStock, type: "select", options: stockOptions },
       { name: "class", label: game.i18n.localize("TB2E.Fields.Class"), value: currentClass, type: "select", options: classOptions },
+      { name: "specialty", label: game.i18n.localize("TB2E.Fields.Specialty"), value: sys.specialty, type: "select", options: specialtyOptions },
       { name: "age", label: game.i18n.localize("TB2E.Fields.Age"), value: sys.age, type: "text" },
       { name: "home", label: game.i18n.localize("TB2E.Fields.Home"), value: sys.home, type: "text" },
       { name: "raiment", label: game.i18n.localize("TB2E.Fields.Raiment"), value: sys.raiment, type: "text" },
@@ -1506,7 +1522,7 @@ export default class CharacterSheet extends HandlebarsApplicationMixin(ActorShee
 
     // If container, cascade children.
     if ( item.type === "container" ) {
-      const containerKey = item.system.containerKey || `container-${item.id}`;
+      const containerKey = item.system.containerKey || item.id;
       for ( const child of this.document.items ) {
         if ( child.system.slot === containerKey ) {
           updates.push({ _id: child.id, "system.slot": "", "system.slotIndex": 0 });
@@ -1528,7 +1544,7 @@ export default class CharacterSheet extends HandlebarsApplicationMixin(ActorShee
     const updates = [{ _id: item.id, "system.slot": "", "system.slotIndex": 0, "system.dropped": true }];
 
     if ( item.type === "container" ) {
-      const containerKey = item.system.containerKey || `container-${item.id}`;
+      const containerKey = item.system.containerKey || item.id;
       for ( const child of this.document.items ) {
         if ( child.system.slot === containerKey ) {
           updates.push({ _id: child.id, "system.slot": "", "system.slotIndex": 0, "system.dropped": true });
@@ -1710,6 +1726,33 @@ export default class CharacterSheet extends HandlebarsApplicationMixin(ActorShee
   }
 
   /**
+   * Split one container off a bundled pair: decrement original, create a free singular clone.
+   */
+  static async #onSplitBundle(event, target) {
+    const itemId = target.dataset.itemId;
+    const item = this.document.items.get(itemId);
+    if ( !item ) return;
+    const qty = item.system.quantity ?? 1;
+    if ( qty < 2 ) return;
+
+    // Create one free sack in Unassigned
+    const itemData = item.toObject();
+    delete itemData._id;
+    itemData.system.quantity = 1;
+    itemData.system.quantityMax = 1;
+    itemData.system.slot = "";
+    itemData.system.slotIndex = 0;
+    itemData.system.containerKey = "";
+    await Item.create([itemData], { parent: this.document });
+
+    // Decrement original
+    await item.update({
+      "system.quantity": qty - 1,
+      "system.quantityMax": item.system.quantityMax - 1
+    });
+  }
+
+  /**
    * Move an item to the first available hand carried slot.
    */
   static async #onMoveToHand(event, target) {
@@ -1834,12 +1877,12 @@ export default class CharacterSheet extends HandlebarsApplicationMixin(ActorShee
 
     // Check container slots (pack, quiver, pouch) — not cache.
     const equippedContainers = (this.document.itemTypes.container || []).filter(c =>
-      c.system.slot && !c.system.dropped && !c.system.lost
+      CharacterSheet.#FIXED_SLOTS.has(c.system.slot) && !c.system.dropped && !c.system.lost && (c.system.quantityMax ?? 1) === 1
     );
     for ( const c of equippedContainers ) {
       const cType = CONFIG.TB2E.containerTypes[c.system.containerType];
       if ( cType?.liquid ) continue;
-      const cKey = c.system.containerKey || `container-${c.id}`;
+      const cKey = c.system.containerKey || c.id;
       const ct = c.system.containerType;
       const containerOptKey = ct === "quiver" ? "quiver" : ct === "pouch" ? "pouch" : "pack";
       const cost = getSlotCost(so, containerOptKey);
@@ -1867,7 +1910,7 @@ export default class CharacterSheet extends HandlebarsApplicationMixin(ActorShee
    */
   #containerTypeForSlot(slotKey) {
     const container = this.document.items.find(i =>
-      i.type === "container" && (i.system.containerKey || `container-${i.id}`) === slotKey
+      i.type === "container" && (i.system.containerKey || i.id) === slotKey
     );
     return container?.system.containerType ?? null;
   }
@@ -1921,7 +1964,7 @@ export default class CharacterSheet extends HandlebarsApplicationMixin(ActorShee
     };
     if ( fixed[slotKey] ) return fixed[slotKey];
     const container = this.document.items.find(i =>
-      i.type === "container" && (i.system.containerKey || `container-${i.id}`) === slotKey
+      i.type === "container" && (i.system.containerKey || i.id) === slotKey
     );
     return container?.name ?? slotKey;
   }
@@ -2014,7 +2057,7 @@ export default class CharacterSheet extends HandlebarsApplicationMixin(ActorShee
     // Check container-provided slots.
     for ( const item of this.document.items ) {
       if ( item.type !== "container" ) continue;
-      const cKey = item.system.containerKey || `container-${item.id}`;
+      const cKey = item.system.containerKey || item.id;
       if ( cKey === slotKey ) return item.system.containerSlots;
     }
     return null;

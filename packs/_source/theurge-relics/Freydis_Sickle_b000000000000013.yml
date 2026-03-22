@@ -1,0 +1,24 @@
+_id: b000000000000013
+name: Freydis' Sickle
+type: relic
+img: systems/tb2e/icons/ffffff/transparent/1x1/delapouite/hammer-sickle.svg
+system:
+  description: "Dungeoneer's Handbook, p. 219"
+  slot: ''
+  slotIndex: 0
+  slotOptions:
+    belt: 1
+    carried: 1
+  cost: 0
+  damaged: false
+  dropped: false
+  quantity: 1
+  quantityMax: 1
+  relicTier: minor
+  linkedInvocations:
+    - Grace of the Lords of Plenty
+  linkedCircle: null
+  immortal: ''
+  lore: ''
+effects: []
+_key: '!items!b000000000000013'

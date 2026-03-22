@@ -37,11 +37,11 @@
       </div>
     </div>
     {{else if (eq rollable false)}}
-    {{!-- Non-rollable ability (e.g. Might) --}}
+    {{!-- Non-rollable ability --}}
     <div class="ability-row might-row" data-page="{{page}}">
       <span class="ability-name">{{label}}</span>
       <span class="btn-advance-spacer"></span>
-      <input type="number" name="system.{{key}}" value="{{lookup ../system key}}" min="0" max="10" class="ability-rating">
+      <input type="number" name="{{path}}" value="{{value}}" min="0" max="10" class="ability-rating">
     </div>
     {{else}}
     <div class="ability-row rollable" data-action="rollTest" data-type="ability" data-key="{{key}}" data-page="{{page}}">
@@ -87,11 +87,11 @@
     <legend><i class="fa-solid fa-city"></i> {{localize "TB2E.Section.TownAbilities"}}</legend>
     {{#each townAbilities}}
     {{#if (eq rollable false)}}
-    {{!-- Non-rollable town ability (e.g. Precedence) --}}
+    {{!-- Non-rollable town ability (e.g. Might, Precedence) --}}
     <div class="ability-row might-row" data-page="{{page}}">
       <span class="ability-name">{{label}}</span>
       <span class="btn-advance-spacer"></span>
-      <input type="number" name="system.abilities.{{key}}" value="{{lookup ../system.abilities key}}" min="0" max="7" class="ability-rating">
+      <input type="number" name="{{path}}" value="{{value}}" min="0" max="10" class="ability-rating">
     </div>
     {{else}}
     <div class="ability-row rollable" data-action="rollTest" data-type="ability" data-key="{{key}}" data-page="{{page}}">

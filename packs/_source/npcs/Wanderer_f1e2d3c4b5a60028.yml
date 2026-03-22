@@ -1,7 +1,7 @@
 _id: f1e2d3c4b5a60028
 name: Wanderer
 type: npc
-img: systems/tb2e/icons/ffffff/transparent/1x1/lorc/walking-boot.svg
+img: systems/tb2e/assets/tokens/wanderer.webp
 system:
   stock: ''
   class: ''
@@ -49,6 +49,8 @@ prototypeToken:
   actorLink: false
   appendNumber: true
   disposition: 0
+  texture:
+    src: systems/tb2e/assets/tokens/wanderer.webp
 items:
   - _id: a028000000000001
     name: Weather Sense

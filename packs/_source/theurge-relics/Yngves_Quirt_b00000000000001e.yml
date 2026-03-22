@@ -1,0 +1,23 @@
+_id: b00000000000001e
+name: Yngve's Quirt
+type: relic
+img: systems/tb2e/icons/ffffff/transparent/1x1/delapouite/wood-stick.svg
+system:
+  description: "Dungeoneer's Handbook, p. 225"
+  slot: ''
+  slotIndex: 0
+  slotOptions:
+    carried: 1
+  cost: 0
+  damaged: false
+  dropped: false
+  quantity: 1
+  quantityMax: 1
+  relicTier: minor
+  linkedInvocations:
+    - Chariot of the Lord of Labor
+  linkedCircle: null
+  immortal: Lord of Labor
+  lore: ''
+effects: []
+_key: '!items!b00000000000001e'

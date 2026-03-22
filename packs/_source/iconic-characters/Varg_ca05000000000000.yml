@@ -1,10 +1,11 @@
 _id: ca05000000000000
 name: Varg
 type: character
-img: systems/tb2e/icons/ffffff/transparent/1x1/lorc/compass.svg
+img: systems/tb2e/assets/tokens/varg.webp
 system:
-  stock: Human
-  class: Magician
+  stock: human
+  class: magician
+  specialty: cartographer
   age: '21'
   home: Wizard's Tower
   raiment: Purple cloak
@@ -66,6 +67,8 @@ prototypeToken:
   actorLink: true
   appendNumber: false
   disposition: 1
+  texture:
+    src: systems/tb2e/assets/tokens/varg.webp
 items:
   - _id: ca05000000000001
     name: Thoughtful
@@ -93,8 +96,8 @@ items:
     img: systems/tb2e/icons/ffffff/transparent/1x1/lorc/plain-dagger.svg
     system:
       description: Dungeoneer's Handbook, p. 158
-      slot: ''
-      slotIndex: 0
+      slot: belt
+      slotIndex: 1
       slotOptions:
         carried: 1
         belt: 1
@@ -128,7 +131,7 @@ items:
     img: systems/tb2e/icons/ffffff/transparent/1x1/lorc/cowled.svg
     system:
       description: Dungeoneer's Handbook, p. 151
-      slot: ''
+      slot: torso
       slotIndex: 0
       slotOptions:
         torso: 1
@@ -149,8 +152,8 @@ items:
     img: systems/tb2e/icons/ffffff/transparent/1x1/delapouite/backpack.svg
     system:
       description: Dungeoneer's Handbook, p. 152
-      slot: ''
-      slotIndex: 0
+      slot: torso
+      slotIndex: 1
       slotOptions:
         torso: 2
       cost: 2
@@ -170,7 +173,7 @@ items:
     img: systems/tb2e/icons/ffffff/transparent/1x1/seregacthtuf/pouch-with-beads.svg
     system:
       description: Dungeoneer's Handbook, p. 152
-      slot: ''
+      slot: belt
       slotIndex: 0
       slotOptions:
         belt: 1
@@ -192,8 +195,8 @@ items:
     img: systems/tb2e/icons/ffffff/transparent/1x1/delapouite/waterskin.svg
     system:
       description: Dungeoneer's Handbook, p. 152
-      slot: ''
-      slotIndex: 0
+      slot: belt
+      slotIndex: 2
       slotOptions:
         belt: 1
         pack: 1
@@ -205,7 +208,7 @@ items:
       containerKey: ''
       containerSlots: 0
       containerType: waterskin
-      liquidType: water
+      liquidType: wine
       lost: false
     effects: []
     _key: '!actors.items!ca05000000000000.ca05000000000007'
@@ -215,7 +218,7 @@ items:
     img: systems/tb2e/icons/ffffff/transparent/1x1/delapouite/ballerina-shoes.svg
     system:
       description: Dungeoneer's Handbook, p. 239
-      slot: ''
+      slot: feet
       slotIndex: 0
       slotOptions:
         feet: 1
@@ -234,10 +237,11 @@ items:
     img: systems/tb2e/icons/ffffff/transparent/1x1/delapouite/candles.svg
     system:
       description: "Dungeoneer's Handbook, p. 154; Scholar's Guide, pp. 42\u201343"
-      slot: ''
+      slot: ca05000000000006
       slotIndex: 0
       slotOptions:
         pack: 1
+        pouch: 1
       cost: 1
       damaged: false
       dropped: false
@@ -255,7 +259,7 @@ items:
     img: systems/tb2e/icons/ffffff/transparent/1x1/delapouite/flint-spark.svg
     system:
       description: Dungeoneer's Handbook, p. 154
-      slot: ''
+      slot: ca05000000000005
       slotIndex: 0
       slotOptions:
         pack: 1
@@ -277,8 +281,8 @@ items:
     img: systems/tb2e/icons/ffffff/transparent/1x1/darkzaitzev/fish-cooked.svg
     system:
       description: Dungeoneer's Handbook, p. 154
-      slot: ''
-      slotIndex: 0
+      slot: ca05000000000005
+      slotIndex: 1
       slotOptions:
         pack: 1
       cost: 2
@@ -297,8 +301,8 @@ items:
     img: systems/tb2e/icons/ffffff/transparent/1x1/delapouite/rope-coil.svg
     system:
       description: Dungeoneer's Handbook, p. 153
-      slot: ''
-      slotIndex: 0
+      slot: ca05000000000005
+      slotIndex: 4
       slotOptions:
         torso: 1
         pack: 2
@@ -323,7 +327,7 @@ items:
     img: systems/tb2e/icons/ffffff/transparent/1x1/lorc/engagement-ring.svg
     system:
       description: Scholar's Guide, p. 160
-      slot: ''
+      slot: hand-R
       slotIndex: 0
       slotOptions:
         wornHand: 1
@@ -397,11 +401,10 @@ items:
           value: 0
       conflictQualities: []
       specialRules: ''
-      library: false
-      spellbook: false
-      memorized: true
+      library: true
+      spellbookId: ca05000000000011
+      memorized: false
       cast: false
-      scroll: false
     effects: []
     _key: '!actors.items!ca05000000000000.ca0500000000000e'
   - _id: ca0500000000000f
@@ -448,11 +451,10 @@ items:
         - name: Arcane Surge
           description: "If your Defend action is successful, the opposing team suffers -1D to its next action."
       specialRules: ''
-      library: false
-      spellbook: false
-      memorized: true
+      library: true
+      spellbookId: ca05000000000011
+      memorized: false
       cast: false
-      scroll: false
     effects: []
     _key: '!actors.items!ca05000000000000.ca0500000000000f'
   - _id: ca05000000000010
@@ -492,12 +494,29 @@ items:
           value: 0
       conflictQualities: []
       specialRules: ''
-      library: false
-      spellbook: false
-      memorized: true
+      library: true
+      spellbookId: ca05000000000011
+      memorized: false
       cast: false
-      scroll: false
     effects: []
     _key: '!actors.items!ca05000000000000.ca05000000000010'
+  - _id: ca05000000000011
+    name: Spell Book
+    type: spellbook
+    img: systems/tb2e/icons/ffffff/transparent/1x1/delapouite/book-cover.svg
+    system:
+      description: Dungeoneer's Handbook, p. 155
+      slot: ca05000000000005
+      slotIndex: 2
+      slotOptions:
+        pack: 2
+      cost: 4
+      damaged: false
+      dropped: false
+      quantity: 1
+      quantityMax: 1
+      folios: 5
+    effects: []
+    _key: '!actors.items!ca05000000000000.ca05000000000011'
 effects: []
 _key: '!actors!ca05000000000000'

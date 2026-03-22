@@ -1,0 +1,23 @@
+_id: b000000000000002
+name: Drinking Horn of a 100-Year-Old Ox
+type: relic
+img: systems/tb2e/icons/ffffff/transparent/1x1/delapouite/beer-horn.svg
+system:
+  description: "Dungeoneer's Handbook, p. 210"
+  slot: ''
+  slotIndex: 0
+  slotOptions:
+    pack: 1
+  cost: 0
+  damaged: false
+  dropped: false
+  quantity: 1
+  quantityMax: 1
+  relicTier: minor
+  linkedInvocations:
+    - Gift of Hospitality
+  linkedCircle: null
+  immortal: Lords of Creation
+  lore: ''
+effects: []
+_key: '!items!b000000000000002'

@@ -1,7 +1,7 @@
 _id: f1e2d3c4b5a6001d
 name: Sage
 type: npc
-img: systems/tb2e/icons/ffffff/transparent/1x1/lorc/scroll-unfurled.svg
+img: systems/tb2e/assets/tokens/sage.webp
 system:
   stock: ''
   class: ''
@@ -52,6 +52,8 @@ prototypeToken:
   actorLink: false
   appendNumber: true
   disposition: 0
+  texture:
+    src: systems/tb2e/assets/tokens/sage.webp
 items:
   - _id: a01d000000000001
     name: Wise

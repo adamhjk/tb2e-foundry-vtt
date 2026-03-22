@@ -1,0 +1,45 @@
+_id: a000000000000027
+name: Blessing of the Ancestors
+type: invocation
+img: systems/tb2e/icons/ffffff/transparent/1x1/delapouite/ancient-ruins.svg
+system:
+  description: "Dungeoneer's Handbook, p. 230"
+  circle: 4
+  castingType: factors
+  factors:
+    - name: Building Type
+      options:
+        - label: Shrine
+          value: 1
+        - label: Stables, home, streets, or well
+          value: 2
+        - label: Farms, pastures, flophouse, or tavern
+          value: 3
+        - label: Temple, inn, docks, or wall
+          value: 4
+        - label: Hotel, river, or canal
+          value: 5
+    - name: Economic Threshold
+      options:
+        - label: Rebuild or repair
+          value: 0
+        - label: Infrastructure or inflation
+          value: 1
+        - label: Stimulated or normal
+          value: 2
+        - label: Collapse
+          value: 3
+        - label: Reset
+          value: 4
+  invocationTime: 2
+  invocationTimeWithRelic: 1
+  duration: Permanent
+  burden: 5
+  burdenWithRelic: 4
+  relic: A piece of clan regalia from a ruling clan
+  relicInventory: raiment
+  sacramental: ''
+  mightPenalty: true
+  performed: false
+effects: []
+_key: '!items!a000000000000027'

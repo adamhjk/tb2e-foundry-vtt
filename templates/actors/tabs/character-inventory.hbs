@@ -62,7 +62,13 @@
                 <button type="button" class="slot-consume-btn" data-action="drinkDraught" data-item-id="{{itemId}}" title="Drink"><i class="fa-solid fa-droplet"></i></button>
                 <input type="number" class="slot-qty-input" value="{{quantity}}" min="0" max="{{quantityMax}}" data-item-id="{{itemId}}" data-field="quantity">/<input type="number" class="slot-qty-input" value="{{quantityMax}}" min="1" data-item-id="{{itemId}}" data-field="quantityMax">
               </span>
-              {{else if hasQuantity}}<span class="slot-qty">{{quantity}}/{{quantityMax}}</span>{{/if}}
+              {{else if isSplittableBundle}}
+              <span class="slot-bundle-qty">
+                <button type="button" class="slot-consume-btn" data-action="splitBundle"
+                  data-item-id="{{itemId}}" title="Split one off"><i class="fa-solid fa-scissors"></i></button>
+                <span class="slot-qty-text">{{quantity}}/{{quantityMax}}</span>
+              </span>
+              {{else if hasQuantity}}<span class="slot-qty"><input type="number" class="slot-qty-input" value="{{quantity}}" min="0" max="{{quantityMax}}" data-item-id="{{itemId}}" data-field="quantity">/<input type="number" class="slot-qty-input" value="{{quantityMax}}" min="1" data-item-id="{{itemId}}" data-field="quantityMax"></span>{{/if}}
               {{#if damaged}}<i class="fa-solid fa-heart-crack slot-badge damaged-badge" title="Damaged"></i>{{/if}}
             </span>
             <span class="slot-actions">
@@ -131,7 +137,13 @@
                 <button type="button" class="slot-consume-btn" data-action="drinkDraught" data-item-id="{{itemId}}" title="Drink"><i class="fa-solid fa-droplet"></i></button>
                 <input type="number" class="slot-qty-input" value="{{quantity}}" min="0" max="{{quantityMax}}" data-item-id="{{itemId}}" data-field="quantity">/<input type="number" class="slot-qty-input" value="{{quantityMax}}" min="1" data-item-id="{{itemId}}" data-field="quantityMax">
               </span>
-              {{else if hasQuantity}}<span class="slot-qty">{{quantity}}/{{quantityMax}}</span>{{/if}}
+              {{else if isSplittableBundle}}
+              <span class="slot-bundle-qty">
+                <button type="button" class="slot-consume-btn" data-action="splitBundle"
+                  data-item-id="{{itemId}}" title="Split one off"><i class="fa-solid fa-scissors"></i></button>
+                <span class="slot-qty-text">{{quantity}}/{{quantityMax}}</span>
+              </span>
+              {{else if hasQuantity}}<span class="slot-qty"><input type="number" class="slot-qty-input" value="{{quantity}}" min="0" max="{{quantityMax}}" data-item-id="{{itemId}}" data-field="quantity">/<input type="number" class="slot-qty-input" value="{{quantityMax}}" min="1" data-item-id="{{itemId}}" data-field="quantityMax"></span>{{/if}}
               {{#if damaged}}<i class="fa-solid fa-heart-crack slot-badge damaged-badge" title="Damaged"></i>{{/if}}
             </span>
             <span class="slot-actions">
@@ -201,7 +213,13 @@
                 <button type="button" class="slot-consume-btn" data-action="drinkDraught" data-item-id="{{itemId}}" title="Drink"><i class="fa-solid fa-droplet"></i></button>
                 <input type="number" class="slot-qty-input" value="{{quantity}}" min="0" max="{{quantityMax}}" data-item-id="{{itemId}}" data-field="quantity">/<input type="number" class="slot-qty-input" value="{{quantityMax}}" min="1" data-item-id="{{itemId}}" data-field="quantityMax">
               </span>
-              {{else if hasQuantity}}<span class="slot-qty">{{quantity}}/{{quantityMax}}</span>{{/if}}
+              {{else if isSplittableBundle}}
+              <span class="slot-bundle-qty">
+                <button type="button" class="slot-consume-btn" data-action="splitBundle"
+                  data-item-id="{{itemId}}" title="Split one off"><i class="fa-solid fa-scissors"></i></button>
+                <span class="slot-qty-text">{{quantity}}/{{quantityMax}}</span>
+              </span>
+              {{else if hasQuantity}}<span class="slot-qty"><input type="number" class="slot-qty-input" value="{{quantity}}" min="0" max="{{quantityMax}}" data-item-id="{{itemId}}" data-field="quantity">/<input type="number" class="slot-qty-input" value="{{quantityMax}}" min="1" data-item-id="{{itemId}}" data-field="quantityMax"></span>{{/if}}
               {{#if damaged}}<i class="fa-solid fa-heart-crack slot-badge damaged-badge" title="Damaged"></i>{{/if}}
             </span>
             <span class="slot-actions">

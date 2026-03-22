@@ -1,0 +1,23 @@
+_id: b000000000000018
+name: Dowsing Rod of the Water Witch
+type: relic
+img: systems/tb2e/icons/ffffff/transparent/1x1/delapouite/water-diviner-stick.svg
+system:
+  description: "Dungeoneer's Handbook, p. 221"
+  slot: ''
+  slotIndex: 0
+  slotOptions:
+    carried: 1
+  cost: 0
+  damaged: false
+  dropped: false
+  quantity: 1
+  quantityMax: 1
+  relicTier: minor
+  linkedInvocations:
+    - Spring of the Eternal
+  linkedCircle: null
+  immortal: ''
+  lore: ''
+effects: []
+_key: '!items!b000000000000018'

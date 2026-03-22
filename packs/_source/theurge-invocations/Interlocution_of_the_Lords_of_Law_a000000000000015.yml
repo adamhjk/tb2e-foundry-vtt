@@ -1,0 +1,21 @@
+_id: a000000000000015
+name: Interlocution of the Lords of Law
+type: invocation
+img: systems/tb2e/icons/ffffff/transparent/1x1/lorc/scales.svg
+system:
+  description: "Dungeoneer's Handbook, p. 220"
+  circle: 2
+  castingType: versus
+  versusDefense: nature
+  invocationTime: 2
+  invocationTimeWithRelic: 1
+  duration: Instantaneous
+  burden: 3
+  burdenWithRelic: 2
+  relic: Crown of the Lords of Law
+  relicInventory: worn/head
+  sacramental: ''
+  mightPenalty: true
+  performed: false
+effects: []
+_key: '!items!a000000000000015'

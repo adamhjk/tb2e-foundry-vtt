@@ -1,4 +1,4 @@
-import { evaluateRoll, gatherHelpModifiers, rollTest } from "../../dice/tb2e-roll.mjs";
+import { createModifier, evaluateRoll, gatherHelpModifiers, rollTest } from "../../dice/tb2e-roll.mjs";
 import { getInteraction, buildResolutionContext, resolveActionEffect } from "../../dice/conflict-roll.mjs";
 
 const { HandlebarsApplicationMixin, ApplicationV2 } = foundry.applications.api;
@@ -24,6 +24,9 @@ export default class ConflictPanel extends HandlebarsApplicationMixin(Applicatio
 
   /** @type {Set<string>} Group IDs the GM has collapsed in the script tab. */
   #collapsedGroups = new Set();
+
+  /** @type {Set<string>} Group IDs the GM has toggled "peek" for in the script tab. */
+  #gmPeekGroups = new Set();
 
   /** @type {number} Round number when auto-collapse was last applied. */
   #collapseInitRound = 0;
@@ -58,7 +61,8 @@ export default class ConflictPanel extends HandlebarsApplicationMixin(Applicatio
       setBoss: ConflictPanel.#onSetBoss,
       setFlatDisposition: ConflictPanel.#onSetFlatDisposition,
       chooseSkill: ConflictPanel.#onChooseSkill,
-      resolveConflict: ConflictPanel.#onResolveConflict
+      resolveConflict: ConflictPanel.#onResolveConflict,
+      peekActions: ConflictPanel.#onPeekActions
     }
   };
 
@@ -661,7 +665,11 @@ export default class ConflictPanel extends HandlebarsApplicationMixin(Applicatio
 
       let skillLabel = "";
       let abilityLabel = "";
-      if ( chosenSkill && captainActor ) {
+      if ( isMonsterGroup && !isListedConflict && captainActor ) {
+        // Unlisted monster conflict: show Nature as the roll stat.
+        skillLabel = game.i18n.localize("TB2E.Ability.Nature");
+        abilityLabel = `(${captainActor.system.nature})`;
+      } else if ( chosenSkill && captainActor ) {
         skillLabel = game.i18n.localize(CONFIG.TB2E.skills[chosenSkill]?.label || chosenSkill);
         abilityLabel = game.i18n.localize(
           CONFIG.TB2E.abilities[conflictCfg.dispositionAbility]?.label || conflictCfg.dispositionAbility
@@ -699,6 +707,20 @@ export default class ConflictPanel extends HandlebarsApplicationMixin(Applicatio
         }
       }
 
+      // Build read-only distribution summary after distribution.
+      let distributedValues = [];
+      if ( hasDistributed ) {
+        distributedValues = members.map(c => {
+          const actor = game.actors.get(c.actorId);
+          return {
+            name: c.name,
+            isCaptain: groupData.captainId === c.id,
+            isBoss: combat.combatants.get(c.id)?.system.isBoss || false,
+            hp: actor?.system.conflict?.hp?.max ?? 0
+          };
+        });
+      }
+
       // Permission checks.
       const captainActorId = captain?.actorId;
       // Monsters can roll only for unlisted conflicts (listed conflicts use predefined disposition).
@@ -722,6 +744,7 @@ export default class ConflictPanel extends HandlebarsApplicationMixin(Applicatio
         rolled: groupData.rolled,
         hasDistributed,
         distributionRows,
+        distributedValues,
         dispositionTotal: groupData.rolled || 0,
         canRoll,
         canDistribute,
@@ -943,9 +966,14 @@ export default class ConflictPanel extends HandlebarsApplicationMixin(Applicatio
 
       const allSet = slots.every(s => s.isSet);
 
+      // Determine if current user is a member of this group.
+      const isMember = allMembers.some(c => c.actorId === game.user.character?.id);
+      const isOwnTeam = game.user.isGM || isMember;
+
       // Determine if current user can view this group's locked actions.
-      const canViewActions = game.user.isGM
-        || allMembers.some(c => c.actorId === game.user.character?.id);
+      // GM must explicitly peek to see the player team's cards.
+      const canViewActions = isMember
+        || (game.user.isGM && this.#gmPeekGroups.has(group.id));
 
       // Party detection for GM auto-collapse.
       const isPartyGroup = allMembers.some(c => {
@@ -975,7 +1003,11 @@ export default class ConflictPanel extends HandlebarsApplicationMixin(Applicatio
         isSolo: teamSize === 1,
         lastRoundSummary,
         canViewActions,
-        isCollapsed
+        isCollapsed,
+        isOwnTeam,
+        isPartyGroup,
+        gmCanPeek: game.user.isGM && isPartyGroup && !isMember,
+        gmIsPeeking: this.#gmPeekGroups.has(group.id)
       });
     }
 
@@ -1031,7 +1063,8 @@ export default class ConflictPanel extends HandlebarsApplicationMixin(Applicatio
           combatantId: entry.combatantId,
           combatantName: combatant?.name || "???",
           actorId: actor?.id,
-          testLabel
+          testLabel,
+          canRoll: game.user.isGM || !!actor?.isOwner
         });
       }
 
@@ -1181,6 +1214,10 @@ export default class ConflictPanel extends HandlebarsApplicationMixin(Applicatio
       const captainId = gd[group.id]?.captainId;
       const captainActorId = captainId ? combat.combatants.get(captainId)?.actorId : null;
       const isCaptain = captainActorId && captainActorId === game.user.character?.id;
+      const isGMTeam = !members.some(c => {
+        const a = c.actor;
+        return a?.type === "character" || a?.system.conflict?.team === "party";
+      });
       for ( const c of members ) {
         const actor = c.actor;
         const hp = actor?.system.conflict?.hp || { value: 0, max: 0 };
@@ -1195,6 +1232,7 @@ export default class ConflictPanel extends HandlebarsApplicationMixin(Applicatio
           actorId: c.actorId,
           groupId: group.id,
           groupName: group.name,
+          isGMTeam,
           hp,
           hpPercent: hp.max > 0 ? Math.round((hp.value / hp.max) * 100) : 0,
           hasHP: hp.max > 0,
@@ -1351,8 +1389,17 @@ export default class ConflictPanel extends HandlebarsApplicationMixin(Applicatio
     if ( !actor ) return;
 
     const conflictCfg = combat.getEffectiveConflictConfig();
-    const skillKey = groupData.chosenSkill || conflictCfg?.dispositionSkills?.[0];
-    if ( !skillKey ) return;
+
+    // Monsters roll Nature for disposition; characters roll the conflict's disposition skill.
+    let rollType, rollKey;
+    if ( actor.type === "monster" ) {
+      rollType = "ability";
+      rollKey = "nature";
+    } else {
+      rollKey = groupData.chosenSkill || conflictCfg?.dispositionSkills?.[0];
+      if ( !rollKey ) return;
+      rollType = "skill";
+    }
 
     const group = combat.groups.get(groupId);
     const members = combat.combatants.filter(c => c._source.group === groupId);
@@ -1360,32 +1407,37 @@ export default class ConflictPanel extends HandlebarsApplicationMixin(Applicatio
       .filter(c => c.id !== groupData.captainId && c.actor);
 
     // Monster group help dice for unlisted conflicts (+1D per additional monster).
+    const isMonster = actor.type === "monster";
     const contextModifiers = [];
-    if ( actor.type === "monster" ) {
+    if ( isMonster ) {
       const monsterCount = members.filter(c => {
         const a = game.actors.get(c.actorId);
         return a?.type === "monster";
       }).length;
       const additional = Math.max(monsterCount - 1, 0);
       if ( additional > 0 ) {
-        contextModifiers.push({
-          label: `Monster group (+${additional}D)`,
+        contextModifiers.push(createModifier({
+          label: game.i18n.format("TB2E.Monster.GroupHelp", { count: additional }),
           type: "dice",
           value: additional,
           source: "context",
-          active: true
-        });
+          icon: "fa-solid fa-users",
+          color: "--tb-cond-fresh"
+        }));
       }
     }
 
     await rollTest({
       actor,
-      type: "skill",
-      key: skillKey,
+      type: rollType,
+      key: rollKey,
       testContext: {
         isDisposition: true,
         isConflict: true,
-        dispositionAbility: conflictCfg.dispositionAbility,
+        isMonsterDisposition: isMonster,
+        monsterNatureDescriptors: isMonster
+          ? (actor.system.natureDescriptors || "").split(/,\s*/).filter(Boolean) : [],
+        dispositionAbility: isMonster ? "nature" : conflictCfg?.dispositionAbility,
         conflictGroupId: groupId,
         combatId: combat.id,
         conflictTypeLabel: game.i18n.localize(conflictCfg?.label ?? "TB2E.Conflict.Title"),
@@ -2061,6 +2113,23 @@ export default class ConflictPanel extends HandlebarsApplicationMixin(Applicatio
 
     await combat.beginResolution();
     this.#activeTab = "resolution";
+  }
+
+  /* -------------------------------------------- */
+
+  /**
+   * Toggle GM peek for a group's locked actions.
+   * @this {ConflictPanel}
+   */
+  static async #onPeekActions(event, target) {
+    const groupId = target.closest("[data-group-id]")?.dataset.groupId;
+    if ( !groupId ) return;
+    if ( this.#gmPeekGroups.has(groupId) ) {
+      this.#gmPeekGroups.delete(groupId);
+    } else {
+      this.#gmPeekGroups.add(groupId);
+    }
+    this.render();
   }
 
   /* -------------------------------------------- */

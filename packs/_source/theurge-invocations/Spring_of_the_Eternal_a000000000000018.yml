@@ -1,0 +1,47 @@
+_id: a000000000000018
+name: Spring of the Eternal
+type: invocation
+img: systems/tb2e/icons/ffffff/transparent/1x1/lorc/water-splash.svg
+system:
+  description: "Dungeoneer's Handbook, p. 221"
+  circle: 2
+  castingType: factors
+  factors:
+    - name: Terrain
+      options:
+        - label: Wetlands
+          value: 1
+        - label: Jungle or forest
+          value: 2
+        - label: Hills
+          value: 3
+        - label: Plains or moors
+          value: 4
+        - label: Desert, mountains, or tundra
+          value: 5
+    - name: Duration
+      options:
+        - label: Phase
+          value: 1
+        - label: Permanent
+          value: 3
+    - name: Flow
+      options:
+        - label: One draught
+          value: 0
+        - label: 1d6+6 draughts
+          value: 1
+        - label: 2d6+6 draughts
+          value: 2
+  invocationTime: 2
+  invocationTimeWithRelic: 1
+  duration: Variable
+  burden: 3
+  burdenWithRelic: 2
+  relic: Dowsing Rod of the Water Witch
+  relicInventory: carried 1
+  sacramental: ''
+  mightPenalty: true
+  performed: false
+effects: []
+_key: '!items!a000000000000018'

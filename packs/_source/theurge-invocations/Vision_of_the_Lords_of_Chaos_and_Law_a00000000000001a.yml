@@ -1,0 +1,43 @@
+_id: a00000000000001a
+name: Vision of the Lords of Chaos and Law
+type: invocation
+img: systems/tb2e/icons/ffffff/transparent/1x1/lorc/beast-eye.svg
+system:
+  description: "Dungeoneer's Handbook, p. 222"
+  circle: 2
+  castingType: factors
+  factors:
+    - name: Reading an Aura
+      options:
+        - label: Dead, alive, or extraplanar
+          value: 1
+        - label: Under possession
+          value: 2
+        - label: Recent mark (physical)
+          value: 3
+        - label: Recent mark (no marks)
+          value: 4
+        - label: Distant past mark
+          value: 5
+        - label: Future
+          value: 6
+    - name: Reading Thoughts
+      options:
+        - label: Sensing intent
+          value: 1
+        - label: Seeing instinct
+          value: 2
+        - label: Seeing belief
+          value: 3
+  invocationTime: 2
+  invocationTimeWithRelic: 1
+  duration: One turn
+  burden: 3
+  burdenWithRelic: 2
+  relic: Harpa's Eye
+  relicInventory: worn/neck or pocket
+  sacramental: ''
+  mightPenalty: true
+  performed: false
+effects: []
+_key: '!items!a00000000000001a'

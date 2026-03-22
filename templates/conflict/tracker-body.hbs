@@ -4,7 +4,7 @@
   {{#if hasCombat}}
 
     {{#each groups as |group|}}
-    <section class="conflict-group" data-group-id="{{group.id}}">
+    <section class="conflict-group {{#if group.isPartyGroup}}party-group{{else}}gm-group{{/if}}" data-group-id="{{group.id}}">
       <header class="group-header">
         <span class="group-name">{{group.name}}</span>
         {{#if group.hasDisposition}}

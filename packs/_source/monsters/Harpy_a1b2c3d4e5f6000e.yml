@@ -1,7 +1,7 @@
 _id: a1b2c3d4e5f6000e
 name: Harpy
 type: monster
-img: systems/tb2e/icons/ffffff/transparent/1x1/lorc/harpy.svg
+img: systems/tb2e/assets/tokens/harpy.webp
 system:
   nature: 4
   natureDescriptors: Beguiling, Flying, Scavenging
@@ -74,6 +74,8 @@ prototypeToken:
   actorLink: false
   appendNumber: true
   disposition: -1
+  texture:
+    src: systems/tb2e/assets/tokens/harpy.webp
 items: []
 effects: []
 _key: '!actors!a1b2c3d4e5f6000e'

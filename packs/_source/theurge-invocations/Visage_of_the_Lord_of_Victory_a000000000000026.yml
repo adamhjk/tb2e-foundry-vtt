@@ -1,0 +1,45 @@
+_id: a000000000000026
+name: Visage of the Lord of Victory
+type: invocation
+img: systems/tb2e/icons/ffffff/transparent/1x1/lorc/crown.svg
+system:
+  description: "Dungeoneer's Handbook, p. 229"
+  circle: 3
+  castingType: factors
+  factors:
+    - name: Conflict Type
+      options:
+        - label: Convince
+          value: 1
+        - label: Convince a crowd
+          value: 2
+        - label: Trick or riddle
+          value: 3
+        - label: Negotiate
+          value: 4
+    - name: Precedence Increase
+      options:
+        - label: +1
+          value: 0
+        - label: +2
+          value: 1
+    - name: Breadth
+      options:
+        - label: Self
+          value: 1
+        - label: Another
+          value: 2
+        - label: Small group
+          value: 3
+  invocationTime: 1
+  invocationTimeWithRelic: 0
+  duration: One conflict
+  burden: 4
+  burdenWithRelic: 3
+  relic: Sigtyr's Scepter of Rule
+  relicInventory: belt 1, pack 2 or carried 1
+  sacramental: ''
+  mightPenalty: true
+  performed: false
+effects: []
+_key: '!items!a000000000000026'

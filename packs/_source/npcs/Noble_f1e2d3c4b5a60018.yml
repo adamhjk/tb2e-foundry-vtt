@@ -1,7 +1,7 @@
 _id: f1e2d3c4b5a60018
 name: Noble
 type: npc
-img: systems/tb2e/icons/ffffff/transparent/1x1/lorc/crown.svg
+img: systems/tb2e/assets/tokens/noble.webp
 system:
   stock: ''
   class: ''
@@ -54,6 +54,8 @@ prototypeToken:
   actorLink: false
   appendNumber: true
   disposition: 0
+  texture:
+    src: systems/tb2e/assets/tokens/noble.webp
 items:
   - _id: a018000000000001
     name: Arrogant

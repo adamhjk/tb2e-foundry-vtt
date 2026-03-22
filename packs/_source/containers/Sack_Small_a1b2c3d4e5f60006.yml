@@ -12,7 +12,7 @@ system:
   damaged: false
   dropped: false
   quantity: 1
-  quantityMax: 1
+  quantityMax: 2
   containerKey: ''
   containerSlots: 2
   containerType: smallSack

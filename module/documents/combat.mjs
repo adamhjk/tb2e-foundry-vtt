@@ -573,8 +573,8 @@ export default class TB2ECombat extends Combat {
         }
       }
       const combatantUpdates = [];
-      for ( const [cId, slots] of Object.entries(combatantSlots) ) {
-        combatantUpdates.push({ _id: cId, "system.actedLastRound": slots });
+      for ( const c of this.combatants ) {
+        combatantUpdates.push({ _id: c.id, "system.actedLastRound": combatantSlots[c.id] || [] });
       }
       if ( combatantUpdates.length ) {
         await this.updateEmbeddedDocuments("Combatant", combatantUpdates);

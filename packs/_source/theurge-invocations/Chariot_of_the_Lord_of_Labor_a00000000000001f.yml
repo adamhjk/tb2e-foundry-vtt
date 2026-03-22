@@ -1,0 +1,35 @@
+_id: a00000000000001f
+name: Chariot of the Lord of Labor
+type: invocation
+img: systems/tb2e/icons/ffffff/transparent/1x1/delapouite/wood-beam.svg
+system:
+  description: "Dungeoneer's Handbook, p. 225"
+  circle: 3
+  castingType: factors
+  factors:
+    - name: Conveyance
+      options:
+        - label: Sleigh
+          value: 1
+        - label: Cart
+          value: 2
+        - label: Wagon
+          value: 3
+    - name: Duration
+      options:
+        - label: Turn
+          value: 1
+        - label: Phase
+          value: 2
+  invocationTime: 2
+  invocationTimeWithRelic: 1
+  duration: Variable
+  burden: 4
+  burdenWithRelic: 3
+  relic: Yngve's quirt
+  relicInventory: carried 1
+  sacramental: ''
+  mightPenalty: true
+  performed: false
+effects: []
+_key: '!items!a00000000000001f'

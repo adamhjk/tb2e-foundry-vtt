@@ -52,14 +52,16 @@
             {{lookup @root.interactionLabels this.sideInteraction}}
           </span>
           {{/if}}
-          {{!-- Roll button under this side (invisible placeholder when "none" to keep columns aligned) --}}
+          {{!-- Roll button: only for character owner or GM --}}
           {{#unless ../../hasResult}}
+          {{#if this.canRoll}}
           <button type="button" class="panel-action-btn resolve-side-roll-btn {{#if (eq this.sideInteraction "none")}}invisible{{/if}}" data-action="rollAction"
                   data-actor-id="{{this.actorId}}" data-combatant-id="{{this.combatantId}}"
                   data-conflict-action="{{this.action}}"
                   data-group-id="{{this.groupId}}" {{#if (eq this.sideInteraction "none")}}disabled{{/if}}>
             <i class="fa-solid fa-dice"></i> {{localize "TB2E.Conflict.Roll"}} {{this.testLabel}}
           </button>
+          {{/if}}
           {{/unless}}
         </div>
         {{#unless @last}}<span class="resolve-vs">vs</span>{{/unless}}

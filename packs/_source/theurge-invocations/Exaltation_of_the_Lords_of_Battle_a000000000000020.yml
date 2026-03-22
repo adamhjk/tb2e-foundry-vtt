@@ -1,0 +1,39 @@
+_id: a000000000000020
+name: Exaltation of the Lords of Battle
+type: invocation
+img: systems/tb2e/icons/ffffff/transparent/1x1/delapouite/ancient-sword.svg
+system:
+  description: "Dungeoneer's Handbook, p. 225"
+  circle: 3
+  castingType: factors
+  factors:
+    - name: Type of Conflict
+      options:
+        - label: Drive off
+          value: 1
+        - label: Kill
+          value: 2
+        - label: Skirmish
+          value: 3
+        - label: Battle
+          value: 4
+    - name: Breadth
+      options:
+        - label: Self
+          value: 0
+        - label: Another
+          value: 1
+        - label: Small group
+          value: 3
+  invocationTime: 1
+  invocationTimeWithRelic: 0
+  duration: One turn
+  burden: 4
+  burdenWithRelic: 3
+  relic: The weapon of a hero or Immortal
+  relicInventory: inventory as weapon
+  sacramental: ''
+  mightPenalty: true
+  performed: false
+effects: []
+_key: '!items!a000000000000020'

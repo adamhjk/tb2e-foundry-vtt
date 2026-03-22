@@ -492,8 +492,8 @@ async function _handleFinalize(message) {
   // Mark resolved
   await message.update({ "flags.tb2e.resolved": true });
 
-  // Log advancement
-  if ( actor && rollData.obstacle > 0 ) {
+  // Log advancement (skip during conflict — no advancement in conflicts)
+  if ( actor && rollData.obstacle > 0 && !tbFlags.testContext?.isConflict ) {
     await logAdvancementForSide({
       actor, type: rollData.type, key: rollData.key,
       baseDice: rollData.baseDice, pass: rollData.pass, isBL: !!rollData.isBL,

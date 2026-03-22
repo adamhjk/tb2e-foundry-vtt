@@ -1,0 +1,22 @@
+_id: b000000000000023
+name: Piece of Clan Regalia
+type: relic
+img: systems/tb2e/icons/ffffff/transparent/1x1/lorc/charm.svg
+system:
+  description: "Dungeoneer's Handbook, p. 230"
+  slot: ''
+  slotIndex: 0
+  slotOptions: {}
+  cost: 0
+  damaged: false
+  dropped: false
+  quantity: 1
+  quantityMax: 1
+  relicTier: minor
+  linkedInvocations:
+    - Blessing of the Ancestors
+  linkedCircle: null
+  immortal: ''
+  lore: ''
+effects: []
+_key: '!items!b000000000000023'

@@ -1,0 +1,35 @@
+_id: a00000000000001d
+name: Blessing of the Lord of Winds
+type: invocation
+img: systems/tb2e/icons/ffffff/transparent/1x1/lorc/wind-slap.svg
+system:
+  description: "Dungeoneer's Handbook, p. 224"
+  circle: 3
+  castingType: factors
+  factors:
+    - name: Weather Type
+      options:
+        - label: Blustery or fog
+          value: 1
+        - label: Rain or snow
+          value: 2
+        - label: Clear or cool
+          value: 3
+    - name: Seasonality
+      options:
+        - label: Seasonable
+          value: 1
+        - label: Unseasonable
+          value: 2
+  invocationTime: 1
+  invocationTimeWithRelic: 0
+  duration: Variable
+  burden: 4
+  burdenWithRelic: 3
+  relic: Njor's drum
+  relicInventory: carried 1, wielded 2, pack 3
+  sacramental: ''
+  mightPenalty: true
+  performed: false
+effects: []
+_key: '!items!a00000000000001d'

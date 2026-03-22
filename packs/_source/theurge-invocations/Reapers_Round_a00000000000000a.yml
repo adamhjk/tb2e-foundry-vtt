@@ -1,0 +1,21 @@
+_id: a00000000000000a
+name: Reaper's Round
+type: invocation
+img: systems/tb2e/icons/ffffff/transparent/1x1/delapouite/sickle.svg
+system:
+  description: "Dungeoneer's Handbook, p. 213"
+  circle: 1
+  castingType: fixed
+  fixedObstacle: 3
+  invocationTime: 2
+  invocationTimeWithRelic: 1
+  duration: One turn
+  burden: 2
+  burdenWithRelic: 1
+  relic: A blessed sickle
+  relicInventory: pack 1
+  sacramental: ''
+  mightPenalty: true
+  performed: false
+effects: []
+_key: '!items!a00000000000000a'

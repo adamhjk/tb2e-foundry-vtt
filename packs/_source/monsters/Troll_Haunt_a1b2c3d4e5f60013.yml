@@ -1,7 +1,7 @@
 _id: a1b2c3d4e5f60013
 name: Troll Haunt
 type: monster
-img: systems/tb2e/icons/ffffff/transparent/1x1/cathelineau/fomorian.svg
+img: systems/tb2e/assets/tokens/troll-haunt.webp
 system:
   nature: 8
   natureDescriptors: Tricking, Slaughtering, Skulking
@@ -74,6 +74,8 @@ prototypeToken:
   actorLink: false
   appendNumber: true
   disposition: -1
+  texture:
+    src: systems/tb2e/assets/tokens/troll-haunt.webp
 items: []
 effects: []
 _key: '!actors!a1b2c3d4e5f60013'

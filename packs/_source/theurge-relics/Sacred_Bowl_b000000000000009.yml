@@ -1,0 +1,23 @@
+_id: b000000000000009
+name: Sacred Bowl
+type: relic
+img: systems/tb2e/icons/ffffff/transparent/1x1/delapouite/berries-bowl.svg
+system:
+  description: "Dungeoneer's Handbook, p. 212"
+  slot: ''
+  slotIndex: 0
+  slotOptions:
+    pack: 1
+  cost: 0
+  damaged: false
+  dropped: false
+  quantity: 1
+  quantityMax: 1
+  relicTier: minor
+  linkedInvocations:
+    - Plow Blessing
+  linkedCircle: null
+  immortal: Lord of Labor
+  lore: ''
+effects: []
+_key: '!items!b000000000000009'

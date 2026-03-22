@@ -1,0 +1,23 @@
+_id: b000000000000008
+name: Spindle or Distaff Marked with the Rune of Fate
+type: relic
+img: systems/tb2e/icons/ffffff/transparent/1x1/delapouite/sewing-string.svg
+system:
+  description: "Dungeoneer's Handbook, p. 212"
+  slot: ''
+  slotIndex: 0
+  slotOptions:
+    pack: 1
+  cost: 0
+  damaged: false
+  dropped: false
+  quantity: 1
+  quantityMax: 1
+  relicTier: minor
+  linkedInvocations:
+    - Mudra of Fate
+  linkedCircle: null
+  immortal: Fate
+  lore: ''
+effects: []
+_key: '!items!b000000000000008'

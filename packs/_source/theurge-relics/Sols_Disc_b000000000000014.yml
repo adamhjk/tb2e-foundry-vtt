@@ -1,0 +1,24 @@
+_id: b000000000000014
+name: Sol's Disc
+type: relic
+img: systems/tb2e/icons/ffffff/transparent/1x1/lorc/sun.svg
+system:
+  description: "Dungeoneer's Handbook, p. 219"
+  slot: ''
+  slotIndex: 0
+  slotOptions:
+    neck: 1
+    carried: 1
+  cost: 0
+  damaged: false
+  dropped: false
+  quantity: 1
+  quantityMax: 1
+  relicTier: minor
+  linkedInvocations:
+    - Guidance of the Lord of Paths and Ways
+  linkedCircle: null
+  immortal: Sol
+  lore: ''
+effects: []
+_key: '!items!b000000000000014'

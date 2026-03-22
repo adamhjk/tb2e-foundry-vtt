@@ -1,0 +1,37 @@
+_id: a000000000000025
+name: Sanctuary of the Vår Maiden
+type: invocation
+img: systems/tb2e/icons/ffffff/transparent/1x1/lorc/flowers.svg
+system:
+  description: "Dungeoneer's Handbook, p. 228"
+  circle: 3
+  castingType: factors
+  factors:
+    - name: Breadth
+      options:
+        - label: Self
+          value: 0
+        - label: Self and one other
+          value: 1
+        - label: Small group
+          value: 2
+    - name: Duration
+      options:
+        - label: Turn
+          value: 1
+        - label: Adventure phase
+          value: 2
+        - label: Camp phase
+          value: 3
+  invocationTime: 1
+  invocationTimeWithRelic: 0
+  duration: Variable
+  burden: 4
+  burdenWithRelic: 3
+  relic: The Wildflower Crown of the Maiden of Spring
+  relicInventory: worn/head
+  sacramental: ''
+  mightPenalty: true
+  performed: false
+effects: []
+_key: '!items!a000000000000025'

@@ -1,0 +1,24 @@
+_id: b00000000000000f
+name: Vial of Perfume
+type: relic
+img: systems/tb2e/icons/ffffff/transparent/1x1/delapouite/delicate-perfume.svg
+system:
+  description: "Dungeoneer's Handbook, p. 215"
+  slot: ''
+  slotIndex: 0
+  slotOptions:
+    pocket: 1
+    neck: 1
+  cost: 0
+  damaged: false
+  dropped: false
+  quantity: 1
+  quantityMax: 1
+  relicTier: minor
+  linkedInvocations:
+    - Benediction of the Lords of Creation
+  linkedCircle: null
+  immortal: Lords of Creation
+  lore: ''
+effects: []
+_key: '!items!b00000000000000f'

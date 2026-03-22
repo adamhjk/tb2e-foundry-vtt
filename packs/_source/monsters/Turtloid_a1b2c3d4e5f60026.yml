@@ -1,7 +1,7 @@
 _id: a1b2c3d4e5f60026
 name: Turtloid
 type: monster
-img: systems/tb2e/icons/ffffff/transparent/1x1/delapouite/sea-turtle.svg
+img: systems/tb2e/assets/tokens/turtloid.webp
 system:
   nature: 4
   natureDescriptors: Turtling, Creeping, Snatching (with the Claw)
@@ -68,6 +68,8 @@ prototypeToken:
   actorLink: false
   appendNumber: true
   disposition: -1
+  texture:
+    src: systems/tb2e/assets/tokens/turtloid.webp
 items: []
 effects: []
 _key: '!actors!a1b2c3d4e5f60026'

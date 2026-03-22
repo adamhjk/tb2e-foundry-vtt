@@ -1,10 +1,11 @@
 _id: ca08000000000000
 name: Nienna
 type: character
-img: systems/tb2e/icons/ffffff/transparent/1x1/lorc/broadsword.svg
+img: systems/tb2e/assets/tokens/nienna.webp
 system:
-  stock: Troll Changeling
-  class: Skald
+  stock: changeling
+  class: skald
+  specialty: pathfinder
   age: '20'
   home: "Wizard's Tower"
   raiment: Crimson tunic
@@ -66,6 +67,8 @@ prototypeToken:
   actorLink: true
   appendNumber: false
   disposition: 1
+  texture:
+    src: systems/tb2e/assets/tokens/nienna.webp
 items:
   - _id: ca08000000000001
     name: Skeptical
@@ -103,7 +106,7 @@ items:
     img: systems/tb2e/icons/ffffff/transparent/1x1/lorc/broadsword.svg
     system:
       description: Dungeoneer's Handbook, p. 159
-      slot: ''
+      slot: belt
       slotIndex: 0
       slotOptions:
         carried: 1
@@ -137,7 +140,7 @@ items:
     img: systems/tb2e/icons/ffffff/transparent/1x1/lorc/cowled.svg
     system:
       description: Dungeoneer's Handbook, p. 151
-      slot: ''
+      slot: torso
       slotIndex: 0
       slotOptions:
         torso: 1
@@ -158,8 +161,8 @@ items:
     img: systems/tb2e/icons/ffffff/transparent/1x1/delapouite/backpack.svg
     system:
       description: Dungeoneer's Handbook, p. 152
-      slot: ''
-      slotIndex: 0
+      slot: torso
+      slotIndex: 1
       slotOptions:
         torso: 2
       cost: 2
@@ -179,8 +182,8 @@ items:
     img: systems/tb2e/icons/ffffff/transparent/1x1/seregacthtuf/pouch-with-beads.svg
     system:
       description: Dungeoneer's Handbook, p. 152
-      slot: ''
-      slotIndex: 0
+      slot: belt
+      slotIndex: 2
       slotOptions:
         belt: 1
         pack: 1
@@ -201,8 +204,8 @@ items:
     img: systems/tb2e/icons/ffffff/transparent/1x1/delapouite/waterskin.svg
     system:
       description: Dungeoneer's Handbook, p. 152
-      slot: ''
-      slotIndex: 0
+      slot: belt
+      slotIndex: 1
       slotOptions:
         belt: 1
         pack: 1
@@ -214,7 +217,7 @@ items:
       containerKey: ''
       containerSlots: 0
       containerType: waterskin
-      liquidType: water
+      liquidType: wine
       lost: false
     effects: []
     _key: '!actors.items!ca08000000000000.ca08000000000008'
@@ -224,7 +227,7 @@ items:
     img: systems/tb2e/icons/ffffff/transparent/1x1/delapouite/ballerina-shoes.svg
     system:
       description: Dungeoneer's Handbook, p. 239
-      slot: ''
+      slot: feet
       slotIndex: 0
       slotOptions:
         feet: 1
@@ -243,7 +246,7 @@ items:
     img: systems/tb2e/icons/ffffff/transparent/1x1/darkzaitzev/fish-cooked.svg
     system:
       description: Dungeoneer's Handbook, p. 154
-      slot: ''
+      slot: ca08000000000006
       slotIndex: 0
       slotOptions:
         pack: 1
@@ -263,8 +266,8 @@ items:
     img: systems/tb2e/icons/ffffff/transparent/1x1/delapouite/flint-spark.svg
     system:
       description: Dungeoneer's Handbook, p. 154
-      slot: ''
-      slotIndex: 0
+      slot: ca08000000000006
+      slotIndex: 1
       slotOptions:
         pack: 1
       cost: 1
@@ -285,8 +288,8 @@ items:
     img: systems/tb2e/icons/ffffff/transparent/1x1/delapouite/torch.svg
     system:
       description: "Dungeoneer's Handbook, p. 154; Scholar's Guide, pp. 42\u201343"
-      slot: ''
-      slotIndex: 0
+      slot: ca08000000000006
+      slotIndex: 2
       slotOptions:
         carried: 1
         pack: 1
@@ -307,8 +310,8 @@ items:
     img: systems/tb2e/icons/ffffff/transparent/1x1/lorc/mirror-mirror.svg
     system:
       description: Dungeoneer's Handbook, p. 153
-      slot: ''
-      slotIndex: 0
+      slot: ca08000000000006
+      slotIndex: 3
       slotOptions:
         carried: 1
         pack: 1
@@ -327,16 +330,16 @@ items:
     img: systems/tb2e/icons/ffffff/transparent/1x1/delapouite/water-bottle.svg
     system:
       description: Dungeoneer's Handbook, p. 152
-      slot: ''
-      slotIndex: 0
+      slot: ca08000000000006
+      slotIndex: 4
       slotOptions:
         carried: 1
         pack: 2
       cost: 1
       damaged: false
       dropped: false
-      quantity: 1
-      quantityMax: 1
+      quantity: 2
+      quantityMax: 2
       containerKey: ''
       containerSlots: 0
       containerType: bottle
@@ -350,10 +353,11 @@ items:
     img: systems/tb2e/icons/ffffff/transparent/1x1/delapouite/coins.svg
     system:
       description: Scholar's Guide, p. 159
-      slot: ''
+      slot: ca08000000000007
       slotIndex: 0
       slotOptions:
         pack: 1
+        pouch: 1
       cost: 0
       damaged: false
       dropped: false
@@ -372,7 +376,7 @@ items:
     img: systems/tb2e/icons/ffffff/transparent/1x1/delapouite/tribal-pendant.svg
     system:
       description: Scholar's Guide, p. 160
-      slot: ''
+      slot: neck
       slotIndex: 0
       slotOptions:
         neck: 1

@@ -1,7 +1,7 @@
 _id: f1e2d3c4b5a6000e
 name: Fisher
 type: npc
-img: systems/tb2e/icons/ffffff/transparent/1x1/lorc/fishing-hook.svg
+img: systems/tb2e/assets/tokens/fisher.webp
 system:
   stock: ''
   class: ''
@@ -48,6 +48,8 @@ prototypeToken:
   actorLink: false
   appendNumber: true
   disposition: 0
+  texture:
+    src: systems/tb2e/assets/tokens/fisher.webp
 items:
   - _id: a00e000000000001
     name: Stoic

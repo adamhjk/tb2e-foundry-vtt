@@ -1,0 +1,41 @@
+_id: a000000000000013
+name: Grace of the Lords of Plenty
+type: invocation
+img: systems/tb2e/icons/ffffff/transparent/1x1/delapouite/grain-bundle.svg
+system:
+  description: "Dungeoneer's Handbook, p. 219"
+  circle: 2
+  castingType: factors
+  factors:
+    - name: Breadth
+      options:
+        - label: Two meals
+          value: 1
+        - label: Three meals
+          value: 2
+        - label: Small group
+          value: 3
+        - label: Large group
+          value: 4
+    - name: State of Food
+      options:
+        - label: Fresh
+          value: 0
+        - label: Preserved
+          value: 1
+        - label: Tainted or spoiled
+          value: 2
+        - label: Poisoned
+          value: 3
+  invocationTime: 2
+  invocationTimeWithRelic: 1
+  duration: Instantaneous
+  burden: 3
+  burdenWithRelic: 2
+  relic: Freydis' Sickle
+  relicInventory: belt 1 or carried 1
+  sacramental: ''
+  mightPenalty: true
+  performed: false
+effects: []
+_key: '!items!a000000000000013'

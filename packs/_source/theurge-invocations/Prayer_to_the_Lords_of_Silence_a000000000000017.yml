@@ -1,0 +1,37 @@
+_id: a000000000000017
+name: Prayer to the Lords of Silence
+type: invocation
+img: systems/tb2e/icons/ffffff/transparent/1x1/lorc/wind-hole.svg
+system:
+  description: "Dungeoneer's Handbook, p. 221"
+  circle: 2
+  castingType: factors
+  factors:
+    - name: Area
+      options:
+        - label: One room
+          value: 2
+        - label: Two rooms
+          value: 3
+        - label: Three rooms
+          value: 4
+    - name: Duration
+      options:
+        - label: One turn
+          value: 0
+        - label: Two turns
+          value: 1
+        - label: Phase
+          value: 2
+  invocationTime: 2
+  invocationTimeWithRelic: 1
+  duration: Variable
+  burden: 3
+  burdenWithRelic: 2
+  relic: Ganglot's tooth
+  relicInventory: worn/neck or pocket
+  sacramental: ''
+  mightPenalty: true
+  performed: false
+effects: []
+_key: '!items!a000000000000017'

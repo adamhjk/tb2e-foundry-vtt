@@ -1,10 +1,11 @@
 _id: ca02000000000000
 name: Beren of Carcaroth
 type: character
-img: systems/tb2e/icons/ffffff/transparent/1x1/delapouite/sharp-axe.svg
+img: systems/tb2e/assets/tokens/beren.webp
 system:
-  stock: Dwarf
-  class: Outcast
+  stock: dwarf
+  class: outcast
+  specialty: manipulator
   age: '51'
   home: Religious Bastion
   raiment: Sky blue hood
@@ -68,6 +69,8 @@ prototypeToken:
   actorLink: true
   appendNumber: false
   disposition: 1
+  texture:
+    src: systems/tb2e/assets/tokens/beren.webp
 items:
   - _id: ca02000000000001
     name: Born of Earth and Stone
@@ -95,8 +98,8 @@ items:
     img: systems/tb2e/icons/ffffff/transparent/1x1/delapouite/sharp-axe.svg
     system:
       description: Dungeoneer's Handbook, p. 158
-      slot: ''
-      slotIndex: 0
+      slot: hand-R
+      slotIndex: 1
       slotOptions:
         carried: 1
         belt: 1
@@ -130,8 +133,8 @@ items:
     img: systems/tb2e/icons/ffffff/transparent/1x1/willdabeast/round-shield.svg
     system:
       description: Dungeoneer's Handbook, p. 158
-      slot: ''
-      slotIndex: 0
+      slot: hand-L
+      slotIndex: 1
       slotOptions:
         carried: 1
         torso: 1
@@ -164,7 +167,7 @@ items:
     img: systems/tb2e/icons/ffffff/transparent/1x1/delapouite/leather-armor.svg
     system:
       description: Dungeoneer's Handbook, p. 151
-      slot: ''
+      slot: torso
       slotIndex: 0
       slotOptions:
         torso: 1
@@ -184,8 +187,8 @@ items:
     img: systems/tb2e/icons/ffffff/transparent/1x1/delapouite/backpack.svg
     system:
       description: Dungeoneer's Handbook, p. 152
-      slot: ''
-      slotIndex: 0
+      slot: torso
+      slotIndex: 1
       slotOptions:
         torso: 2
       cost: 2
@@ -205,7 +208,7 @@ items:
     img: systems/tb2e/icons/ffffff/transparent/1x1/seregacthtuf/pouch-with-beads.svg
     system:
       description: Dungeoneer's Handbook, p. 152
-      slot: ''
+      slot: belt
       slotIndex: 0
       slotOptions:
         belt: 1
@@ -227,8 +230,8 @@ items:
     img: systems/tb2e/icons/ffffff/transparent/1x1/delapouite/waterskin.svg
     system:
       description: Dungeoneer's Handbook, p. 152
-      slot: ''
-      slotIndex: 0
+      slot: belt
+      slotIndex: 1
       slotOptions:
         belt: 1
         pack: 1
@@ -240,7 +243,7 @@ items:
       containerKey: ''
       containerSlots: 0
       containerType: waterskin
-      liquidType: water
+      liquidType: wine
       lost: false
     effects: []
     _key: '!actors.items!ca02000000000000.ca02000000000008'
@@ -250,7 +253,7 @@ items:
     img: systems/tb2e/icons/ffffff/transparent/1x1/delapouite/ballerina-shoes.svg
     system:
       description: Dungeoneer's Handbook, p. 239
-      slot: ''
+      slot: feet
       slotIndex: 0
       slotOptions:
         feet: 1
@@ -269,7 +272,7 @@ items:
     img: systems/tb2e/icons/ffffff/transparent/1x1/delapouite/3d-hammer.svg
     system:
       description: Dungeoneer's Handbook, p. 153
-      slot: ''
+      slot: ca02000000000006
       slotIndex: 0
       slotOptions:
         carried: 1
@@ -289,8 +292,8 @@ items:
     img: systems/tb2e/icons/ffffff/transparent/1x1/darkzaitzev/fish-cooked.svg
     system:
       description: Dungeoneer's Handbook, p. 154
-      slot: ''
-      slotIndex: 0
+      slot: ca02000000000006
+      slotIndex: 1
       slotOptions:
         pack: 1
       cost: 2
@@ -309,8 +312,8 @@ items:
     img: systems/tb2e/icons/ffffff/transparent/1x1/delapouite/rope-coil.svg
     system:
       description: Dungeoneer's Handbook, p. 153
-      slot: ''
-      slotIndex: 0
+      slot: ca02000000000006
+      slotIndex: 2
       slotOptions:
         torso: 1
         pack: 2
@@ -335,50 +338,29 @@ items:
     img: systems/tb2e/icons/ffffff/transparent/1x1/lorc/knapsack.svg
     system:
       description: Dungeoneer's Handbook, p. 152
-      slot: ''
-      slotIndex: 0
+      slot: ca02000000000006
+      slotIndex: 4
       slotOptions:
         pack: 1
       cost: 1
       damaged: false
       dropped: false
-      quantity: 1
-      quantityMax: 1
+      quantity: 2
+      quantityMax: 2
       containerKey: ''
       containerSlots: 2
       containerType: smallSack
       lost: false
     effects: []
     _key: '!actors.items!ca02000000000000.ca0200000000000d'
-  - _id: ca0200000000000e
-    name: Sack, Small
-    type: container
-    img: systems/tb2e/icons/ffffff/transparent/1x1/lorc/knapsack.svg
-    system:
-      description: Dungeoneer's Handbook, p. 152
-      slot: ''
-      slotIndex: 0
-      slotOptions:
-        pack: 1
-      cost: 1
-      damaged: false
-      dropped: false
-      quantity: 1
-      quantityMax: 1
-      containerKey: ''
-      containerSlots: 2
-      containerType: smallSack
-      lost: false
-    effects: []
-    _key: '!actors.items!ca02000000000000.ca0200000000000e'
   - _id: ca0200000000000f
     name: Iron Spikes
     type: gear
     img: systems/tb2e/icons/ffffff/transparent/1x1/lorc/nails.svg
     system:
       description: Dungeoneer's Handbook, p. 153
-      slot: ''
-      slotIndex: 0
+      slot: ca02000000000006
+      slotIndex: 5
       slotOptions:
         pack: 1
       cost: 1
@@ -399,11 +381,12 @@ items:
     img: systems/tb2e/icons/ffffff/transparent/1x1/lorc/engagement-ring.svg
     system:
       description: Scholar's Guide, p. 160
-      slot: ''
+      slot: neck
       slotIndex: 0
       slotOptions:
         wornHand: 1
         pocket: 1
+        neck: 1
       cost: 0
       damaged: false
       dropped: false
@@ -422,10 +405,11 @@ items:
     img: systems/tb2e/icons/ffffff/transparent/1x1/delapouite/coins.svg
     system:
       description: Scholar's Guide, p. 159
-      slot: ''
+      slot: ca02000000000007
       slotIndex: 0
       slotOptions:
         pack: 1
+        pouch: 1
       cost: 0
       damaged: false
       dropped: false
