@@ -340,7 +340,11 @@ export default class ConflictPanel extends HandlebarsApplicationMixin(Applicatio
         if ( game.user.isGM || actor.isOwner ) {
           await actor.update({ "system.conflict.hp.value": newValue });
         } else {
-          await actor.setFlag("tb2e", "pendingConflictHP", { newValue });
+          // Captain editing another player's HP: write to own actor with target info.
+          const myActor = game.user.character;
+          if ( myActor ) await myActor.setFlag("tb2e", "pendingConflictHP", {
+            targetActorId: actor.id, newValue
+          });
         }
       });
     }
@@ -711,7 +715,7 @@ export default class ConflictPanel extends HandlebarsApplicationMixin(Applicatio
       let distributedValues = [];
       if ( hasDistributed ) {
         distributedValues = members.map(c => {
-          const actor = game.actors.get(c.actorId);
+          const actor = c.actor;
           return {
             name: c.name,
             isCaptain: groupData.captainId === c.id,
@@ -729,6 +733,7 @@ export default class ConflictPanel extends HandlebarsApplicationMixin(Applicatio
         : !hasRolled && !!chosenSkill && (game.user.isGM || game.user.character?.id === captainActorId);
       const canDistribute = hasRolled && !hasDistributed && (game.user.isGM || game.user.character?.id === captainActorId);
       const canChooseSkill = !hasRolled && needsSkillChoice && (game.user.isGM || game.user.character?.id === captainActorId);
+      const isCaptainOrGM = game.user.isGM || game.user.character?.id === captainActorId;
 
       context.dispGroups.push({
         id: group.id,
@@ -753,7 +758,8 @@ export default class ConflictPanel extends HandlebarsApplicationMixin(Applicatio
         isListedConflict,
         suggestedDisposition,
         monsterDispositionHint,
-        monsterGroupHelpDice
+        monsterGroupHelpDice,
+        isCaptainOrGM
       });
     }
 
@@ -968,18 +974,22 @@ export default class ConflictPanel extends HandlebarsApplicationMixin(Applicatio
 
       // Determine if current user is a member of this group.
       const isMember = allMembers.some(c => c.actorId === game.user.character?.id);
-      const isOwnTeam = game.user.isGM || isMember;
+
+      // Party detection — needed for GM visibility and auto-collapse.
+      const isPartyGroup = allMembers.some(c => {
+        const actor = game.actors.get(c.actorId);
+        return actor?.hasPlayerOwner;
+      });
+
+      // GM is "own team" for their NPC group; party group requires explicit peek.
+      const isOwnTeam = isMember
+        || (game.user.isGM && !isPartyGroup)
+        || (game.user.isGM && isPartyGroup && this.#gmPeekGroups.has(group.id));
 
       // Determine if current user can view this group's locked actions.
       // GM must explicitly peek to see the player team's cards.
       const canViewActions = isMember
         || (game.user.isGM && this.#gmPeekGroups.has(group.id));
-
-      // Party detection for GM auto-collapse.
-      const isPartyGroup = allMembers.some(c => {
-        const actor = game.actors.get(c.actorId);
-        return actor?.hasPlayerOwner;
-      });
 
       // Auto-collapse party group for GM when it locks (once per round).
       if ( isLocked && game.user.isGM && isPartyGroup && roundNum !== this.#collapseInitRound ) {
@@ -1006,7 +1016,7 @@ export default class ConflictPanel extends HandlebarsApplicationMixin(Applicatio
         isCollapsed,
         isOwnTeam,
         isPartyGroup,
-        gmCanPeek: game.user.isGM && isPartyGroup && !isMember,
+        gmCanPeek: game.user.isGM && isPartyGroup,
         gmIsPeeking: this.#gmPeekGroups.has(group.id)
       });
     }

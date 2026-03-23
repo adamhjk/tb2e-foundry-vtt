@@ -10,6 +10,8 @@
       </span>
     </div>
 
+    {{#if this.isCaptainOrGM}}
+
     {{!-- Skill Choice (multiple disposition skills) --}}
     {{#if this.needsSkillChoice}}
       {{#if this.canChooseSkill}}
@@ -123,6 +125,39 @@
     {{/unless}}
 
     {{/unless}}
+
+    {{else}}
+
+    {{!-- Non-captain: read-only view --}}
+    {{#if this.hasRolled}}
+    <div class="disp-rolled">
+      <span class="disp-rolled-label">{{localize "TB2E.Conflict.Disposition"}}:</span>
+      <span class="disp-rolled-value">{{this.rolled}}</span>
+    </div>
+    {{#if this.hasDistributed}}
+    <div class="disp-distributed-badge">
+      <i class="fa-solid fa-check"></i> {{localize "TB2E.Conflict.Distributed"}}
+    </div>
+    <ul class="dist-list distributed-readonly">
+      {{#each this.distributedValues}}
+      <li class="dist-row">
+        <span class="dist-name">
+          {{#if this.isCaptain}}<i class="fa-solid fa-star"></i>{{/if}}
+          {{#if this.isBoss}}<i class="fa-solid fa-shield dist-boss-icon"></i>{{/if}}
+          {{this.name}}
+        </span>
+        <span class="dist-readonly-value">{{this.hp}}</span>
+      </li>
+      {{/each}}
+    </ul>
+    {{else}}
+    <div class="disp-waiting"><i class="fa-solid fa-hourglass-half"></i> Waiting for captain to distribute...</div>
+    {{/if}}
+    {{else}}
+    <div class="disp-waiting"><i class="fa-solid fa-hourglass-half"></i> Waiting for captain to roll...</div>
+    {{/if}}
+
+    {{/if}}
   </div>
   {{/each}}
 

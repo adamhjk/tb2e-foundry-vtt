@@ -605,6 +605,7 @@
   "TB2E.Help.InvocationTimeWarning": "Increases ritual time +1 turn",
   "TB2E.Help.BlockedAfraid": "Afraid — cannot help",
   "TB2E.Help.BlockedDead": "Dead — cannot help",
+  "TB2E.Help.BlockedConflictKO": "Knocked out of conflict — cannot help",
   "TB2E.Help.NoHelpRecovery": "Cannot help on recovery tests",
   "TB2E.Help.NoHelpLifestyle": "Cannot help on lifestyle tests",
   "TB2E.Help.NPCSection": "NPCs",

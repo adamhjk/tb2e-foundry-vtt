@@ -53,6 +53,8 @@ function _getSkillRating(actor, key) {
 export function isBlockedFromHelping(actor) {
   if ( actor.system.conditions.dead ) return { blocked: true, reason: "TB2E.Help.BlockedDead" };
   if ( actor.system.conditions.afraid ) return { blocked: true, reason: "TB2E.Help.BlockedAfraid" };
+  const conflictHP = actor.system.conflict?.hp;
+  if ( conflictHP?.max > 0 && conflictHP.value <= 0 ) return { blocked: true, reason: "TB2E.Help.BlockedConflictKO" };
   return { blocked: false, reason: null };
 }
 

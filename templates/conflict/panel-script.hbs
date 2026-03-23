@@ -110,16 +110,35 @@
 
     {{else}}
 
-    {{!-- Opponent team: minimal status placeholder --}}
-    <div class="script-opponent-placeholder">
-      {{#if this.isLocked}}
-        <i class="fa-solid fa-lock"></i>
-        <span>{{localize "TB2E.Conflict.OpponentLocked"}}</span>
-      {{else}}
-        <i class="fa-solid fa-hourglass-half"></i>
-        <span>{{localize "TB2E.Conflict.OpponentScripting"}}</span>
-      {{/if}}
+    {{!-- GM peek button for party team --}}
+    {{#if this.gmCanPeek}}
+    <button type="button" class="panel-action-btn peek-btn {{#if this.gmIsPeeking}}active{{/if}}"
+            data-action="peekActions">
+      <i class="fa-solid fa-{{#if this.gmIsPeeking}}eye{{else}}eye-slash{{/if}}"></i>
+      {{localize "TB2E.Conflict.PeekActions"}}
+    </button>
+    {{/if}}
+
+    {{!-- Opponent team: status placeholder or locked card backs --}}
+    {{#if this.isLocked}}
+    <div class="script-slots locked opponent-locked">
+      {{#each this.slots}}
+      <div class="script-slot locked" data-slot-index="{{this.index}}">
+        <div class="script-card-flip">
+          <div class="script-card-face script-card-back">
+            <span class="script-slot-num">{{this.volleyNum}}</span>
+            <i class="fa-solid fa-lock"></i>
+          </div>
+        </div>
+      </div>
+      {{/each}}
     </div>
+    {{else}}
+    <div class="script-opponent-placeholder">
+      <i class="fa-solid fa-hourglass-half"></i>
+      <span>{{localize "TB2E.Conflict.OpponentScripting"}}</span>
+    </div>
+    {{/if}}
 
     {{/if}}
   </div>

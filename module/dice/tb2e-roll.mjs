@@ -985,7 +985,7 @@ async function _showRollDialog({
         obstacleField.classList.toggle("hidden", newMode !== "independent");
         challengeField.classList.toggle("hidden", newMode !== "versus");
         if ( abilityField ) abilityField.classList.toggle("hidden", newMode !== "disposition");
-        if ( advancementField ) advancementField.classList.toggle("hidden", newMode === "disposition" || !!testContext.isConflict);
+        if ( advancementField ) advancementField.classList.toggle("hidden", newMode === "disposition");
 
         // Show/hide +2D opponent buttons based on versus mode
         for ( const btn of form.querySelectorAll(".trait-btn-versus") ) {
@@ -1142,7 +1142,7 @@ async function _showRollDialog({
             poolSize: baseDice + totalDiceBonus,
             obstacle: baseObstacle + obBonus,
             baseObstacle,
-            logAdvancement: testContext.isConflict ? false : form.elements.logAdvancement.checked,
+            logAdvancement: form.elements.logAdvancement.checked,
             mode: form.elements.mode.value,
             challengeMessageId: form.elements.challengeMessageId.value,
             selectedHelpers,
@@ -1401,7 +1401,8 @@ function _buildRollFlags({ actor, type, key, label, baseDice, poolSize, successe
       modifiers: allModifiers.map(m => ({ ...m })),
       isBL: !!blInfo,
       blAbilityKey: blInfo?.blAbilityKey ?? null,
-      baseObstacle: config.baseObstacle ?? null
+      baseObstacle: config.baseObstacle ?? null,
+      logAdvancement: config.logAdvancement ?? true
     },
     trait: config.traitState?.itemId ? (() => {
       const item = actor.items.get(config.traitState.itemId);

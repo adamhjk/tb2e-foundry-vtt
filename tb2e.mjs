@@ -164,11 +164,15 @@ Hooks.on("updateActor", (actor, changes, options, userId) => {
   if ( pendingVersus?.messageId ) processVersusFinalize(actor, pendingVersus);
   const pendingHP = changes.flags?.tb2e?.pendingConflictHP;
   if ( pendingHP?.newValue != null ) {
-    const max = actor.system.conflict?.hp?.max || 0;
-    const newVal = Math.max(0, Math.min(pendingHP.newValue, max));
-    actor.update({ "system.conflict.hp.value": newVal }).then(() => {
-      actor.unsetFlag("tb2e", "pendingConflictHP");
-    });
+    // Support targetActorId for captain editing another player's HP.
+    const targetActor = pendingHP.targetActorId ? game.actors.get(pendingHP.targetActorId) : actor;
+    if ( targetActor ) {
+      const max = targetActor.system.conflict?.hp?.max || 0;
+      const newVal = Math.max(0, Math.min(pendingHP.newValue, max));
+      targetActor.update({ "system.conflict.hp.value": newVal }).then(() => {
+        actor.unsetFlag("tb2e", "pendingConflictHP");
+      });
+    }
   }
 
   const pendingExtinguish = changes.flags?.tb2e?.pendingLightExtinguish;
