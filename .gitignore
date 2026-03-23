@@ -3,3 +3,4 @@ node_modules/
 tb2e.css.map
 packs/*
 !packs/_source
+.envrc
