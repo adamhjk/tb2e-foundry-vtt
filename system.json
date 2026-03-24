@@ -1,10 +1,10 @@
 {
   "id": "tb2e",
   "title": "Torchbearer 2nd Edition",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "url": "https://github.com/adamhjk/tb2e-foundry-vtt",
   "manifest": "https://github.com/adamhjk/tb2e-foundry-vtt/releases/latest/download/system.json",
-  "download": "https://github.com/adamhjk/tb2e-foundry-vtt/releases/download/release-0.2.0/tb2e-release-0.2.0.zip",
+  "download": "https://github.com/adamhjk/tb2e-foundry-vtt/releases/download/release-0.2.1/tb2e-release-0.2.1.zip",
   "compatibility": {
     "minimum": "13",
     "verified": "13"
