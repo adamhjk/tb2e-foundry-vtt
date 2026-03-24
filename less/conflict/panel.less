@@ -988,6 +988,9 @@
   font-size: 0.75rem;
   color: var(--tb-text-dim);
   font-style: italic;
+  &.empty {
+    color: var(--tb-text-faint);
+  }
 }
 
 .script-slot-num {
@@ -1171,6 +1174,20 @@
 
 .script-card-back .script-slot-num {
   background: rgba(255,255,255,0.15);
+}
+
+// Readonly cards for non-captain live view — same size as flip cards but in normal flow.
+.script-card-readonly {
+  position: relative;
+  width: 110px;
+  height: 90px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.15rem;
+  padding: 0.4rem;
+  border-radius: 6px;
 }
 
 .script-card-front {
@@ -1399,6 +1416,36 @@
   }
 }
 
+.resolve-pre-swap {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.3rem 0.6rem;
+  background: var(--tb-bg-raised);
+  border: 1px solid var(--tb-red);
+  border-left: 3px solid var(--tb-red);
+  border-radius: 4px;
+  margin-bottom: 0.3rem;
+  font-size: 0.72rem;
+}
+
+.resolve-ko-warning {
+  color: var(--tb-text-body);
+  font-weight: 600;
+  i { color: var(--tb-red); }
+}
+
+.resolve-swap-select {
+  font-size: 0.7rem;
+  padding: 0.1rem 0.2rem;
+  max-width: 10rem;
+}
+
+.resolve-side-actor.knocked-out {
+  color: var(--tb-red);
+  text-decoration: line-through;
+}
+
 .resolve-roll-buttons {
   display: flex;
   flex-direction: column;
@@ -1539,6 +1586,17 @@
   font-size: 0.58rem;
   color: var(--tb-text-faint);
   white-space: nowrap;
+}
+
+.roster-captain-badge {
+  font-size: 0.6rem;
+  color: var(--tb-amber);
+}
+
+.roster-reassign-captain {
+  font-size: 0.6rem;
+  padding: 0 0.2rem;
+  max-width: 8rem;
 }
 
 /* -------------------------------------------- */

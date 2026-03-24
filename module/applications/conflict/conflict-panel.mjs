@@ -31,10 +31,13 @@ export default class ConflictPanel extends HandlebarsApplicationMixin(Applicatio
   /** @type {number} Round number when auto-collapse was last applied. */
   #collapseInitRound = 0;
 
+  /** @type {number|null} Timeout ID for debounced action syncing to server. */
+  #syncTimeout = null;
+
   static DEFAULT_OPTIONS = {
     id: "conflict-panel",
     classes: ["conflict-panel"],
-    position: { width: 520, height: 620 },
+    position: { width: 572, height: 682 },
     window: {
       title: "TB2E.Conflict.Playbook",
       resizable: true,
@@ -235,8 +238,10 @@ export default class ConflictPanel extends HandlebarsApplicationMixin(Applicatio
         }
         // Cache the selection so it survives re-renders.
         if ( group ) {
+          const groupId = group.dataset.groupId;
           const slotIndex = parseInt(slot.dataset.slotIndex);
-          this.#cachePendingSelection(group.dataset.groupId, slotIndex, { action: actionKey });
+          this.#cachePendingSelection(groupId, slotIndex, { action: actionKey });
+          this.#syncPendingActions(groupId);
         }
       });
     }
@@ -247,8 +252,10 @@ export default class ConflictPanel extends HandlebarsApplicationMixin(Applicatio
         const group = event.target.closest("[data-group-id]");
         const slot = event.target.closest(".script-slot");
         if ( group && slot ) {
+          const groupId = group.dataset.groupId;
           const slotIndex = parseInt(slot.dataset.slotIndex);
-          this.#cachePendingSelection(group.dataset.groupId, slotIndex, { combatantId: event.target.value });
+          this.#cachePendingSelection(groupId, slotIndex, { combatantId: event.target.value });
+          this.#syncPendingActions(groupId);
         }
       });
     }
@@ -348,6 +355,31 @@ export default class ConflictPanel extends HandlebarsApplicationMixin(Applicatio
         }
       });
     }
+
+    // Handle resolve-phase combatant swap (knocked-out combatant replacement).
+    for ( const select of this.element.querySelectorAll(".resolve-swap-select") ) {
+      select.addEventListener("change", async (event) => {
+        const combat = this.#getCombat();
+        if ( !combat ) return;
+        const actionIndex = combat.system.currentAction || 0;
+        const groupId = event.target.dataset.groupId;
+        const newCombatantId = event.target.value;
+        if ( !groupId || !newCombatantId ) return;
+        await combat.swapActionCombatant(actionIndex, groupId, newCombatantId);
+      });
+    }
+
+    // Handle captain reassignment from roster.
+    for ( const select of this.element.querySelectorAll(".roster-reassign-captain") ) {
+      select.addEventListener("change", async (event) => {
+        const combat = this.#getCombat();
+        if ( !combat ) return;
+        const groupId = event.target.dataset.groupId;
+        const newCaptainId = event.target.value;
+        if ( !groupId || !newCaptainId ) return;
+        await combat.requestSetCaptain(groupId, newCaptainId);
+      });
+    }
   }
 
   /* -------------------------------------------- */
@@ -373,6 +405,33 @@ export default class ConflictPanel extends HandlebarsApplicationMixin(Applicatio
       this.#pendingSelections.set(groupId, [{}, {}, {}]);
     }
     Object.assign(this.#pendingSelections.get(groupId)[slotIndex], updates);
+  }
+
+  /**
+   * Debounced sync of in-progress action selections to the server so non-captain
+   * players see the captain's choices in real-time.
+   * @param {string} groupId  The CombatantGroup ID.
+   */
+  #syncPendingActions(groupId) {
+    clearTimeout(this.#syncTimeout);
+    this.#syncTimeout = setTimeout(() => {
+      const combat = this.#getCombat();
+      if ( !combat ) return;
+      const section = this.element?.querySelector(`.script-group[data-group-id="${groupId}"]`);
+      if ( !section ) return;
+      const members = combat.combatants.filter(c => c._source.group === groupId && !c.system.knockedOut);
+      const actions = [];
+      for ( let i = 0; i < 3; i++ ) {
+        const row = section.querySelector(`[data-slot-index="${i}"]`);
+        if ( !row ) { actions.push(null); continue; }
+        const action = row.querySelector(".action-select")?.value || null;
+        const combatantId = members.length === 1
+          ? members[0].id
+          : (row.querySelector(".combatant-select")?.value || null);
+        actions.push({ action, combatantId });
+      }
+      combat.setActions(groupId, actions);
+    }, 300);
   }
 
   /**
@@ -925,14 +984,16 @@ export default class ConflictPanel extends HandlebarsApplicationMixin(Applicatio
           isSet: teamSize === 1 ? !!action : (!!action && !!combatantId)
         };
 
-        // Enrich locked slots with display data.
-        if ( isLocked && action ) {
+        // Enrich slots with display data (for locked view and read-only non-captain view).
+        if ( action ) {
           const cfg = CONFIG.TB2E.conflictActions[action];
           if ( cfg ) {
             slotData.actionLabel = game.i18n.localize(cfg.label);
             slotData.actionIcon = cfg.icon;
             slotData.actionColorClass = `action-${action}`;
           }
+        }
+        if ( combatantId ) {
           const combatant = combat.combatants.get(combatantId);
           slotData.combatantName = combatant?.name || "";
         }
@@ -1048,7 +1109,7 @@ export default class ConflictPanel extends HandlebarsApplicationMixin(Applicatio
         const entry = round.actions[group.id]?.[i];
         if ( !entry ) continue;
         const combatant = combat.combatants.get(entry.combatantId);
-        const actor = combatant ? game.actors.get(combatant.actorId) : null;
+        const actor = combatant?.actor ?? null;
 
         // Get the skill/ability for this action; monsters always test Nature.
         const conflictCfg = combat.getEffectiveConflictConfig();
@@ -1064,6 +1125,18 @@ export default class ConflictPanel extends HandlebarsApplicationMixin(Applicatio
           testLabel = labelKey ? game.i18n.localize(labelKey) : key;
         }
 
+        // Detect if combatant is at 0 HP and needs a swap (current, unresolved actions only).
+        const actorHp = actor?.system.conflict?.hp?.value ?? 1;
+        const needsSwap = isCurrent && !volley.result && (actorHp <= 0 || combatant?.system.knockedOut);
+        let swapCandidates = [];
+        if ( needsSwap && (game.user.isGM || !!actor?.isOwner) ) {
+          const groupMembers = combat.combatants.filter(c => c._source.group === group.id);
+          swapCandidates = groupMembers
+            .filter(c => c.id !== entry.combatantId && !c.system.knockedOut
+              && (c.actor?.system.conflict?.hp?.value ?? 0) > 0)
+            .map(c => ({ id: c.id, name: c.name }));
+        }
+
         sides.push({
           groupId: group.id,
           groupName: group.name,
@@ -1074,7 +1147,9 @@ export default class ConflictPanel extends HandlebarsApplicationMixin(Applicatio
           combatantName: combatant?.name || "???",
           actorId: actor?.id,
           testLabel,
-          canRoll: game.user.isGM || !!actor?.isOwner
+          canRoll: game.user.isGM || !!actor?.isOwner,
+          needsSwap,
+          swapCandidates
         });
       }
 
@@ -1218,6 +1293,7 @@ export default class ConflictPanel extends HandlebarsApplicationMixin(Applicatio
 
   #prepareRosterContext(context, combat, groups, gd) {
     const roundNum = combat.system.currentRound || 0;
+    const phase = combat.system.phase;
     context.roster = [];
     for ( const group of groups ) {
       const members = combat.combatants.filter(c => c._source.group === group.id);
@@ -1228,6 +1304,13 @@ export default class ConflictPanel extends HandlebarsApplicationMixin(Applicatio
         const a = c.actor;
         return a?.type === "character" || a?.system.conflict?.team === "party";
       });
+
+      // Captain reassignment: available outside setup phase for GM or current captain.
+      const canReassign = phase !== "setup" && (game.user.isGM || isCaptain);
+      const reassignCandidates = canReassign
+        ? members.filter(m => m.id !== captainId && !m.system.knockedOut).map(m => ({ id: m.id, name: m.name }))
+        : [];
+
       for ( const c of members ) {
         const actor = c.actor;
         const hp = actor?.system.conflict?.hp || { value: 0, max: 0 };
@@ -1235,6 +1318,7 @@ export default class ConflictPanel extends HandlebarsApplicationMixin(Applicatio
         const actedLastRoundLabel = actedLastRound.length
           ? actedLastRound.map(s => s + 1).join(", ")
           : "—";
+        const isCombatantCaptain = captainId === c.id;
         context.roster.push({
           id: c.id,
           name: c.name,
@@ -1243,6 +1327,9 @@ export default class ConflictPanel extends HandlebarsApplicationMixin(Applicatio
           groupId: group.id,
           groupName: group.name,
           isGMTeam,
+          isCaptain: isCombatantCaptain,
+          canReassignCaptain: isCombatantCaptain && canReassign && reassignCandidates.length > 0,
+          reassignCandidates,
           hp,
           hpPercent: hp.max > 0 ? Math.round((hp.value / hp.max) * 100) : 0,
           hasHP: hp.max > 0,
@@ -1333,11 +1420,7 @@ export default class ConflictPanel extends HandlebarsApplicationMixin(Applicatio
     const skillKey = target.dataset.skill;
     const combat = this.#getCombat();
     if ( !combat || !groupId || !skillKey ) return;
-
-    const gd = foundry.utils.deepClone(combat.system.groupDispositions || {});
-    if ( !gd[groupId] ) gd[groupId] = {};
-    gd[groupId].chosenSkill = skillKey;
-    await combat.update({ "system.groupDispositions": gd });
+    await combat.chooseDispositionSkill(groupId, skillKey);
   }
 
   /* -------------------------------------------- */
@@ -1915,6 +1998,11 @@ export default class ConflictPanel extends HandlebarsApplicationMixin(Applicatio
         content: summaryHtml,
         type: CONST.CHAT_MESSAGE_STYLES.OTHER
       });
+    }
+
+    // Auto-advance to next action unless this was the last one.
+    if ( actionIndex < 2 ) {
+      await combat.nextAction();
     }
   }
 

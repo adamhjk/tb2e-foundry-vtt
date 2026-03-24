@@ -17,6 +17,25 @@
 
       {{!-- Not yet revealed --}}
       {{#unless this.isRevealed}}
+        {{!-- Pre-reveal swap for KO'd combatants (GM only) --}}
+        {{#if @root.isGM}}
+        {{#each this.sides}}
+        {{#if this.needsSwap}}
+        <div class="resolve-pre-swap">
+          <span class="resolve-ko-warning"><i class="fa-solid fa-skull"></i> {{this.combatantName}} — {{localize "TB2E.Conflict.KnockedOutLabel"}}</span>
+          {{#if this.swapCandidates.length}}
+          <select class="resolve-swap-select" data-group-id="{{this.groupId}}">
+            <option value="">{{localize "TB2E.Conflict.SwapCombatant"}}</option>
+            {{#each this.swapCandidates}}
+            <option value="{{this.id}}">{{this.name}}</option>
+            {{/each}}
+          </select>
+          {{/if}}
+        </div>
+        {{/if}}
+        {{/each}}
+        {{/if}}
+
         {{#if @root.isGM}}
         <button type="button" class="panel-action-btn" data-action="revealAction">
           <i class="fa-solid fa-eye"></i> {{localize "TB2E.Conflict.Reveal"}} {{this.actionNum}}
@@ -33,7 +52,17 @@
       <div class="resolve-matchup">
         {{#each this.sides}}
         <div class="resolve-side">
-          <span class="resolve-side-actor">{{this.combatantName}}</span>
+          <span class="resolve-side-actor {{#if this.needsSwap}}knocked-out{{/if}}">{{this.combatantName}}{{#if this.needsSwap}} <i class="fa-solid fa-skull" title="{{localize 'TB2E.Conflict.KnockedOutLabel'}}"></i>{{/if}}</span>
+          {{#if this.needsSwap}}
+          {{#if this.swapCandidates.length}}
+          <select class="resolve-swap-select" data-group-id="{{this.groupId}}">
+            <option value="">{{localize "TB2E.Conflict.SwapCombatant"}}</option>
+            {{#each this.swapCandidates}}
+            <option value="{{this.id}}">{{this.name}}</option>
+            {{/each}}
+          </select>
+          {{/if}}
+          {{/if}}
           <div class="resolve-action-card action-card-{{this.action}}">
             <i class="{{this.actionIcon}}"></i>
             <span class="action-card-label">{{this.actionLabel}}</span>
@@ -78,15 +107,6 @@
         </button>
         {{/if}}
       </div>
-      {{else}}
-      {{!-- Resolved: show next action button --}}
-      {{#if @root.isGM}}
-      {{#unless this.isLastAction}}
-      <button type="button" class="panel-action-btn" data-action="nextAction">
-        <i class="fa-solid fa-forward-step"></i> {{localize "TB2E.Conflict.NextAction"}}
-      </button>
-      {{/unless}}
-      {{/if}}
       {{/unless}}
 
       {{/unless}}

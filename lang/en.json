@@ -455,6 +455,7 @@
   "TB2E.Conflict.NPCTeam": "GM Team",
   "TB2E.Conflict.Captain": "Captain",
   "TB2E.Conflict.SetCaptain": "Set as Captain",
+  "TB2E.Conflict.ReassignCaptain": "Reassign Captain...",
   "TB2E.Conflict.Disposition": "Disposition",
   "TB2E.Conflict.HP": "HP",
   "TB2E.Conflict.CreateConflict": "Create Conflict",
@@ -492,6 +493,7 @@
   "TB2E.Conflict.NewRound": "New Round",
   "TB2E.Conflict.ActionsLocked": "Actions Locked",
   "TB2E.Conflict.OpponentScripting": "Opponent is scripting...",
+  "TB2E.Conflict.CaptainScripting": "Captain is scripting actions...",
   "TB2E.Conflict.OpponentLocked": "Opponent has locked in actions.",
   "TB2E.Conflict.WaitingForLock": "Waiting for teams to lock in...",
   "TB2E.Conflict.SelectAction": "Select an action for all 3 volleys.",
@@ -558,6 +560,7 @@
   "TB2E.Conflict.MustAct": "Must Act",
   "TB2E.Conflict.LastRoundSlots": "Last Round",
   "TB2E.Conflict.KnockedOutLabel": "(KO'd)",
+  "TB2E.Conflict.SwapCombatant": "Swap combatant...",
 
   "TB2E.Conflict.Playbook": "Conflict Playbook",
   "TB2E.Conflict.Tab.Setup": "Setup",

@@ -4,6 +4,17 @@
   <div class="roster-entry {{#if this.knockedOut}}knocked-out{{/if}} {{#if this.isGMTeam}}gm-team{{/if}}">
     <img class="roster-img" src="{{this.img}}" alt="{{this.name}}">
     <span class="roster-name">{{this.name}}</span>
+    {{#if this.isCaptain}}
+    <span class="roster-captain-badge" title="{{localize 'TB2E.Conflict.Captain'}}"><i class="fa-solid fa-crown"></i></span>
+    {{/if}}
+    {{#if this.canReassignCaptain}}
+    <select class="roster-reassign-captain" data-group-id="{{this.groupId}}">
+      <option value="">{{localize "TB2E.Conflict.ReassignCaptain"}}</option>
+      {{#each this.reassignCandidates}}
+      <option value="{{this.id}}">{{this.name}}</option>
+      {{/each}}
+    </select>
+    {{/if}}
     {{#if this.weapon}}
     <span class="roster-weapon" title="{{this.weapon}}"><i class="fa-solid fa-sword"></i></span>
     {{/if}}

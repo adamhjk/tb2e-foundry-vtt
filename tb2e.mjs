@@ -175,6 +175,32 @@ Hooks.on("updateActor", (actor, changes, options, userId) => {
     }
   }
 
+  const pendingCaptain = changes.flags?.tb2e?.pendingCaptainReassign;
+  if ( pendingCaptain?.newCaptainId ) {
+    const combat = game.combats?.find(c => c.isConflict);
+    if ( combat ) {
+      const newCaptain = combat.combatants.get(pendingCaptain.newCaptainId);
+      if ( newCaptain && newCaptain._source.group === pendingCaptain.groupId && !newCaptain.system.knockedOut ) {
+        combat.setCaptain(pendingCaptain.groupId, pendingCaptain.newCaptainId).then(() => {
+          actor.unsetFlag("tb2e", "pendingCaptainReassign");
+        });
+      }
+    }
+  }
+
+  const pendingSkill = changes.flags?.tb2e?.pendingChosenSkill;
+  if ( pendingSkill?.skillKey ) {
+    const combat = game.combats?.find(c => c.isConflict);
+    if ( combat ) {
+      const gd = foundry.utils.deepClone(combat.system.groupDispositions || {});
+      if ( !gd[pendingSkill.groupId] ) gd[pendingSkill.groupId] = {};
+      gd[pendingSkill.groupId].chosenSkill = pendingSkill.skillKey;
+      combat.update({ "system.groupDispositions": gd }).then(() => {
+        actor.unsetFlag("tb2e", "pendingChosenSkill");
+      });
+    }
+  }
+
   const pendingExtinguish = changes.flags?.tb2e?.pendingLightExtinguish;
   if ( pendingExtinguish ) {
     const covered = game.actors.filter(a =>
@@ -227,7 +253,7 @@ Hooks.on("getSceneControlButtons", (controls) => {
     title: "TB2E.GrindTracker.Title",
     icon: "fa-solid fa-hourglass-half",
     button: true,
-    visible: game.user.isGM,
+    visible: true,
     onChange: () => {
       const tracker = applications.GrindTracker.getInstance();
       if ( tracker.rendered ) tracker.close();

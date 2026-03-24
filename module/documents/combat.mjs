@@ -106,6 +106,37 @@ export default class TB2ECombat extends Combat {
   }
 
   /**
+   * Request captain reassignment. GM updates directly; players use mailbox.
+   * @param {string} groupId       The CombatantGroup ID.
+   * @param {string} newCaptainId  The Combatant ID of the new captain.
+   * @returns {Promise<TB2ECombat|void>}
+   */
+  /**
+   * Choose disposition skill. GM updates directly; players use mailbox.
+   * @param {string} groupId   The CombatantGroup ID.
+   * @param {string} skillKey  The skill key (e.g., "fighter", "hunter").
+   * @returns {Promise<TB2ECombat|void>}
+   */
+  async chooseDispositionSkill(groupId, skillKey) {
+    if ( game.user.isGM ) {
+      const gd = foundry.utils.deepClone(this.system.groupDispositions || {});
+      if ( !gd[groupId] ) gd[groupId] = {};
+      gd[groupId].chosenSkill = skillKey;
+      return this.update({ "system.groupDispositions": gd });
+    }
+    // Write to own actor flag — GM processes via updateActor hook in tb2e.mjs.
+    const myActor = game.user.character;
+    if ( myActor ) await myActor.setFlag("tb2e", "pendingChosenSkill", { groupId, skillKey });
+  }
+
+  async requestSetCaptain(groupId, newCaptainId) {
+    if ( game.user.isGM ) return this.setCaptain(groupId, newCaptainId);
+    // Write to own actor flag — GM processes via updateActor hook in tb2e.mjs.
+    const myActor = game.user.character;
+    if ( myActor ) await myActor.setFlag("tb2e", "pendingCaptainReassign", { groupId, newCaptainId });
+  }
+
+  /**
    * Transition from setup to disposition phase.
    * Validates that all groups have captains assigned.
    * @returns {Promise<TB2ECombat>}
@@ -368,6 +399,27 @@ export default class TB2ECombat extends Combat {
     return this.update({ "system.currentAction": next });
   }
 
+  /**
+   * Swap the acting combatant for an action in the current round (GM only).
+   * Used when a scripted combatant has been knocked out or reduced to 0 HP.
+   * @param {number} actionIndex     The action index (0-2).
+   * @param {string} groupId         The CombatantGroup ID.
+   * @param {string} newCombatantId  The replacement Combatant ID.
+   * @returns {Promise<TB2ECombat>}
+   */
+  async swapActionCombatant(actionIndex, groupId, newCombatantId) {
+    if ( !game.user.isGM ) return;
+    const roundNum = this.system.currentRound;
+    if ( !roundNum ) return;
+    const rounds = foundry.utils.deepClone(this.system.rounds || {});
+    const round = rounds[roundNum];
+    if ( !round ) return;
+    const entry = round.actions?.[groupId]?.[actionIndex];
+    if ( !entry ) return;
+    entry.combatantId = newCombatantId;
+    return this.update({ "system.rounds": rounds });
+  }
+
   /* -------------------------------------------- */
   /*  Mailbox Processing (GM only)                */
   /* -------------------------------------------- */
@@ -487,6 +539,13 @@ export default class TB2ECombat extends Combat {
     }
   }
 
+  /**
+   * GM processes a pending captain reassignment from a captain's combatant.
+   * Validates the new captain and clears the mailbox field after processing.
+   * @param {string} groupId        The CombatantGroup ID.
+   * @param {string} newCaptainId   The Combatant ID of the new captain.
+   * @param {string} mailboxId      The combatant that wrote the mailbox.
+   */
   /**
    * Reveal a volley (GM only). Both teams must be locked first.
    * @param {number} volleyIndex  The volley index (0-2).

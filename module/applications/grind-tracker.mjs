@@ -56,10 +56,7 @@ export default class GrindTracker extends HandlebarsApplicationMixin(Application
   /*  Rendering Guard                              */
   /* -------------------------------------------- */
 
-  /** @override */
-  _canRender(options) {
-    if ( !game.user.isGM ) return false;
-  }
+  /** @override — allow all users to view; GM-only controls gated in the template. */
 
   /* -------------------------------------------- */
   /*  Lifecycle                                    */
@@ -139,7 +136,8 @@ export default class GrindTracker extends HandlebarsApplicationMixin(Application
       isGrindTurn,
       pips,
       characters,
-      isAdventurePhase: phase === "adventure"
+      isAdventurePhase: phase === "adventure",
+      isGM: game.user.isGM
     };
   }
 

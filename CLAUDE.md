@@ -125,6 +125,27 @@ Foundry VTT restricts document updates to owners. The mailbox pattern works as f
 | Conflict HP | `flags.tb2e.pendingConflictHP` | Actor | `updateActor` (in `tb2e.mjs`) |
 | Light extinguish | `flags.tb2e.pendingLightExtinguish` | Actor | `updateActor` (in `tb2e.mjs`) |
 
+## Unlinked Actors (Synthetic Tokens)
+
+Monsters and NPCs typically use **unlinked tokens** (synthetic actors). When accessing actor data from a combatant, **always use `combatant.actor`**, never `game.actors.get(combatant.actorId)`:
+
+- `combatant.actor` — returns the **token's synthetic actor** (correct for unlinked tokens; reflects per-token state like conflict HP)
+- `game.actors.get(combatant.actorId)` — returns the **world actor** (the template; does NOT have per-token conflict HP or other runtime state)
+
+For unlinked tokens, updates made via `combatant.actor.update()` only affect the synthetic actor. The world actor's data stays at its default values. Reading HP from the world actor will always return 0, causing false KO detection.
+
+```javascript
+// WRONG — reads world actor; HP will be 0 for unlinked tokens
+const actor = game.actors.get(combatant.actorId);
+const hp = actor.system.conflict.hp.value; // always 0 for unlinked!
+
+// CORRECT — reads the token's synthetic actor
+const actor = combatant.actor;
+const hp = actor.system.conflict.hp.value; // reflects distributed HP
+```
+
+**Rule**: In conflict code (panel, tracker, combat document), always use `combatant.actor` or `c.actor` when you need runtime state (HP, conditions, conflict data). Use `game.actors.get()` only when you specifically need the world-level actor document (rare).
+
 ## Localization (lang/en.json)
 
 Foundry VTT's i18n system builds a **nested object** from the flat JSON keys using `.` as a separator. This means a key like `"TB2E.Foo.Bar"` creates `{ TB2E: { Foo: { Bar: "value" } } }`.

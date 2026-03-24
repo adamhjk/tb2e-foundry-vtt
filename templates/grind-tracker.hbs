@@ -1,8 +1,9 @@
 <div class="grind-ledger">
 
   {{!-- =============================== --}}
-  {{!-- Left Column: Controls           --}}
+  {{!-- Left Column: Controls (GM only) --}}
   {{!-- =============================== --}}
+  {{#if isGM}}
   <div class="ledger-col ledger-controls-col">
 
     {{!-- Phase Selector --}}
@@ -43,6 +44,7 @@
     {{/if}}
 
   </div>
+  {{/if}}
 
   {{!-- =============================== --}}
   {{!-- Character Columns               --}}
@@ -61,9 +63,9 @@
     {{!-- Light Sources --}}
     <div class="char-light">
       {{#if isHolder}}
-        <div class="light-holder-tag">◆ holds</div>
         {{#each litSources}}
           <div class="light-source-row">
+            {{#if @root.isGM}}
             <button class="light-flame-btn{{#if low}} low{{/if}}"
                     data-action="toggleLight"
                     data-actor-id="{{../id}}"
@@ -71,18 +73,26 @@
                     title="Toggle light">
               <i class="fa-solid fa-fire"></i>
             </button>
+            {{else}}
+            <span class="light-flame-icon{{#if low}} low{{/if}}"><i class="fa-solid fa-fire"></i></span>
+            {{/if}}
             <span class="light-source-name">{{name}}</span>
+            <span class="light-holder-tag">◆ holding</span>
             <span class="light-turns{{#if low}} low{{/if}}">{{turnsRemaining}}</span>
           </div>
         {{/each}}
       {{else if coveredByName}}
         <div class="light-covered-row">
+          {{#if @root.isGM}}
           <button class="light-level-cycle-btn {{lightLevel}}"
                   data-action="setLightLevel"
                   data-actor-id="{{id}}"
                   title="Click to cycle light level">
             <i class="fa-solid {{lightLevelIcon}}"></i>
           </button>
+          {{else}}
+          <span class="light-level-icon {{lightLevel}}"><i class="fa-solid {{lightLevelIcon}}"></i></span>
+          {{/if}}
           {{#if coveredByLight}}
             <span class="light-source-name">{{coveredByLight.name}}</span>
             <span class="light-turns{{#if coveredByLight.low}} low{{/if}}">{{coveredByLight.turnsRemaining}}</span>
@@ -99,6 +109,7 @@
       {{/if}}
 
       {{!-- Unlit sources the GM can toggle on --}}
+      {{#if @root.isGM}}
       {{#each unlitSources}}
         <div class="light-source-row unlit">
           <button class="light-flame-btn unlit"
@@ -112,6 +123,7 @@
           <span class="light-turns">{{turnsRemaining}}</span>
         </div>
       {{/each}}
+      {{/if}}
 
       {{!-- Depleted sources — cannot be re-lit until refueled --}}
       {{#each depletedSources}}
@@ -123,7 +135,8 @@
       {{/each}}
     </div>
 
-    {{!-- Covered-By Dropdown --}}
+    {{!-- Covered-By Dropdown (GM only) --}}
+    {{#if @root.isGM}}
     <div class="char-covered-by">
       <select class="covered-by-select" data-covered-by-actor="{{id}}">
         {{#each coveredByOptions}}
@@ -131,6 +144,7 @@
         {{/each}}
       </select>
     </div>
+    {{/if}}
 
     {{!-- Containers --}}
     {{#if containers.length}}
@@ -149,7 +163,8 @@
       {{conditionsDisplay}}
     </div>
 
-    {{!-- Next Grind Condition --}}
+    {{!-- Next Grind Condition (GM only) --}}
+    {{#if @root.isGM}}
     <div class="next-grind{{#if isGrindTurn}} imminent{{/if}}">
       {{#if nextCondLabel}}
         ↓ {{nextCondLabel}}
@@ -157,6 +172,7 @@
         ✝ Dead
       {{/if}}
     </div>
+    {{/if}}
 
   </div>
   {{/each}}

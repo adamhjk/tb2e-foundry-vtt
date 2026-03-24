@@ -6995,6 +6995,9 @@ body.theme-dark .tb2e.sheet .torchbearer-logo,
   color: var(--tb-text-dim);
   font-style: italic;
 }
+.script-slot-combatant-name.empty {
+  color: var(--tb-text-faint);
+}
 .script-slot-num {
   font-family: var(--tb-font-heading);
   font-size: 0.65rem;
@@ -7188,6 +7191,18 @@ body.theme-dark .tb2e.sheet .torchbearer-logo,
 }
 .script-card-back .script-slot-num {
   background: rgba(255, 255, 255, 0.15);
+}
+.script-card-readonly {
+  position: relative;
+  width: 110px;
+  height: 90px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.15rem;
+  padding: 0.4rem;
+  border-radius: 6px;
 }
 .script-card-front {
   transform: rotateY(180deg);
@@ -7394,6 +7409,34 @@ body.theme-dark .tb2e.sheet .torchbearer-logo,
 .resolve-side-roll-btn.invisible {
   visibility: hidden;
 }
+.resolve-pre-swap {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.3rem 0.6rem;
+  background: var(--tb-bg-raised);
+  border: 1px solid var(--tb-red);
+  border-left: 3px solid var(--tb-red);
+  border-radius: 4px;
+  margin-bottom: 0.3rem;
+  font-size: 0.72rem;
+}
+.resolve-ko-warning {
+  color: var(--tb-text-body);
+  font-weight: 600;
+}
+.resolve-ko-warning i {
+  color: var(--tb-red);
+}
+.resolve-swap-select {
+  font-size: 0.7rem;
+  padding: 0.1rem 0.2rem;
+  max-width: 10rem;
+}
+.resolve-side-actor.knocked-out {
+  color: var(--tb-red);
+  text-decoration: line-through;
+}
 .resolve-roll-buttons {
   display: flex;
   flex-direction: column;
@@ -7513,6 +7556,15 @@ body.theme-dark .tb2e.sheet .torchbearer-logo,
   font-size: 0.58rem;
   color: var(--tb-text-faint);
   white-space: nowrap;
+}
+.roster-captain-badge {
+  font-size: 0.6rem;
+  color: var(--tb-amber);
+}
+.roster-reassign-captain {
+  font-size: 0.6rem;
+  padding: 0 0.2rem;
+  max-width: 8rem;
 }
 /* -------------------------------------------- */
 /*  Must-Act Badge                               */
@@ -9364,7 +9416,6 @@ body.theme-dark .tb2e.sheet .torchbearer-logo,
   color: var(--tb-amber);
 }
 .grind-ledger .light-source-name {
-  flex: 1;
   color: var(--tb-text-body);
   font-family: var(--tb-font-body);
   font-size: 0.7rem;
@@ -9378,6 +9429,7 @@ body.theme-dark .tb2e.sheet .torchbearer-logo,
   font-weight: bold;
   color: var(--tb-amber);
   flex-shrink: 0;
+  margin-left: auto;
 }
 .grind-ledger .light-turns.low {
   color: var(--tb-red);
