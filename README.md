@@ -19,23 +19,23 @@ While there is a lot of automation in the system to make things easy to play whe
 
 ## Current Status
 
-[x] Characters
-[x] Monsters
-[x] NPCs
-[x] Die Rolling (help, aide, using your nature, independent/vs/disposition)
-[x] Inventory Management
-[x] Spells
-[x] Invocations
-[x] Conflict Automation
-[x] Grind Tracking
-[x] Iconic Characters
-[x] Gear
-[x] Tracking Checks
-[x] Tracking Success/Failure for improving skills
-[x] Tracking Fate/Persona for leveling up
-[x] Default Scenes for the Prologue, Adventure, Camp and Town Phases
-[ ] Automating the Camp Phase
-[ ] Automating the Town Phase
+- [x] Characters
+- [x] Monsters
+- [x] NPCs
+- [x] Die Rolling (help, aide, using your nature, independent/vs/disposition)
+- [x] Inventory Management
+- [x] Spells
+- [x] Invocations
+- [x] Conflict Automation
+- [x] Grind Tracking
+- [x] Iconic Characters
+- [x] Gear
+- [x] Tracking Checks
+- [x] Tracking Success/Failure for improving skills
+- [x] Tracking Fate/Persona for leveling up
+- [x] Default Scenes for the Prologue, Adventure, Camp and Town Phases
+- [ ] Automating the Camp Phase
+- [ ] Automating the Town Phase
 
 ## Artwork for Monsters, NPCs, and Iconics
 
