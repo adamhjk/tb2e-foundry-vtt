@@ -203,8 +203,10 @@ Hooks.on("updateActor", (actor, changes, options, userId) => {
 
   const pendingExtinguish = changes.flags?.tb2e?.pendingLightExtinguish;
   if ( pendingExtinguish ) {
+    const extSceneActorIds = new Set((canvas?.scene?.tokens ?? []).map(t => t.actorId).filter(Boolean));
     const covered = game.actors.filter(a =>
       a.type === "character" &&
+      extSceneActorIds.has(a.id) &&
       a.getFlag("tb2e", "grindCoveredBy") === actor.id
     );
     Promise.all(covered.map(a => a.update({ "system.lightLevel": "dark" }))).then(() => {
@@ -225,8 +227,10 @@ Hooks.on("updateItem", async (item, changes) => {
   if ( !holder ) return;
 
   if ( game.user.isGM ) {
+    const itemSceneActorIds = new Set((canvas?.scene?.tokens ?? []).map(t => t.actorId).filter(Boolean));
     const covered = game.actors.filter(a =>
       a.type === "character" &&
+      itemSceneActorIds.has(a.id) &&
       a.getFlag("tb2e", "grindCoveredBy") === holder.id
     );
     for ( const a of covered ) await a.update({ "system.lightLevel": "dark" });

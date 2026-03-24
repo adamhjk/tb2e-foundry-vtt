@@ -159,7 +159,7 @@ export default class GrindTracker extends HandlebarsApplicationMixin(Application
         .map(([, label]) => label);
       const conditionsDisplay = activeConditions.length
         ? activeConditions.join(" · ")
-        : "Fresh";
+        : "";
 
       // Next grind condition
       const nextCondKey = GRIND_ORDER.find(k => !conds[k]) ?? null;
@@ -309,9 +309,12 @@ export default class GrindTracker extends HandlebarsApplicationMixin(Application
     const next = current + 1;
     const cyclePos = ((next - 1) % maxTurns) + 1;
 
+    // Only process characters present in the current scene.
+    const grindSceneActorIds = new Set((canvas?.scene?.tokens ?? []).map(t => t.actorId).filter(Boolean));
+
     // Decrement lit light sources; create a card + update for each that expires
     for ( const actor of game.actors ) {
-      if ( actor.type !== "character" ) continue;
+      if ( actor.type !== "character" || !grindSceneActorIds.has(actor.id) ) continue;
       for ( const item of actor.items ) {
         if ( item.type !== "supply" || item.system.supplyType !== "light" || !item.system.lit ) continue;
         const newTurns = Math.max(0, item.system.turnsRemaining - 1);
@@ -322,6 +325,7 @@ export default class GrindTracker extends HandlebarsApplicationMixin(Application
           const affectedNames = game.actors
             .filter(a =>
               a.type === "character" &&
+              grindSceneActorIds.has(a.id) &&
               a.id !== actor.id &&
               a.getFlag("tb2e", "grindCoveredBy") === actor.id &&
               !a.items.some(i =>
@@ -341,7 +345,7 @@ export default class GrindTracker extends HandlebarsApplicationMixin(Application
       await GrindTracker.#postGrindTickCard(next);
       const condOrder = ["hungry", "exhausted", "angry", "sick", "injured", "afraid", "dead"];
       for ( const actor of game.actors ) {
-        if ( actor.type !== "character" ) continue;
+        if ( actor.type !== "character" || !grindSceneActorIds.has(actor.id) ) continue;
         const conds = actor.system.conditions;
         const nextCondKey = condOrder.find(k => !conds[k]) ?? null;
         if ( !nextCondKey ) continue;
