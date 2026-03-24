@@ -3,9 +3,10 @@
   "version": "0.1.0",
   "type": "module",
   "description": "Torchbearer 2nd Edition system for Foundry VTT",
-  "license": "UNLICENSED",
+  "license": "mit",
   "private": true,
   "scripts": {
+    "build": "npm run build:css && npm run build:db",
     "build:css": "lessc less/tb2e.less tb2e.css --source-map",
     "watch:css": "less-watch-compiler less/ ./ tb2e.less --source-map",
     "build:db": "node utils/packs.mjs --compile"

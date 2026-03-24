@@ -1,0 +1,91 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - "release-*"
+
+env:
+  NODE_VERSION: 22
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up variables
+        id: vars
+        run: |
+          TAG=${GITHUB_REF#refs/tags/}
+          VERSION=${TAG#release-}
+          echo "TAG=$TAG" >> "$GITHUB_OUTPUT"
+          echo "VERSION=$VERSION" >> "$GITHUB_OUTPUT"
+          echo "ZIP_NAME=tb2e-${TAG}.zip" >> "$GITHUB_OUTPUT"
+          echo "DOWNLOAD_URL=https://github.com/${{ github.repository }}/releases/download/${TAG}/tb2e-${TAG}.zip" >> "$GITHUB_OUTPUT"
+
+      - name: Validate tag matches system.json version
+        run: |
+          SYSTEM_VERSION=$(jq -r '.version' system.json)
+          if [[ "$SYSTEM_VERSION" != "${{ steps.vars.outputs.VERSION }}" ]]; then
+            echo "::error::Tag version '${{ steps.vars.outputs.VERSION }}' does not match system.json version '${SYSTEM_VERSION}'"
+            exit 1
+          fi
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build
+        run: npm run build
+
+      - name: Patch system.json for release
+        run: |
+          jq \
+            --arg dl "${{ steps.vars.outputs.DOWNLOAD_URL }}" \
+            --arg manifest "https://github.com/${{ github.repository }}/releases/latest/download/system.json" \
+            '.download = $dl | .manifest = $manifest' \
+            system.json > system.json.tmp && mv system.json.tmp system.json
+
+      - name: Create release archive
+        run: |
+          zip -r "${{ steps.vars.outputs.ZIP_NAME }}" \
+            system.json \
+            tb2e.mjs \
+            tb2e.css \
+            module/ \
+            templates/ \
+            lang/ \
+            packs/ \
+            assets/ \
+            icons/ \
+            LICENSE \
+            -x "packs/_source/*"
+
+      - name: Create GitHub Release
+        uses: ncipollo/release-action@v1
+        with:
+          tag: ${{ steps.vars.outputs.TAG }}
+          name: ${{ steps.vars.outputs.VERSION }}
+          draft: false
+          prerelease: false
+          allowUpdates: true
+          token: ${{ secrets.GITHUB_TOKEN }}
+          artifacts: "system.json,${{ steps.vars.outputs.ZIP_NAME }}"
+          body: |
+            ## Installation
+
+            Use this manifest URL in Foundry VTT's **Install System** dialog:
+
+            ```
+            https://github.com/${{ github.repository }}/releases/latest/download/system.json
+            ```
