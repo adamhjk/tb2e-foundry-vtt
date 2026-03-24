@@ -102,8 +102,12 @@
   font-size: 0.8em;
 }
 
-.tb2e.sheet .container-remove-btn {
+.tb2e.sheet .container-drop-btn {
   margin-left: auto;
+}
+
+.tb2e.sheet .container-remove-btn {
+  margin-left: 0;
 }
 
 .tb2e.sheet .slot-list {
@@ -432,4 +436,58 @@
 .tb2e.sheet .slot-placement-btn:hover {
   color: var(--tb-blue);
   background: var(--tb-bg-raised);
+}
+
+/* Dropped / Unassigned Container Groups */
+
+.tb2e.sheet .inventory-container-group {
+  border: 1px dashed var(--tb-border);
+  border-radius: var(--tb-radius-lg);
+  padding: 0.35rem 0.5rem;
+  background: var(--tb-bg-raised);
+}
+
+.tb2e.sheet .dropped-container-group {
+  border-color: var(--tb-amber-dim);
+  opacity: 0.75;
+}
+
+.tb2e.sheet .unassigned-container-group {
+  border-color: var(--tb-blue-dim);
+}
+
+.tb2e.sheet .container-group-header {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.2rem 0;
+  min-height: 1.8rem;
+}
+
+.tb2e.sheet .container-group-icon {
+  color: var(--tb-text-faint);
+  font-size: 0.75rem;
+  flex-shrink: 0;
+}
+
+.tb2e.sheet .container-child-count {
+  font-size: 0.7rem;
+  color: var(--tb-text-faint);
+  flex-shrink: 0;
+}
+
+.tb2e.sheet .container-group-children {
+  margin-left: 1rem;
+  margin-top: 0.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.tb2e.sheet .container-child-item {
+  opacity: 0.7;
+  border-style: dashed;
+  min-height: 1.4rem;
+  padding: 0.2rem 0.4rem;
+  font-size: 0.85rem;
 }

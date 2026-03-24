@@ -1510,7 +1510,7 @@ async function _handleIndependentRoll({ actor, type, key, label, baseDice, poolS
  */
 export function _buildSynergyHelpers(helpers, helperSynergy = {}) {
   return (helpers || [])
-    .filter(h => h.synergy && !helperSynergy[h.id])
+    .filter(h => h.synergy && !helperSynergy[h.id] && game.actors.has(h.id))
     .map(h => {
       const cfg = h.helpViaType === "skill" ? skills[h.helpVia] : abilities[h.helpVia];
       return {

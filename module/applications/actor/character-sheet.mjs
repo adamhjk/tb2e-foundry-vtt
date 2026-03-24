@@ -508,22 +508,76 @@ export default class CharacterSheet extends HandlebarsApplicationMixin(ActorShee
       else rightSlots.push(group);
     }
 
-    // Enrich unassigned and dropped items with placement buttons.
+    // Build grouped dropped containers: containers whose children still
+    // reference their containerKey (items that stayed "inside" when dropped).
+    const droppedContainerGroups = [];
+    const droppedGroupedIds = new Set();
+    for ( const summary of dropped ) {
+      if ( summary.type !== "container" || summary.isLiquidContainer || summary.isSplittableBundle ) continue;
+      const containerItem = actor.items.get(summary.itemId);
+      if ( !containerItem ) continue;
+      const containerKey = containerItem.system.containerKey || containerItem.id;
+      const children = dropped.filter(d =>
+        d.itemId !== summary.itemId && actor.items.get(d.itemId)?.system.slot === containerKey
+      );
+      if ( !children.length ) continue;
+      droppedContainerGroups.push({
+        ...summary, containerKey, containerSlots: containerItem.system.containerSlots,
+        children: children.sort((a, b) => a.slotIndex - b.slotIndex)
+      });
+      droppedGroupedIds.add(summary.itemId);
+      for ( const ch of children ) droppedGroupedIds.add(ch.itemId);
+    }
+    const flatDropped = dropped.filter(d => !droppedGroupedIds.has(d.itemId));
+
+    // Build grouped unassigned containers: unequipped containers whose
+    // children still reference their containerKey.
+    const unassignedContainerGroups = [];
+    const unassignedGroupedIds = new Set();
     for ( const summary of unassigned ) {
+      if ( summary.type !== "container" || summary.isLiquidContainer || summary.isSplittableBundle ) continue;
+      const containerItem = actor.items.get(summary.itemId);
+      if ( !containerItem ) continue;
+      const containerKey = containerItem.system.containerKey || containerItem.id;
+      const children = unassigned.filter(u =>
+        u.itemId !== summary.itemId && actor.items.get(u.itemId)?.system.slot === containerKey
+      );
+      if ( !children.length ) continue;
+      unassignedContainerGroups.push({
+        ...summary, containerKey, containerSlots: containerItem.system.containerSlots,
+        children: children.sort((a, b) => a.slotIndex - b.slotIndex)
+      });
+      unassignedGroupedIds.add(summary.itemId);
+      for ( const ch of children ) unassignedGroupedIds.add(ch.itemId);
+    }
+    const flatUnassigned = unassigned.filter(u => !unassignedGroupedIds.has(u.itemId));
+
+    // Enrich flat and grouped items with placement buttons.
+    for ( const summary of flatUnassigned ) {
       const item = actor.items.get(summary.itemId);
       summary.placements = item ? this.#getAvailablePlacements(item) : [];
     }
-    for ( const summary of dropped ) {
+    for ( const summary of flatDropped ) {
       const item = actor.items.get(summary.itemId);
       summary.placements = item ? this.#getAvailablePlacements(item) : [];
+    }
+    for ( const group of droppedContainerGroups ) {
+      const item = actor.items.get(group.itemId);
+      group.placements = item ? this.#getAvailablePlacements(item) : [];
+    }
+    for ( const group of unassignedContainerGroups ) {
+      const item = actor.items.get(group.itemId);
+      group.placements = item ? this.#getAvailablePlacements(item) : [];
     }
 
     context.leftSlots = leftSlots;
     context.rightSlots = rightSlots;
-    context.unassigned = unassigned;
-    context.dropped = dropped;
-    context.hasDropped = dropped.length > 0;
-    context.hasUnassigned = unassigned.length > 0;
+    context.unassigned = flatUnassigned;
+    context.dropped = flatDropped;
+    context.droppedContainerGroups = droppedContainerGroups;
+    context.unassignedContainerGroups = unassignedContainerGroups;
+    context.hasDropped = flatDropped.length > 0 || droppedContainerGroups.length > 0;
+    context.hasUnassigned = flatUnassigned.length > 0 || unassignedContainerGroups.length > 0;
     // Attach checkbox values to relevant slot groups
     for ( const group of leftSlots ) {
       if ( group.key === "head" ) group.headDamage = sys.inventory.headDamage;
@@ -1518,18 +1572,9 @@ export default class CharacterSheet extends HandlebarsApplicationMixin(ActorShee
     const item = this.document.items.get(itemId);
     if ( !item ) return;
 
-    const updates = [{ _id: item.id, "system.slot": "", "system.slotIndex": 0 }];
-
-    // If container, cascade children.
-    if ( item.type === "container" ) {
-      const containerKey = item.system.containerKey || item.id;
-      for ( const child of this.document.items ) {
-        if ( child.system.slot === containerKey ) {
-          updates.push({ _id: child.id, "system.slot": "", "system.slotIndex": 0 });
-        }
-      }
-    }
-    await this.document.updateEmbeddedDocuments("Item", updates);
+    // Children inside a container keep their slot/slotIndex so they stay
+    // associated with the container when it is unequipped.
+    await item.update({ "system.slot": "", "system.slotIndex": 0 });
   }
 
   /**
@@ -1543,11 +1588,13 @@ export default class CharacterSheet extends HandlebarsApplicationMixin(ActorShee
 
     const updates = [{ _id: item.id, "system.slot": "", "system.slotIndex": 0, "system.dropped": true }];
 
+    // If container, mark children as dropped but preserve their slot/slotIndex
+    // so items stay "inside" the dropped container.
     if ( item.type === "container" ) {
       const containerKey = item.system.containerKey || item.id;
       for ( const child of this.document.items ) {
         if ( child.system.slot === containerKey ) {
-          updates.push({ _id: child.id, "system.slot": "", "system.slotIndex": 0, "system.dropped": true });
+          updates.push({ _id: child.id, "system.dropped": true });
         }
       }
     }
@@ -1556,12 +1603,24 @@ export default class CharacterSheet extends HandlebarsApplicationMixin(ActorShee
 
   /**
    * Pick up a dropped item (goes to unassigned).
+   * If container, also un-drop children still inside it.
    */
   static async #onPickUpItem(event, target) {
     const itemId = target.dataset.itemId;
     const item = this.document.items.get(itemId);
     if ( !item ) return;
-    await item.update({ "system.dropped": false });
+
+    const updates = [{ _id: item.id, "system.dropped": false }];
+
+    if ( item.type === "container" ) {
+      const containerKey = item.system.containerKey || item.id;
+      for ( const child of this.document.items ) {
+        if ( child.system.slot === containerKey && child.system.dropped ) {
+          updates.push({ _id: child.id, "system.dropped": false });
+        }
+      }
+    }
+    await this.document.updateEmbeddedDocuments("Item", updates);
   }
 
   /**
@@ -2035,11 +2094,18 @@ export default class CharacterSheet extends HandlebarsApplicationMixin(ActorShee
       return;
     }
 
-    await item.update({
-      "system.slot": slotKey,
-      "system.slotIndex": slotIndex,
-      "system.dropped": false
-    });
+    const updates = [{ _id: item.id, "system.slot": slotKey, "system.slotIndex": slotIndex, "system.dropped": false }];
+
+    // If placing a container, un-drop any children still referencing it.
+    if ( item.type === "container" ) {
+      const containerKey = item.system.containerKey || item.id;
+      for ( const child of this.document.items ) {
+        if ( child.system.slot === containerKey && child.system.dropped ) {
+          updates.push({ _id: child.id, "system.dropped": false });
+        }
+      }
+    }
+    await this.document.updateEmbeddedDocuments("Item", updates);
   }
 
   /**

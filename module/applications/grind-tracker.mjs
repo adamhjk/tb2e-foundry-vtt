@@ -147,7 +147,8 @@ export default class GrindTracker extends HandlebarsApplicationMixin(Application
    * @returns {object[]}
    */
   #prepareCharacters(isGrindTurn) {
-    const playerActors = game.actors.filter(a => a.type === "character");
+    const sceneActorIds = new Set((canvas?.scene?.tokens ?? []).map(t => t.actorId).filter(Boolean));
+    const playerActors = game.actors.filter(a => a.type === "character" && sceneActorIds.has(a.id));
 
     return playerActors.map(actor => {
       const conds = actor.system.conditions;
@@ -213,7 +214,7 @@ export default class GrindTracker extends HandlebarsApplicationMixin(Application
       const coveredByOptions = [
         { id: "", name: "— self / none —", selected: !coveredById },
         ...game.actors
-          .filter(a => a.type === "character" && a.id !== actor.id)
+          .filter(a => a.type === "character" && a.id !== actor.id && sceneActorIds.has(a.id))
           .map(a => ({ id: a.id, name: a.name, selected: a.id === coveredById }))
       ];
 

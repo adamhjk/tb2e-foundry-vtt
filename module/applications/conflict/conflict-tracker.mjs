@@ -171,10 +171,12 @@ export default class ConflictTracker extends CombatTracker {
       });
     }
 
-    // Available actors for adding to groups.
+    // Available actors for adding to groups — only those present in the current scene.
     const existingActorIds = new Set(combat.combatants.map(c => c.actorId));
+    const sceneActorIds = new Set((canvas?.scene?.tokens ?? []).map(t => t.actorId).filter(Boolean));
     context.availableActors = game.actors
-      .filter(a => (a.type === "character" || a.type === "npc") && !existingActorIds.has(a.id))
+      .filter(a => (a.type === "character" || a.type === "npc")
+        && !existingActorIds.has(a.id) && sceneActorIds.has(a.id))
       .map(a => ({ id: a.id, name: a.name }));
   }
 

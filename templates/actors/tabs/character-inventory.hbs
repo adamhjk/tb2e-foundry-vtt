@@ -170,6 +170,7 @@
           <label class="slot-checkbox"><input type="checkbox" name="system.inventory.torsoWeariness" {{checked torsoWeariness}}> {{localize "TB2E.Inventory.TorsoWeariness"}}</label>
           {{/if}}
           {{#if isContainer}}
+          <button type="button" class="slot-action-btn container-drop-btn" data-action="dropItem" data-item-id="{{containerId}}" title="Drop container"><i class="fa-solid fa-arrow-down"></i></button>
           <button type="button" class="slot-action-btn container-remove-btn" data-action="removeFromSlot" data-item-id="{{containerId}}" title="Remove container"><i class="fa-solid fa-xmark"></i></button>
           {{/if}}
         </h3>
@@ -265,6 +266,35 @@
         </span>
       </div>
       {{/each}}
+      {{!-- Dropped Container Groups --}}
+      {{#each droppedContainerGroups}}
+      <div class="inventory-container-group dropped-container-group" data-item-id="{{itemId}}">
+        <div class="container-group-header">
+          <i class="fa-solid fa-bag-shopping container-group-icon"></i>
+          <span class="slot-item-name">{{name}}</span>
+          <span class="container-child-count">({{children.length}} items)</span>
+          <span class="slot-placements">
+            {{#each placements}}
+            <button type="button" class="slot-placement-btn" data-action="placeItem"
+              data-item-id="{{../itemId}}" data-slot-key="{{slotKey}}" data-slot-index="{{slotIndex}}"
+              title="Place in {{label}}">{{label}} {{cost}}</button>
+            {{/each}}
+          </span>
+          <span class="slot-actions">
+            <button type="button" class="slot-action-btn" data-action="pickUpItem" data-item-id="{{itemId}}" title="Pick up"><i class="fa-solid fa-hand"></i></button>
+            <button type="button" class="slot-action-btn" data-action="deleteItem" data-item-id="{{itemId}}" title="Delete"><i class="fa-solid fa-trash"></i></button>
+          </span>
+        </div>
+        <div class="container-group-children">
+          {{#each children}}
+          <div class="inventory-item container-child-item">
+            <span class="slot-item-name">{{name}}</span>
+            {{#if valueLabel}}<span class="slot-value"><i class="fa-solid fa-coins"></i> {{valueLabel}}</span>{{/if}}
+          </div>
+          {{/each}}
+        </div>
+      </div>
+      {{/each}}
     </div>
   </div>
   {{/if}}
@@ -290,6 +320,36 @@
           <button type="button" class="slot-action-btn" data-action="dropItem" data-item-id="{{itemId}}" title="Drop"><i class="fa-solid fa-arrow-down"></i></button>
           <button type="button" class="slot-action-btn" data-action="deleteItem" data-item-id="{{itemId}}" title="Delete"><i class="fa-solid fa-trash"></i></button>
         </span>
+      </div>
+      {{/each}}
+      {{!-- Unassigned Container Groups --}}
+      {{#each unassignedContainerGroups}}
+      <div class="inventory-container-group unassigned-container-group" data-item-id="{{itemId}}">
+        <div class="container-group-header">
+          <i class="fa-solid fa-bag-shopping container-group-icon"></i>
+          <span class="slot-item-name">{{name}}</span>
+          <span class="container-child-count">({{children.length}} items)</span>
+          <span class="slot-placements">
+            {{#each placements}}
+            <button type="button" class="slot-placement-btn" data-action="placeItem"
+              data-item-id="{{../itemId}}" data-slot-key="{{slotKey}}" data-slot-index="{{slotIndex}}"
+              title="Place in {{label}}">{{label}} {{cost}}</button>
+            {{/each}}
+          </span>
+          <span class="slot-actions">
+            <button type="button" class="slot-action-btn" data-action="editItem" data-item-id="{{itemId}}" title="Edit"><i class="fa-solid fa-pen-to-square"></i></button>
+            <button type="button" class="slot-action-btn" data-action="dropItem" data-item-id="{{itemId}}" title="Drop"><i class="fa-solid fa-arrow-down"></i></button>
+            <button type="button" class="slot-action-btn" data-action="deleteItem" data-item-id="{{itemId}}" title="Delete"><i class="fa-solid fa-trash"></i></button>
+          </span>
+        </div>
+        <div class="container-group-children">
+          {{#each children}}
+          <div class="inventory-item container-child-item">
+            <span class="slot-item-name">{{name}}</span>
+            {{#if valueLabel}}<span class="slot-value"><i class="fa-solid fa-coins"></i> {{valueLabel}}</span>{{/if}}
+          </div>
+          {{/each}}
+        </div>
       </div>
       {{/each}}
     </div>

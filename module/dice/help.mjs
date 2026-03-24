@@ -103,9 +103,11 @@ export function getEligibleHelpers({ actor, type, key, testContext = {}, candida
     if ( scenePool.length > 0 ) {
       pool = scenePool;
     } else {
-      // Fallback: no tokens in scene — use game.actors on the same conflict team.
+      // Fallback: no tokens in scene — use scene-present game.actors on the same conflict team.
+      const sceneActorIds = new Set((canvas?.scene?.tokens ?? []).map(t => t.actorId).filter(Boolean));
       pool = game.actors.filter(a => {
         if ( a.id === actor.id ) return false;
+        if ( !sceneActorIds.has(a.id) ) return false;
         return (a.system.conflict?.team ?? "party") === rollerTeam;
       });
     }
@@ -175,8 +177,10 @@ export function getEligibleWiseAiders({ actor, testContext = {}, candidates }) {
     pool = candidates;
   } else {
     const rollerTeam = actor.system.conflict?.team ?? "party";
+    const sceneActorIds = new Set((canvas?.scene?.tokens ?? []).map(t => t.actorId).filter(Boolean));
     pool = game.actors.filter(a => {
       if ( a.id === actor.id ) return false;
+      if ( !sceneActorIds.has(a.id) ) return false;
       return (a.system.conflict?.team ?? "party") === rollerTeam;
     });
   }

@@ -604,10 +604,12 @@ export default class ConflictPanel extends HandlebarsApplicationMixin(Applicatio
       });
     }
 
-    // Available actors for adding to groups.
+    // Available actors for adding to groups — only those present in the current scene.
     const existingActorIds = new Set(combat.combatants.map(c => c.actorId));
+    const sceneActorIds = new Set((canvas?.scene?.tokens ?? []).map(t => t.actorId).filter(Boolean));
     context.availableActors = game.actors
-      .filter(a => (a.type === "character" || a.type === "npc") && !existingActorIds.has(a.id))
+      .filter(a => (a.type === "character" || a.type === "npc")
+        && !existingActorIds.has(a.id) && sceneActorIds.has(a.id))
       .map(a => ({ id: a.id, name: a.name }));
 
     // Manual conflict configuration.
@@ -784,15 +786,14 @@ export default class ConflictPanel extends HandlebarsApplicationMixin(Applicatio
         });
       }
 
-      // Permission checks.
-      const captainActorId = captain?.actorId;
-      // Monsters can roll only for unlisted conflicts (listed conflicts use predefined disposition).
+      // Permission checks — use isOwner to check actual document ownership
+      // rather than comparing against game.user.character which may not be set.
       const canRoll = isMonsterGroup
-        ? !hasRolled && !isListedConflict && (game.user.isGM || game.user.character?.id === captainActorId)
-        : !hasRolled && !!chosenSkill && (game.user.isGM || game.user.character?.id === captainActorId);
-      const canDistribute = hasRolled && !hasDistributed && (game.user.isGM || game.user.character?.id === captainActorId);
-      const canChooseSkill = !hasRolled && needsSkillChoice && (game.user.isGM || game.user.character?.id === captainActorId);
-      const isCaptainOrGM = game.user.isGM || game.user.character?.id === captainActorId;
+        ? !hasRolled && !isListedConflict && (game.user.isGM || captainActor?.isOwner)
+        : !hasRolled && !!chosenSkill && (game.user.isGM || captainActor?.isOwner);
+      const canDistribute = hasRolled && !hasDistributed && (game.user.isGM || captainActor?.isOwner);
+      const canChooseSkill = !hasRolled && needsSkillChoice && (game.user.isGM || captainActor?.isOwner);
+      const isCaptainOrGM = game.user.isGM || captainActor?.isOwner;
 
       context.dispGroups.push({
         id: group.id,
@@ -841,7 +842,7 @@ export default class ConflictPanel extends HandlebarsApplicationMixin(Applicatio
         name: group.name,
         combatants: members.map(c => {
           const actor = game.actors.get(c.actorId);
-          const canEdit = game.user.isGM || game.user.character?.id === c.actorId;
+          const canEdit = game.user.isGM || actor?.isOwner;
           const weaponId = c.system.weaponId || "";
           const isAssignable = conflictWeapons.find(w => w.id === weaponId)?.assignable || false;
           const data = {
@@ -865,6 +866,21 @@ export default class ConflictPanel extends HandlebarsApplicationMixin(Applicatio
 
           // Build weapon choices for all combatants (gear or conflict-specific or generic).
           if ( actor && !c.system.knockedOut ) {
+            // Gather skill-swap spells/invocations eligible for this conflict type.
+            const conflictType = combat.system.conflictType;
+            const spellWeapons = [
+              ...(actor.itemTypes.spell || []),
+              ...(actor.itemTypes.invocation || [])
+            ].filter(s =>
+              s.system.castingType === "skillSwap"
+              && s.system.swapConflictTypes?.includes(conflictType)
+              && (s.type === "spell" ? (s.system.memorized && !s.system.cast) : !s.system.performed)
+            );
+            const spellChoices = spellWeapons.map(s => ({
+              id: s.id, name: s.name, selected: weaponId === s.id,
+              bonusSummary: ConflictPanel.#buildSpellBonusSummary(s)
+            }));
+
             if ( actor.type === "monster" ) {
               // Monster weapons are embedded in the data model, not items.
               data.weaponChoices = [
@@ -878,6 +894,7 @@ export default class ConflictPanel extends HandlebarsApplicationMixin(Applicatio
               data.weaponChoices = [
                 { id: "__unarmed__", name: game.i18n.localize("TB2E.Conflict.WeaponUnarmed"), selected: weaponId === "__unarmed__" },
                 ...weapons.map(w => ({ id: w.id, name: w.name, selected: weaponId === w.id })),
+                ...spellChoices,
                 { id: "__improvised__", name: game.i18n.localize("TB2E.Conflict.WeaponImprovised"), selected: weaponId === "__improvised__" },
                 // For conflicts with both gear and special weapons (e.g. Capture), append conflict-specific choices.
                 ...conflictWeapons.map(w => ({
@@ -892,6 +909,7 @@ export default class ConflictPanel extends HandlebarsApplicationMixin(Applicatio
                   id: w.id, name: game.i18n.localize(w.label), bonusSummary: ConflictPanel.#buildBonusSummary(w),
                   selected: weaponId === w.id
                 })),
+                ...spellChoices,
                 { id: "__improvised__", name: game.i18n.localize("TB2E.Conflict.WeaponImprovised"), selected: weaponId === "__improvised__" },
                 { id: "__unarmed__",    name: game.i18n.localize("TB2E.Conflict.WeaponUnarmed"),    selected: weaponId === "__unarmed__", bonusSummary: "-1D" }
               ];
@@ -899,6 +917,7 @@ export default class ConflictPanel extends HandlebarsApplicationMixin(Applicatio
               // Generic (Manual, Negotiate, War, Journey, Abjure): Armed / Improvised / Unarmed.
               data.weaponChoices = [
                 { id: "__armed__",    name: game.i18n.localize("TB2E.Conflict.WeaponArmed"),     selected: weaponId === "__armed__" },
+                ...spellChoices,
                 { id: "__improvised__", name: game.i18n.localize("TB2E.Conflict.WeaponImprovised"), selected: weaponId === "__improvised__" },
                 { id: "__unarmed__",  name: game.i18n.localize("TB2E.Conflict.WeaponUnarmed"),   selected: weaponId === "__unarmed__", bonusSummary: "-1D" }
               ];
@@ -932,6 +951,25 @@ export default class ConflictPanel extends HandlebarsApplicationMixin(Applicatio
     }).join(", ");
   }
 
+  /**
+   * Build a bonus summary string for a spell/invocation conflict weapon.
+   * @param {Item} item - Spell or invocation item.
+   * @returns {string}
+   */
+  static #buildSpellBonusSummary(item) {
+    const bonuses = item.system.conflictBonuses;
+    if ( !bonuses ) return "";
+    const parts = [];
+    for ( const [action, b] of Object.entries(bonuses) ) {
+      if ( !b.value ) continue;
+      const sign = b.value > 0 ? "+" : "";
+      const unit = b.type === "dice" ? "D" : "s";
+      const label = game.i18n.localize(CONFIG.TB2E?.conflictActions?.[action]?.label || action);
+      parts.push(`${sign}${b.value}${unit} ${label}`);
+    }
+    return parts.join(", ");
+  }
+
   /* -------------------------------------------- */
 
   #prepareScriptContext(context, combat, groups, gd) {
@@ -950,10 +988,9 @@ export default class ConflictPanel extends HandlebarsApplicationMixin(Applicatio
 
       // Permission.
       const groupData = gd[group.id] || {};
-      const captainActorId = groupData.captainId
-        ? combat.combatants.get(groupData.captainId)?.actorId
-        : null;
-      const canScript = game.user.isGM || game.user.character?.id === captainActorId;
+      const captainCombatant = groupData.captainId ? combat.combatants.get(groupData.captainId) : null;
+      const scriptCaptainActor = captainCombatant ? game.actors.get(captainCombatant.actorId) : null;
+      const canScript = game.user.isGM || scriptCaptainActor?.isOwner;
 
       // Last-round tracking for validation.
       const combatantActedMap = {};
@@ -1034,7 +1071,10 @@ export default class ConflictPanel extends HandlebarsApplicationMixin(Applicatio
       const allSet = slots.every(s => s.isSet);
 
       // Determine if current user is a member of this group.
-      const isMember = allMembers.some(c => c.actorId === game.user.character?.id);
+      const isMember = allMembers.some(c => {
+        const a = game.actors.get(c.actorId);
+        return a?.isOwner;
+      });
 
       // Party detection — needed for GM visibility and auto-collapse.
       const isPartyGroup = allMembers.some(c => {
@@ -1298,8 +1338,8 @@ export default class ConflictPanel extends HandlebarsApplicationMixin(Applicatio
     for ( const group of groups ) {
       const members = combat.combatants.filter(c => c._source.group === group.id);
       const captainId = gd[group.id]?.captainId;
-      const captainActorId = captainId ? combat.combatants.get(captainId)?.actorId : null;
-      const isCaptain = captainActorId && captainActorId === game.user.character?.id;
+      const rosterCaptainActor = captainId ? game.actors.get(combat.combatants.get(captainId)?.actorId) : null;
+      const isCaptain = !!rosterCaptainActor?.isOwner;
       const isGMTeam = !members.some(c => {
         const a = c.actor;
         return a?.type === "character" || a?.system.conflict?.team === "party";
