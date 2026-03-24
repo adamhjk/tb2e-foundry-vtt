@@ -4,15 +4,14 @@
   {{!-- Step Navigation (left sidebar) --}}
   <nav class="wizard-nav">
     {{#each steps}}
-    <button type="button"
-            class="wizard-nav-step{{#if isCurrent}} current{{/if}}{{#if isComplete}} complete{{/if}}{{#unless isAccessible}} disabled{{/unless}}"
-            data-action="goToStep" data-step="{{id}}"
-            {{#unless isAccessible}}disabled{{/unless}}>
+    <div class="wizard-nav-step{{#if isCurrent}} current{{/if}}{{#if isComplete}} complete{{/if}}{{#unless isAccessible}} disabled{{/unless}}"
+         role="button" tabindex="0"
+         data-action="goToStep" data-step="{{id}}">
       <span class="step-number">
         {{#if isComplete}}<i class="fa-solid fa-check"></i>{{else}}{{number}}{{/if}}
       </span>
       <span class="step-label">{{label}}</span>
-    </button>
+    </div>
     {{/each}}
   </nav>
 

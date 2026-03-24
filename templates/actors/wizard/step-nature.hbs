@@ -20,16 +20,16 @@
     <div class="nature-question{{#if answered}} answered{{/if}}">
       <p class="question-flavor">{{flavor}}</p>
       <div class="question-choices">
-        <button type="button"
-                class="nature-choice yes{{#if (eq answer true)}} selected{{/if}}"
-                data-action="answerNature" data-question-index="{{index}}" data-answer="yes">
+        <div class="nature-choice yes{{#if (eq answer true)}} selected{{/if}}"
+             role="button" tabindex="0"
+             data-action="answerNature" data-question-index="{{index}}" data-answer="yes">
           {{yesLabel}}
-        </button>
-        <button type="button"
-                class="nature-choice no{{#if (eq answer false)}} selected{{/if}}"
-                data-action="answerNature" data-question-index="{{index}}" data-answer="no">
+        </div>
+        <div class="nature-choice no{{#if (eq answer false)}} selected{{/if}}"
+             role="button" tabindex="0"
+             data-action="answerNature" data-question-index="{{index}}" data-answer="no">
           {{noLabel}}
-        </button>
+        </div>
       </div>
 
       {{!-- Secondary choice: wise --}}
@@ -38,10 +38,11 @@
         <h4>{{localize "TB2E.Wizard.ChooseWise"}}</h4>
         <div class="wise-choice-buttons">
           {{#each wiseOptions}}
-          <button type="button" class="wise-choice-btn{{#if (eq this ../selectedNatureWise)}} selected{{/if}}"
-                  data-action="selectNatureWise" data-wise="{{this}}">
+          <div class="wise-choice-btn{{#if (eq this ../selectedNatureWise)}} selected{{/if}}"
+               role="button" tabindex="0"
+               data-action="selectNatureWise" data-wise="{{this}}">
             {{this}}
-          </button>
+          </div>
           {{/each}}
         </div>
       </div>
@@ -53,10 +54,11 @@
         <h4>{{localize "TB2E.Wizard.ChooseReplacementTrait"}}</h4>
         <div class="trait-choice-buttons">
           {{#each homeTraitOptions}}
-          <button type="button" class="trait-choice-btn{{#if (eq this ../selectedHomeTrait)}} selected{{/if}}"
-                  data-action="selectNatureHomeTrait" data-trait="{{this}}">
+          <div class="trait-choice-btn{{#if (eq this ../selectedHomeTrait)}} selected{{/if}}"
+               role="button" tabindex="0"
+               data-action="selectNatureHomeTrait" data-trait="{{this}}">
             {{this}}
-          </button>
+          </div>
           {{/each}}
         </div>
       </div>

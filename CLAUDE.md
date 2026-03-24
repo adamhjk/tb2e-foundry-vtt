@@ -146,6 +146,36 @@ const hp = actor.system.conflict.hp.value; // reflects distributed HP
 
 **Rule**: In conflict code (panel, tracker, combat document), always use `combatant.actor` or `c.actor` when you need runtime state (HP, conditions, conflict data). Use `game.actors.get()` only when you specifically need the world-level actor document (rare).
 
+## Releasing
+
+Releases are automated via GitHub Actions (`.github/workflows/release.yml`). Pushing a `release-*` tag triggers a workflow that builds, zips, and publishes a GitHub Release.
+
+### Steps
+
+1. Bump `version` in `system.json` (e.g., `"0.2.0"`)
+2. Commit and push to `main`
+3. Create and push a git tag matching the version:
+   ```sh
+   git tag release-0.2.0
+   git push origin refs/tags/release-0.2.0
+   ```
+4. The workflow validates the tag matches `system.json` version, builds CSS + packs, creates a zip of runtime files, and publishes the release
+
+### What the workflow does
+
+- Patches `system.json` with correct `download` and `manifest` URLs before packaging
+- Zips only runtime files (`system.json`, `tb2e.mjs`, `tb2e.css`, `module/`, `templates/`, `lang/`, `packs/`, `assets/`, `icons/`, `LICENSE`) — excludes `packs/_source/`, dev tooling, and build files
+- Uploads `system.json` + zip as release assets
+
+### Manifest URL
+
+Users install the system in Foundry using:
+```
+https://github.com/adamhjk/tb2e-foundry-vtt/releases/latest/download/system.json
+```
+
+This always redirects to the latest release's `system.json`, which contains the version-pinned `download` URL.
+
 ## Localization (lang/en.json)
 
 Foundry VTT's i18n system builds a **nested object** from the flat JSON keys using `.` as a separator. This means a key like `"TB2E.Foo.Bar"` creates `{ TB2E: { Foo: { Bar: "value" } } }`.

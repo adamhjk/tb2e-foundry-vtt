@@ -2,6 +2,16 @@
 
 This is an implementation of [Torchbearer](https://www.burningwheel.com/collections/torchbearer) for the [Foundry VTT](https://foundryvtt.com/). 
 
+## Installation
+
+In Foundry VTT, go to **Game Systems** → **Install System** and paste this manifest URL:
+
+```
+https://github.com/adamhjk/tb2e-foundry-vtt/releases/latest/download/system.json
+```
+
+Requires Foundry VTT v13.
+
 ## You need to have the books!
 
 The goal of this system is to make it easy for more folks to experience to glory that is Torchbearer. What it *doesn't* do is make it so easy to discover the glory that is Torchbearer that you don't need the books to play. They are fabulous things, and you will need to own them to play with this implementation:
@@ -13,6 +23,8 @@ At the very least, you will need a Scholar's Guide and a Dungeoneer's Handbook. 
 
 Rather than import the text from the books, we provide extensive page number references. If you find a description or a place where a page number reference would have been helpful, open an issue!
 
+If you want to play Torchbearer (and you really should play Torchbearer) - you should support BWHQ and buy those books.
+
 ## Automation
 
 While there is a lot of automation in the system to make things easy to play when not together physically, a game like Torchbearer is filled with rules that are situational or subjective. The goal of this system is that you should always be able to resolve any situation manually! If you cannot, that is a bug! File an issue and let me know.
@@ -20,6 +32,7 @@ While there is a lot of automation in the system to make things easy to play whe
 ## Current Status
 
 - [x] Characters
+- [x] Character Creation
 - [x] Monsters
 - [x] NPCs
 - [x] Die Rolling (help, aide, using your nature, independent/vs/disposition)
@@ -36,6 +49,13 @@ While there is a lot of automation in the system to make things easy to play whe
 - [x] Default Scenes for the Prologue, Adventure, Camp and Town Phases
 - [ ] Automating the Camp Phase
 - [ ] Automating the Town Phase
+- [ ] Class options from Scavenger's Supplement
+- [ ] Loot Tables
+- [ ] Complex conflict types, like War
+- [ ] Map / Town / Adventure Site help
+- [ ] Newtown 
+- [ ] Economics
+- [ ] Enterprise
 
 ## Artwork for Monsters, NPCs, and Iconics
 
@@ -43,7 +63,7 @@ Are all AI Generated. If you think one should be replaced, file an issue, and we
 
 ## Contributing
 
-This repository is close to external contributions of code. In the era of AI Agents, it's simply not possible to review code contributions for safety, nor is it possible to know if it was a person or an agent who generated the code. You are free to fork it and make your own changes.
+This repository is closed to external contributions of code. In the era of AI Agents, it's simply not possible to review code contributions for safety, nor is it possible to know if it was a person or an agent who generated the code. You are free to fork it and make your own changes.
 
 What you can do is file issues, and we'll do our best to respond - using agents and people we trust.
 

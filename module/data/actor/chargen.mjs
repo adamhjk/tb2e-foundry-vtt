@@ -503,20 +503,28 @@ export const WEAPON_RESTRICTIONS = {
 };
 
 /**
- * Per-class allowed armor names (matching compendium entries) and shield eligibility.
+ * Per-class starting armor (DH p.40).
+ * autoLeather: class begins wearing leather armor (burglar/outcast/ranger/warrior).
+ * helmet: class may choose a helmet at creation (outcast/warrior only, if no shield).
  * @enum {object}
  */
 export const ARMOR_RESTRICTIONS = {
-  burglar:  { armor: ["Leather Armor"], helmet: true, shield: true },
-  magician: { armor: [], helmet: false, shield: false },
-  outcast:  { armor: ["Leather Armor", "Chain Armor", "Plate Armor"], helmet: true, shield: true },
-  ranger:   { armor: ["Leather Armor", "Chain Armor"], helmet: true, shield: false },
-  theurge:  { armor: [], helmet: false, shield: true },
-  warrior:  { armor: ["Leather Armor", "Chain Armor", "Plate Armor"], helmet: true, shield: true },
-  shaman:   { armor: [], helmet: false, shield: true },
-  skald:    { armor: ["Leather Armor", "Chain Armor"], helmet: true, shield: false },
-  thief:    { armor: ["Leather Armor"], helmet: false, shield: false }
+  burglar:  { autoLeather: true,  helmet: false },
+  magician: { autoLeather: false, helmet: false },
+  outcast:  { autoLeather: true,  helmet: true  },
+  ranger:   { autoLeather: true,  helmet: false },
+  theurge:  { autoLeather: false, helmet: false },
+  warrior:  { autoLeather: true,  helmet: true  },
+  shaman:   { autoLeather: false, helmet: false },
+  skald:    { autoLeather: false, helmet: false },
+  thief:    { autoLeather: false, helmet: false }
 };
+
+/**
+ * Classes that may choose a shield as an additional second weapon (DH pp.39-40, LMM p.11).
+ * @type {string[]}
+ */
+export const SHIELD_ELIGIBLE_CLASSES = ["outcast", "theurge", "warrior", "shaman"];
 
 /* -------------------------------------------- */
 /*  Compendium Pack Names                       */
@@ -534,8 +542,25 @@ export const PACKS = {
   containers: "tb2e.containers",
   equipment: "tb2e.equipment",
   lightSources: "tb2e.light-sources",
-  foodAndDrink: "tb2e.food-and-drink"
+  foodAndDrink: "tb2e.food-and-drink",
+  clothing: "tb2e.clothing",
+  magicalReligious: "tb2e.magical-religious"
 };
+
+/**
+ * Starting equipment whitelist (DH pp.38-39).
+ * Names must match compendium entries exactly.
+ * @type {string[]}
+ */
+export const STARTING_EQUIPMENT = [
+  "Bottle", "Candles", "Cloak", "Finery", "Flasks of Oil", "Garlic",
+  "Grappling Hook", "Hammer", "Holy Water Vials", "Iron Spikes", "Jug",
+  "Lantern", "Mirror", "Pole, 10'", "Pouch, Belt", "Quiver",
+  "Rations, Fresh", "Rations, Preserved", "Rope", "Sack, Large",
+  "Sack, Small", "Sacramentals", "Shoes", "Spell Materials",
+  "Stakes and Mallet", "Thieves' Tools", "Tinderbox", "Torches",
+  "Waterskin", "Wolfsbane"
+];
 
 /* -------------------------------------------- */
 /*  Step Definitions                            */

@@ -1,28 +1,48 @@
 {{!-- Step 10: Weapons --}}
 <div class="wizard-step step-weapons">
   <h2 class="step-heading">{{localize "TB2E.Wizard.Step.Weapons"}}</h2>
-  <p class="step-instructions">{{localize "TB2E.Wizard.WeaponsInstructions"}}</p>
+  <p class="step-instructions">{{localize "TB2E.Wizard.ChooseOneWeapon"}}</p>
 
-  {{#if forcedDagger}}
-  <p class="forced-note">{{localize "TB2E.Wizard.ThiefDagger"}}</p>
-  {{/if}}
-
+  {{#if autoWeapon}}
+  <p class="forced-note">{{localize "TB2E.Wizard.ThiefAutoWeapon"}}</p>
+  {{else}}
   <div class="weapon-list">
     {{#each allowedWeapons}}
-    <button type="button"
-            class="weapon-card{{#if isSelected}} selected{{/if}}"
-            data-action="selectWeapon" data-weapon="{{name}}">
+    <div class="weapon-card{{#if isSelected}} selected{{/if}}"
+         role="button" tabindex="0"
+         data-action="selectWeapon" data-weapon="{{name}}">
       <span class="weapon-name">{{name}}</span>
-    </button>
+    </div>
     {{/each}}
   </div>
+  {{/if}}
 
-  {{#if selectedWeapons.length}}
+  {{#if canChooseShield}}
+  <div class="shield-section">
+    <h3>{{localize "TB2E.Wizard.ShieldOption"}}</h3>
+    {{#if shieldBlocksHelmet}}
+    <p class="shield-note">{{localize "TB2E.Wizard.ShieldBlocksHelmet"}}</p>
+    {{/if}}
+    <div class="weapon-card shield-toggle{{#if hasShield}} selected{{/if}}"
+         role="button" tabindex="0"
+         data-action="toggleShield">
+      <span class="weapon-name">{{localize "TB2E.Armor.Shield"}}</span>
+    </div>
+  </div>
+  {{/if}}
+
+  {{#if selectedWeapon}}
   <div class="selected-summary">
     <h3>{{localize "TB2E.Wizard.SelectedWeapons"}}</h3>
-    {{#each selectedWeapons}}
-    <span class="weapon-badge">{{this}}</span>
-    {{/each}}
+    <span class="weapon-badge">{{selectedWeapon}}</span>
+    {{#if hasShield}}<span class="weapon-badge">{{localize "TB2E.Armor.Shield"}}</span>{{/if}}
   </div>
+  {{else}}
+  {{#if autoWeapon}}
+  <div class="selected-summary">
+    <h3>{{localize "TB2E.Wizard.SelectedWeapons"}}</h3>
+    <span class="weapon-badge">{{autoWeapon}}</span>
+  </div>
+  {{/if}}
   {{/if}}
 </div>

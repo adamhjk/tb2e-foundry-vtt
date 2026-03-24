@@ -7,22 +7,46 @@
   <div class="pack-choice">
     <h3>{{localize "TB2E.Wizard.ChoosePack"}}</h3>
     <div class="pack-buttons">
-      <button type="button"
-              class="pack-btn{{#if (eq packType 'satchel')}} selected{{/if}}"
-              data-action="selectPackType" data-pack="satchel">
+      <div class="pack-btn{{#if (eq packType 'satchel')}} selected{{/if}}"
+           role="button" tabindex="0"
+           data-action="selectPackType" data-pack="satchel">
         <i class="fa-solid fa-suitcase"></i>
         {{localize "TB2E.Container.Satchel"}}
         <span class="pack-detail">{{localize "TB2E.Wizard.SatchelSlots"}}</span>
-      </button>
-      <button type="button"
-              class="pack-btn{{#if (eq packType 'backpack')}} selected{{/if}}"
-              data-action="selectPackType" data-pack="backpack">
+      </div>
+      <div class="pack-btn{{#if (eq packType 'backpack')}} selected{{/if}}"
+           role="button" tabindex="0"
+           data-action="selectPackType" data-pack="backpack">
         <i class="fa-solid fa-briefcase"></i>
         {{localize "TB2E.Container.Backpack"}}
         <span class="pack-detail">{{localize "TB2E.Wizard.BackpackSlots"}}</span>
-      </button>
+      </div>
     </div>
   </div>
+
+  {{!-- Equipment Filling --}}
+  {{#if packType}}
+  <div class="equipment-section">
+    <h3>{{localize "TB2E.Wizard.FillPack"}}</h3>
+    <div class="pack-capacity{{#if overCapacity}} over-capacity{{/if}}">
+      <span class="capacity-label">{{localize "TB2E.Wizard.PackSlotsUsed"}}: {{usedSlots}} / {{packCapacity}}</span>
+      <div class="capacity-bar">
+        <div class="capacity-fill" style="width: {{capacityPercent}}%"></div>
+      </div>
+    </div>
+    <div class="equipment-list">
+      {{!-- Populated dynamically via _onRender --}}
+    </div>
+    {{#if selectedEquipment.length}}
+    <div class="selected-summary">
+      <h4>{{localize "TB2E.Wizard.SelectedEquipment"}}</h4>
+      {{#each selectedEquipment}}
+      <span class="equipment-badge">{{name}} ({{slots}})</span>
+      {{/each}}
+    </div>
+    {{/if}}
+  </div>
+  {{/if}}
 
   {{!-- Magician: Spell School Roll --}}
   {{#if isMagician}}

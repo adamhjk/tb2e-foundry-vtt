@@ -3,50 +3,28 @@
   <h2 class="step-heading">{{localize "TB2E.Wizard.Step.Armor"}}</h2>
   <p class="step-instructions">{{localize "TB2E.Wizard.ArmorInstructions"}}</p>
 
-  {{#if noArmorAllowed}}
-  <p class="no-armor-note">{{localize "TB2E.Wizard.NoArmor"}}</p>
-  {{else}}
+  {{#if autoLeather}}
+  <p class="auto-armor-note">{{localize "TB2E.Wizard.AutoLeather"}}</p>
+  {{/if}}
 
-  {{!-- Body Armor --}}
-  {{#if allowedArmor.length}}
+  {{#if noArmor}}
+  <p class="no-armor-note">{{localize "TB2E.Wizard.NoStartingArmor"}}</p>
+  {{/if}}
+
+  {{!-- Helmet (outcast/warrior only, if no shield) --}}
+  {{#if canHelmet}}
   <div class="armor-section">
-    <h3>{{localize "TB2E.Wizard.BodyArmor"}}</h3>
-    <div class="armor-list">
-      {{#each allowedArmor}}
-      <button type="button"
-              class="armor-card{{#if isSelected}} selected{{/if}}"
-              data-action="selectArmor" data-armor="{{name}}">
-        <span class="armor-name">{{name}}</span>
-      </button>
-      {{/each}}
+    <h3>{{localize "TB2E.Armor.Helmet"}}</h3>
+    <div class="armor-card{{#if helmetSelected}} selected{{/if}}"
+         role="button" tabindex="0"
+         data-action="selectArmor" data-armor="Helmet">
+      <span class="armor-name">{{localize "TB2E.Armor.Helmet"}}</span>
     </div>
   </div>
   {{/if}}
 
-  {{!-- Helmet --}}
-  {{#if canHelmet}}
-  <div class="armor-section">
-    <h3>{{localize "TB2E.Armor.Helmet"}}</h3>
-    <button type="button"
-            class="armor-card{{#if helmetSelected}} selected{{/if}}"
-            data-action="selectArmor" data-armor="Helmet">
-      <span class="armor-name">{{localize "TB2E.Armor.Helmet"}}</span>
-    </button>
-  </div>
-  {{/if}}
-
-  {{!-- Shield --}}
-  {{#if canShield}}
-  <div class="armor-section">
-    <h3>{{localize "TB2E.Armor.Shield"}}</h3>
-    <button type="button"
-            class="armor-card{{#if shieldSelected}} selected{{/if}}"
-            data-action="selectArmor" data-armor="Shield">
-      <span class="armor-name">{{localize "TB2E.Armor.Shield"}}</span>
-    </button>
-  </div>
-  {{/if}}
-
+  {{#if shieldBlocksHelmet}}
+  <p class="shield-blocks-note">{{localize "TB2E.Wizard.HelmetBlockedByShield"}}</p>
   {{/if}}
 
   {{#if selectedArmor.length}}

@@ -5,16 +5,16 @@
 
   <div class="skill-choice-grid">
     {{#each upbringingSkills}}
-    <button type="button"
-            class="skill-choice-card{{#if isSelected}} selected{{/if}}"
-            data-action="selectUpbringing" data-skill="{{key}}">
+    <div class="skill-choice-card{{#if isSelected}} selected{{/if}}"
+         role="button" tabindex="0"
+         data-action="selectUpbringing" data-skill="{{key}}">
       <span class="skill-name">{{label}}</span>
       {{#if isIncrease}}
       <span class="skill-change">{{currentRating}} &rarr; {{newRating}}</span>
       {{else}}
       <span class="skill-rating">{{newRating}}</span>
       {{/if}}
-    </button>
+    </div>
     {{/each}}
   </div>
 </div>

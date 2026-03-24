@@ -6,12 +6,12 @@
   {{!-- Settlement Type --}}
   <div class="hometown-grid">
     {{#each hometowns}}
-    <button type="button"
-            class="hometown-card{{#if isSelected}} selected{{/if}}"
-            data-action="selectHometown" data-hometown="{{key}}">
+    <div class="hometown-card{{#if isSelected}} selected{{/if}}"
+         role="button" tabindex="0"
+         data-action="selectHometown" data-hometown="{{key}}">
       <span class="hometown-name">{{label}}</span>
       <span class="hometown-page">{{page}}</span>
-    </button>
+    </div>
     {{/each}}
   </div>
 
@@ -21,16 +21,16 @@
     <h3>{{localize "TB2E.Wizard.ChooseSkill"}}</h3>
     <div class="skill-choice-grid">
       {{#each hometownSkills}}
-      <button type="button"
-              class="skill-choice-card{{#if isSelected}} selected{{/if}}"
-              data-action="selectHometownSkill" data-skill="{{key}}">
+      <div class="skill-choice-card{{#if isSelected}} selected{{/if}}"
+           role="button" tabindex="0"
+           data-action="selectHometownSkill" data-skill="{{key}}">
         <span class="skill-name">{{label}}</span>
         {{#if isIncrease}}
         <span class="skill-change">{{currentRating}} &rarr; {{newRating}}</span>
         {{else}}
         <span class="skill-rating">{{newRating}}</span>
         {{/if}}
-      </button>
+      </div>
       {{/each}}
     </div>
   </div>
@@ -40,11 +40,11 @@
     <h3>{{localize "TB2E.Wizard.ChooseTrait"}}</h3>
     <div class="trait-buttons">
       {{#each hometownTraits}}
-      <button type="button"
-              class="trait-choice-btn{{#if isSelected}} selected{{/if}}"
-              data-action="selectHomeTrait" data-trait="{{name}}">
+      <div class="trait-choice-btn{{#if isSelected}} selected{{/if}}"
+           role="button" tabindex="0"
+           data-action="selectHomeTrait" data-trait="{{name}}">
         {{name}}
-      </button>
+      </div>
       {{/each}}
     </div>
   </div>

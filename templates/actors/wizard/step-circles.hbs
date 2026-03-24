@@ -15,16 +15,16 @@
   <div class="circles-question">
     <p class="question-text">{{localize "TB2E.Wizard.Circles.FriendQuestion"}}</p>
     <div class="question-choices">
-      <button type="button"
-              class="circles-choice{{#if (eq hasFriend true)}} selected{{/if}}"
-              data-action="answerCircles" data-question="hasFriend" data-answer="yes">
+      <div class="circles-choice{{#if (eq hasFriend true)}} selected{{/if}}"
+           role="button" tabindex="0"
+           data-action="answerCircles" data-question="hasFriend" data-answer="yes">
         {{localize "TB2E.Wizard.Circles.HasFriend"}}
-      </button>
-      <button type="button"
-              class="circles-choice{{#if (eq hasFriend false)}} selected{{/if}}"
-              data-action="answerCircles" data-question="hasFriend" data-answer="no">
+      </div>
+      <div class="circles-choice{{#if (eq hasFriend false)}} selected{{/if}}"
+           role="button" tabindex="0"
+           data-action="answerCircles" data-question="hasFriend" data-answer="no">
         {{localize "TB2E.Wizard.Circles.IsLoner"}}
-      </button>
+      </div>
     </div>
     {{#if (eq hasFriend true)}}
     <div class="circles-detail">
@@ -41,16 +41,16 @@
   <div class="circles-question">
     <p class="question-text">{{localize "TB2E.Wizard.Circles.ParentsQuestion"}}</p>
     <div class="question-choices">
-      <button type="button"
-              class="circles-choice{{#if (eq hasParents true)}} selected{{/if}}"
-              data-action="answerCircles" data-question="hasParents" data-answer="yes">
+      <div class="circles-choice{{#if (eq hasParents true)}} selected{{/if}}"
+           role="button" tabindex="0"
+           data-action="answerCircles" data-question="hasParents" data-answer="yes">
         {{localize "TB2E.Wizard.Circles.HasParents"}}
-      </button>
-      <button type="button"
-              class="circles-choice{{#if (eq hasParents false)}} selected{{/if}}"
-              data-action="answerCircles" data-question="hasParents" data-answer="no">
+      </div>
+      <div class="circles-choice{{#if (eq hasParents false)}} selected{{/if}}"
+           role="button" tabindex="0"
+           data-action="answerCircles" data-question="hasParents" data-answer="no">
         {{localize "TB2E.Wizard.Circles.IsOrphan"}}
-      </button>
+      </div>
     </div>
     {{#if (eq hasParents true)}}
     <div class="circles-detail">
@@ -67,17 +67,17 @@
     <p class="circles-note required">{{localize "TB2E.Wizard.Circles.MentorRequired"}}</p>
     {{/if}}
     <div class="question-choices">
-      <button type="button"
-              class="circles-choice{{#if (eq hasMentor true)}} selected{{/if}}"
-              data-action="answerCircles" data-question="hasMentor" data-answer="yes">
+      <div class="circles-choice{{#if (eq hasMentor true)}} selected{{/if}}"
+           role="button" tabindex="0"
+           data-action="answerCircles" data-question="hasMentor" data-answer="yes">
         {{localize "TB2E.Wizard.Circles.HasMentor"}}
-      </button>
+      </div>
       {{#unless requiresMentor}}
-      <button type="button"
-              class="circles-choice{{#if (eq hasMentor false)}} selected{{/if}}"
-              data-action="answerCircles" data-question="hasMentor" data-answer="no">
+      <div class="circles-choice{{#if (eq hasMentor false)}} selected{{/if}}"
+           role="button" tabindex="0"
+           data-action="answerCircles" data-question="hasMentor" data-answer="no">
         {{localize "TB2E.Wizard.Circles.SelfMade"}}
-      </button>
+      </div>
       {{/unless}}
     </div>
     {{#if (eq hasMentor true)}}
@@ -92,16 +92,16 @@
   <div class="circles-question">
     <p class="question-text">{{localize "TB2E.Wizard.Circles.EnemyQuestion"}}</p>
     <div class="question-choices">
-      <button type="button"
-              class="circles-choice{{#if (eq hasEnemy true)}} selected{{/if}}"
-              data-action="answerCircles" data-question="hasEnemy" data-answer="yes">
+      <div class="circles-choice{{#if (eq hasEnemy true)}} selected{{/if}}"
+           role="button" tabindex="0"
+           data-action="answerCircles" data-question="hasEnemy" data-answer="yes">
         {{localize "TB2E.Wizard.Circles.HasEnemy"}}
-      </button>
-      <button type="button"
-              class="circles-choice{{#if (eq hasEnemy false)}} selected{{/if}}"
-              data-action="answerCircles" data-question="hasEnemy" data-answer="no">
+      </div>
+      <div class="circles-choice{{#if (eq hasEnemy false)}} selected{{/if}}"
+           role="button" tabindex="0"
+           data-action="answerCircles" data-question="hasEnemy" data-answer="no">
         {{localize "TB2E.Wizard.Circles.NoEnemy"}}
-      </button>
+      </div>
     </div>
     {{#if (eq hasEnemy true)}}
     <div class="circles-detail">

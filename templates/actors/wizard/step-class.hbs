@@ -6,12 +6,12 @@
   {{!-- Class Cards --}}
   <div class="class-grid">
     {{#each classes}}
-    <button type="button"
-            class="class-card{{#if isSelected}} selected{{/if}}"
-            data-action="selectClass" data-class-key="{{key}}">
+    <div class="class-card{{#if isSelected}} selected{{/if}}"
+         role="button" tabindex="0"
+         data-action="selectClass" data-class-key="{{key}}">
       <span class="class-name">{{label}}</span>
       <span class="class-stocks">{{#each stocks}}{{this}}{{#unless @last}}, {{/unless}}{{/each}}</span>
-    </button>
+    </div>
     {{/each}}
   </div>
 
@@ -22,11 +22,11 @@
     <h3>{{localize "TB2E.Wizard.ChooseStock"}}</h3>
     <div class="stock-buttons">
       {{#each availableStocks}}
-      <button type="button"
-              class="stock-btn{{#if isSelected}} selected{{/if}}"
-              data-action="selectStock" data-stock="{{key}}">
+      <div class="stock-btn{{#if isSelected}} selected{{/if}}"
+           role="button" tabindex="0"
+           data-action="selectStock" data-stock="{{key}}">
         {{label}}
-      </button>
+      </div>
       {{/each}}
     </div>
   </div>

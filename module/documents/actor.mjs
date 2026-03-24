@@ -18,16 +18,24 @@ export default class TB2EActor extends Actor {
     if ( data.name !== undefined ) {
       foundry.utils.mergeObject(data, { prototypeToken: { name: data.name } });
     }
+    if ( data.img !== undefined ) {
+      foundry.utils.mergeObject(data, { prototypeToken: { texture: { src: data.img } } });
+    }
   }
 
   /** @override */
   _onUpdate(data, options, userId) {
     super._onUpdate(data, options, userId);
-    if ( data.name !== undefined && game.user.isGM ) {
+    if ( (data.name !== undefined || data.img !== undefined) && game.user.isGM ) {
       for ( const scene of game.scenes ) {
-        const updates = scene.tokens
-          .filter(t => t.actorId === this.id)
-          .map(t => ({ _id: t.id, name: data.name }));
+        const updates = [];
+        for ( const t of scene.tokens.filter(t => t.actorId === this.id) ) {
+          const update = { _id: t.id };
+          let changed = false;
+          if ( data.name !== undefined ) { update.name = data.name; changed = true; }
+          if ( data.img !== undefined ) { update["texture.src"] = data.img; changed = true; }
+          if ( changed ) updates.push(update);
+        }
         if ( updates.length ) scene.updateEmbeddedDocuments("Token", updates);
       }
     }

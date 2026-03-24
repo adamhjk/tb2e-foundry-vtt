@@ -2,7 +2,8 @@ import {
   CLASS_DEFS, HOMETOWNS, NATURE_QUESTIONS, UPBRINGING_SKILLS, SOCIAL_SKILLS,
   SPECIALTY_SKILLS, REQUIRED_WISES, AGE_RANGES, SPELL_SCHOOL_TABLE,
   THEURGE_RELIC_TABLE, SHAMAN_RELIC_TABLE, WEAPON_RESTRICTIONS, ARMOR_RESTRICTIONS,
-  PACKS, STEPS, applySkill, shouldSkipUpbringing, getAvailableHometowns, buildSkillsMap
+  SHIELD_ELIGIBLE_CLASSES, STARTING_EQUIPMENT, PACKS, STEPS, applySkill,
+  shouldSkipUpbringing, getAvailableHometowns, buildSkillsMap
 } from "../../data/actor/chargen.mjs";
 
 const { HandlebarsApplicationMixin, ApplicationV2 } = foundry.applications.api;
@@ -63,7 +64,9 @@ export default class CharacterWizard extends HandlebarsApplicationMixin(Applicat
       rollSpells: CharacterWizard.#onRollSpells,
       rollRelics: CharacterWizard.#onRollRelics,
       selectWeapon: CharacterWizard.#onSelectWeapon,
+      toggleShield: CharacterWizard.#onToggleShield,
       selectArmor: CharacterWizard.#onSelectArmor,
+      selectEquipment: CharacterWizard.#onSelectEquipment,
       finish: CharacterWizard.#onFinish
     }
   };
@@ -124,14 +127,16 @@ export default class CharacterWizard extends HandlebarsApplicationMixin(Applicat
       friend: "", parents: "", mentor: "", enemy: "",
       // Step 9
       packType: null,
+      selectedEquipment: [],
       spellSchoolRoll: null, spellSchool: null, spells: [],
       relicRoll: null, relics: [], invocations: [],
       // Step 10
-      selectedWeapons: [],
+      selectedWeapon: null,
+      hasShield: false,
       // Step 11
       selectedArmor: [],
       // Step 12
-      name: this.#actor.name || "", belief: "", instinct: "", raiment: "", age: ""
+      name: "", belief: "", instinct: "", raiment: "", age: ""
     };
   }
 
@@ -186,8 +191,8 @@ export default class CharacterWizard extends HandlebarsApplicationMixin(Applicat
       }
       case "circles": return s.hasFriend != null && s.hasParents != null && s.hasMentor != null && s.hasEnemy != null;
       case "gear": return !!s.packType;
-      case "weapons": return s.selectedWeapons.length > 0;
-      case "armor": return true; // Armor is optional for some classes.
+      case "weapons": return !!s.selectedWeapon || s.class === "thief";
+      case "armor": return this.#isStepComplete("weapons");
       case "finishing": return !!s.name;
       default: return false;
     }
@@ -531,6 +536,18 @@ export default class CharacterWizard extends HandlebarsApplicationMixin(Applicat
     context.invocations = s.invocations;
     context.spellSchoolRoll = s.spellSchoolRoll;
     context.relicRoll = s.relicRoll;
+
+    // Equipment filling.
+    if ( s.packType ) {
+      const packCapacity = s.packType === "backpack" ? 6 : 3;
+      const usedSlots = s.selectedEquipment.reduce((sum, e) => sum + e.slots, 0);
+      context.packCapacity = packCapacity;
+      context.usedSlots = usedSlots;
+      context.remainingSlots = packCapacity - usedSlots;
+      context.capacityPercent = Math.min(Math.round((usedSlots / packCapacity) * 100), 100);
+      context.overCapacity = usedSlots > packCapacity;
+      context.selectedEquipment = [...s.selectedEquipment];
+    }
   }
 
   /* -------------------------------------------- */
@@ -539,28 +556,27 @@ export default class CharacterWizard extends HandlebarsApplicationMixin(Applicat
     const s = this.#state;
     const restrictions = WEAPON_RESTRICTIONS[s.class];
 
-    // If null, all weapons allowed.
+    // Thief auto-gets a dagger — no weapon selection needed.
+    context.autoWeapon = s.class === "thief" ? "Dagger" : null;
+
+    // If null, all weapons allowed (loaded dynamically in _onRender).
     context.allWeaponsAllowed = restrictions === null;
     context.allowedWeapons = (restrictions || []).map(name => ({
       name,
-      isSelected: s.selectedWeapons.includes(name)
+      isSelected: s.selectedWeapon === name
     }));
     if ( restrictions === null ) {
-      // List all weapon names from pack — the wizard populates at render.
       context.allowedWeapons = [];
       context.loadAllWeapons = true;
     }
-    context.selectedWeapons = [...s.selectedWeapons];
+    context.selectedWeapon = s.selectedWeapon;
 
-    // Thief always starts with a dagger — auto-add if not present.
-    context.forcedDagger = s.class === "thief";
-    if ( context.forcedDagger && !s.selectedWeapons.includes("Dagger") ) {
-      s.selectedWeapons.push("Dagger");
-    }
-
-    // Shield option for classes that allow it.
+    // Shield option for eligible classes (DH pp.39-40, LMM p.11).
+    context.canChooseShield = SHIELD_ELIGIBLE_CLASSES.includes(s.class);
+    context.hasShield = s.hasShield;
+    // Note: choosing shield prevents helmet for outcast/warrior.
     const armorDef = ARMOR_RESTRICTIONS[s.class];
-    context.canChooseShield = armorDef?.shield || false;
+    context.shieldBlocksHelmet = context.canChooseShield && armorDef?.helmet;
   }
 
   /* -------------------------------------------- */
@@ -569,15 +585,12 @@ export default class CharacterWizard extends HandlebarsApplicationMixin(Applicat
     const s = this.#state;
     const restrictions = ARMOR_RESTRICTIONS[s.class];
 
-    context.allowedArmor = (restrictions?.armor || []).map(name => ({
-      name,
-      isSelected: s.selectedArmor.includes(name)
-    }));
-    context.canHelmet = restrictions?.helmet || false;
+    context.autoLeather = restrictions?.autoLeather || false;
+    // Helmet available only if class allows it AND no shield chosen.
+    context.canHelmet = (restrictions?.helmet || false) && !s.hasShield;
     context.helmetSelected = s.selectedArmor.includes("Helmet");
-    context.canShield = restrictions?.shield || false;
-    context.shieldSelected = s.selectedArmor.includes("Shield");
-    context.noArmorAllowed = !restrictions?.armor?.length && !restrictions?.helmet && !restrictions?.shield;
+    context.shieldBlocksHelmet = (restrictions?.helmet || false) && s.hasShield;
+    context.noArmor = !restrictions?.autoLeather && !restrictions?.helmet;
     context.selectedArmor = [...s.selectedArmor];
   }
 
@@ -702,7 +715,7 @@ export default class CharacterWizard extends HandlebarsApplicationMixin(Applicat
       natureScore: this.#computeNature(),
       circles: this.#computeCircles(),
       circleNames: [s.friend, s.parents, s.mentor, s.enemy].filter(Boolean),
-      weapons: s.selectedWeapons,
+      weapons: [s.selectedWeapon, s.hasShield ? "Shield" : null].filter(Boolean),
       armor: s.selectedArmor
     };
   }
@@ -806,6 +819,11 @@ export default class CharacterWizard extends HandlebarsApplicationMixin(Applicat
     if ( restrictions === null && this.#state.currentStep === "weapons" ) {
       this.#loadWeaponsFromCompendium();
     }
+
+    // Load equipment items from compendiums on gear step when pack is chosen.
+    if ( this.#state.currentStep === "gear" && this.#state.packType ) {
+      this.#loadEquipmentFromCompendiums();
+    }
   }
 
   /** Load weapon names from compendium for unrestricted classes. */
@@ -818,11 +836,45 @@ export default class CharacterWizard extends HandlebarsApplicationMixin(Applicat
     for ( const entry of index ) {
       const btn = document.createElement("button");
       btn.type = "button";
-      btn.className = `weapon-card${this.#state.selectedWeapons.includes(entry.name) ? " selected" : ""}`;
+      btn.className = `weapon-card${this.#state.selectedWeapon === entry.name ? " selected" : ""}`;
       btn.dataset.action = "selectWeapon";
       btn.dataset.weapon = entry.name;
       btn.innerHTML = `<span class="weapon-name">${entry.name}</span>`;
       container.appendChild(btn);
+    }
+  }
+
+  /** Load starting equipment items from compendium packs (DH pp.38-39). */
+  async #loadEquipmentFromCompendiums() {
+    const container = this.element.querySelector(".equipment-list");
+    if ( !container ) return;
+
+    const allowedNames = new Set(STARTING_EQUIPMENT);
+    const selectedNames = new Set(this.#state.selectedEquipment.map(e => e.name));
+    const packIds = [
+      PACKS.equipment, PACKS.lightSources, PACKS.foodAndDrink,
+      PACKS.containers, PACKS.clothing, PACKS.magicalReligious
+    ];
+
+    for ( const packId of packIds ) {
+      const pack = game.packs.get(packId);
+      if ( !pack ) continue;
+      const index = await pack.getIndex({ fields: ["system.slotOptions"] });
+      for ( const entry of index ) {
+        if ( !allowedNames.has(entry.name) ) continue;
+        const packSlots = entry.system?.slotOptions?.pack || 1;
+        const isSelected = selectedNames.has(entry.name);
+        const el = document.createElement("div");
+        el.className = `equipment-card${isSelected ? " selected" : ""}`;
+        el.setAttribute("role", "button");
+        el.setAttribute("tabindex", "0");
+        el.dataset.action = "selectEquipment";
+        el.dataset.equipment = entry.name;
+        el.dataset.pack = packId;
+        el.dataset.slots = packSlots;
+        el.innerHTML = `<span class="equipment-name">${entry.name}</span><span class="slot-cost">${packSlots} slot${packSlots > 1 ? "s" : ""}</span>`;
+        container.appendChild(el);
+      }
     }
   }
 
@@ -900,14 +952,19 @@ export default class CharacterWizard extends HandlebarsApplicationMixin(Applicat
     this.#state.natureAnswers = {};
     this.#state.natureWiseChoice = null;
     this.#state.natureHomeTraitChoice = null;
-    this.#state.selectedWeapons = [];
-    this.#state.selectedArmor = [];
+    this.#state.selectedWeapon = null;
+    this.#state.hasShield = false;
+    this.#state.selectedEquipment = [];
     this.#state.spellSchoolRoll = null;
     this.#state.spellSchool = null;
     this.#state.spells = [];
     this.#state.relicRoll = null;
     this.#state.relics = [];
     this.#state.invocations = [];
+
+    // Auto-assign starting armor based on class (DH p.40).
+    const armorDef = ARMOR_RESTRICTIONS[classKey];
+    this.#state.selectedArmor = armorDef?.autoLeather ? ["Leather Armor"] : [];
 
     this.render();
   }
@@ -1037,6 +1094,25 @@ export default class CharacterWizard extends HandlebarsApplicationMixin(Applicat
   /** @this {CharacterWizard} */
   static #onSelectPackType(event, target) {
     this.#state.packType = target.dataset.pack;
+    this.#state.selectedEquipment = [];
+    this.render();
+  }
+
+  /** @this {CharacterWizard} */
+  static #onSelectEquipment(event, target) {
+    const name = target.dataset.equipment;
+    const pack = target.dataset.pack;
+    const slots = parseInt(target.dataset.slots) || 1;
+    if ( !name ) return;
+
+    const equipment = [...this.#state.selectedEquipment];
+    const idx = equipment.findIndex(e => e.name === name);
+    if ( idx >= 0 ) {
+      equipment.splice(idx, 1);
+    } else {
+      equipment.push({ name, pack, slots });
+    }
+    this.#state.selectedEquipment = equipment;
     this.render();
   }
 
@@ -1085,11 +1161,19 @@ export default class CharacterWizard extends HandlebarsApplicationMixin(Applicat
   static #onSelectWeapon(event, target) {
     const weapon = target.dataset.weapon;
     if ( !weapon ) return;
-    const weapons = [...this.#state.selectedWeapons];
-    const idx = weapons.indexOf(weapon);
-    if ( idx >= 0 ) weapons.splice(idx, 1);
-    else weapons.push(weapon);
-    this.#state.selectedWeapons = weapons;
+    // Single-select: clicking the same weapon deselects, otherwise replaces.
+    this.#state.selectedWeapon = this.#state.selectedWeapon === weapon ? null : weapon;
+    this.render();
+  }
+
+  /** @this {CharacterWizard} */
+  static #onToggleShield(event, target) {
+    this.#state.hasShield = !this.#state.hasShield;
+    // If shield chosen, clear helmet (outcast/warrior can't have both).
+    if ( this.#state.hasShield ) {
+      const idx = this.#state.selectedArmor.indexOf("Helmet");
+      if ( idx >= 0 ) this.#state.selectedArmor.splice(idx, 1);
+    }
     this.render();
   }
 
@@ -1101,6 +1185,7 @@ export default class CharacterWizard extends HandlebarsApplicationMixin(Applicat
   static #onSelectArmor(event, target) {
     const armor = target.dataset.armor;
     if ( !armor ) return;
+    // Only helmet is toggleable on the armor step now.
     const selected = [...this.#state.selectedArmor];
     const idx = selected.indexOf(armor);
     if ( idx >= 0 ) selected.splice(idx, 1);
@@ -1166,6 +1251,23 @@ export default class CharacterWizard extends HandlebarsApplicationMixin(Applicat
     const hometownDef = HOMETOWNS[s.hometown];
     const homeLabel = hometownDef ? game.i18n.localize(hometownDef.label) : "";
 
+    // Build biography from nature question answers.
+    const bioLines = [];
+    const natDef = NATURE_QUESTIONS[s.stock];
+    if ( natDef ) {
+      bioLines.push(game.i18n.localize("TB2E.Wizard.NatureQuestionsTitle"));
+      bioLines.push("================");
+      for ( const [idx, answer] of Object.entries(s.natureAnswers) ) {
+        const q = natDef.questions[idx];
+        if ( !q ) continue;
+        const flavor = game.i18n.localize(q.flavor);
+        const chosen = game.i18n.localize(answer ? q.yesLabel : q.noLabel);
+        bioLines.push("");
+        bioLines.push(flavor);
+        bioLines.push(`> ${chosen}`);
+      }
+    }
+
     // Actor update.
     const updateData = {
       name: s.name,
@@ -1193,7 +1295,8 @@ export default class CharacterWizard extends HandlebarsApplicationMixin(Applicat
       "system.wises": wisesData,
       "system.conditions.fresh": true,
       "system.memoryPalaceSlots": classDef.memoryPalaceSlots,
-      "system.urdr.capacity": classDef.urdr
+      "system.urdr.capacity": classDef.urdr,
+      "system.bio": bioLines.join("\n")
     };
 
     // Apply skills via dot-notation.
@@ -1263,12 +1366,19 @@ export default class CharacterWizard extends HandlebarsApplicationMixin(Applicat
       await Item.implementation.create(traitItems, { parent: this.#actor });
     }
 
-    // Import compendium items (weapons, armor, spells, relics, invocations).
+    // Import compendium items (weapons, armor, spells, relics, invocations, equipment).
     const itemsToCreate = [];
 
-    // Weapons.
-    for ( const weaponName of s.selectedWeapons ) {
+    // Weapon (single selection, or auto-dagger for thief).
+    const weaponName = s.selectedWeapon || (s.class === "thief" ? "Dagger" : null);
+    if ( weaponName ) {
       const item = await this.#findCompendiumItem(PACKS.weapons, weaponName);
+      if ( item ) itemsToCreate.push(item.toObject());
+    }
+
+    // Shield (if chosen as additional weapon).
+    if ( s.hasShield ) {
+      const item = await this.#findCompendiumItem(PACKS.weapons, "Shield");
       if ( item ) itemsToCreate.push(item.toObject());
     }
 
@@ -1318,6 +1428,12 @@ export default class CharacterWizard extends HandlebarsApplicationMixin(Applicat
     if ( s.packType ) {
       const packName = s.packType === "backpack" ? "Backpack" : "Satchel";
       const item = await this.#findCompendiumItem(PACKS.containers, packName);
+      if ( item ) itemsToCreate.push(item.toObject());
+    }
+
+    // Equipment (pack contents).
+    for ( const eq of s.selectedEquipment ) {
+      const item = await this.#findCompendiumItem(eq.pack, eq.name);
       if ( item ) itemsToCreate.push(item.toObject());
     }
 

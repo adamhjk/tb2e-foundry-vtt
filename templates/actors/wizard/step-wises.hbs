@@ -10,11 +10,11 @@
     <h3>{{localize "TB2E.Wizard.RequiredWise"}}</h3>
     <div class="wise-options">
       {{#each requiredWiseOptions}}
-      <button type="button"
-              class="wise-option-btn{{#if this.isSelected}} selected{{/if}}"
-              data-action="selectRequiredWise" data-wise="{{this.name}}">
+      <div class="wise-option-btn{{#if this.isSelected}} selected{{/if}}"
+           role="button" tabindex="0"
+           data-action="selectRequiredWise" data-wise="{{this.name}}">
         {{this.name}}
-      </button>
+      </div>
       {{/each}}
     </div>
   </div>
