@@ -626,6 +626,8 @@
   "TB2E.NPC.AddWise": "Add Wise",
   "TB2E.NPC.AddTrait": "Add Trait",
   "TB2E.NPC.WisePlaceholder": "Enter a wise",
+  "TB2E.NPC.Gear": "Gear",
+  "TB2E.NPC.GearEmpty": "No gear. Drag items here or use the buttons above.",
 
   "TB2E.Monster.CoreStats": "Core Stats",
   "TB2E.Monster.Nature": "Nature",

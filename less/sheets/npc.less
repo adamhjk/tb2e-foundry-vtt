@@ -243,3 +243,62 @@
   color: var(--tb-blue);
   border-color: var(--tb-blue);
 }
+
+/* NPC Gear Section */
+
+.tb2e.sheet.npc .npc-gear-toolbar {
+  display: flex;
+  gap: 0.35rem;
+  flex-wrap: wrap;
+  margin-bottom: 0.5rem;
+
+  button {
+    all: unset;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    font-family: var(--tb-font-heading);
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--tb-text-dim);
+    padding: 0.25rem 0.5rem;
+    border: 1px dashed var(--tb-border);
+    border-radius: var(--tb-radius);
+    transition: color 0.2s, border-color 0.2s;
+
+    &:hover {
+      color: var(--tb-blue);
+      border-color: var(--tb-blue);
+    }
+  }
+}
+
+.tb2e.sheet.npc .npc-gear-table {
+  .col-type { width: 5rem; text-align: center; }
+  .col-action { width: 3.5rem; text-align: center; }
+}
+
+.tb2e.sheet.npc .npc-gear-type-badge {
+  font-size: 0.7rem;
+  padding: 0.1rem 0.3rem;
+  border-radius: 4px;
+  text-transform: uppercase;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+
+  &.type-weapon { color: var(--tb-red); }
+  &.type-armor { color: var(--tb-blue); }
+  &.type-container { color: var(--tb-amber); }
+  &.type-gear { color: var(--tb-steel-bright); }
+  &.type-supply { color: var(--tb-green); }
+}
+
+.tb2e.sheet.npc .npc-gear-empty {
+  font-size: 0.8rem;
+  color: var(--tb-text-faint);
+  font-style: italic;
+  text-align: center;
+  padding: 0.75rem;
+}

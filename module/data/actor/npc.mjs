@@ -61,7 +61,8 @@ export default class NPCData extends foundry.abstract.TypeDataModel {
           max: new fields.NumberField({ initial: 0, integer: true, min: 0 })
         }),
         team: new fields.StringField({ initial: "gm", choices: ["party", "gm"] }),
-        weapon: new fields.StringField({ blank: true })
+        weapon: new fields.StringField({ blank: true }),
+        weaponId: new fields.StringField({ blank: true })
       }),
 
       // ---- Light Level ----

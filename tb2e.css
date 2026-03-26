@@ -8374,6 +8374,71 @@ body.theme-dark .tb2e.sheet .torchbearer-logo,
   color: var(--tb-blue);
   border-color: var(--tb-blue);
 }
+/* NPC Gear Section */
+.tb2e.sheet.npc .npc-gear-toolbar {
+  display: flex;
+  gap: 0.35rem;
+  flex-wrap: wrap;
+  margin-bottom: 0.5rem;
+}
+.tb2e.sheet.npc .npc-gear-toolbar button {
+  all: unset;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  font-family: var(--tb-font-heading);
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--tb-text-dim);
+  padding: 0.25rem 0.5rem;
+  border: 1px dashed var(--tb-border);
+  border-radius: var(--tb-radius);
+  transition: color 0.2s, border-color 0.2s;
+}
+.tb2e.sheet.npc .npc-gear-toolbar button:hover {
+  color: var(--tb-blue);
+  border-color: var(--tb-blue);
+}
+.tb2e.sheet.npc .npc-gear-table .col-type {
+  width: 5rem;
+  text-align: center;
+}
+.tb2e.sheet.npc .npc-gear-table .col-action {
+  width: 3.5rem;
+  text-align: center;
+}
+.tb2e.sheet.npc .npc-gear-type-badge {
+  font-size: 0.7rem;
+  padding: 0.1rem 0.3rem;
+  border-radius: 4px;
+  text-transform: uppercase;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+}
+.tb2e.sheet.npc .npc-gear-type-badge.type-weapon {
+  color: var(--tb-red);
+}
+.tb2e.sheet.npc .npc-gear-type-badge.type-armor {
+  color: var(--tb-blue);
+}
+.tb2e.sheet.npc .npc-gear-type-badge.type-container {
+  color: var(--tb-amber);
+}
+.tb2e.sheet.npc .npc-gear-type-badge.type-gear {
+  color: var(--tb-steel-bright);
+}
+.tb2e.sheet.npc .npc-gear-type-badge.type-supply {
+  color: var(--tb-green);
+}
+.tb2e.sheet.npc .npc-gear-empty {
+  font-size: 0.8rem;
+  color: var(--tb-text-faint);
+  font-style: italic;
+  text-align: center;
+  padding: 0.75rem;
+}
 /* ============================================ */
 /*  Character Creation Wizard                   */
 /* ============================================ */

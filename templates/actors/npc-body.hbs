@@ -153,6 +153,63 @@
     </div>
   </fieldset>
 
+  {{!-- Gear --}}
+  <fieldset>
+    <legend><i class="fa-solid fa-suitcase"></i> {{localize "TB2E.NPC.Gear"}}</legend>
+
+    <div class="npc-gear-toolbar">
+      <button type="button" data-action="createItem" data-type="weapon">
+        <i class="fa-solid fa-sword"></i> {{localize "TYPES.Item.weapon"}}
+      </button>
+      <button type="button" data-action="createItem" data-type="armor">
+        <i class="fa-solid fa-shield"></i> {{localize "TYPES.Item.armor"}}
+      </button>
+      <button type="button" data-action="createItem" data-type="container">
+        <i class="fa-solid fa-bag-shopping"></i> {{localize "TYPES.Item.container"}}
+      </button>
+      <button type="button" data-action="createItem" data-type="gear">
+        <i class="fa-solid fa-gear"></i> {{localize "TYPES.Item.gear"}}
+      </button>
+      <button type="button" data-action="createItem" data-type="supply">
+        <i class="fa-solid fa-flask"></i> {{localize "TYPES.Item.supply"}}
+      </button>
+    </div>
+
+    {{#if gear.length}}
+    <table class="npc-table npc-gear-table">
+      <thead>
+        <tr>
+          <th>{{localize "TB2E.Fields.Name"}}</th>
+          <th class="col-type"></th>
+          <th class="col-action"></th>
+        </tr>
+      </thead>
+      <tbody>
+        {{#each gear}}
+        <tr data-item-id="{{itemId}}">
+          <td><span class="npc-gear-name">{{name}}</span></td>
+          <td class="col-type">
+            <span class="npc-gear-type-badge {{typeCss}}">{{typeLabel}}</span>
+          </td>
+          <td class="col-action">
+            <button type="button" class="btn-delete" data-action="editItem" data-item-id="{{itemId}}"
+                    title="Edit">
+              <i class="fa-solid fa-pen-to-square"></i>
+            </button>
+            <button type="button" class="btn-delete" data-action="deleteItem" data-item-id="{{itemId}}"
+                    title="{{localize 'TB2E.Action.DeleteRow'}}">
+              <i class="fa-solid fa-trash"></i>
+            </button>
+          </td>
+        </tr>
+        {{/each}}
+      </tbody>
+    </table>
+    {{else}}
+    <p class="npc-gear-empty">{{localize "TB2E.NPC.GearEmpty"}}</p>
+    {{/if}}
+  </fieldset>
+
   {{!-- Description --}}
   <fieldset>
     <legend><i class="fa-solid fa-book-open"></i> {{localize "TB2E.NPC.Description"}}</legend>
