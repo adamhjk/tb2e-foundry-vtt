@@ -66,7 +66,7 @@ export default class CharacterSheet extends HandlebarsApplicationMixin(ActorShee
       openWizard: CharacterSheet.#onOpenWizard
     },
     form: { submitOnChange: true },
-    window: { resizable: true }
+    window: { resizable: true, minimizable: true }
   };
 
   /* -------------------------------------------- */

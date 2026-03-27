@@ -18,7 +18,7 @@ export default class MonsterSheet extends HandlebarsApplicationMixin(ActorSheetV
       fillDispositions: MonsterSheet.#onFillDispositions
     },
     form: { submitOnChange: true },
-    window: { resizable: true }
+    window: { resizable: true, minimizable: true }
   };
 
   /* -------------------------------------------- */

@@ -15,7 +15,7 @@ export default class SpellSheet extends HandlebarsApplicationMixin(ItemSheetV2) 
       removeQuality: SpellSheet.#onRemoveQuality
     },
     form: { submitOnChange: true },
-    window: { resizable: true }
+    window: { resizable: true, minimizable: true }
   };
 
   static PARTS = {

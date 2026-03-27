@@ -15,7 +15,7 @@ export default class InvocationSheet extends HandlebarsApplicationMixin(ItemShee
       removeQuality: InvocationSheet.#onRemoveQuality
     },
     form: { submitOnChange: true },
-    window: { resizable: true }
+    window: { resizable: true, minimizable: true }
   };
 
   static PARTS = {

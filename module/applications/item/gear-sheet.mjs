@@ -15,7 +15,7 @@ export default class GearSheet extends HandlebarsApplicationMixin(ItemSheetV2) {
       removeLinkedInvocation: GearSheet.#onRemoveLinkedInvocation
     },
     form: { submitOnChange: true },
-    window: { resizable: true }
+    window: { resizable: true, minimizable: true }
   };
 
   static PARTS = {

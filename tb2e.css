@@ -746,12 +746,23 @@ body.theme-dark .tb2e.sheet input[type="checkbox"]:checked,
   min-width: 500px;
   min-height: 400px;
 }
+.tb2e.sheet.minimized,
+.tb2e.sheet.minimizing,
+.tb2e.sheet.maximizing {
+  min-width: unset;
+  min-height: unset;
+}
 .tb2e.sheet .window-content {
   background: var(--tb-bg-mid);
   padding: 0;
   overflow: hidden;
   display: flex;
   flex-direction: column;
+}
+.tb2e.sheet.minimized .window-content,
+.tb2e.sheet.minimizing .window-content,
+.tb2e.sheet.maximizing .window-content {
+  display: none;
 }
 /* -------------------------------------------- */
 /*  Character Header                            */

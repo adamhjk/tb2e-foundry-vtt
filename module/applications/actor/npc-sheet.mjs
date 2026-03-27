@@ -25,7 +25,7 @@ export default class NPCSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
       deleteItem: NPCSheet.#onDeleteItem
     },
     form: { submitOnChange: true },
-    window: { resizable: true }
+    window: { resizable: true, minimizable: true }
   };
 
   /* -------------------------------------------- */
