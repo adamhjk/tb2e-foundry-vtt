@@ -22,7 +22,7 @@
   --tb-cond-exhausted: #ea580c;
   --tb-cond-injured: #991b1b;
   --tb-cond-sick: #6b7280;
-  --tb-cond-dead: #111827;
+  --tb-cond-dead: #94a3b8;
   /* Advancement bubbles */
   --tb-pass-color: #2563eb;
   --tb-fail-color: #ea580c;
@@ -769,13 +769,13 @@ body.theme-dark .tb2e.sheet input[type="checkbox"]:checked,
 /* -------------------------------------------- */
 .tb2e.sheet .character-header {
   display: flex;
-  align-items: center;
-  gap: 1rem;
-  padding: 0.75rem 1rem;
+  flex-direction: column;
   background: var(--tb-bg-raised);
   border-bottom: 2px solid var(--tb-blue-dim);
   position: relative;
   flex-shrink: 0;
+  container-type: inline-size;
+  container-name: char-header;
 }
 .tb2e.sheet .character-header::after {
   content: "";
@@ -784,13 +784,23 @@ body.theme-dark .tb2e.sheet input[type="checkbox"]:checked,
   background: radial-gradient(ellipse at 30% 50%, var(--tb-blue-glow) 0%, transparent 70%);
   pointer-events: none;
 }
+/* -------------------------------------------- */
+/*  Identity Row (portrait + fields + points)   */
+/* -------------------------------------------- */
+.tb2e.sheet .header-identity {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.75rem 1rem 0.5rem;
+  position: relative;
+  z-index: 1;
+}
 .tb2e.sheet .portrait {
   flex: 0 0 auto;
   display: flex;
   flex-direction: column;
   align-items: center;
   position: relative;
-  z-index: 1;
 }
 .tb2e.sheet .portrait img {
   width: 80px;
@@ -800,7 +810,7 @@ body.theme-dark .tb2e.sheet input[type="checkbox"]:checked,
   border-radius: var(--tb-radius);
   cursor: pointer;
   display: block;
-  transition: border-color 0.2s;
+  transition: border-color 0.2s, width 0.2s, height 0.2s;
 }
 .tb2e.sheet .portrait img:hover {
   border-color: var(--tb-blue);
@@ -813,11 +823,6 @@ body.theme-dark .tb2e.sheet input[type="checkbox"]:checked,
   position: relative;
   z-index: 1;
   min-width: 0;
-}
-.tb2e.sheet .header-top-row {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
 }
 .tb2e.sheet .header-summary {
   display: flex;
@@ -843,19 +848,19 @@ body.theme-dark .tb2e.sheet input[type="checkbox"]:checked,
   color: var(--tb-blue);
   margin-right: 0.25em;
 }
-/* Header Points */
+/* Header Points — grid ensures column alignment across all rows */
 .tb2e.sheet .header-points {
-  display: flex;
-  flex-direction: column;
-  gap: 0.35rem;
+  display: grid;
+  grid-template-columns: auto 2.5rem auto 2.5rem;
+  column-gap: 0.4rem;
+  row-gap: 0.35rem;
+  align-items: center;
   flex: 0 0 auto;
   position: relative;
   z-index: 1;
 }
 .tb2e.sheet .point-boxes {
-  display: flex;
-  align-items: center;
-  gap: 0.4rem;
+  display: contents;
 }
 .tb2e.sheet .point-label {
   font-family: var(--tb-font-heading);
@@ -871,7 +876,7 @@ body.theme-dark .tb2e.sheet input[type="checkbox"]:checked,
 }
 .tb2e.sheet .point-current-input,
 .tb2e.sheet .point-spent-input {
-  width: 2.5rem;
+  width: 100%;
   padding: 0 0.2rem;
   font-size: 0.75rem;
   text-align: center;
@@ -891,12 +896,26 @@ body.theme-dark .tb2e.sheet input[type="checkbox"]:checked,
   text-transform: uppercase;
   letter-spacing: 0.04em;
 }
+/* -------------------------------------------- */
+/*  Toolbar Strip                               */
+/* -------------------------------------------- */
+.tb2e.sheet .header-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.3rem 1rem 0.5rem;
+  border-top: 1px solid var(--tb-border-light);
+  position: relative;
+  z-index: 1;
+}
+.tb2e.sheet .toolbar-spacer {
+  flex: 1;
+}
 /* Light Level Toggle */
 .tb2e.sheet .header-light-level {
   display: flex;
   align-items: center;
   gap: 0.1rem;
-  margin-left: 0.4rem;
 }
 .tb2e.sheet .light-level-btn {
   display: flex;
@@ -982,6 +1001,7 @@ body.theme-dark .tb2e.sheet input[type="checkbox"]:checked,
   width: auto;
   object-fit: contain;
   margin: 0;
+  align-self: flex-start;
   transition: filter 0.3s;
 }
 body.theme-dark .tb2e.sheet .torchbearer-logo,
@@ -1014,6 +1034,36 @@ body.theme-dark .tb2e.sheet .torchbearer-logo,
 .tb2e.sheet .character-name::placeholder {
   color: var(--tb-text-faint);
   font-style: italic;
+}
+/* -------------------------------------------- */
+/*  Responsive Collapse (Container Queries)     */
+/* -------------------------------------------- */
+@container char-header (max-width: 600px) {
+  .tb2e.sheet .btn-label {
+    display: none;
+  }
+  .tb2e.sheet .portrait img {
+    width: 60px;
+    height: 60px;
+  }
+  .tb2e.sheet .header-goal {
+    display: none;
+  }
+  .tb2e.sheet .point-spent-label {
+    display: none;
+  }
+  .tb2e.sheet .header-points {
+    grid-template-columns: auto 2.5rem 2.5rem;
+  }
+  .tb2e.sheet .point-label {
+    min-width: unset;
+  }
+  .tb2e.sheet .header-identity {
+    gap: 0.5rem;
+  }
+  .tb2e.sheet .header-toolbar {
+    gap: 0.5rem;
+  }
 }
 /* -------------------------------------------- */
 /*  Conditions Strip                            */

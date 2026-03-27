@@ -1,65 +1,68 @@
 <header class="character-header">
-  <div class="portrait">
-    <img src="{{actor.img}}" data-action="editImage" data-edit="img" alt="{{actor.name}}">
-    <button type="button" class="team-switch {{teamClass}}"
-            data-action="toggleTeam"
-            title="{{localize 'TB2E.Conflict.TeamLabel'}}">
-      <i class="{{teamIcon}}"></i>
-      <span class="team-switch-label">{{teamLabel}}</span>
-      <span class="team-switch-track">
-        <span class="team-switch-thumb"></span>
-      </span>
-    </button>
-  </div>
-  <div class="header-fields">
-    <div class="header-top-row">
+  <div class="header-identity">
+    <div class="portrait">
+      <img src="{{actor.img}}" data-action="editImage" data-edit="img" alt="{{actor.name}}">
+      <button type="button" class="team-switch {{teamClass}}"
+              data-action="toggleTeam"
+              title="{{localize 'TB2E.Conflict.TeamLabel'}}">
+        <i class="{{teamIcon}}"></i>
+        <span class="team-switch-label">{{teamLabel}}</span>
+        <span class="team-switch-track">
+          <span class="team-switch-thumb"></span>
+        </span>
+      </button>
+    </div>
+    <div class="header-fields">
       <img class="torchbearer-logo" src="systems/tb2e/assets/torchbearer-logo.png" alt="Torchbearer">
-      <button type="button" class="wizard-launch-btn" data-action="openWizard"
-              title="{{localize 'TB2E.Wizard.LaunchTooltip'}}">
-        <i class="fa-solid fa-wand-magic-sparkles"></i> {{localize "TB2E.Wizard.Launch"}}
-      </button>
-      <button type="button" class="session-reset-btn" data-action="resetSession"
-              title="{{localize 'TB2E.Session.ResetTooltip'}}">
-        <i class="fa-solid fa-rotate"></i> {{localize "TB2E.Session.Reset"}}
-      </button>
-      <div class="header-light-level">
-        {{#each lightLevels}}
-        <button type="button"
-                class="light-level-btn{{#if active}} active{{/if}}"
-                data-action="setLightLevel"
-                data-level="{{level}}"
-                title="{{label}}">
-          <i class="fa-solid {{icon}}"></i>
-        </button>
-        {{/each}}
+      <input type="text" name="name" value="{{actor.name}}"
+             placeholder="{{localize 'TB2E.Fields.Name'}}" class="character-name">
+      <div class="header-summary">
+        <span class="summary-line">
+          {{#if stockLabel}}{{stockLabel}}{{/if}}
+          {{#if classLabel}} {{classLabel}}{{/if}}
+          {{#if system.level}} Lv.{{system.level}}{{/if}}
+        </span>
+        {{#if system.goal}}
+        <span class="header-goal" title="{{localize 'TB2E.Fields.Goal'}}">
+          <i class="fa-solid fa-bullseye"></i> {{system.goal}}
+        </span>
+        {{/if}}
       </div>
     </div>
-    <input type="text" name="name" value="{{actor.name}}"
-           placeholder="{{localize 'TB2E.Fields.Name'}}" class="character-name">
-    <div class="header-summary">
-      <span class="summary-line">
-        {{#if stockLabel}}{{stockLabel}}{{/if}}
-        {{#if classLabel}} {{classLabel}}{{/if}}
-        {{#if system.level}} Lv.{{system.level}}{{/if}}
-      </span>
-      {{#if system.goal}}
-      <span class="header-goal" title="{{localize 'TB2E.Fields.Goal'}}">
-        <i class="fa-solid fa-bullseye"></i> {{system.goal}}
-      </span>
-      {{/if}}
+    <div class="header-points">
+      {{> "systems/tb2e/templates/actors/parts/point-boxes.hbs" label=fateLabel path="system.fate"
+          current=system.fate.current spent=system.fate.spent icon="fa-solid fa-star" page="SG pp.83-88"}}
+      {{> "systems/tb2e/templates/actors/parts/point-boxes.hbs" label=personaLabel path="system.persona"
+          current=system.persona.current spent=system.persona.spent icon="fa-solid fa-mask" page="SG pp.85-89"}}
+      <div class="point-boxes" data-page="DH pp.79-82">
+        <span class="point-label"><i class="fa-solid fa-check-double"></i> {{checksLabel}}</span>
+        <input type="number" class="point-current-input" name="system.checks"
+               value="{{system.checks}}" min="0"
+               title="{{localize 'TB2E.Fields.Checks'}}">
+      </div>
     </div>
   </div>
-  <div class="header-points">
-    {{> "systems/tb2e/templates/actors/parts/point-boxes.hbs" label=fateLabel path="system.fate"
-        current=system.fate.current spent=system.fate.spent icon="fa-solid fa-star" page="SG pp.83-88"}}
-    {{> "systems/tb2e/templates/actors/parts/point-boxes.hbs" label=personaLabel path="system.persona"
-        current=system.persona.current spent=system.persona.spent icon="fa-solid fa-mask" page="SG pp.85-89"}}
-    <div class="point-boxes" data-page="DH pp.79-82">
-      <span class="point-label"><i class="fa-solid fa-check-double"></i> {{checksLabel}}</span>
-      <input type="number" class="point-current-input" name="system.checks"
-             value="{{system.checks}}" min="0"
-             title="{{localize 'TB2E.Fields.Checks'}}">
+  <div class="header-toolbar">
+    <div class="header-light-level">
+      {{#each lightLevels}}
+      <button type="button"
+              class="light-level-btn{{#if active}} active{{/if}}"
+              data-action="setLightLevel"
+              data-level="{{level}}"
+              title="{{label}}">
+        <i class="fa-solid {{icon}}"></i>
+      </button>
+      {{/each}}
     </div>
+    <div class="toolbar-spacer"></div>
+    <button type="button" class="wizard-launch-btn" data-action="openWizard"
+            title="{{localize 'TB2E.Wizard.LaunchTooltip'}}">
+      <i class="fa-solid fa-wand-magic-sparkles"></i> <span class="btn-label">{{localize "TB2E.Wizard.Launch"}}</span>
+    </button>
+    <button type="button" class="session-reset-btn" data-action="resetSession"
+            title="{{localize 'TB2E.Session.ResetTooltip'}}">
+      <i class="fa-solid fa-rotate"></i> <span class="btn-label">{{localize "TB2E.Session.Reset"}}</span>
+    </button>
   </div>
   {{#if inConflict}}
   <div class="conflict-disposition">
