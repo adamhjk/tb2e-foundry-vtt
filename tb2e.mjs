@@ -125,6 +125,14 @@ Hooks.on("createChatMessage", (message) => {
   resolveVersus(message);
 });
 
+// Sync versus challenges to all clients so opponents can see them in the roll dialog.
+Hooks.on("createChatMessage", (message) => {
+  const vs = message.getFlag("tb2e", "versus");
+  if ( vs?.type === "initiator" && !vs.resolved ) {
+    PendingVersusRegistry.register(message.id);
+  }
+});
+
 // Activate post-roll action buttons on chat cards.
 Hooks.on("renderChatMessageHTML", (message, html) => {
   activatePostRollListeners(message, html);

@@ -48,7 +48,8 @@ export default class GearSheet extends HandlebarsApplicationMixin(ItemSheetV2) {
     const slotLabels = {
       head: "TB2E.SlotOption.Head", neck: "TB2E.SlotOption.Neck", wornHand: "TB2E.SlotOption.WornHand",
       carried: "TB2E.SlotOption.Carried", torso: "TB2E.SlotOption.Torso", belt: "TB2E.SlotOption.Belt",
-      feet: "TB2E.SlotOption.Feet", pack: "TB2E.SlotOption.Pack", pocket: "TB2E.SlotOption.Pocket"
+      feet: "TB2E.SlotOption.Feet", pack: "TB2E.SlotOption.Pack", pocket: "TB2E.SlotOption.Pocket",
+      quiver: "TB2E.SlotOption.Quiver", pouch: "TB2E.SlotOption.Pouch"
     };
     context.slotOptionFields = SLOT_OPTION_KEYS.map(key => ({
       key,
@@ -138,16 +139,38 @@ export default class GearSheet extends HandlebarsApplicationMixin(ItemSheetV2) {
 
   _onRender(context, options) {
     super._onRender(context, options);
-    // Wire up slot option checkboxes to toggle null/value on the number input.
+    // Toggle the number input disabled state for immediate visual feedback.
+    // The actual data update is handled by submitOnChange + _processFormData.
     for ( const cb of this.element.querySelectorAll(".slot-option-toggle") ) {
       cb.addEventListener("change", (ev) => {
         const key = ev.currentTarget.dataset.key;
-        const enabled = ev.currentTarget.checked;
-        this.document.update({
-          [`system.slotOptions.${key}`]: enabled ? 1 : null
-        });
+        const input = this.element.querySelector(`input[name="system.slotOptions.${key}"]`);
+        if ( input ) input.disabled = !ev.currentTarget.checked;
       });
     }
+  }
+
+  /* -------------------------------------------- */
+  /*  Form Data                                   */
+  /* -------------------------------------------- */
+
+  /** @override */
+  _processFormData(event, form, formData) {
+    const submitData = super._processFormData(event, form, formData);
+    // Always include all slot options with correct values based on checkbox state.
+    // Disabled number inputs are excluded from FormData, so we read the DOM directly.
+    if ( !submitData.system ) submitData.system = {};
+    if ( !submitData.system.slotOptions ) submitData.system.slotOptions = {};
+    for ( const key of SLOT_OPTION_KEYS ) {
+      const cb = form.querySelector(`.slot-option-toggle[data-key="${key}"]`);
+      if ( cb?.checked ) {
+        const input = form.querySelector(`input[name="system.slotOptions.${key}"]`);
+        submitData.system.slotOptions[key] = input ? (Number(input.value) || 1) : 1;
+      } else {
+        submitData.system.slotOptions[key] = null;
+      }
+    }
+    return submitData;
   }
 
   /* -------------------------------------------- */

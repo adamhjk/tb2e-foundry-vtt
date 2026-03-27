@@ -237,6 +237,8 @@
   "TB2E.SlotOption.Feet": "Feet",
   "TB2E.SlotOption.Pack": "Pack",
   "TB2E.SlotOption.Pocket": "Pocket",
+  "TB2E.SlotOption.Quiver": "Quiver",
+  "TB2E.SlotOption.Pouch": "Pouch",
   "TB2E.Item.Damaged": "Damaged",
   "TB2E.Item.Value": "Value (Dice)",
   "TB2E.Item.ValueNegotiated": "Negotiated",

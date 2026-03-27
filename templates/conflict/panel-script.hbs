@@ -49,14 +49,6 @@
             </option>
             {{/each}}
           </select>
-          {{!-- Must-act badges --}}
-          {{#each ../combatantChoices}}
-          {{#if this.mustActFirst}}
-          {{#if (eq this.id ../../combatantId)}}
-          <span class="must-act-badge" title="{{localize 'TB2E.Conflict.MustAct'}}"><i class="fa-solid fa-crown"></i></span>
-          {{/if}}
-          {{/if}}
-          {{/each}}
           {{/if}}
         </div>
         <input type="hidden" class="action-select" value="{{this.action}}">

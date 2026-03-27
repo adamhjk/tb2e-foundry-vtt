@@ -419,7 +419,11 @@ export default class ConflictPanel extends HandlebarsApplicationMixin(Applicatio
       if ( !combat ) return;
       const section = this.element?.querySelector(`.script-group[data-group-id="${groupId}"]`);
       if ( !section ) return;
-      const members = combat.combatants.filter(c => c._source.group === groupId && !c.system.knockedOut);
+      const members = combat.combatants.filter(c => {
+        if ( c._source.group !== groupId || c.system.knockedOut ) return false;
+        const hp = c.actor?.system.conflict?.hp;
+        return !hp || hp.max === 0 || hp.value > 0;
+      });
       const actions = [];
       for ( let i = 0; i < 3; i++ ) {
         const row = section.querySelector(`[data-slot-index="${i}"]`);
@@ -981,7 +985,11 @@ export default class ConflictPanel extends HandlebarsApplicationMixin(Applicatio
 
     for ( const group of groups ) {
       const allMembers = combat.combatants.filter(c => c._source.group === group.id);
-      const members = allMembers.filter(c => !c.system.knockedOut);
+      const members = allMembers.filter(c => {
+        if ( c.system.knockedOut ) return false;
+        const hp = c.actor?.system.conflict?.hp;
+        return !hp || hp.max === 0 || hp.value > 0;
+      });
       const isLocked = round?.locked?.[group.id] || false;
       const actions = round?.actions?.[group.id] || [null, null, null];
       const teamSize = members.length;
@@ -991,12 +999,6 @@ export default class ConflictPanel extends HandlebarsApplicationMixin(Applicatio
       const captainCombatant = groupData.captainId ? combat.combatants.get(groupData.captainId) : null;
       const scriptCaptainActor = captainCombatant ? game.actors.get(captainCombatant.actorId) : null;
       const canScript = game.user.isGM || scriptCaptainActor?.isOwner;
-
-      // Last-round tracking for validation.
-      const combatantActedMap = {};
-      for ( const c of members ) {
-        combatantActedMap[c.id] = c.system.actedLastRound || [];
-      }
 
       // Build action slots.
       const pending = (!isLocked && this.#pendingSelections.has(group.id))
@@ -1045,22 +1047,21 @@ export default class ConflictPanel extends HandlebarsApplicationMixin(Applicatio
         icon: cfg.icon
       }));
 
-      // Available combatants — includes KO'd as disabled.
-      const combatantChoices = allMembers.map(c => ({
-        id: c.id,
-        name: c.name,
-        knockedOut: c.system.knockedOut,
-        actedLastRound: combatantActedMap[c.id] || [],
-        mustActFirst: roundNum > 1 && !c.system.knockedOut && (combatantActedMap[c.id] || []).length === 0,
-        cantBeSlot0: roundNum > 1 && teamSize > 1 && !c.system.knockedOut
-          && (combatantActedMap[c.id] || []).includes(2)
-      }));
+      // Available combatants — knocked out or 0 HP shown as disabled.
+      const combatantChoices = allMembers.map(c => {
+        const hp = c.actor?.system.conflict?.hp || { value: 0, max: 0 };
+        return {
+          id: c.id,
+          name: c.name,
+          knockedOut: c.system.knockedOut || (hp.max > 0 && hp.value <= 0)
+        };
+      });
 
       // Last-round summary for display.
       let lastRoundSummary = null;
       if ( roundNum > 1 ) {
-        lastRoundSummary = members.map(c => {
-          const acted = combatantActedMap[c.id] || [];
+        lastRoundSummary = allMembers.map(c => {
+          const acted = c.system.actedLastRound || [];
           return {
             name: c.name,
             actedSlots: acted.length ? acted.map(s => s + 1).join(", ") : "—"
@@ -1376,8 +1377,7 @@ export default class ConflictPanel extends HandlebarsApplicationMixin(Applicatio
           canEditHP: hp.max > 0 && (game.user.isGM || isCaptain),
           knockedOut: c.system.knockedOut,
           weapon: c.system.weapon || actor?.system.conflict?.weapon || "",
-          actedLastRoundLabel,
-          mustAct: roundNum > 1 && !c.system.knockedOut && actedLastRound.length === 0
+          actedLastRoundLabel
         });
       }
     }
@@ -1666,8 +1666,11 @@ export default class ConflictPanel extends HandlebarsApplicationMixin(Applicatio
     const combat = this.#getCombat();
     if ( !combat || !groupId ) return;
 
-    const roundNum = combat.system.currentRound || 0;
-    const members = combat.combatants.filter(c => c._source.group === groupId && !c.system.knockedOut);
+    const members = combat.combatants.filter(c => {
+      if ( c._source.group !== groupId || c.system.knockedOut ) return false;
+      const hp = c.actor?.system.conflict?.hp;
+      return !hp || hp.max === 0 || hp.value > 0;
+    });
     const teamSize = members.length;
 
     // Read the 3 action slots from the form.
@@ -1685,67 +1688,11 @@ export default class ConflictPanel extends HandlebarsApplicationMixin(Applicatio
       });
     }
 
-    // --- Validation (Part 2B) ---
-
     // All slots must have an action (and combatant, if team > 1).
     const incomplete = actions.some(a => !a?.action || !a?.combatantId);
     if ( incomplete ) {
       ui.notifications.warn(game.i18n.localize("TB2E.Conflict.SelectAction"));
       return;
-    }
-
-    // Must-act-first: combatants who didn't act last round must appear.
-    if ( roundNum > 1 ) {
-      for ( const c of members ) {
-        const acted = c.system.actedLastRound || [];
-        if ( acted.length === 0 ) {
-          const appears = actions.some(a => a?.combatantId === c.id);
-          if ( !appears ) {
-            ui.notifications.warn(game.i18n.format("TB2E.Conflict.MustActFirst", { name: c.name }));
-            return;
-          }
-        }
-      }
-
-      // No-consecutive: combatant in slot 2 last round cannot be in slot 0 this round.
-      if ( teamSize > 1 ) {
-        const slot0Id = actions[0]?.combatantId;
-        if ( slot0Id ) {
-          const slot0Combatant = combat.combatants.get(slot0Id);
-          const acted = slot0Combatant?.system.actedLastRound || [];
-          if ( acted.includes(2) ) {
-            ui.notifications.warn(game.i18n.format("TB2E.Conflict.NoConsecutive", { name: slot0Combatant.name }));
-            return;
-          }
-        }
-      }
-    }
-
-    // Team size rules.
-    const assignedIds = actions.map(a => a?.combatantId).filter(Boolean);
-    const uniqueIds = new Set(assignedIds);
-
-    if ( teamSize === 1 ) {
-      if ( uniqueIds.size !== 1 || assignedIds.length !== 3 ) {
-        ui.notifications.warn(game.i18n.localize("TB2E.Conflict.SoloAllSlots"));
-        return;
-      }
-    } else if ( teamSize === 2 ) {
-      const memberIds = new Set(members.map(c => c.id));
-      if ( uniqueIds.size !== 2 || assignedIds.length !== 3 || ![...uniqueIds].every(id => memberIds.has(id)) ) {
-        ui.notifications.warn(game.i18n.localize("TB2E.Conflict.TwoMemberSplit"));
-        return;
-      }
-    } else if ( teamSize === 3 ) {
-      if ( uniqueIds.size !== 3 || assignedIds.length !== 3 ) {
-        ui.notifications.warn(game.i18n.localize("TB2E.Conflict.ThreeMemberEach"));
-        return;
-      }
-    } else if ( teamSize >= 4 ) {
-      if ( uniqueIds.size !== 3 || assignedIds.length !== 3 ) {
-        ui.notifications.warn(game.i18n.localize("TB2E.Conflict.FourPlusMember"));
-        return;
-      }
     }
 
     await combat.setActions(groupId, actions);

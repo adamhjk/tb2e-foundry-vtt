@@ -1027,6 +1027,34 @@ async function _showRollDialog({
         updateSummary();
       });
 
+      // Live-update the versus challenge dropdown while the dialog is open.
+      const createHookId = Hooks.on("createChatMessage", (message) => {
+        if ( !challengeSelect.isConnected ) { Hooks.off("createChatMessage", createHookId); return; }
+        const vs = message.getFlag("tb2e", "versus");
+        if ( !vs || vs.type !== "initiator" || vs.resolved ) return;
+        if ( vs.initiatorActorId === actorId ) return;
+        if ( challengeSelect.querySelector(`option[value="${message.id}"]`) ) return;
+        const actor = game.actors.get(vs.initiatorActorId);
+        const option = document.createElement("option");
+        option.value = message.id;
+        option.dataset.actorName = actor?.name ?? "Unknown";
+        option.textContent = `${actor?.name ?? "Unknown"} — ${vs.label} Test`;
+        challengeSelect.appendChild(option);
+      });
+      const updateHookId = Hooks.on("updateChatMessage", (message) => {
+        if ( !challengeSelect.isConnected ) { Hooks.off("updateChatMessage", updateHookId); return; }
+        const vs = message.getFlag("tb2e", "versus");
+        if ( !vs || vs.type !== "initiator" || !vs.resolved ) return;
+        const option = challengeSelect.querySelector(`option[value="${message.id}"]`);
+        if ( !option ) return;
+        const wasSelected = challengeSelect.value === message.id;
+        option.remove();
+        if ( wasSelected ) {
+          challengeSelect.value = "";
+          challengeSelect.dispatchEvent(new Event("change"));
+        }
+      });
+
       // Expose state to the roll button callback via dialog element
       dialog.element.__tb2eCollectModifiers = _collectAllModifiers;
       dialog.element.__tb2eTraitState = traitState;

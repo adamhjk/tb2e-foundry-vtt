@@ -18,9 +18,6 @@
     {{#if this.weapon}}
     <span class="roster-weapon" title="{{this.weapon}}"><i class="fa-solid fa-sword"></i></span>
     {{/if}}
-    {{#if this.mustAct}}
-    <span class="must-act-badge" title="{{localize 'TB2E.Conflict.MustAct'}}"><i class="fa-solid fa-crown"></i></span>
-    {{/if}}
     {{#if this.hasHP}}
       {{#if this.canEditHP}}
       <input type="number" class="roster-hp-input" value="{{this.hp.value}}"

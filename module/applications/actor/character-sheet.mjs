@@ -1922,9 +1922,6 @@ export default class CharacterSheet extends HandlebarsApplicationMixin(ActorShee
       const cost = getSlotCost(so, optKey);
       if ( cost === null ) continue;
 
-      // Belt restriction: no bundled items.
-      if ( optKey === "belt" && (item.system.quantityMax ?? 1) > 1 ) continue;
-
       for ( const target of targets ) {
         const slotKey = typeof target === "string" ? target : target.key;
         const fixedIndex = typeof target === "string" ? null : target.index;
