@@ -1079,5 +1079,26 @@
   "TB2E.Wizard.Nature.Changeling.Q2.No": "I remain secretive about my true nature — Gain a second wise",
   "TB2E.Wizard.Nature.Changeling.Q3.Flavor": "Do you use your troll strength to break and rend?",
   "TB2E.Wizard.Nature.Changeling.Q3.Yes": "I use my troll strength — Nature +1",
-  "TB2E.Wizard.Nature.Changeling.Q3.No": "I hide my strength and origins — Huldrekall to level 2"
+  "TB2E.Wizard.Nature.Changeling.Q3.No": "I hide my strength and origins — Huldrekall to level 2",
+
+  "TB2E.Settings.WizardCompendiums.Name": "Wizard Compendiums",
+  "TB2E.Settings.WizardCompendiums.Label": "Configure",
+  "TB2E.Settings.WizardCompendiums.Hint": "Choose which compendium packs the character creation wizard uses for each item category.",
+  "TB2E.Settings.WizardCompendiums.GroupWeaponsArmor": "Weapons & Armor",
+  "TB2E.Settings.WizardCompendiums.GroupMagic": "Magic",
+  "TB2E.Settings.WizardCompendiums.GroupEquipment": "Equipment",
+  "TB2E.Settings.WizardCompendiums.ResetDefaults": "Reset to Defaults",
+  "TB2E.Settings.WizardCompendiums.Pack.Weapons": "Weapons",
+  "TB2E.Settings.WizardCompendiums.Pack.Armor": "Armor",
+  "TB2E.Settings.WizardCompendiums.Pack.Spells": "Spells",
+  "TB2E.Settings.WizardCompendiums.Pack.TheurgeRelics": "Theurge Relics",
+  "TB2E.Settings.WizardCompendiums.Pack.TheurgeInvocations": "Theurge Invocations",
+  "TB2E.Settings.WizardCompendiums.Pack.ShamanicRelics": "Shamanic Relics",
+  "TB2E.Settings.WizardCompendiums.Pack.ShamanicInvocations": "Shamanic Invocations",
+  "TB2E.Settings.WizardCompendiums.Pack.Containers": "Containers",
+  "TB2E.Settings.WizardCompendiums.Pack.Equipment": "Equipment",
+  "TB2E.Settings.WizardCompendiums.Pack.LightSources": "Light Sources",
+  "TB2E.Settings.WizardCompendiums.Pack.FoodAndDrink": "Food & Drink",
+  "TB2E.Settings.WizardCompendiums.Pack.Clothing": "Clothing",
+  "TB2E.Settings.WizardCompendiums.Pack.MagicalReligious": "Magical & Religious"
 }

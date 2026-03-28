@@ -8,6 +8,7 @@ import { activatePostRollListeners, activateNatureCrisisListeners, activateWiseA
 import { activateSpellSourceListeners } from "./module/dice/spell-casting.mjs";
 import { activateBurdenListeners } from "./module/dice/invocation-casting.mjs";
 import { activateGrindConditionListeners } from "./module/applications/grind-tracker.mjs";
+import WizardCompendiumsConfig from "./module/applications/settings/wizard-compendiums-config.mjs";
 
 Hooks.once("init", function() {
   globalThis.tb2e = game.tb2e = { dice, conflictPanel: null, grindTracker: null };
@@ -16,6 +17,22 @@ Hooks.once("init", function() {
   game.settings.register("tb2e", "grindPhase", { scope: "world", config: false, type: String, default: "adventure" });
   game.settings.register("tb2e", "grindTurn", { scope: "world", config: false, type: Number, default: 1 });
   game.settings.register("tb2e", "grindExtreme", { scope: "world", config: false, type: Boolean, default: false });
+
+  // Register wizard compendium pack overrides.
+  game.settings.register("tb2e", "wizardCompendiums", {
+    scope: "world",
+    config: false,
+    type: Object,
+    default: {}
+  });
+  game.settings.registerMenu("tb2e", "wizardCompendiums", {
+    name: "TB2E.Settings.WizardCompendiums.Name",
+    label: "TB2E.Settings.WizardCompendiums.Label",
+    hint: "TB2E.Settings.WizardCompendiums.Hint",
+    icon: "fa-solid fa-book",
+    type: WizardCompendiumsConfig,
+    restricted: true
+  });
 
   CONFIG.TB2E = TB2E;
 
