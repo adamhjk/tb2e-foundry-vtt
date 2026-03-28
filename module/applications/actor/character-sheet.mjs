@@ -81,11 +81,11 @@ export default class CharacterSheet extends HandlebarsApplicationMixin(ActorShee
     await super._onFirstRender(context, options);
     // Re-render conflict part when combat state or combatant data changes.
     this.#updateCombatHookId = Hooks.on("updateCombat", () => {
-      this.render({ parts: ["conflict"] });
+      this.render({ parts: ["header"] });
     });
     this.#updateCombatantHookId = Hooks.on("updateCombatant", (combatant) => {
       if ( combatant.actorId === this.document.id || combatant.parent?.combatants.some(c => c.actorId === this.document.id) ) {
-        this.render({ parts: ["conflict"] });
+        this.render({ parts: ["header"] });
       }
     });
   }
@@ -115,9 +115,6 @@ export default class CharacterSheet extends HandlebarsApplicationMixin(ActorShee
     },
     conditions: {
       template: "systems/tb2e/templates/actors/character-conditions.hbs"
-    },
-    conflict: {
-      template: "systems/tb2e/templates/actors/character-conflict.hbs"
     },
     tabs: {
       template: "templates/generic/tab-navigation.hbs"
@@ -212,9 +209,6 @@ export default class CharacterSheet extends HandlebarsApplicationMixin(ActorShee
       case "conditions":
         this.#prepareConditionsContext(partContext);
         break;
-      case "conflict":
-        this.#prepareConflictContext(partContext);
-        break;
       case "identity":
         partContext.whoYouAreFields = this._prepareWhoYouAreFields();
         partContext.convictionFields = this._prepareConvictionFields();
@@ -273,6 +267,13 @@ export default class CharacterSheet extends HandlebarsApplicationMixin(ActorShee
       const cfg = CONFIG.TB2E.conflictTypes[conflictType];
       context.conflictLabel = game.i18n.localize(cfg?.label || "TB2E.Conflict.Title");
       context.dispositionPercent = Math.round((disp.value / disp.max) * 100);
+      const combatant = combat?.combatants.find(c => c.actorId === this.document.id);
+      if ( combatant ) {
+        const groupId = combatant._source.group;
+        const gd = combat.system.groupDispositions || {};
+        const groupData = gd[groupId] || {};
+        context.isCaptain = groupData.captainId === combatant.id;
+      }
     }
 
     // Light level toggle.
@@ -916,78 +917,6 @@ export default class CharacterSheet extends HandlebarsApplicationMixin(ActorShee
   }
 
   /* -------------------------------------------- */
-  /*  Conflict Panel Context                      */
-  /* -------------------------------------------- */
-
-  /**
-   * Prepare the conflict panel context for the character sheet.
-   * Only populates when this character is part of an active conflict.
-   * @param {object} context
-   */
-  #prepareConflictContext(context) {
-    const actor = this.document;
-    const combat = game.combats?.find(c =>
-      c.isConflict && c.combatants.some(cb => cb.actorId === actor.id)
-    );
-
-    if ( !combat ) {
-      context.conflict = { active: false };
-      return;
-    }
-
-    const combatant = combat.combatants.find(c => c.actorId === actor.id);
-    if ( !combatant ) {
-      context.conflict = { active: false };
-      return;
-    }
-
-    const groupId = combatant._source.group;
-    const gd = combat.system.groupDispositions || {};
-    const groupData = gd[groupId] || {};
-    const phase = combat.system.phase;
-    const conflictCfg = combat.getEffectiveConflictConfig();
-    const isCaptain = groupData.captainId === combatant.id;
-    const disp = actor.system.conflict.hp;
-
-    const weaponId = combatant.system.weaponId || actor.system.conflict.weaponId || "";
-    const usesGear = !!conflictCfg?.usesGear;
-    const isUnarmed = weaponId === "__unarmed__";
-    const isImprovised = weaponId === "__improvised__";
-
-    const conflictCtx = {
-      active: true,
-      combatId: combat.id,
-      groupId,
-      combatantId: combatant.id,
-      typeLabel: game.i18n.localize(conflictCfg?.label ?? "TB2E.Conflict.Title"),
-      phase,
-      isCaptain,
-      hp: disp,
-      hpPercent: disp.max > 0 ? Math.round((disp.value / disp.max) * 100) : 0,
-      weapon: combatant.system.weapon || actor.system.conflict.weapon || "",
-      weaponId,
-      usesGear,
-      isUnarmed,
-      isImprovised,
-      isDisposition: phase === "disposition",
-      isWeapons: phase === "weapons",
-      isScriptingOrResolve: phase === "scripting" || phase === "resolve"
-    };
-
-    // During weapons phase for gear conflicts, provide weapon choices from inventory.
-    if ( phase === "weapons" && usesGear ) {
-      const weapons = (actor.itemTypes.weapon || []).filter(w => !w.system.dropped);
-      conflictCtx.weaponChoices = [
-        { id: "__unarmed__", name: game.i18n.localize("TB2E.Conflict.WeaponUnarmed"), selected: weaponId === "__unarmed__" },
-        ...weapons.map(w => ({ id: w.id, name: w.name, selected: weaponId === w.id })),
-        { id: "__improvised__", name: game.i18n.localize("TB2E.Conflict.WeaponImprovised"), selected: weaponId === "__improvised__" }
-      ];
-    }
-
-    context.conflict = conflictCtx;
-  }
-
-  /* -------------------------------------------- */
   /*  Utility Helpers                             */
   /* -------------------------------------------- */
 
@@ -1113,61 +1042,6 @@ export default class CharacterSheet extends HandlebarsApplicationMixin(ActorShee
           e.stopPropagation();
           this.element.querySelector(".descriptor-add-btn")?.click();
         }
-      });
-    }
-
-    // Conflict weapon select (gear conflicts on character sheet).
-    const conflictWeaponSelect = this.element.querySelector(".conflict-weapon-select");
-    if ( conflictWeaponSelect ) {
-      conflictWeaponSelect.addEventListener("change", (event) => {
-        const combat = game.combats?.find(c =>
-          c.isConflict && c.combatants.some(cb => cb.actorId === this.document.id)
-        );
-        if ( !combat ) return;
-        const combatant = combat.combatants.find(c => c.actorId === this.document.id);
-        if ( !combatant ) return;
-        const weaponId = event.target.value;
-        const improvisedInput = this.element.querySelector(".conflict-weapon-improvised-input");
-
-        if ( weaponId === "__improvised__" ) {
-          improvisedInput?.classList.remove("hidden");
-          const name = improvisedInput?.value.trim() || game.i18n.localize("TB2E.Conflict.WeaponImprovised");
-          combat.setWeapon(combatant.id, name, "__improvised__");
-        } else {
-          improvisedInput?.classList.add("hidden");
-          const selectedOption = event.target.options[event.target.selectedIndex];
-          const name = weaponId ? selectedOption.text : "";
-          combat.setWeapon(combatant.id, name, weaponId);
-        }
-      });
-    }
-
-    // Conflict improvised weapon name input (gear conflicts on character sheet).
-    const conflictImprovisedInput = this.element.querySelector(".conflict-weapon-improvised-input");
-    if ( conflictImprovisedInput ) {
-      conflictImprovisedInput.addEventListener("change", (event) => {
-        const combat = game.combats?.find(c =>
-          c.isConflict && c.combatants.some(cb => cb.actorId === this.document.id)
-        );
-        if ( !combat ) return;
-        const combatant = combat.combatants.find(c => c.actorId === this.document.id);
-        if ( !combatant ) return;
-        const name = event.target.value.trim() || game.i18n.localize("TB2E.Conflict.WeaponImprovised");
-        combat.setWeapon(combatant.id, name, "__improvised__");
-      });
-    }
-
-    // Conflict weapon text input (non-gear conflicts on character sheet).
-    const conflictWeaponInput = this.element.querySelector(".conflict-weapon-input");
-    if ( conflictWeaponInput ) {
-      conflictWeaponInput.addEventListener("change", (event) => {
-        const combat = game.combats?.find(c =>
-          c.isConflict && c.combatants.some(cb => cb.actorId === this.document.id)
-        );
-        if ( !combat ) return;
-        const combatant = combat.combatants.find(c => c.actorId === this.document.id);
-        if ( !combatant ) return;
-        combat.setWeapon(combatant.id, event.target.value.trim());
       });
     }
 

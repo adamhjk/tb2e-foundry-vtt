@@ -67,6 +67,7 @@
   {{#if inConflict}}
   <div class="conflict-disposition">
     <span class="conflict-label">
+      {{#if isCaptain}}<i class="fa-solid fa-star captain-star"></i>{{/if}}
       <i class="fa-solid fa-shield-halved"></i>
       {{conflictLabel}} &mdash;
       {{localize "TB2E.Conflict.HP"}}: {{system.conflict.hp.value}}/{{system.conflict.hp.max}}
