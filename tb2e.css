@@ -5208,6 +5208,48 @@ body.theme-dark .tb2e.sheet .torchbearer-logo,
   letter-spacing: 0.06em;
   color: var(--tb-amber-bright);
 }
+/* -------------------------------------------- */
+/*  Consolidated Grind Card                     */
+/* -------------------------------------------- */
+.grind-consolidated-card .grind-entries {
+  display: flex;
+  flex-direction: column;
+}
+.grind-consolidated-card .grind-entry {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 0.75rem;
+  border-top: 1px solid var(--tb-border);
+}
+.grind-consolidated-card .grind-entry .card-portrait {
+  width: 28px;
+  height: 28px;
+  border-radius: 4px;
+  object-fit: cover;
+  border: 1px solid var(--tb-red);
+  flex-shrink: 0;
+}
+.grind-consolidated-card .grind-entry .card-name {
+  flex: 1;
+  min-width: 0;
+  font-weight: bold;
+  font-size: 0.85rem;
+}
+.grind-consolidated-card .grind-apply-btn {
+  flex-shrink: 0;
+  font-size: 0.7rem;
+  padding: 0.25rem 0.5rem;
+}
+.grind-consolidated-card .grind-entry--applied {
+  opacity: 0.7;
+}
+.grind-consolidated-card .grind-applied-label {
+  flex-shrink: 0;
+  font-size: 0.75rem;
+  font-weight: bold;
+  color: var(--tb-green);
+}
 /* ============================================ */
 /*  Conflict Tracker                            */
 /* ============================================ */

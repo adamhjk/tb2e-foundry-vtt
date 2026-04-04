@@ -1,0 +1,37 @@
+<div class="tb2e-chat-card card-accent--red grind-consolidated-card">
+  <div class="card-body grind-tick-body">
+    <p>{{body}}</p>
+  </div>
+
+  <div class="card-banner banner-dark">
+    <i class="fa-solid fa-hourglass-end"></i>
+    <span>{{localize "TB2E.GrindTracker.GrindTicks"}}</span>
+  </div>
+
+  <div class="grind-entries">
+    {{#each entries}}
+    <div class="grind-entry {{#if this.applied}}grind-entry--applied{{/if}}" data-actor-id="{{this.actorId}}">
+      <img class="card-portrait" src="{{this.actorImg}}" alt="{{this.actorName}}">
+      <span class="card-name">{{this.actorName}}</span>
+      {{#if this.applied}}
+      <span class="grind-applied-label"><i class="fa-solid fa-check"></i> {{this.condLabel}}</span>
+      {{else}}
+      <button type="button" class="card-btn card-btn--amber grind-apply-btn"
+        data-action="applyGrindCondition"
+        data-actor-id="{{this.actorId}}"
+        data-cond-key="{{this.condKey}}">
+        {{this.applyLabel}}
+      </button>
+      {{/if}}
+    </div>
+    {{/each}}
+  </div>
+
+  {{#unless allApplied}}
+  <div class="card-actions">
+    <button type="button" class="card-btn card-btn--amber" data-action="applyAllGrindConditions">
+      {{applyAllLabel}}
+    </button>
+  </div>
+  {{/unless}}
+</div>

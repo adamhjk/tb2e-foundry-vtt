@@ -910,6 +910,7 @@
   "TB2E.GrindTracker.ConditionLabel": "The Grind",
   "TB2E.GrindTracker.ConditionBody": "The grind ticks — {name} suffers the next condition.",
   "TB2E.GrindTracker.ApplyCondition": "Apply {condition}",
+  "TB2E.GrindTracker.ApplyAll": "Apply All Conditions",
   "TB2E.GrindTracker.ConditionApplied": "Applied",
 
   "TB2E.Light.Full": "Full Light",
