@@ -2,7 +2,7 @@ import {
   CLASS_DEFS, HOMETOWNS, NATURE_QUESTIONS, UPBRINGING_SKILLS, SOCIAL_SKILLS,
   SPECIALTY_SKILLS, REQUIRED_WISES, AGE_RANGES, SPELL_SCHOOL_TABLE,
   THEURGE_RELIC_TABLE, SHAMAN_RELIC_TABLE, WEAPON_RESTRICTIONS, ARMOR_RESTRICTIONS,
-  SHIELD_ELIGIBLE_CLASSES, STARTING_EQUIPMENT, PACKS, STEPS, applySkill,
+  SHIELD_ELIGIBLE_CLASSES, STARTING_EQUIPMENT, getWizardPacks, STEPS, applySkill,
   shouldSkipUpbringing, getAvailableHometowns, buildSkillsMap
 } from "../../data/actor/chargen.mjs";
 
@@ -828,7 +828,8 @@ export default class CharacterWizard extends HandlebarsApplicationMixin(Applicat
 
   /** Load weapon names from compendium for unrestricted classes. */
   async #loadWeaponsFromCompendium() {
-    const pack = game.packs.get(PACKS.weapons);
+    const packs = getWizardPacks();
+    const pack = game.packs.get(packs.weapons);
     if ( !pack ) return;
     const index = await pack.getIndex();
     const container = this.element.querySelector(".weapon-list");
@@ -849,11 +850,12 @@ export default class CharacterWizard extends HandlebarsApplicationMixin(Applicat
     const container = this.element.querySelector(".equipment-list");
     if ( !container ) return;
 
+    const packs = getWizardPacks();
     const allowedNames = new Set(STARTING_EQUIPMENT);
     const selectedNames = new Set(this.#state.selectedEquipment.map(e => e.name));
     const packIds = [
-      PACKS.equipment, PACKS.lightSources, PACKS.foodAndDrink,
-      PACKS.containers, PACKS.clothing, PACKS.magicalReligious
+      packs.equipment, packs.lightSources, packs.foodAndDrink,
+      packs.containers, packs.clothing, packs.magicalReligious
     ];
 
     for ( const packId of packIds ) {
@@ -1367,31 +1369,32 @@ export default class CharacterWizard extends HandlebarsApplicationMixin(Applicat
     }
 
     // Import compendium items (weapons, armor, spells, relics, invocations, equipment).
+    const packs = getWizardPacks();
     const itemsToCreate = [];
 
     // Weapon (single selection, or auto-dagger for thief).
     const weaponName = s.selectedWeapon || (s.class === "thief" ? "Dagger" : null);
     if ( weaponName ) {
-      const item = await this.#findCompendiumItem(PACKS.weapons, weaponName);
+      const item = await this.#findCompendiumItem(packs.weapons, weaponName);
       if ( item ) itemsToCreate.push(item.toObject());
     }
 
     // Shield (if chosen as additional weapon).
     if ( s.hasShield ) {
-      const item = await this.#findCompendiumItem(PACKS.weapons, "Shield");
+      const item = await this.#findCompendiumItem(packs.weapons, "Shield");
       if ( item ) itemsToCreate.push(item.toObject());
     }
 
     // Armor.
     for ( const armorName of s.selectedArmor ) {
-      const item = await this.#findCompendiumItem(PACKS.armor, armorName);
+      const item = await this.#findCompendiumItem(packs.armor, armorName);
       if ( item ) itemsToCreate.push(item.toObject());
     }
 
     // Spells (magician).
     if ( s.class === "magician" && s.spells.length ) {
       for ( const spellName of s.spells ) {
-        const item = await this.#findCompendiumItem(PACKS.spells, spellName);
+        const item = await this.#findCompendiumItem(packs.spells, spellName);
         if ( item ) itemsToCreate.push(item.toObject());
       }
     }
@@ -1399,12 +1402,12 @@ export default class CharacterWizard extends HandlebarsApplicationMixin(Applicat
     // Relics and invocations (theurge).
     if ( s.class === "theurge" ) {
       for ( const relicName of s.relics ) {
-        const item = await this.#findCompendiumItem(PACKS.theurgeRelics, relicName);
+        const item = await this.#findCompendiumItem(packs.theurgeRelics, relicName);
         if ( item ) itemsToCreate.push(item.toObject());
         else itemsToCreate.push({ name: relicName, type: "relic", system: { tier: "minor" } });
       }
       for ( const invName of s.invocations ) {
-        const item = await this.#findCompendiumItem(PACKS.theurgeInvocations, invName);
+        const item = await this.#findCompendiumItem(packs.theurgeInvocations, invName);
         if ( item ) itemsToCreate.push(item.toObject());
         else itemsToCreate.push({ name: invName, type: "invocation", system: {} });
       }
@@ -1413,12 +1416,12 @@ export default class CharacterWizard extends HandlebarsApplicationMixin(Applicat
     // Relics and invocations (shaman).
     if ( s.class === "shaman" ) {
       for ( const relicName of s.relics ) {
-        const item = await this.#findCompendiumItem(PACKS.shamanicRelics, relicName);
+        const item = await this.#findCompendiumItem(packs.shamanicRelics, relicName);
         if ( item ) itemsToCreate.push(item.toObject());
         else itemsToCreate.push({ name: relicName, type: "relic", system: { tier: "minor" } });
       }
       for ( const invName of s.invocations ) {
-        const item = await this.#findCompendiumItem(PACKS.shamanicInvocations, invName);
+        const item = await this.#findCompendiumItem(packs.shamanicInvocations, invName);
         if ( item ) itemsToCreate.push(item.toObject());
         else itemsToCreate.push({ name: invName, type: "invocation", system: {} });
       }
@@ -1427,7 +1430,7 @@ export default class CharacterWizard extends HandlebarsApplicationMixin(Applicat
     // Pack (satchel or backpack).
     if ( s.packType ) {
       const packName = s.packType === "backpack" ? "Backpack" : "Satchel";
-      const item = await this.#findCompendiumItem(PACKS.containers, packName);
+      const item = await this.#findCompendiumItem(packs.containers, packName);
       if ( item ) itemsToCreate.push(item.toObject());
     }
 

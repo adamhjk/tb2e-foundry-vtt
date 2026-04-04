@@ -1,0 +1,17 @@
+<div class="wizard-compendiums-config">
+  {{#each groups}}
+  <fieldset>
+    <legend>{{localize label}}</legend>
+    {{#each fields}}
+    <div class="form-group">
+      <label for="{{key}}">{{localize label}}</label>
+      <select name="{{key}}" id="{{key}}">
+        {{#each choices}}
+        <option value="{{collection}}" {{#if (eq collection ../value)}}selected{{/if}}>{{label}}</option>
+        {{/each}}
+      </select>
+    </div>
+    {{/each}}
+  </fieldset>
+  {{/each}}
+</div>

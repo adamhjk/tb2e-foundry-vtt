@@ -530,8 +530,8 @@ export const SHIELD_ELIGIBLE_CLASSES = ["outcast", "theurge", "warrior", "shaman
 /*  Compendium Pack Names                       */
 /* -------------------------------------------- */
 
-/** Pack slugs for compendium lookups. */
-export const PACKS = {
+/** Default pack slugs for compendium lookups. */
+export const DEFAULT_PACKS = {
   weapons: "tb2e.weapons",
   armor: "tb2e.armor",
   spells: "tb2e.spells",
@@ -545,6 +545,45 @@ export const PACKS = {
   foodAndDrink: "tb2e.food-and-drink",
   clothing: "tb2e.clothing",
   magicalReligious: "tb2e.magical-religious"
+};
+
+/**
+ * Resolve wizard compendium packs, merging any GM overrides from the wizardCompendiums setting.
+ * @returns {Record<string, string>}
+ */
+export function getWizardPacks() {
+  const overrides = game.settings.get("tb2e", "wizardCompendiums");
+  return { ...DEFAULT_PACKS, ...overrides };
+}
+
+/**
+ * Pack groups for the settings UI.
+ * @type {Array<{label: string, keys: string[]}>}
+ */
+export const PACK_GROUPS = [
+  { label: "TB2E.Settings.WizardCompendiums.GroupWeaponsArmor", keys: ["weapons", "armor"] },
+  { label: "TB2E.Settings.WizardCompendiums.GroupMagic", keys: ["spells", "theurgeRelics", "theurgeInvocations", "shamanicRelics", "shamanicInvocations"] },
+  { label: "TB2E.Settings.WizardCompendiums.GroupEquipment", keys: ["containers", "equipment", "lightSources", "foodAndDrink", "clothing", "magicalReligious"] }
+];
+
+/**
+ * Human-readable labels for each pack key.
+ * @type {Record<string, string>}
+ */
+export const PACK_LABELS = {
+  weapons: "TB2E.Settings.WizardCompendiums.Pack.Weapons",
+  armor: "TB2E.Settings.WizardCompendiums.Pack.Armor",
+  spells: "TB2E.Settings.WizardCompendiums.Pack.Spells",
+  theurgeRelics: "TB2E.Settings.WizardCompendiums.Pack.TheurgeRelics",
+  theurgeInvocations: "TB2E.Settings.WizardCompendiums.Pack.TheurgeInvocations",
+  shamanicRelics: "TB2E.Settings.WizardCompendiums.Pack.ShamanicRelics",
+  shamanicInvocations: "TB2E.Settings.WizardCompendiums.Pack.ShamanicInvocations",
+  containers: "TB2E.Settings.WizardCompendiums.Pack.Containers",
+  equipment: "TB2E.Settings.WizardCompendiums.Pack.Equipment",
+  lightSources: "TB2E.Settings.WizardCompendiums.Pack.LightSources",
+  foodAndDrink: "TB2E.Settings.WizardCompendiums.Pack.FoodAndDrink",
+  clothing: "TB2E.Settings.WizardCompendiums.Pack.Clothing",
+  magicalReligious: "TB2E.Settings.WizardCompendiums.Pack.MagicalReligious"
 };
 
 /**
