@@ -340,16 +340,18 @@ export default class GrindTracker extends HandlebarsApplicationMixin(Application
       }
     }
 
-    // On grind turns: announce + post per-character condition cards
+    // On grind turns: post a single consolidated condition card
     if ( cyclePos === maxTurns ) {
-      await GrindTracker.#postGrindTickCard(next);
-      const condOrder = ["hungry", "exhausted", "angry", "sick", "injured", "afraid", "dead"];
+      const entries = [];
       for ( const actor of game.actors ) {
         if ( actor.type !== "character" || !grindSceneActorIds.has(actor.id) ) continue;
         const conds = actor.system.conditions;
-        const nextCondKey = condOrder.find(k => !conds[k]) ?? null;
+        const nextCondKey = GRIND_ORDER.find(k => !conds[k]) ?? null;
         if ( !nextCondKey ) continue;
-        await GrindTracker.#postGrindConditionCard(actor, nextCondKey);
+        entries.push({ actorId: actor.id, actorImg: actor.img, actorName: actor.name, condKey: nextCondKey });
+      }
+      if ( entries.length ) {
+        await GrindTracker.#postConsolidatedGrindCard(next, entries);
       }
     }
 
@@ -381,48 +383,19 @@ export default class GrindTracker extends HandlebarsApplicationMixin(Application
   }
 
   /**
-   * Post a single game-level card announcing the Grind has ticked.
+   * Post a single consolidated card listing all grind conditions with per-character Apply buttons.
    * @param {number} turn  The new (post-advance) turn number.
+   * @param {Array<{actorId: string, actorImg: string, actorName: string, condKey: string}>} entries
    */
-  static async #postGrindTickCard(turn) {
-    const content = await foundry.applications.handlebars.renderTemplate(
-      "systems/tb2e/templates/chat/grind-tick.hbs",
-      {
-        body: game.i18n.format("TB2E.GrindTracker.GrindTicksBody", { turn })
-      }
-    );
+  static async #postConsolidatedGrindCard(turn, entries) {
+    const flagEntries = entries.map(e => ({ actorId: e.actorId, condKey: e.condKey, applied: false }));
+    const content = await _renderConsolidatedContent(turn, flagEntries);
+
     await ChatMessage.create({
       speaker: { alias: game.i18n.localize("TB2E.GrindTracker.Title") },
       content,
-      type: CONST.CHAT_MESSAGE_STYLES.OTHER
-    });
-  }
-
-  /**
-   * Post a per-character card for a grind condition with an Apply button.
-   * @param {Actor} actor
-   * @param {string} condKey  e.g. "hungry", "exhausted", etc.
-   */
-  static async #postGrindConditionCard(actor, condKey) {
-    const condLabel = game.i18n.localize(
-      "TB2E.Condition." + condKey[0].toUpperCase() + condKey.slice(1)
-    );
-    const content = await foundry.applications.handlebars.renderTemplate(
-      "systems/tb2e/templates/chat/grind-condition.hbs",
-      {
-        actorImg: actor.img,
-        actorName: actor.name,
-        label: game.i18n.localize("TB2E.GrindTracker.ConditionLabel"),
-        body: game.i18n.format("TB2E.GrindTracker.ConditionBody", { name: actor.name }),
-        condLabel,
-        applyLabel: game.i18n.format("TB2E.GrindTracker.ApplyCondition", { condition: condLabel })
-      }
-    );
-    await ChatMessage.create({
-      speaker: ChatMessage.getSpeaker({ actor }),
-      content,
       type: CONST.CHAT_MESSAGE_STYLES.OTHER,
-      flags: { tb2e: { grindCondition: true, actorId: actor.id, condKey } }
+      flags: { tb2e: { grindCondition: true, turn, entries: flagEntries } }
     });
   }
 
@@ -471,13 +444,23 @@ export default class GrindTracker extends HandlebarsApplicationMixin(Application
 }
 
 /**
- * Register the "Apply condition" button on grind condition chat cards.
+ * Register the "Apply condition" button(s) on grind condition chat cards.
  * Called from the renderChatMessageHTML hook in tb2e.mjs.
+ * Handles both new consolidated cards (entries array) and legacy single-actor cards.
  * @param {ChatMessage} message
  * @param {HTMLElement} html
  */
 export function activateGrindConditionListeners(message, html) {
   if ( !message.getFlag("tb2e", "grindCondition") ) return;
+
+  // New consolidated format
+  const entries = message.getFlag("tb2e", "entries");
+  if ( entries ) {
+    _activateConsolidatedListeners(message, html);
+    return;
+  }
+
+  // Legacy single-actor format (backward compat for old messages)
   const btn = html.querySelector("[data-action='applyGrindCondition']");
   if ( !btn ) return;
   if ( message.getFlag("tb2e", "conditionApplied") ) {
@@ -496,4 +479,121 @@ export function activateGrindConditionListeners(message, html) {
     btn.disabled = true;
     btn.textContent = game.i18n.localize("TB2E.GrindTracker.ConditionApplied");
   });
+}
+
+/**
+ * Render the consolidated grind card content from flag data.
+ * Used both on initial create and when re-rendering after an apply.
+ * @param {number} turn
+ * @param {Array<{actorId: string, condKey: string, applied: boolean}>} entries
+ * @returns {Promise<string>}
+ */
+async function _renderConsolidatedContent(turn, entries) {
+  const templateEntries = entries.map(e => {
+    const actor = game.actors.get(e.actorId);
+    const condLabel = game.i18n.localize(
+      "TB2E.Condition." + e.condKey[0].toUpperCase() + e.condKey.slice(1)
+    );
+    return {
+      actorId: e.actorId,
+      actorImg: actor?.img ?? "icons/svg/mystery-man.svg",
+      actorName: actor?.name ?? "Unknown",
+      condKey: e.condKey,
+      condLabel,
+      applied: e.applied,
+      applyLabel: game.i18n.format("TB2E.GrindTracker.ApplyCondition", { condition: condLabel })
+    };
+  });
+
+  return foundry.applications.handlebars.renderTemplate(
+    "systems/tb2e/templates/chat/grind-consolidated.hbs",
+    {
+      body: game.i18n.format("TB2E.GrindTracker.GrindTicksBody", { turn }),
+      entries: templateEntries,
+      allApplied: entries.every(e => e.applied),
+      applyAllLabel: game.i18n.localize("TB2E.GrindTracker.ApplyAll")
+    }
+  );
+}
+
+/**
+ * Activate listeners for the consolidated grind condition card.
+ * GM updates the message directly; players use the mailbox pattern (pendingGrindApply flag).
+ * @param {ChatMessage} message
+ * @param {HTMLElement} html
+ */
+function _activateConsolidatedListeners(message, html) {
+  // Individual Apply buttons
+  for ( const btn of html.querySelectorAll("[data-action='applyGrindCondition']") ) {
+    btn.addEventListener("click", async (event) => {
+      event.preventDefault();
+      const { actorId, condKey } = btn.dataset;
+      const actor = game.actors.get(actorId);
+      if ( !actor?.isOwner ) return;
+
+      if ( game.user.isGM ) {
+        await actor.update({ [`system.conditions.${condKey}`]: true });
+        await _applyGrindEntry(message, actorId);
+      } else {
+        // Player: apply condition + signal GM via mailbox
+        await actor.update({
+          [`system.conditions.${condKey}`]: true,
+          "flags.tb2e.pendingGrindApply": message.id
+        });
+      }
+    });
+  }
+
+  // Apply All button
+  const applyAllBtn = html.querySelector("[data-action='applyAllGrindConditions']");
+  if ( applyAllBtn ) {
+    applyAllBtn.addEventListener("click", async (event) => {
+      event.preventDefault();
+      const currentEntries = message.getFlag("tb2e", "entries");
+
+      for ( const entry of currentEntries ) {
+        if ( entry.applied ) continue;
+        const actor = game.actors.get(entry.actorId);
+        if ( !actor?.isOwner ) continue;
+
+        if ( game.user.isGM ) {
+          await actor.update({ [`system.conditions.${entry.condKey}`]: true });
+          await _applyGrindEntry(message, entry.actorId);
+        } else {
+          await actor.update({
+            [`system.conditions.${entry.condKey}`]: true,
+            "flags.tb2e.pendingGrindApply": message.id
+          });
+        }
+      }
+    });
+  }
+}
+
+/**
+ * Mark a single actor's grind entry as applied, re-render the card, and update the message.
+ * Called by the GM — either directly (GM click) or from the mailbox hook.
+ * @param {ChatMessage} message
+ * @param {string} actorId
+ */
+async function _applyGrindEntry(message, actorId) {
+  const updatedEntries = foundry.utils.deepClone(message.getFlag("tb2e", "entries"));
+  const idx = updatedEntries.findIndex(e => e.actorId === actorId);
+  if ( idx < 0 || updatedEntries[idx].applied ) return;
+  updatedEntries[idx].applied = true;
+
+  const content = await _renderConsolidatedContent(message.getFlag("tb2e", "turn"), updatedEntries);
+  await message.update({ content, "flags.tb2e.entries": updatedEntries });
+}
+
+/**
+ * GM-side mailbox processor for grind condition apply.
+ * Called from the updateActor hook in tb2e.mjs when pendingGrindApply is detected.
+ * @param {Actor} actor
+ * @param {string} messageId
+ */
+export async function processGrindApplyMailbox(actor, messageId) {
+  const message = game.messages.get(messageId);
+  if ( message ) await _applyGrindEntry(message, actor.id);
+  await actor.unsetFlag("tb2e", "pendingGrindApply");
 }

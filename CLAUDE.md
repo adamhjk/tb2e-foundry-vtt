@@ -124,6 +124,7 @@ Foundry VTT restricts document updates to owners. The mailbox pattern works as f
 | Versus finalize | `flags.tb2e.pendingVersusFinalize` | Actor | `updateActor` (in `tb2e.mjs`) |
 | Conflict HP | `flags.tb2e.pendingConflictHP` | Actor | `updateActor` (in `tb2e.mjs`) |
 | Light extinguish | `flags.tb2e.pendingLightExtinguish` | Actor | `updateActor` (in `tb2e.mjs`) |
+| Grind condition apply | `flags.tb2e.pendingGrindApply` | Actor | `updateActor` (in `tb2e.mjs`) |
 
 ## Unlinked Actors (Synthetic Tokens)
 

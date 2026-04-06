@@ -7,7 +7,7 @@ import { PendingVersusRegistry, resolveVersus, processVersusFinalize, handleTrai
 import { activatePostRollListeners, activateNatureCrisisListeners, activateWiseAdvancementListeners, processSynergyMailbox, processWiseAdvancementMailbox } from "./module/dice/post-roll.mjs";
 import { activateSpellSourceListeners } from "./module/dice/spell-casting.mjs";
 import { activateBurdenListeners } from "./module/dice/invocation-casting.mjs";
-import { activateGrindConditionListeners } from "./module/applications/grind-tracker.mjs";
+import { activateGrindConditionListeners, processGrindApplyMailbox } from "./module/applications/grind-tracker.mjs";
 import WizardCompendiumsConfig from "./module/applications/settings/wizard-compendiums-config.mjs";
 
 Hooks.once("init", function() {
@@ -125,7 +125,8 @@ Hooks.once("init", function() {
     "systems/tb2e/templates/chat/conflict-compromise.hbs",
     "systems/tb2e/templates/chat/torch-expired.hbs",
     "systems/tb2e/templates/chat/grind-tick.hbs",
-    "systems/tb2e/templates/chat/grind-condition.hbs"
+    "systems/tb2e/templates/chat/grind-condition.hbs",
+    "systems/tb2e/templates/chat/grind-consolidated.hbs"
   ]);
 
   console.log("Torchbearer 2E | System initialized.");
@@ -238,6 +239,9 @@ Hooks.on("updateActor", (actor, changes, options, userId) => {
       actor.unsetFlag("tb2e", "pendingLightExtinguish");
     });
   }
+
+  const pendingGrindApply = changes.flags?.tb2e?.pendingGrindApply;
+  if ( pendingGrindApply ) processGrindApplyMailbox(actor, pendingGrindApply);
 
 });
 
