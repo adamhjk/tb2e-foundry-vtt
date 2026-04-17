@@ -1132,5 +1132,7 @@
   "TB2E.Settings.WizardCompendiums.Pack.LightSources": "Light Sources",
   "TB2E.Settings.WizardCompendiums.Pack.FoodAndDrink": "Food & Drink",
   "TB2E.Settings.WizardCompendiums.Pack.Clothing": "Clothing",
-  "TB2E.Settings.WizardCompendiums.Pack.MagicalReligious": "Magical & Religious"
+  "TB2E.Settings.WizardCompendiums.Pack.MagicalReligious": "Magical & Religious",
+  "TB2E.Loot.Draw": "Loot Draw",
+  "TB2E.Loot.Booty": "Loot"
 }

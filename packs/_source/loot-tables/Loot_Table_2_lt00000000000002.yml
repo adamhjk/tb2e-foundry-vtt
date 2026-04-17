@@ -1,0 +1,79 @@
+_id: lt00000000000002
+name: 'Loot Table 2'
+img: systems/tb2e/icons/ffffff/transparent/1x1/skoll/open-treasure-chest.svg
+description: 'Scholar''s Guide, p. 153'
+formula: '2d6'
+replacement: true
+displayRoll: true
+results:
+  - _id: lt00r00000000010
+    type: document
+    range:
+      - 2
+      - 3
+    weight: 1
+    drawn: false
+    name: 'Books & Maps'
+    documentUuid: Compendium.tb2e.loot-tables.RollTable.lt00000000000006
+    description: ''
+    img: null
+    flags: {}
+    _key: '!tables.results!lt00000000000002.lt00r00000000010'
+  - _id: lt00r00000000020
+    type: document
+    range:
+      - 4
+      - 5
+    weight: 1
+    drawn: false
+    name: 'Stuff'
+    documentUuid: Compendium.tb2e.loot-tables.RollTable.lt0000000000000d
+    description: ''
+    img: null
+    flags: {}
+    _key: '!tables.results!lt00000000000002.lt00r00000000020'
+  - _id: lt00r00000000030
+    type: document
+    range:
+      - 6
+      - 9
+    weight: 1
+    drawn: false
+    name: 'Gear'
+    documentUuid: Compendium.tb2e.loot-tables.RollTable.lt00000000000008
+    description: ''
+    img: null
+    flags: {}
+    _key: '!tables.results!lt00000000000002.lt00r00000000030'
+  - _id: lt00r00000000040
+    type: document
+    range:
+      - 10
+      - 11
+    weight: 1
+    drawn: false
+    name: 'Treasure & Valuables 1'
+    documentUuid: Compendium.tb2e.loot-tables.RollTable.lt0000000000000e
+    description: ''
+    img: null
+    flags: {}
+    _key: '!tables.results!lt00000000000002.lt00r00000000040'
+  - _id: lt00r00000000050
+    type: document
+    range:
+      - 12
+      - 12
+    weight: 1
+    drawn: false
+    name: 'Magic'
+    documentUuid: Compendium.tb2e.loot-tables.RollTable.lt0000000000000a
+    description: ''
+    img: null
+    flags: {}
+    _key: '!tables.results!lt00000000000002.lt00r00000000050'
+folder: null
+sort: 0
+ownership:
+  default: 0
+flags: {}
+_key: '!tables!lt00000000000002'

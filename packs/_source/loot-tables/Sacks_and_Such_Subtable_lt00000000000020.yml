@@ -1,0 +1,92 @@
+_id: lt00000000000020
+name: 'Sacks and Such Subtable'
+img: systems/tb2e/icons/ffffff/transparent/1x1/lorc/knapsack.svg
+description: 'Scholar''s Guide, p. 155 (Gear Subtable row 6)'
+formula: '1d6'
+replacement: true
+displayRoll: true
+results:
+  - _id: lt00r00000000010
+    type: document
+    range:
+      - 1
+      - 1
+    weight: 1
+    drawn: false
+    name: 'Sack, Large'
+    documentUuid: Compendium.tb2e.containers.Item.a1b2c3d4e5f60007
+    description: ''
+    img: null
+    flags: {}
+    _key: '!tables.results!lt00000000000020.lt00r00000000010'
+  - _id: lt00r00000000020
+    type: document
+    range:
+      - 2
+      - 2
+    weight: 1
+    drawn: false
+    name: 'Sack, Small'
+    documentUuid: Compendium.tb2e.containers.Item.a1b2c3d4e5f60006
+    description: ''
+    img: null
+    flags: {}
+    _key: '!tables.results!lt00000000000020.lt00r00000000020'
+  - _id: lt00r00000000030
+    type: document
+    range:
+      - 3
+      - 3
+    weight: 1
+    drawn: false
+    name: 'Purse'
+    documentUuid: Compendium.tb2e.containers.Item.a1b2c3d4e5f6000e
+    description: ''
+    img: null
+    flags: {}
+    _key: '!tables.results!lt00000000000020.lt00r00000000030'
+  - _id: lt00r00000000040
+    type: document
+    range:
+      - 4
+      - 4
+    weight: 1
+    drawn: false
+    name: 'Satchel'
+    documentUuid: Compendium.tb2e.containers.Item.f4a35a462f6ae20e
+    description: ''
+    img: null
+    flags: {}
+    _key: '!tables.results!lt00000000000020.lt00r00000000040'
+  - _id: lt00r00000000050
+    type: document
+    range:
+      - 5
+      - 5
+    weight: 1
+    drawn: false
+    name: 'Backpack'
+    documentUuid: Compendium.tb2e.containers.Item.5ea96db03977dec6
+    description: ''
+    img: null
+    flags: {}
+    _key: '!tables.results!lt00000000000020.lt00r00000000050'
+  - _id: lt00r00000000060
+    type: document
+    range:
+      - 6
+      - 6
+    weight: 1
+    drawn: false
+    name: 'Chest, Small'
+    documentUuid: Compendium.tb2e.containers.Item.a1b2c3d4e5f6000b
+    description: ''
+    img: null
+    flags: {}
+    _key: '!tables.results!lt00000000000020.lt00r00000000060'
+folder: null
+sort: 0
+ownership:
+  default: 0
+flags: {}
+_key: '!tables!lt00000000000020'

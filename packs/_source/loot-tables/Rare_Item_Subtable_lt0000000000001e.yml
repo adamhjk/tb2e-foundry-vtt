@@ -1,0 +1,91 @@
+_id: lt0000000000001e
+name: 'Rare Item Subtable'
+img: systems/tb2e/icons/ffffff/transparent/1x1/delapouite/toolbox.svg
+description: 'Scholar''s Guide, p. 155 (Gear Subtable row 4)'
+formula: '1d6'
+replacement: true
+displayRoll: true
+results:
+  - _id: lt00r00000000010
+    type: document
+    range:
+      - 1
+      - 1
+    weight: 1
+    drawn: false
+    name: 'Thieves'' Tools'
+    documentUuid: Compendium.tb2e.equipment.Item.a3b4c5d6e7f80017
+    description: ''
+    img: null
+    flags: {}
+    _key: '!tables.results!lt0000000000001e.lt00r00000000010'
+  - _id: lt00r00000000020
+    type: document
+    range:
+      - 2
+      - 2
+    weight: 1
+    drawn: false
+    name: 'Ladder'
+    documentUuid: Compendium.tb2e.equipment.Item.a3b4c5d6e7f8000d
+    description: ''
+    img: null
+    flags: {}
+    _key: '!tables.results!lt0000000000001e.lt00r00000000020'
+  - _id: lt00r00000000030
+    type: document
+    range:
+      - 3
+      - 3
+    weight: 1
+    drawn: false
+    name: 'Holy Water Vials'
+    documentUuid: Compendium.tb2e.magical-religious.Item.8a7b6c5d4e3f0001
+    description: ''
+    img: null
+    flags: {}
+    _key: '!tables.results!lt0000000000001e.lt00r00000000030'
+  - _id: lt00r00000000040
+    type: document
+    range:
+      - 4
+      - 4
+    weight: 1
+    drawn: false
+    name: 'Wolfsbane'
+    documentUuid: Compendium.tb2e.magical-religious.Item.8a7b6c5d4e3f0007
+    description: ''
+    img: null
+    flags: {}
+    _key: '!tables.results!lt0000000000001e.lt00r00000000040'
+  - _id: lt00r00000000050
+    type: text
+    range:
+      - 5
+      - 5
+    weight: 1
+    drawn: false
+    name: 'Musical Instrument'
+    description: 'Musical instrument — game master or player chooses (e.g., fiddle, flute, harp).'
+    img: systems/tb2e/icons/ffffff/transparent/1x1/delapouite/toolbox.svg
+    flags: {}
+    _key: '!tables.results!lt0000000000001e.lt00r00000000050'
+  - _id: lt00r00000000060
+    type: document
+    range:
+      - 6
+      - 6
+    weight: 1
+    drawn: false
+    name: 'Grappling Hook'
+    documentUuid: Compendium.tb2e.equipment.Item.a3b4c5d6e7f80009
+    description: ''
+    img: null
+    flags: {}
+    _key: '!tables.results!lt0000000000001e.lt00r00000000060'
+folder: null
+sort: 0
+ownership:
+  default: 0
+flags: {}
+_key: '!tables!lt0000000000001e'

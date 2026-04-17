@@ -1,0 +1,222 @@
+_id: lt00000000000009
+name: 'Weapons Subtable'
+img: systems/tb2e/icons/ffffff/transparent/1x1/delapouite/ancient-sword.svg
+description: 'Scholar''s Guide, p. 156'
+formula: '3d6'
+replacement: true
+displayRoll: true
+results:
+  - _id: lt00r00000000010
+    type: document
+    range:
+      - 3
+      - 3
+    weight: 1
+    drawn: false
+    name: 'Crossbow'
+    documentUuid: Compendium.tb2e.weapons.Item.4a5b6c7d8e9f0004
+    description: ''
+    img: null
+    flags: {}
+    _key: '!tables.results!lt00000000000009.lt00r00000000010'
+  - _id: lt00r00000000020
+    type: document
+    range:
+      - 4
+      - 4
+    weight: 1
+    drawn: false
+    name: 'Bow'
+    documentUuid: Compendium.tb2e.weapons.Item.4a5b6c7d8e9f0002
+    description: ''
+    img: null
+    flags: {}
+    _key: '!tables.results!lt00000000000009.lt00r00000000020'
+  - _id: lt00r00000000030
+    type: document
+    range:
+      - 5
+      - 5
+    weight: 1
+    drawn: false
+    name: 'Battle Axe'
+    documentUuid: Compendium.tb2e.weapons.Item.4a5b6c7d8e9f0001
+    description: ''
+    img: null
+    flags: {}
+    _key: '!tables.results!lt00000000000009.lt00r00000000030'
+  - _id: lt00r00000000040
+    type: document
+    range:
+      - 6
+      - 6
+    weight: 1
+    drawn: false
+    name: 'Dagger'
+    documentUuid: Compendium.tb2e.weapons.Item.4a5b6c7d8e9f0005
+    description: ''
+    img: null
+    flags: {}
+    _key: '!tables.results!lt00000000000009.lt00r00000000040'
+  - _id: lt00r00000000050
+    type: document
+    range:
+      - 7
+      - 7
+    weight: 1
+    drawn: false
+    name: 'Flail'
+    documentUuid: Compendium.tb2e.weapons.Item.4a5b6c7d8e9f0007
+    description: ''
+    img: null
+    flags: {}
+    _key: '!tables.results!lt00000000000009.lt00r00000000050'
+  - _id: lt00r00000000060
+    type: document
+    range:
+      - 8
+      - 8
+    weight: 1
+    drawn: false
+    name: 'Mace'
+    documentUuid: Compendium.tb2e.weapons.Item.4a5b6c7d8e9f000a
+    description: ''
+    img: null
+    flags: {}
+    _key: '!tables.results!lt00000000000009.lt00r00000000060'
+  - _id: lt00r00000000070
+    type: document
+    range:
+      - 9
+      - 9
+    weight: 1
+    drawn: false
+    name: 'Shield'
+    documentUuid: Compendium.tb2e.weapons.Item.4a5b6c7d8e9f000d
+    description: ''
+    img: null
+    flags: {}
+    _key: '!tables.results!lt00000000000009.lt00r00000000070'
+  - _id: lt00r00000000080
+    type: document
+    range:
+      - 10
+      - 10
+    weight: 1
+    drawn: false
+    name: 'Staff'
+    documentUuid: Compendium.tb2e.weapons.Item.c7e5adf019a86c1d
+    description: ''
+    img: null
+    flags: {}
+    _key: '!tables.results!lt00000000000009.lt00r00000000080'
+  - _id: lt00r00000000090
+    type: document
+    range:
+      - 11
+      - 11
+    weight: 1
+    drawn: false
+    name: 'Hand Axe'
+    documentUuid: Compendium.tb2e.weapons.Item.4a5b6c7d8e9f0009
+    description: ''
+    img: null
+    flags: {}
+    _key: '!tables.results!lt00000000000009.lt00r00000000090'
+  - _id: lt00r000000000a0
+    type: document
+    range:
+      - 12
+      - 12
+    weight: 1
+    drawn: false
+    name: 'Spear'
+    documentUuid: Compendium.tb2e.weapons.Item.1a154536a3254361
+    description: ''
+    img: null
+    flags: {}
+    _key: '!tables.results!lt00000000000009.lt00r000000000a0'
+  - _id: lt00r000000000b0
+    type: document
+    range:
+      - 13
+      - 13
+    weight: 1
+    drawn: false
+    name: 'Sword'
+    documentUuid: Compendium.tb2e.weapons.Item.026b10bdba9bf1a4
+    description: ''
+    img: null
+    flags: {}
+    _key: '!tables.results!lt00000000000009.lt00r000000000b0'
+  - _id: lt00r000000000c0
+    type: document
+    range:
+      - 14
+      - 14
+    weight: 1
+    drawn: false
+    name: 'Sling'
+    documentUuid: Compendium.tb2e.weapons.Item.4a5b6c7d8e9f000e
+    description: ''
+    img: null
+    flags: {}
+    _key: '!tables.results!lt00000000000009.lt00r000000000c0'
+  - _id: lt00r000000000d0
+    type: document
+    range:
+      - 15
+      - 15
+    weight: 1
+    drawn: false
+    name: 'Polearm'
+    documentUuid: Compendium.tb2e.weapons.Item.4a5b6c7d8e9f000c
+    description: ''
+    img: null
+    flags: {}
+    _key: '!tables.results!lt00000000000009.lt00r000000000d0'
+  - _id: lt00r000000000e0
+    type: document
+    range:
+      - 16
+      - 16
+    weight: 1
+    drawn: false
+    name: 'Halberd'
+    documentUuid: Compendium.tb2e.weapons.Item.bba41060156ebb6a
+    description: ''
+    img: null
+    flags: {}
+    _key: '!tables.results!lt00000000000009.lt00r000000000e0'
+  - _id: lt00r000000000f0
+    type: document
+    range:
+      - 17
+      - 17
+    weight: 1
+    drawn: false
+    name: 'Great Sword'
+    documentUuid: Compendium.tb2e.weapons.Item.4a5b6c7d8e9f0008
+    description: ''
+    img: null
+    flags: {}
+    _key: '!tables.results!lt00000000000009.lt00r000000000f0'
+  - _id: lt00r00000000100
+    type: document
+    range:
+      - 18
+      - 18
+    weight: 1
+    drawn: false
+    name: 'Staff'
+    documentUuid: Compendium.tb2e.weapons.Item.c7e5adf019a86c1d
+    description: ''
+    img: null
+    flags: {}
+    _key: '!tables.results!lt00000000000009.lt00r00000000100'
+folder: null
+sort: 0
+ownership:
+  default: 0
+flags: {}
+_key: '!tables!lt00000000000009'

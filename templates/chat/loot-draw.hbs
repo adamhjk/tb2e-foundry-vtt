@@ -1,0 +1,76 @@
+{{!-- tb2e loot draw card — golden amber treatment, chain trace, terminal drops --}}
+<div class="tb2e-chat-card card-accent--amber loot-card">
+  <div class="card-header">
+    <img class="card-portrait" src="{{table.img}}" alt="{{table.name}}">
+    <div class="card-info">
+      <span class="card-name">{{table.name}}</span>
+      {{#if table.pageRef}}
+      <span class="card-subtitle">{{table.pageRef}}</span>
+      {{/if}}
+      <span class="card-label">
+        <i class="fa-solid fa-coins"></i> {{localize "TB2E.Loot.Draw"}}
+      </span>
+    </div>
+  </div>
+
+  {{#if chain.length}}
+  <div class="loot-chain">
+    {{#each chain}}
+    <div class="loot-chain-link{{#if last}} loot-chain-link--last{{/if}}">
+      <img class="loot-chain-icon" src="{{tableImg}}" alt="">
+      <div class="loot-chain-body">
+        <span class="loot-chain-name">{{tableName}}</span>
+        <span class="loot-chain-formula">{{formula}}</span>
+      </div>
+      {{#if rollTotal}}
+      <span class="loot-chain-total">{{rollTotal}}</span>
+      {{/if}}
+    </div>
+    {{#unless last}}
+    <div class="loot-chain-link-connector" aria-hidden="true">
+      <i class="fa-solid fa-angles-down"></i>
+    </div>
+    {{/unless}}
+    {{/each}}
+  </div>
+  {{/if}}
+
+  <div class="loot-drops">
+    {{#each drops}}
+    <div class="loot-drop loot-drop--{{kind}}">
+      {{#if anchorHTML}}
+      <a class="loot-drop-img-link content-link" data-uuid="{{uuid}}" data-link="" draggable="true" data-tooltip="{{name}}">
+        {{#if img}}
+        <img class="loot-drop-img" src="{{img}}" alt="{{name}}">
+        {{else}}
+        <span class="loot-drop-img loot-drop-img--placeholder"><i class="fa-solid fa-treasure-chest"></i></span>
+        {{/if}}
+      </a>
+      {{else}}
+        {{#if img}}
+        <img class="loot-drop-img" src="{{img}}" alt="{{name}}">
+        {{else}}
+        <div class="loot-drop-img loot-drop-img--placeholder"><i class="fa-solid fa-treasure-chest"></i></div>
+        {{/if}}
+      {{/if}}
+      <div class="loot-drop-body">
+        {{#if anchorHTML}}
+        {{{anchorHTML}}}
+        {{else}}
+        <span class="loot-drop-name">{{name}}</span>
+        {{/if}}
+        {{#if description}}
+        <span class="loot-drop-detail">{{description}}</span>
+        {{/if}}
+        {{#if pageRef}}
+        <span class="loot-drop-page"><i class="fa-solid fa-book"></i> {{pageRef}}</span>
+        {{/if}}
+      </div>
+    </div>
+    {{/each}}
+  </div>
+
+  <div class="card-banner banner-amber">
+    <i class="fa-solid fa-sack-dollar"></i> {{localize "TB2E.Loot.Booty"}}
+  </div>
+</div>

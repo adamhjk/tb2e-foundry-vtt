@@ -1,0 +1,66 @@
+_id: lt0000000000000e
+name: 'Treasure & Valuables 1 Subtable'
+img: systems/tb2e/icons/ffffff/transparent/1x1/delapouite/coins.svg
+description: 'Scholar''s Guide, p. 159'
+formula: '2d6'
+replacement: true
+displayRoll: true
+results:
+  - _id: lt00r00000000010
+    type: document
+    range:
+      - 2
+      - 3
+    weight: 1
+    drawn: false
+    name: 'Jewelry Subtable 1'
+    documentUuid: Compendium.tb2e.loot-tables.RollTable.lt00000000000013
+    description: ''
+    img: null
+    flags: {}
+    _key: '!tables.results!lt0000000000000e.lt00r00000000010'
+  - _id: lt00r00000000020
+    type: document
+    range:
+      - 4
+      - 8
+    weight: 1
+    drawn: false
+    name: 'Coins Subtable 1'
+    documentUuid: Compendium.tb2e.loot-tables.RollTable.lt00000000000010
+    description: ''
+    img: null
+    flags: {}
+    _key: '!tables.results!lt0000000000000e.lt00r00000000020'
+  - _id: lt00r00000000030
+    type: document
+    range:
+      - 9
+      - 10
+    weight: 1
+    drawn: false
+    name: 'Gem Subtable 1'
+    documentUuid: Compendium.tb2e.loot-tables.RollTable.lt00000000000012
+    description: ''
+    img: null
+    flags: {}
+    _key: '!tables.results!lt0000000000000e.lt00r00000000030'
+  - _id: lt00r00000000040
+    type: document
+    range:
+      - 11
+      - 12
+    weight: 1
+    drawn: false
+    name: 'Books & Maps Subtable'
+    documentUuid: Compendium.tb2e.loot-tables.RollTable.lt00000000000006
+    description: ''
+    img: null
+    flags: {}
+    _key: '!tables.results!lt0000000000000e.lt00r00000000040'
+folder: null
+sort: 0
+ownership:
+  default: 0
+flags: {}
+_key: '!tables!lt0000000000000e'

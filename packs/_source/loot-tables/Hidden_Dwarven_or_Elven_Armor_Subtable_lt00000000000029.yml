@@ -1,0 +1,50 @@
+_id: lt00000000000029
+name: 'Hidden Dwarven or Elven Armor Subtable'
+img: systems/tb2e/icons/ffffff/transparent/1x1/lorc/breastplate.svg
+description: 'Scholar''s Guide, p. 155'
+formula: '1d6'
+replacement: true
+displayRoll: true
+results:
+  - _id: lt00r00000000010
+    type: text
+    range:
+      - 1
+      - 4
+    weight: 1
+    drawn: false
+    name: 'Dwarven/Elven Leather Armor'
+    description: 'Dwarven or elven leather armor. Has the special rules above.'
+    img: systems/tb2e/icons/ffffff/transparent/1x1/lorc/breastplate.svg
+    flags: {}
+    _key: '!tables.results!lt00000000000029.lt00r00000000010'
+  - _id: lt00r00000000020
+    type: text
+    range:
+      - 5
+      - 5
+    weight: 1
+    drawn: false
+    name: 'Dwarven/Elven Chain Armor'
+    description: 'Dwarven or elven chain armor. Has the special rules above.'
+    img: systems/tb2e/icons/ffffff/transparent/1x1/lorc/breastplate.svg
+    flags: {}
+    _key: '!tables.results!lt00000000000029.lt00r00000000020'
+  - _id: lt00r00000000030
+    type: text
+    range:
+      - 6
+      - 6
+    weight: 1
+    drawn: false
+    name: 'Dwarven/Elven Plate Armor'
+    description: 'Dwarven or elven plate armor. Has the special rules above.'
+    img: systems/tb2e/icons/ffffff/transparent/1x1/lorc/breastplate.svg
+    flags: {}
+    _key: '!tables.results!lt00000000000029.lt00r00000000030'
+folder: null
+sort: 0
+ownership:
+  default: 0
+flags: {}
+_key: '!tables!lt00000000000029'

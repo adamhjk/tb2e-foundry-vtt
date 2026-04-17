@@ -39,6 +39,7 @@ Hooks.once("init", function() {
   // Assign document classes.
   CONFIG.Actor.documentClass = documents.TB2EActor;
   CONFIG.Combat.documentClass = documents.TB2ECombat;
+  CONFIG.RollTable.documentClass = documents.TB2ELootTable;
 
   // Assign data models.
   CONFIG.Actor.dataModels = dataModels.actor.config;
@@ -126,7 +127,8 @@ Hooks.once("init", function() {
     "systems/tb2e/templates/chat/torch-expired.hbs",
     "systems/tb2e/templates/chat/grind-tick.hbs",
     "systems/tb2e/templates/chat/grind-condition.hbs",
-    "systems/tb2e/templates/chat/grind-consolidated.hbs"
+    "systems/tb2e/templates/chat/grind-consolidated.hbs",
+    "systems/tb2e/templates/chat/loot-draw.hbs"
   ]);
 
   console.log("Torchbearer 2E | System initialized.");

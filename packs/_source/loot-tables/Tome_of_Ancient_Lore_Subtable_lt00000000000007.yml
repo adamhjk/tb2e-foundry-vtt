@@ -1,0 +1,92 @@
+_id: lt00000000000007
+name: 'Tome of Ancient Lore Subtable'
+img: systems/tb2e/icons/ffffff/transparent/1x1/delapouite/bookshelf.svg
+description: 'Scholar''s Guide, p. 154'
+formula: '1d6'
+replacement: true
+displayRoll: true
+results:
+  - _id: lt00r00000000010
+    type: document
+    range:
+      - 1
+      - 1
+    weight: 1
+    drawn: false
+    name: 'Tome: Potion Recipes'
+    documentUuid: Compendium.tb2e.loot.Item.aa00000000000010
+    description: 'pack 3'
+    img: null
+    flags: {}
+    _key: '!tables.results!lt00000000000007.lt00r00000000010'
+  - _id: lt00r00000000020
+    type: document
+    range:
+      - 2
+      - 2
+    weight: 1
+    drawn: false
+    name: 'Tome: Enchanted Item Lore'
+    documentUuid: Compendium.tb2e.loot.Item.aa00000000000011
+    description: 'pack 3. Characteristics of enchanted items.'
+    img: null
+    flags: {}
+    _key: '!tables.results!lt00000000000007.lt00r00000000020'
+  - _id: lt00r00000000030
+    type: document
+    range:
+      - 3
+      - 3
+    weight: 1
+    drawn: false
+    name: 'Tome: Dweomers of Spells'
+    documentUuid: Compendium.tb2e.loot.Item.aa00000000000012
+    description: 'pack 3. +1D Arcanist gear.'
+    img: null
+    flags: {}
+    _key: '!tables.results!lt00000000000007.lt00r00000000030'
+  - _id: lt00r00000000040
+    type: document
+    range:
+      - 4
+      - 4
+    weight: 1
+    drawn: false
+    name: 'Tome: Pantheons of Immortals'
+    documentUuid: Compendium.tb2e.loot.Item.aa00000000000013
+    description: 'pack 3. +1D Theologian gear.'
+    img: null
+    flags: {}
+    _key: '!tables.results!lt00000000000007.lt00r00000000040'
+  - _id: lt00r00000000050
+    type: document
+    range:
+      - 5
+      - 5
+    weight: 1
+    drawn: false
+    name: 'Tome: Nature of Living Things'
+    documentUuid: Compendium.tb2e.loot.Item.aa00000000000014
+    description: 'pack 3. +1D Lore Master and Healer gear.'
+    img: null
+    flags: {}
+    _key: '!tables.results!lt00000000000007.lt00r00000000050'
+  - _id: lt00r00000000060
+    type: document
+    range:
+      - 6
+      - 6
+    weight: 1
+    drawn: false
+    name: 'Tome: Spell Components'
+    documentUuid: Compendium.tb2e.loot.Item.aa00000000000015
+    description: 'pack 3. Structure and components for a heretofore unknown spell.'
+    img: null
+    flags: {}
+    _key: '!tables.results!lt00000000000007.lt00r00000000060'
+folder: null
+sort: 0
+ownership:
+  default: 0
+flags: {}
+_key: '!tables!lt00000000000007'

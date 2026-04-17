@@ -1,0 +1,91 @@
+_id: lt00000000000025
+name: 'Clothing Subtable'
+img: systems/tb2e/icons/ffffff/transparent/1x1/lucasms/cloak.svg
+description: 'Scholar''s Guide, p. 155 (Gear Subtable row 11)'
+formula: '1d6'
+replacement: true
+displayRoll: true
+results:
+  - _id: lt00r00000000010
+    type: document
+    range:
+      - 1
+      - 1
+    weight: 1
+    drawn: false
+    name: 'Cloak'
+    documentUuid: Compendium.tb2e.clothing.Item.d4e5f6a7b8c90003
+    description: ''
+    img: null
+    flags: {}
+    _key: '!tables.results!lt00000000000025.lt00r00000000010'
+  - _id: lt00r00000000020
+    type: document
+    range:
+      - 2
+      - 2
+    weight: 1
+    drawn: false
+    name: 'Hat'
+    documentUuid: Compendium.tb2e.clothing.Item.d4e5f6a7b8c90006
+    description: ''
+    img: null
+    flags: {}
+    _key: '!tables.results!lt00000000000025.lt00r00000000020'
+  - _id: lt00r00000000030
+    type: document
+    range:
+      - 3
+      - 3
+    weight: 1
+    drawn: false
+    name: 'Wool Sweater'
+    documentUuid: Compendium.tb2e.clothing.Item.d4e5f6a7b8c9000b
+    description: ''
+    img: null
+    flags: {}
+    _key: '!tables.results!lt00000000000025.lt00r00000000030'
+  - _id: lt00r00000000040
+    type: document
+    range:
+      - 4
+      - 4
+    weight: 1
+    drawn: false
+    name: 'Shoes'
+    documentUuid: Compendium.tb2e.clothing.Item.d4e5f6a7b8c90009
+    description: ''
+    img: null
+    flags: {}
+    _key: '!tables.results!lt00000000000025.lt00r00000000040'
+  - _id: lt00r00000000050
+    type: text
+    range:
+      - 5
+      - 5
+    weight: 1
+    drawn: false
+    name: 'Belt or Bandolier'
+    description: 'Belt or bandolier — player chooses.'
+    img: systems/tb2e/icons/ffffff/transparent/1x1/lucasms/cloak.svg
+    flags: {}
+    _key: '!tables.results!lt00000000000025.lt00r00000000050'
+  - _id: lt00r00000000060
+    type: document
+    range:
+      - 6
+      - 6
+    weight: 1
+    drawn: false
+    name: 'Boots'
+    documentUuid: Compendium.tb2e.clothing.Item.d4e5f6a7b8c90002
+    description: ''
+    img: null
+    flags: {}
+    _key: '!tables.results!lt00000000000025.lt00r00000000060'
+folder: null
+sort: 0
+ownership:
+  default: 0
+flags: {}
+_key: '!tables!lt00000000000025'

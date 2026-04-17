@@ -1,0 +1,157 @@
+_id: lt00000000000019
+name: 'Works of Art Subtable'
+img: systems/tb2e/icons/ffffff/transparent/1x1/lorc/mirror-mirror.svg
+description: 'Lore Master''s Manual, p. 242'
+formula: '2d6'
+replacement: true
+displayRoll: true
+results:
+  - _id: lt00r00000000010
+    type: document
+    range:
+      - 2
+      - 2
+    weight: 1
+    drawn: false
+    name: 'Clockwork Figurine'
+    documentUuid: Compendium.tb2e.richer-loot.Item.dd0000000000000a
+    description: '7D, pack 2'
+    img: null
+    flags: {}
+    _key: '!tables.results!lt00000000000019.lt00r00000000010'
+  - _id: lt00r00000000020
+    type: document
+    range:
+      - 3
+      - 3
+    weight: 1
+    drawn: false
+    name: 'Gilded Egg'
+    documentUuid: Compendium.tb2e.richer-loot.Item.dd0000000000000b
+    description: '6D, pack 1'
+    img: null
+    flags: {}
+    _key: '!tables.results!lt00000000000019.lt00r00000000020'
+  - _id: lt00r00000000030
+    type: document
+    range:
+      - 4
+      - 4
+    weight: 1
+    drawn: false
+    name: 'Jade Comb'
+    documentUuid: Compendium.tb2e.richer-loot.Item.dd0000000000000c
+    description: '4D, pack 1 or worn/head'
+    img: null
+    flags: {}
+    _key: '!tables.results!lt00000000000019.lt00r00000000030'
+  - _id: lt00r00000000040
+    type: document
+    range:
+      - 5
+      - 5
+    weight: 1
+    drawn: false
+    name: 'Decorative Urn or Vase'
+    documentUuid: Compendium.tb2e.richer-loot.Item.dd0000000000000d
+    description: '3D, pack 3'
+    img: null
+    flags: {}
+    _key: '!tables.results!lt00000000000019.lt00r00000000040'
+  - _id: lt00r00000000050
+    type: document
+    range:
+      - 6
+      - 6
+    weight: 1
+    drawn: false
+    name: 'Large Statue'
+    documentUuid: Compendium.tb2e.richer-loot.Item.dd0000000000000e
+    description: '6D, pack 8/10/12 (roll 1d3)'
+    img: null
+    flags: {}
+    _key: '!tables.results!lt00000000000019.lt00r00000000050'
+  - _id: lt00r00000000060
+    type: document
+    range:
+      - 7
+      - 7
+    weight: 1
+    drawn: false
+    name: 'Small Gilded Mirror'
+    documentUuid: Compendium.tb2e.richer-loot.Item.dd0000000000000f
+    description: '2D, pack 1'
+    img: null
+    flags: {}
+    _key: '!tables.results!lt00000000000019.lt00r00000000060'
+  - _id: lt00r00000000070
+    type: document
+    range:
+      - 8
+      - 8
+    weight: 1
+    drawn: false
+    name: 'Small Statue'
+    documentUuid: Compendium.tb2e.richer-loot.Item.dd00000000000010
+    description: '3D, pack 4'
+    img: null
+    flags: {}
+    _key: '!tables.results!lt00000000000019.lt00r00000000070'
+  - _id: lt00r00000000080
+    type: document
+    range:
+      - 9
+      - 9
+    weight: 1
+    drawn: false
+    name: 'Idol (Obsidian or Jade)'
+    documentUuid: Compendium.tb2e.richer-loot.Item.dd00000000000011
+    description: '3D, pack 1'
+    img: null
+    flags: {}
+    _key: '!tables.results!lt00000000000019.lt00r00000000080'
+  - _id: lt00r00000000090
+    type: document
+    range:
+      - 10
+      - 10
+    weight: 1
+    drawn: false
+    name: 'Small Painting'
+    documentUuid: Compendium.tb2e.richer-loot.Item.dd00000000000012
+    description: '2D, pack 4'
+    img: null
+    flags: {}
+    _key: '!tables.results!lt00000000000019.lt00r00000000090'
+  - _id: lt00r000000000a0
+    type: document
+    range:
+      - 11
+      - 11
+    weight: 1
+    drawn: false
+    name: 'Large Painting'
+    documentUuid: Compendium.tb2e.richer-loot.Item.dd00000000000013
+    description: '5D, pack 8'
+    img: null
+    flags: {}
+    _key: '!tables.results!lt00000000000019.lt00r000000000a0'
+  - _id: lt00r000000000b0
+    type: document
+    range:
+      - 12
+      - 12
+    weight: 1
+    drawn: false
+    name: 'Large Gilded Mirror'
+    documentUuid: Compendium.tb2e.richer-loot.Item.dd00000000000014
+    description: '7D, pack 10'
+    img: null
+    flags: {}
+    _key: '!tables.results!lt00000000000019.lt00r000000000b0'
+folder: null
+sort: 0
+ownership:
+  default: 0
+flags: {}
+_key: '!tables!lt00000000000019'

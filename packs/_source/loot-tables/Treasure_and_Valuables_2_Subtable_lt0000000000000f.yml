@@ -1,0 +1,92 @@
+_id: lt0000000000000f
+name: 'Treasure & Valuables 2 Subtable'
+img: systems/tb2e/icons/ffffff/transparent/1x1/delapouite/coins-pile.svg
+description: 'Scholar''s Guide, p. 159'
+formula: '2d6'
+replacement: true
+displayRoll: true
+results:
+  - _id: lt00r00000000010
+    type: document
+    range:
+      - 2
+      - 4
+    weight: 1
+    drawn: false
+    name: 'Jewelry Subtable 1'
+    documentUuid: Compendium.tb2e.loot-tables.RollTable.lt00000000000013
+    description: ''
+    img: null
+    flags: {}
+    _key: '!tables.results!lt0000000000000f.lt00r00000000010'
+  - _id: lt00r00000000020
+    type: document
+    range:
+      - 5
+      - 6
+    weight: 1
+    drawn: false
+    name: 'Coins Subtable 1'
+    documentUuid: Compendium.tb2e.loot-tables.RollTable.lt00000000000010
+    description: ''
+    img: null
+    flags: {}
+    _key: '!tables.results!lt0000000000000f.lt00r00000000020'
+  - _id: lt00r00000000030
+    type: document
+    range:
+      - 7
+      - 8
+    weight: 1
+    drawn: false
+    name: 'Coins Subtable 2'
+    documentUuid: Compendium.tb2e.loot-tables.RollTable.lt00000000000011
+    description: ''
+    img: null
+    flags: {}
+    _key: '!tables.results!lt0000000000000f.lt00r00000000030'
+  - _id: lt00r00000000040
+    type: document
+    range:
+      - 9
+      - 10
+    weight: 1
+    drawn: false
+    name: 'Gem Subtable 1'
+    documentUuid: Compendium.tb2e.loot-tables.RollTable.lt00000000000012
+    description: ''
+    img: null
+    flags: {}
+    _key: '!tables.results!lt0000000000000f.lt00r00000000040'
+  - _id: lt00r00000000050
+    type: document
+    range:
+      - 11
+      - 11
+    weight: 1
+    drawn: false
+    name: 'Books & Maps Subtable'
+    documentUuid: Compendium.tb2e.loot-tables.RollTable.lt00000000000006
+    description: ''
+    img: null
+    flags: {}
+    _key: '!tables.results!lt0000000000000f.lt00r00000000050'
+  - _id: lt00r00000000060
+    type: document
+    range:
+      - 12
+      - 12
+    weight: 1
+    drawn: false
+    name: 'Potions Subtable'
+    documentUuid: Compendium.tb2e.loot-tables.RollTable.lt0000000000000b
+    description: ''
+    img: null
+    flags: {}
+    _key: '!tables.results!lt0000000000000f.lt00r00000000060'
+folder: null
+sort: 0
+ownership:
+  default: 0
+flags: {}
+_key: '!tables!lt0000000000000f'

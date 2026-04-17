@@ -1,0 +1,144 @@
+_id: lt00000000000012
+name: 'Gem Subtable 1'
+img: systems/tb2e/icons/ffffff/transparent/1x1/delapouite/fire-gem.svg
+description: 'Scholar''s Guide, p. 160'
+formula: '2d6'
+replacement: true
+displayRoll: true
+results:
+  - _id: lt00r00000000010
+    type: document
+    range:
+      - 2
+      - 2
+    weight: 1
+    drawn: false
+    name: 'Cursed Gem'
+    documentUuid: Compendium.tb2e.loot.Item.aa0000000000001e
+    description: '8D, pack 1. See Cursed Item Subtable.'
+    img: null
+    flags: {}
+    _key: '!tables.results!lt00000000000012.lt00r00000000010'
+  - _id: lt00r00000000020
+    type: document
+    range:
+      - 3
+      - 3
+    weight: 1
+    drawn: false
+    name: 'Pouch of Precious Stones (3)'
+    documentUuid: Compendium.tb2e.loot.Item.aa0000000000001f
+    description: '9D, pack 1'
+    img: null
+    flags: {}
+    _key: '!tables.results!lt00000000000012.lt00r00000000020'
+  - _id: lt00r00000000030
+    type: document
+    range:
+      - 4
+      - 4
+    weight: 1
+    drawn: false
+    name: 'Chipped Semiprecious Stone'
+    documentUuid: Compendium.tb2e.loot.Item.aa00000000000020
+    description: '1D, pocket'
+    img: null
+    flags: {}
+    _key: '!tables.results!lt00000000000012.lt00r00000000030'
+  - _id: lt00r00000000040
+    type: document
+    range:
+      - 5
+      - 5
+    weight: 1
+    drawn: false
+    name: 'Fine Semiprecious Stone'
+    documentUuid: Compendium.tb2e.loot.Item.aa00000000000021
+    description: '2D, pocket'
+    img: null
+    flags: {}
+    _key: '!tables.results!lt00000000000012.lt00r00000000040'
+  - _id: lt00r00000000050
+    type: document
+    range:
+      - 6
+      - 7
+    weight: 1
+    drawn: false
+    name: 'Fine Precious Stone'
+    documentUuid: Compendium.tb2e.loot.Item.aa00000000000022
+    description: '3D, pocket'
+    img: null
+    flags: {}
+    _key: '!tables.results!lt00000000000012.lt00r00000000050'
+  - _id: lt00r00000000060
+    type: document
+    range:
+      - 8
+      - 8
+    weight: 1
+    drawn: false
+    name: 'Chipped Precious Stone'
+    documentUuid: Compendium.tb2e.loot.Item.aa00000000000023
+    description: '3D, pocket'
+    img: null
+    flags: {}
+    _key: '!tables.results!lt00000000000012.lt00r00000000060'
+  - _id: lt00r00000000070
+    type: document
+    range:
+      - 9
+      - 9
+    weight: 1
+    drawn: false
+    name: 'Pouch of Semiprecious Stones (3)'
+    documentUuid: Compendium.tb2e.loot.Item.aa00000000000024
+    description: '6D, pack 1'
+    img: null
+    flags: {}
+    _key: '!tables.results!lt00000000000012.lt00r00000000070'
+  - _id: lt00r00000000080
+    type: document
+    range:
+      - 10
+      - 10
+    weight: 1
+    drawn: false
+    name: 'Box of Semiprecious Stones (6)'
+    documentUuid: Compendium.tb2e.loot.Item.aa00000000000025
+    description: '12D, pack 2'
+    img: null
+    flags: {}
+    _key: '!tables.results!lt00000000000012.lt00r00000000080'
+  - _id: lt00r00000000090
+    type: document
+    range:
+      - 11
+      - 11
+    weight: 1
+    drawn: false
+    name: 'Box of Precious Stones (6)'
+    documentUuid: Compendium.tb2e.loot.Item.aa00000000000026
+    description: '18D, pack 2'
+    img: null
+    flags: {}
+    _key: '!tables.results!lt00000000000012.lt00r00000000090'
+  - _id: lt00r000000000a0
+    type: document
+    range:
+      - 12
+      - 12
+    weight: 1
+    drawn: false
+    name: 'Magical Gems subtable'
+    documentUuid: Compendium.tb2e.loot-tables.RollTable.lt00000000000014
+    description: '3D, pocket'
+    img: null
+    flags: {}
+    _key: '!tables.results!lt00000000000012.lt00r000000000a0'
+folder: null
+sort: 0
+ownership:
+  default: 0
+flags: {}
+_key: '!tables!lt00000000000012'

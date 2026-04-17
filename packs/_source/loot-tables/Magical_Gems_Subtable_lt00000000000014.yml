@@ -1,0 +1,86 @@
+_id: lt00000000000014
+name: 'Magical Gems Subtable'
+img: systems/tb2e/icons/ffffff/transparent/1x1/lorc/gem-pendant.svg
+description: 'Scholar''s Guide, p. 161'
+formula: '1d6'
+replacement: true
+displayRoll: true
+results:
+  - _id: lt00r00000000010
+    type: text
+    range:
+      - 1
+      - 1
+    weight: 1
+    drawn: false
+    name: 'Mind Gem'
+    description: 'Mind Gem: Peering through this gem grants +2D to find hidden, secret or concealed people or items. It also reduces light to dim light and dim light to darkness when peering through it.'
+    img: systems/tb2e/icons/ffffff/transparent/1x1/lorc/gem-pendant.svg
+    flags: {}
+    _key: '!tables.results!lt00000000000014.lt00r00000000010'
+  - _id: lt00r00000000020
+    type: text
+    range:
+      - 2
+      - 2
+    weight: 1
+    drawn: false
+    name: 'Radiant Gem'
+    description: 'Radiant Gem: This gem emits a constant, steady, silvery glow. The glow is equivalent to a candle, but can never be doused.'
+    img: systems/tb2e/icons/ffffff/transparent/1x1/lorc/gem-pendant.svg
+    flags: {}
+    _key: '!tables.results!lt00000000000014.lt00r00000000020'
+  - _id: lt00r00000000030
+    type: text
+    range:
+      - 3
+      - 3
+    weight: 1
+    drawn: false
+    name: 'Blood Gem'
+    description: 'Blood Gem: If sewn into living flesh, this gem grants an additional wise related to a monster, creature or people. Embedding the gem in flesh imposes the injured condition that cannot be treated or recovered from; grit your teeth to eliminate the penalty. Removing the gem removes the wise.'
+    img: systems/tb2e/icons/ffffff/transparent/1x1/lorc/gem-pendant.svg
+    flags: {}
+    _key: '!tables.results!lt00000000000014.lt00r00000000030'
+  - _id: lt00r00000000040
+    type: text
+    range:
+      - 4
+      - 4
+    weight: 1
+    drawn: false
+    name: 'Soul Gem'
+    description: 'Soul Gem: Those who die while in possession of this gem find their souls trapped within it, rather than passing on to the Dry Lands.'
+    img: systems/tb2e/icons/ffffff/transparent/1x1/lorc/gem-pendant.svg
+    flags: {}
+    _key: '!tables.results!lt00000000000014.lt00r00000000040'
+  - _id: lt00r00000000050
+    type: text
+    range:
+      - 5
+      - 5
+    weight: 1
+    drawn: false
+    name: 'Beguiling Gem'
+    description: 'Beguiling Gem: If sewn into your raiment for all to see, this gem grants the Beautiful trait at level 2 (and does not count against the four-trait limit). Each beneficial use of the trait ages the bearer one year. Lose the gem and lose the trait, but retain the years.'
+    img: systems/tb2e/icons/ffffff/transparent/1x1/lorc/gem-pendant.svg
+    flags: {}
+    _key: '!tables.results!lt00000000000014.lt00r00000000050'
+  - _id: lt00r00000000060
+    type: text
+    range:
+      - 6
+      - 6
+    weight: 1
+    drawn: false
+    name: 'Eldritch Gem'
+    description: 'Eldritch Gem: This gem contains 1d3 spells (game master''s choice). Activating a spell costs a turn or check. Once all spells are activated, the gem crumbles to dust. If dipped in water at any time, the gem dissolves, releasing any spells held within it in 1d6 turns.'
+    img: systems/tb2e/icons/ffffff/transparent/1x1/lorc/gem-pendant.svg
+    flags: {}
+    _key: '!tables.results!lt00000000000014.lt00r00000000060'
+folder: null
+sort: 0
+ownership:
+  default: 0
+flags: {}
+_key: '!tables!lt00000000000014'

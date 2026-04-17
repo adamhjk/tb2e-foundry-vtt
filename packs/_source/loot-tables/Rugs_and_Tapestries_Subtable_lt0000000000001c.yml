@@ -1,0 +1,157 @@
+_id: lt0000000000001c
+name: 'Rugs & Tapestries Subtable'
+img: systems/tb2e/icons/ffffff/transparent/1x1/delapouite/red-carpet.svg
+description: 'Lore Master''s Manual, p. 243'
+formula: '2d6'
+replacement: true
+displayRoll: true
+results:
+  - _id: lt00r00000000010
+    type: document
+    range:
+      - 2
+      - 2
+    weight: 1
+    drawn: false
+    name: 'Small Silver-Threaded Rug'
+    documentUuid: Compendium.tb2e.richer-loot.Item.dd00000000000028
+    description: '2D, pack 2'
+    img: null
+    flags: {}
+    _key: '!tables.results!lt0000000000001c.lt00r00000000010'
+  - _id: lt00r00000000020
+    type: document
+    range:
+      - 3
+      - 3
+    weight: 1
+    drawn: false
+    name: 'Small Gold-Threaded Rug'
+    documentUuid: Compendium.tb2e.richer-loot.Item.dd00000000000029
+    description: '3D, pack 3'
+    img: null
+    flags: {}
+    _key: '!tables.results!lt0000000000001c.lt00r00000000020'
+  - _id: lt00r00000000030
+    type: document
+    range:
+      - 4
+      - 4
+    weight: 1
+    drawn: false
+    name: 'Small Tapestry'
+    documentUuid: Compendium.tb2e.richer-loot.Item.dd0000000000002a
+    description: '4D, pack 4'
+    img: null
+    flags: {}
+    _key: '!tables.results!lt0000000000001c.lt00r00000000030'
+  - _id: lt00r00000000040
+    type: document
+    range:
+      - 5
+      - 5
+    weight: 1
+    drawn: false
+    name: 'Carpet Featuring Classic Immortals'
+    documentUuid: Compendium.tb2e.richer-loot.Item.dd0000000000002b
+    description: '5D, pack 6'
+    img: null
+    flags: {}
+    _key: '!tables.results!lt0000000000001c.lt00r00000000040'
+  - _id: lt00r00000000050
+    type: document
+    range:
+      - 6
+      - 6
+    weight: 1
+    drawn: false
+    name: 'Very Large Silver-Threaded Rug'
+    documentUuid: Compendium.tb2e.richer-loot.Item.dd0000000000002c
+    description: '6D, pack 12'
+    img: null
+    flags: {}
+    _key: '!tables.results!lt0000000000001c.lt00r00000000050'
+  - _id: lt00r00000000060
+    type: document
+    range:
+      - 7
+      - 7
+    weight: 1
+    drawn: false
+    name: 'Large Tapestry of State'
+    documentUuid: Compendium.tb2e.richer-loot.Item.dd0000000000002d
+    description: '7D, pack 11'
+    img: null
+    flags: {}
+    _key: '!tables.results!lt0000000000001c.lt00r00000000060'
+  - _id: lt00r00000000070
+    type: document
+    range:
+      - 8
+      - 8
+    weight: 1
+    drawn: false
+    name: 'Ornate Rug'
+    documentUuid: Compendium.tb2e.richer-loot.Item.dd0000000000002e
+    description: '8D, pack 10'
+    img: null
+    flags: {}
+    _key: '!tables.results!lt0000000000001c.lt00r00000000070'
+  - _id: lt00r00000000080
+    type: document
+    range:
+      - 9
+      - 9
+    weight: 1
+    drawn: false
+    name: 'Unusual Tapestry'
+    documentUuid: Compendium.tb2e.richer-loot.Item.dd0000000000002f
+    description: '9D, pack 9'
+    img: null
+    flags: {}
+    _key: '!tables.results!lt0000000000001c.lt00r00000000080'
+  - _id: lt00r00000000090
+    type: document
+    range:
+      - 10
+      - 10
+    weight: 1
+    drawn: false
+    name: 'Flawless Rug'
+    documentUuid: Compendium.tb2e.richer-loot.Item.dd00000000000030
+    description: '10D, pack 8'
+    img: null
+    flags: {}
+    _key: '!tables.results!lt0000000000001c.lt00r00000000090'
+  - _id: lt00r000000000a0
+    type: document
+    range:
+      - 11
+      - 11
+    weight: 1
+    drawn: false
+    name: 'Ornate Carpet'
+    documentUuid: Compendium.tb2e.richer-loot.Item.dd00000000000031
+    description: '11D, pack 7'
+    img: null
+    flags: {}
+    _key: '!tables.results!lt0000000000001c.lt00r000000000a0'
+  - _id: lt00r000000000b0
+    type: document
+    range:
+      - 12
+      - 12
+    weight: 1
+    drawn: false
+    name: 'Perfect Tapestry'
+    documentUuid: Compendium.tb2e.richer-loot.Item.dd00000000000032
+    description: '12D, pack 6'
+    img: null
+    flags: {}
+    _key: '!tables.results!lt0000000000001c.lt00r000000000b0'
+folder: null
+sort: 0
+ownership:
+  default: 0
+flags: {}
+_key: '!tables!lt0000000000001c'

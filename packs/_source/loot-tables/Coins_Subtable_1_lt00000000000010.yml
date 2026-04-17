@@ -1,0 +1,53 @@
+_id: lt00000000000010
+name: 'Coins Subtable 1'
+img: systems/tb2e/icons/ffffff/transparent/1x1/delapouite/coins.svg
+description: 'Scholar''s Guide, p. 159'
+formula: '1d6'
+replacement: true
+displayRoll: true
+results:
+  - _id: lt00r00000000010
+    type: document
+    range:
+      - 1
+      - 3
+    weight: 1
+    drawn: false
+    name: 'Small Sack of Copper Coins'
+    documentUuid: Compendium.tb2e.loot.Item.aa00000000000016
+    description: '1D, pack 2'
+    img: null
+    flags: {}
+    _key: '!tables.results!lt00000000000010.lt00r00000000010'
+  - _id: lt00r00000000020
+    type: document
+    range:
+      - 4
+      - 5
+    weight: 1
+    drawn: false
+    name: 'Pouch of Silver Coins'
+    documentUuid: Compendium.tb2e.loot.Item.aa00000000000017
+    description: '1D, pack 1'
+    img: null
+    flags: {}
+    _key: '!tables.results!lt00000000000010.lt00r00000000020'
+  - _id: lt00r00000000030
+    type: document
+    range:
+      - 6
+      - 6
+    weight: 1
+    drawn: false
+    name: 'Pouch of Gold Coins'
+    documentUuid: Compendium.tb2e.loot.Item.aa00000000000018
+    description: '2D, pack 1'
+    img: null
+    flags: {}
+    _key: '!tables.results!lt00000000000010.lt00r00000000030'
+folder: null
+sort: 0
+ownership:
+  default: 0
+flags: {}
+_key: '!tables!lt00000000000010'

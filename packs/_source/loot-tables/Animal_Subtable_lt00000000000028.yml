@@ -1,0 +1,62 @@
+_id: lt00000000000028
+name: 'Animal Subtable'
+img: systems/tb2e/icons/ffffff/transparent/1x1/delapouite/horse-head.svg
+description: 'Scholar''s Guide, p. 155 (Gear Subtable row 16)'
+formula: '1d4'
+replacement: true
+displayRoll: true
+results:
+  - _id: lt00r00000000010
+    type: text
+    range:
+      - 1
+      - 1
+    weight: 1
+    drawn: false
+    name: ''
+    description: 'Dog'
+    img: systems/tb2e/icons/ffffff/transparent/1x1/delapouite/horse-head.svg
+    flags: {}
+    _key: '!tables.results!lt00000000000028.lt00r00000000010'
+  - _id: lt00r00000000020
+    type: text
+    range:
+      - 2
+      - 2
+    weight: 1
+    drawn: false
+    name: ''
+    description: 'Mule'
+    img: systems/tb2e/icons/ffffff/transparent/1x1/delapouite/horse-head.svg
+    flags: {}
+    _key: '!tables.results!lt00000000000028.lt00r00000000020'
+  - _id: lt00r00000000030
+    type: text
+    range:
+      - 3
+      - 3
+    weight: 1
+    drawn: false
+    name: ''
+    description: 'Cat'
+    img: systems/tb2e/icons/ffffff/transparent/1x1/delapouite/horse-head.svg
+    flags: {}
+    _key: '!tables.results!lt00000000000028.lt00r00000000030'
+  - _id: lt00r00000000040
+    type: text
+    range:
+      - 4
+      - 4
+    weight: 1
+    drawn: false
+    name: ''
+    description: 'Starved horse'
+    img: systems/tb2e/icons/ffffff/transparent/1x1/delapouite/horse-head.svg
+    flags: {}
+    _key: '!tables.results!lt00000000000028.lt00r00000000040'
+folder: null
+sort: 0
+ownership:
+  default: 0
+flags: {}
+_key: '!tables!lt00000000000028'

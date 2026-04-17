@@ -1,0 +1,50 @@
+_id: lt0000000000002e
+name: 'Relic Type Subtable'
+img: systems/tb2e/icons/ffffff/transparent/1x1/lorc/holy-grail.svg
+description: 'Scholar''s Guide, p. 157 (Magic Subtable row 9)'
+formula: '1d6'
+replacement: true
+displayRoll: true
+results:
+  - _id: lt00r00000000010
+    type: text
+    range:
+      - 1
+      - 4
+    weight: 1
+    drawn: false
+    name: 'Minor Relic'
+    description: 'Minor relic (game master describes).'
+    img: systems/tb2e/icons/ffffff/transparent/1x1/lorc/holy-grail.svg
+    flags: {}
+    _key: '!tables.results!lt0000000000002e.lt00r00000000010'
+  - _id: lt00r00000000020
+    type: text
+    range:
+      - 5
+      - 5
+    weight: 1
+    drawn: false
+    name: 'Named Relic'
+    description: 'Named relic (game master describes).'
+    img: systems/tb2e/icons/ffffff/transparent/1x1/lorc/holy-grail.svg
+    flags: {}
+    _key: '!tables.results!lt0000000000002e.lt00r00000000020'
+  - _id: lt00r00000000030
+    type: text
+    range:
+      - 6
+      - 6
+    weight: 1
+    drawn: false
+    name: 'Great Relic'
+    description: 'Great relic (game master describes).'
+    img: systems/tb2e/icons/ffffff/transparent/1x1/lorc/holy-grail.svg
+    flags: {}
+    _key: '!tables.results!lt0000000000002e.lt00r00000000030'
+folder: null
+sort: 0
+ownership:
+  default: 0
+flags: {}
+_key: '!tables!lt0000000000002e'

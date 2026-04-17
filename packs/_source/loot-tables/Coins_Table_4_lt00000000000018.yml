@@ -1,0 +1,53 @@
+_id: lt00000000000018
+name: 'Coins Table 4'
+img: systems/tb2e/icons/ffffff/transparent/1x1/skoll/open-treasure-chest.svg
+description: 'Lore Master''s Manual, p. 242'
+formula: '1d6'
+replacement: true
+displayRoll: true
+results:
+  - _id: lt00r00000000010
+    type: document
+    range:
+      - 1
+      - 1
+    weight: 1
+    drawn: false
+    name: 'Chest of Copper Coins'
+    documentUuid: Compendium.tb2e.richer-loot.Item.dd00000000000007
+    description: '4D, pack 10'
+    img: null
+    flags: {}
+    _key: '!tables.results!lt00000000000018.lt00r00000000010'
+  - _id: lt00r00000000020
+    type: document
+    range:
+      - 2
+      - 4
+    weight: 1
+    drawn: false
+    name: 'Chest of Silver Coins'
+    documentUuid: Compendium.tb2e.richer-loot.Item.dd00000000000008
+    description: '8D, pack 10'
+    img: null
+    flags: {}
+    _key: '!tables.results!lt00000000000018.lt00r00000000020'
+  - _id: lt00r00000000030
+    type: document
+    range:
+      - 5
+      - 6
+    weight: 1
+    drawn: false
+    name: 'Chest of Gold Coins'
+    documentUuid: Compendium.tb2e.richer-loot.Item.dd00000000000009
+    description: '16D, pack 10'
+    img: null
+    flags: {}
+    _key: '!tables.results!lt00000000000018.lt00r00000000030'
+folder: null
+sort: 0
+ownership:
+  default: 0
+flags: {}
+_key: '!tables!lt00000000000018'

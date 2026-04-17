@@ -1,0 +1,105 @@
+_id: lt00000000000016
+name: 'Treasure & Valuables 4 Subtable'
+img: systems/tb2e/icons/ffffff/transparent/1x1/lorc/holy-grail.svg
+description: 'Lore Master''s Manual, p. 241'
+formula: '2d6'
+replacement: true
+displayRoll: true
+results:
+  - _id: lt00r00000000010
+    type: document
+    range:
+      - 2
+      - 5
+    weight: 1
+    drawn: false
+    name: 'Silver & Plate Subtable'
+    documentUuid: Compendium.tb2e.loot-tables.RollTable.lt0000000000001b
+    description: ''
+    img: null
+    flags: {}
+    _key: '!tables.results!lt00000000000016.lt00r00000000010'
+  - _id: lt00r00000000020
+    type: document
+    range:
+      - 6
+      - 6
+    weight: 1
+    drawn: false
+    name: 'Rugs & Tapestries Subtable'
+    documentUuid: Compendium.tb2e.loot-tables.RollTable.lt0000000000001c
+    description: ''
+    img: null
+    flags: {}
+    _key: '!tables.results!lt00000000000016.lt00r00000000020'
+  - _id: lt00r00000000030
+    type: document
+    range:
+      - 7
+      - 7
+    weight: 1
+    drawn: false
+    name: 'Works of Art Subtable'
+    documentUuid: Compendium.tb2e.loot-tables.RollTable.lt00000000000019
+    description: ''
+    img: null
+    flags: {}
+    _key: '!tables.results!lt00000000000016.lt00r00000000030'
+  - _id: lt00r00000000040
+    type: document
+    range:
+      - 8
+      - 8
+    weight: 1
+    drawn: false
+    name: 'Magic Subtable'
+    documentUuid: Compendium.tb2e.loot-tables.RollTable.lt0000000000000a
+    description: ''
+    img: null
+    flags: {}
+    _key: '!tables.results!lt00000000000016.lt00r00000000040'
+  - _id: lt00r00000000050
+    type: document
+    range:
+      - 9
+      - 9
+    weight: 1
+    drawn: false
+    name: 'Coins Table 4'
+    documentUuid: Compendium.tb2e.loot-tables.RollTable.lt00000000000018
+    description: ''
+    img: null
+    flags: {}
+    _key: '!tables.results!lt00000000000016.lt00r00000000050'
+  - _id: lt00r00000000060
+    type: document
+    range:
+      - 10
+      - 10
+    weight: 1
+    drawn: false
+    name: 'Jewelry Table 2'
+    documentUuid: Compendium.tb2e.loot-tables.RollTable.lt0000000000001a
+    description: ''
+    img: null
+    flags: {}
+    _key: '!tables.results!lt00000000000016.lt00r00000000060'
+  - _id: lt00r00000000070
+    type: document
+    range:
+      - 11
+      - 12
+    weight: 1
+    drawn: false
+    name: 'Finery (2d6 outfits)'
+    documentUuid: Compendium.tb2e.clothing.Item.d4e5f6a7b8c90005
+    description: 'Roll 2d6 for the number of Finery outfits.'
+    img: null
+    flags: {}
+    _key: '!tables.results!lt00000000000016.lt00r00000000070'
+folder: null
+sort: 0
+ownership:
+  default: 0
+flags: {}
+_key: '!tables!lt00000000000016'

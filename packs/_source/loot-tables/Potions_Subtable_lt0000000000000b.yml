@@ -1,0 +1,157 @@
+_id: lt0000000000000b
+name: 'Potions Subtable'
+img: systems/tb2e/icons/ffffff/transparent/1x1/delapouite/magic-potion.svg
+description: 'Scholar''s Guide, p. 158'
+formula: '2d6'
+replacement: true
+displayRoll: true
+results:
+  - _id: lt00r00000000010
+    type: document
+    range:
+      - 2
+      - 2
+    weight: 1
+    drawn: false
+    name: 'Poison'
+    documentUuid: Compendium.tb2e.potions.Item.bb00000000000001
+    description: '1 draught, pack 1'
+    img: null
+    flags: {}
+    _key: '!tables.results!lt0000000000000b.lt00r00000000010'
+  - _id: lt00r00000000020
+    type: document
+    range:
+      - 3
+      - 3
+    weight: 1
+    drawn: false
+    name: 'Dragon''s Breath'
+    documentUuid: Compendium.tb2e.potions.Item.bb00000000000002
+    description: '1 draught, pack 1'
+    img: null
+    flags: {}
+    _key: '!tables.results!lt0000000000000b.lt00r00000000020'
+  - _id: lt00r00000000030
+    type: document
+    range:
+      - 4
+      - 4
+    weight: 1
+    drawn: false
+    name: 'Sovereign Remedy'
+    documentUuid: Compendium.tb2e.potions.Item.bb00000000000003
+    description: '1d3 draughts, pack 1 per draught'
+    img: null
+    flags: {}
+    _key: '!tables.results!lt0000000000000b.lt00r00000000030'
+  - _id: lt00r00000000040
+    type: document
+    range:
+      - 5
+      - 5
+    weight: 1
+    drawn: false
+    name: 'Theriac'
+    documentUuid: Compendium.tb2e.potions.Item.bb00000000000004
+    description: '1d2+1 draughts, pack 1 per draught'
+    img: null
+    flags: {}
+    _key: '!tables.results!lt0000000000000b.lt00r00000000040'
+  - _id: lt00r00000000050
+    type: document
+    range:
+      - 6
+      - 6
+    weight: 1
+    drawn: false
+    name: 'Soothing Draught'
+    documentUuid: Compendium.tb2e.potions.Item.bb00000000000005
+    description: '1d3 draughts, pack 1 per draught'
+    img: null
+    flags: {}
+    _key: '!tables.results!lt0000000000000b.lt00r00000000050'
+  - _id: lt00r00000000060
+    type: document
+    range:
+      - 7
+      - 7
+    weight: 1
+    drawn: false
+    name: 'Soldier''s Friend'
+    documentUuid: Compendium.tb2e.potions.Item.bb00000000000006
+    description: '1d2+1 draughts, pack 1 per draught'
+    img: null
+    flags: {}
+    _key: '!tables.results!lt0000000000000b.lt00r00000000060'
+  - _id: lt00r00000000070
+    type: document
+    range:
+      - 8
+      - 8
+    weight: 1
+    drawn: false
+    name: 'Faerie Wine'
+    documentUuid: Compendium.tb2e.potions.Item.bb00000000000007
+    description: '1d2+1 draughts, pack 1'
+    img: null
+    flags: {}
+    _key: '!tables.results!lt0000000000000b.lt00r00000000070'
+  - _id: lt00r00000000080
+    type: document
+    range:
+      - 9
+      - 9
+    weight: 1
+    drawn: false
+    name: 'Liquor of Courage'
+    documentUuid: Compendium.tb2e.potions.Item.bb00000000000008
+    description: '1d3 draughts, pack 1 per draught'
+    img: null
+    flags: {}
+    _key: '!tables.results!lt0000000000000b.lt00r00000000080'
+  - _id: lt00r00000000090
+    type: document
+    range:
+      - 10
+      - 10
+    weight: 1
+    drawn: false
+    name: 'Philter of Vigor'
+    documentUuid: Compendium.tb2e.potions.Item.bb00000000000009
+    description: '1d3 draughts, pack 1 per draught'
+    img: null
+    flags: {}
+    _key: '!tables.results!lt0000000000000b.lt00r00000000090'
+  - _id: lt00r000000000a0
+    type: document
+    range:
+      - 11
+      - 11
+    weight: 1
+    drawn: false
+    name: 'Effervescent Tonic'
+    documentUuid: Compendium.tb2e.potions.Item.bb0000000000000a
+    description: '2 draughts, pack 1'
+    img: null
+    flags: {}
+    _key: '!tables.results!lt0000000000000b.lt00r000000000a0'
+  - _id: lt00r000000000b0
+    type: document
+    range:
+      - 12
+      - 12
+    weight: 1
+    drawn: false
+    name: 'Giant''s Blood'
+    documentUuid: Compendium.tb2e.potions.Item.bb0000000000000b
+    description: '1d2 draughts, pack 1 per draught'
+    img: null
+    flags: {}
+    _key: '!tables.results!lt0000000000000b.lt00r000000000b0'
+folder: null
+sort: 0
+ownership:
+  default: 0
+flags: {}
+_key: '!tables!lt0000000000000b'

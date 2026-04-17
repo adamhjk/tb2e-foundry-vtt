@@ -1,0 +1,52 @@
+_id: lt00000000000024
+name: 'Supplies Subtable'
+img: systems/tb2e/icons/ffffff/transparent/1x1/delapouite/spell-book.svg
+description: 'Scholar''s Guide, p. 155 (Gear Subtable row 10)'
+formula: '1d6'
+replacement: true
+displayRoll: true
+results:
+  - _id: lt00r00000000010
+    type: text
+    range:
+      - 1
+      - 4
+    weight: 1
+    drawn: false
+    name: 'Skill Supplies'
+    description: 'Skill supplies — game master chooses an appropriate skill''s supplies (e.g., healer''s supplies, scout''s supplies).'
+    img: systems/tb2e/icons/ffffff/transparent/1x1/delapouite/spell-book.svg
+    flags: {}
+    _key: '!tables.results!lt00000000000024.lt00r00000000010'
+  - _id: lt00r00000000020
+    type: document
+    range:
+      - 5
+      - 5
+    weight: 1
+    drawn: false
+    name: 'Spell Materials'
+    documentUuid: Compendium.tb2e.magical-religious.Item.8a7b6c5d4e3f0005
+    description: ''
+    img: null
+    flags: {}
+    _key: '!tables.results!lt00000000000024.lt00r00000000020'
+  - _id: lt00r00000000030
+    type: document
+    range:
+      - 6
+      - 6
+    weight: 1
+    drawn: false
+    name: 'Sacramentals'
+    documentUuid: Compendium.tb2e.magical-religious.Item.8a7b6c5d4e3f0003
+    description: ''
+    img: null
+    flags: {}
+    _key: '!tables.results!lt00000000000024.lt00r00000000030'
+folder: null
+sort: 0
+ownership:
+  default: 0
+flags: {}
+_key: '!tables!lt00000000000024'

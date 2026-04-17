@@ -1,0 +1,66 @@
+_id: lt0000000000002a
+name: 'Wards and Charms Subtable'
+img: systems/tb2e/icons/ffffff/transparent/1x1/delapouite/tribal-pendant.svg
+description: 'Scholar''s Guide, p. 157 (Magic Subtable row 3)'
+formula: '1d6'
+replacement: true
+displayRoll: true
+results:
+  - _id: lt00r00000000010
+    type: document
+    range:
+      - 1
+      - 2
+    weight: 1
+    drawn: false
+    name: 'Drowner''s Friend'
+    documentUuid: Compendium.tb2e.magic-items.Item.cc00000000000020
+    description: ''
+    img: null
+    flags: {}
+    _key: '!tables.results!lt0000000000002a.lt00r00000000010'
+  - _id: lt00r00000000020
+    type: document
+    range:
+      - 3
+      - 4
+    weight: 1
+    drawn: false
+    name: 'Jade Ward'
+    documentUuid: Compendium.tb2e.magic-items.Item.cc00000000000022
+    description: ''
+    img: null
+    flags: {}
+    _key: '!tables.results!lt0000000000002a.lt00r00000000020'
+  - _id: lt00r00000000030
+    type: document
+    range:
+      - 5
+      - 5
+    weight: 1
+    drawn: false
+    name: 'Amulet of Stars'
+    documentUuid: Compendium.tb2e.magic-items.Item.cc0000000000001f
+    description: ''
+    img: null
+    flags: {}
+    _key: '!tables.results!lt0000000000002a.lt00r00000000030'
+  - _id: lt00r00000000040
+    type: document
+    range:
+      - 6
+      - 6
+    weight: 1
+    drawn: false
+    name: 'Aegis Bracers'
+    documentUuid: Compendium.tb2e.magic-items.Item.cc00000000000008
+    description: ''
+    img: null
+    flags: {}
+    _key: '!tables.results!lt0000000000002a.lt00r00000000040'
+folder: null
+sort: 0
+ownership:
+  default: 0
+flags: {}
+_key: '!tables!lt0000000000002a'

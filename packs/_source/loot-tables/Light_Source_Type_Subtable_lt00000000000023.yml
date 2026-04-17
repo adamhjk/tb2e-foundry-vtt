@@ -1,0 +1,53 @@
+_id: lt00000000000023
+name: 'Light Source Type Subtable'
+img: systems/tb2e/icons/ffffff/transparent/1x1/lorc/candle-holder.svg
+description: 'Scholar''s Guide, p. 155 (Gear Subtable row 9)'
+formula: '1d6'
+replacement: true
+displayRoll: true
+results:
+  - _id: lt00r00000000010
+    type: document
+    range:
+      - 1
+      - 4
+    weight: 1
+    drawn: false
+    name: 'Candles'
+    documentUuid: Compendium.tb2e.light-sources.Item.e1f2a3b4c5d60001
+    description: ''
+    img: null
+    flags: {}
+    _key: '!tables.results!lt00000000000023.lt00r00000000010'
+  - _id: lt00r00000000020
+    type: document
+    range:
+      - 5
+      - 5
+    weight: 1
+    drawn: false
+    name: 'Torches'
+    documentUuid: Compendium.tb2e.light-sources.Item.e1f2a3b4c5d60002
+    description: ''
+    img: null
+    flags: {}
+    _key: '!tables.results!lt00000000000023.lt00r00000000020'
+  - _id: lt00r00000000030
+    type: document
+    range:
+      - 6
+      - 6
+    weight: 1
+    drawn: false
+    name: 'Flasks of Oil'
+    documentUuid: Compendium.tb2e.equipment.Item.a3b4c5d6e7f80006
+    description: ''
+    img: null
+    flags: {}
+    _key: '!tables.results!lt00000000000023.lt00r00000000030'
+folder: null
+sort: 0
+ownership:
+  default: 0
+flags: {}
+_key: '!tables!lt00000000000023'

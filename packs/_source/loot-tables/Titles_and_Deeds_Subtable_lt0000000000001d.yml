@@ -1,0 +1,157 @@
+_id: lt0000000000001d
+name: 'Titles & Deeds Subtable'
+img: systems/tb2e/icons/ffffff/transparent/1x1/delapouite/diploma.svg
+description: 'Lore Master''s Manual, p. 244'
+formula: '2d6'
+replacement: true
+displayRoll: true
+results:
+  - _id: lt00r00000000010
+    type: document
+    range:
+      - 2
+      - 2
+    weight: 1
+    drawn: false
+    name: 'Certificate of Noble Title'
+    documentUuid: Compendium.tb2e.richer-loot.Item.dd00000000000033
+    description: 'Roll 1d6 for house: 1-3 extinct house, 4 outcast house, 5-6 surviving house.'
+    img: null
+    flags: {}
+    _key: '!tables.results!lt0000000000001d.lt00r00000000010'
+  - _id: lt00r00000000020
+    type: document
+    range:
+      - 3
+      - 3
+    weight: 1
+    drawn: false
+    name: 'Patent of Nobility'
+    documentUuid: Compendium.tb2e.richer-loot.Item.dd00000000000034
+    description: 'Roll 1d6 for house: 1-3 extinct house, 4 outcast house, 5-6 surviving house.'
+    img: null
+    flags: {}
+    _key: '!tables.results!lt0000000000001d.lt00r00000000020'
+  - _id: lt00r00000000030
+    type: document
+    range:
+      - 4
+      - 4
+    weight: 1
+    drawn: false
+    name: 'Seal of Guild Membership'
+    documentUuid: Compendium.tb2e.richer-loot.Item.dd00000000000035
+    description: 'Journeyman''s license. Roll on the Guild Table in the Newtown chapter for guild.'
+    img: null
+    flags: {}
+    _key: '!tables.results!lt0000000000001d.lt00r00000000030'
+  - _id: lt00r00000000040
+    type: document
+    range:
+      - 5
+      - 5
+    weight: 1
+    drawn: false
+    name: 'Scroll of Ordination'
+    documentUuid: Compendium.tb2e.richer-loot.Item.dd00000000000036
+    description: 'Low holy office. Roll 1d6 for religious order: 1-3 extinct, 4 outcast, 5 minor, 6 high.'
+    img: null
+    flags: {}
+    _key: '!tables.results!lt0000000000001d.lt00r00000000040'
+  - _id: lt00r00000000050
+    type: document
+    range:
+      - 6
+      - 6
+    weight: 1
+    drawn: false
+    name: 'Deed to a Destroyed Home'
+    documentUuid: Compendium.tb2e.richer-loot.Item.dd00000000000037
+    description: 'Home no longer exists in a nearby settlement.'
+    img: null
+    flags: {}
+    _key: '!tables.results!lt0000000000001d.lt00r00000000050'
+  - _id: lt00r00000000060
+    type: document
+    range:
+      - 7
+      - 7
+    weight: 1
+    drawn: false
+    name: 'Deed to a Lost Settlement Home'
+    documentUuid: Compendium.tb2e.richer-loot.Item.dd00000000000038
+    description: 'Home in a lost, fallen and forgotten settlement.'
+    img: null
+    flags: {}
+    _key: '!tables.results!lt0000000000001d.lt00r00000000060'
+  - _id: lt00r00000000070
+    type: document
+    range:
+      - 8
+      - 8
+    weight: 1
+    drawn: false
+    name: 'Deed to a Lost Steading'
+    documentUuid: Compendium.tb2e.richer-loot.Item.dd00000000000039
+    description: ''
+    img: null
+    flags: {}
+    _key: '!tables.results!lt0000000000001d.lt00r00000000070'
+  - _id: lt00r00000000080
+    type: document
+    range:
+      - 9
+      - 9
+    weight: 1
+    drawn: false
+    name: 'Deed to an Occupied Home'
+    documentUuid: Compendium.tb2e.richer-loot.Item.dd0000000000003a
+    description: 'In a nearby settlement. Roll 1d6: 1 remote village, 2 borderland fortress, 3 busy crossroads, 4 bustling metropolis, 5 wizard''s tower or religious bastion, 6 walled town.'
+    img: null
+    flags: {}
+    _key: '!tables.results!lt0000000000001d.lt00r00000000080'
+  - _id: lt00r00000000090
+    type: document
+    range:
+      - 10
+      - 10
+    weight: 1
+    drawn: false
+    name: 'Deed to an Unoccupied Home'
+    documentUuid: Compendium.tb2e.richer-loot.Item.dd0000000000003b
+    description: 'In a nearby settlement. Roll 1d6: 1 remote village, 2 borderland fortress, 3 busy crossroads, 4 bustling metropolis, 5 wizard''s tower or religious bastion, 6 walled town.'
+    img: null
+    flags: {}
+    _key: '!tables.results!lt0000000000001d.lt00r00000000090'
+  - _id: lt00r000000000a0
+    type: document
+    range:
+      - 11
+      - 11
+    weight: 1
+    drawn: false
+    name: 'Seal of Office (Lost Court)'
+    documentUuid: Compendium.tb2e.richer-loot.Item.dd0000000000003c
+    description: 'Lost or fallen court.'
+    img: null
+    flags: {}
+    _key: '!tables.results!lt0000000000001d.lt00r000000000a0'
+  - _id: lt00r000000000b0
+    type: document
+    range:
+      - 12
+      - 12
+    weight: 1
+    drawn: false
+    name: 'Seal of Office (Court of the Land)'
+    documentUuid: Compendium.tb2e.richer-loot.Item.dd0000000000003d
+    description: ''
+    img: null
+    flags: {}
+    _key: '!tables.results!lt0000000000001d.lt00r000000000b0'
+folder: null
+sort: 0
+ownership:
+  default: 0
+flags: {}
+_key: '!tables!lt0000000000001d'

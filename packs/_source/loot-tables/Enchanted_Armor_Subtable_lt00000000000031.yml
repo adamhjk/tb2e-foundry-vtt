@@ -1,0 +1,92 @@
+_id: lt00000000000031
+name: 'Enchanted Armor Subtable'
+img: systems/tb2e/icons/ffffff/transparent/1x1/lorc/breastplate.svg
+description: 'Scholar''s Guide, p. 157 (Magic Subtable row 12)'
+formula: '1d6'
+replacement: true
+displayRoll: true
+results:
+  - _id: lt00r00000000010
+    type: document
+    range:
+      - 1
+      - 1
+    weight: 1
+    drawn: false
+    name: 'Enchanted Shield'
+    documentUuid: Compendium.tb2e.magic-items.Item.cc00000000000007
+    description: ''
+    img: null
+    flags: {}
+    _key: '!tables.results!lt00000000000031.lt00r00000000010'
+  - _id: lt00r00000000020
+    type: document
+    range:
+      - 2
+      - 2
+    weight: 1
+    drawn: false
+    name: 'Enchanted Helmet'
+    documentUuid: Compendium.tb2e.magic-items.Item.cc0000000000000b
+    description: ''
+    img: null
+    flags: {}
+    _key: '!tables.results!lt00000000000031.lt00r00000000020'
+  - _id: lt00r00000000030
+    type: document
+    range:
+      - 3
+      - 3
+    weight: 1
+    drawn: false
+    name: 'Enchanted Leather Armor'
+    documentUuid: Compendium.tb2e.magic-items.Item.cc0000000000000c
+    description: ''
+    img: null
+    flags: {}
+    _key: '!tables.results!lt00000000000031.lt00r00000000030'
+  - _id: lt00r00000000040
+    type: document
+    range:
+      - 4
+      - 4
+    weight: 1
+    drawn: false
+    name: 'Enchanted Chain Armor'
+    documentUuid: Compendium.tb2e.magic-items.Item.cc0000000000000d
+    description: ''
+    img: null
+    flags: {}
+    _key: '!tables.results!lt00000000000031.lt00r00000000040'
+  - _id: lt00r00000000050
+    type: document
+    range:
+      - 5
+      - 5
+    weight: 1
+    drawn: false
+    name: 'Enchanted Plate Armor'
+    documentUuid: Compendium.tb2e.magic-items.Item.cc0000000000000e
+    description: ''
+    img: null
+    flags: {}
+    _key: '!tables.results!lt00000000000031.lt00r00000000050'
+  - _id: lt00r00000000060
+    type: document
+    range:
+      - 6
+      - 6
+    weight: 1
+    drawn: false
+    name: 'Dwarven Forge Mask'
+    documentUuid: Compendium.tb2e.magic-items.Item.cc00000000000009
+    description: ''
+    img: null
+    flags: {}
+    _key: '!tables.results!lt00000000000031.lt00r00000000060'
+folder: null
+sort: 0
+ownership:
+  default: 0
+flags: {}
+_key: '!tables!lt00000000000031'

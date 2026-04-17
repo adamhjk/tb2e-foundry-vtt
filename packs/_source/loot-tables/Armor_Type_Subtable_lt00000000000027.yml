@@ -1,0 +1,53 @@
+_id: lt00000000000027
+name: 'Armor Type Subtable'
+img: systems/tb2e/icons/ffffff/transparent/1x1/lorc/breastplate.svg
+description: 'Scholar''s Guide, p. 155 (Gear Subtable row 15)'
+formula: '1d6'
+replacement: true
+displayRoll: true
+results:
+  - _id: lt00r00000000010
+    type: document
+    range:
+      - 1
+      - 4
+    weight: 1
+    drawn: false
+    name: 'Leather Armor'
+    documentUuid: Compendium.tb2e.armor.Item.5212d9e35345bc91
+    description: ''
+    img: null
+    flags: {}
+    _key: '!tables.results!lt00000000000027.lt00r00000000010'
+  - _id: lt00r00000000020
+    type: document
+    range:
+      - 5
+      - 5
+    weight: 1
+    drawn: false
+    name: 'Chain Armor'
+    documentUuid: Compendium.tb2e.armor.Item.12e2f113cb65947e
+    description: ''
+    img: null
+    flags: {}
+    _key: '!tables.results!lt00000000000027.lt00r00000000020'
+  - _id: lt00r00000000030
+    type: document
+    range:
+      - 6
+      - 6
+    weight: 1
+    drawn: false
+    name: 'Plate Armor'
+    documentUuid: Compendium.tb2e.armor.Item.cafa8f272c31adc7
+    description: ''
+    img: null
+    flags: {}
+    _key: '!tables.results!lt00000000000027.lt00r00000000030'
+folder: null
+sort: 0
+ownership:
+  default: 0
+flags: {}
+_key: '!tables!lt00000000000027'

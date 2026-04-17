@@ -1,0 +1,90 @@
+_id: lt00000000000021
+name: 'Fortunate Food Type Subtable'
+img: systems/tb2e/icons/ffffff/transparent/1x1/lorc/meat.svg
+description: 'Scholar''s Guide, p. 155 (Gear Subtable row 7)'
+formula: '1d6'
+replacement: true
+displayRoll: true
+results:
+  - _id: lt00r00000000010
+    type: text
+    range:
+      - 1
+      - 1
+    weight: 1
+    drawn: false
+    name: 'Forage'
+    description: 'Forage — gathered wild food. Fresh rations equivalent while in appropriate wilderness.'
+    img: systems/tb2e/icons/ffffff/transparent/1x1/lorc/meat.svg
+    flags: {}
+    _key: '!tables.results!lt00000000000021.lt00r00000000010'
+  - _id: lt00r00000000020
+    type: text
+    range:
+      - 2
+      - 2
+    weight: 1
+    drawn: false
+    name: 'Game'
+    description: 'Game — hunted fresh meat. Fresh rations equivalent.'
+    img: systems/tb2e/icons/ffffff/transparent/1x1/lorc/meat.svg
+    flags: {}
+    _key: '!tables.results!lt00000000000021.lt00r00000000020'
+  - _id: lt00r00000000030
+    type: document
+    range:
+      - 3
+      - 3
+    weight: 1
+    drawn: false
+    name: 'Rations, Fresh'
+    documentUuid: Compendium.tb2e.food-and-drink.Item.b1c2d3e4f5a60001
+    description: ''
+    img: null
+    flags: {}
+    _key: '!tables.results!lt00000000000021.lt00r00000000030'
+  - _id: lt00r00000000040
+    type: document
+    range:
+      - 4
+      - 4
+    weight: 1
+    drawn: false
+    name: 'Rations, Preserved'
+    documentUuid: Compendium.tb2e.food-and-drink.Item.b1c2d3e4f5a60002
+    description: ''
+    img: null
+    flags: {}
+    _key: '!tables.results!lt00000000000021.lt00r00000000040'
+  - _id: lt00r00000000050
+    type: document
+    range:
+      - 5
+      - 5
+    weight: 1
+    drawn: false
+    name: 'Garlic'
+    documentUuid: Compendium.tb2e.equipment.Item.a3b4c5d6e7f80008
+    description: ''
+    img: null
+    flags: {}
+    _key: '!tables.results!lt00000000000021.lt00r00000000050'
+  - _id: lt00r00000000060
+    type: document
+    range:
+      - 6
+      - 6
+    weight: 1
+    drawn: false
+    name: 'Salt Block'
+    documentUuid: Compendium.tb2e.bulk-goods.Item.c3d4e5f6a7b8000b
+    description: 'pack 1'
+    img: null
+    flags: {}
+    _key: '!tables.results!lt00000000000021.lt00r00000000060'
+folder: null
+sort: 0
+ownership:
+  default: 0
+flags: {}
+_key: '!tables!lt00000000000021'

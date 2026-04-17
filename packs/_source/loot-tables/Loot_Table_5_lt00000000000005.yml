@@ -1,0 +1,79 @@
+_id: lt00000000000005
+name: 'Loot Table 5'
+img: systems/tb2e/icons/ffffff/transparent/1x1/delapouite/imperial-crown.svg
+description: 'Lore Master''s Manual, p. 241'
+formula: '2d6'
+replacement: true
+displayRoll: true
+results:
+  - _id: lt00r00000000010
+    type: document
+    range:
+      - 2
+      - 3
+    weight: 1
+    drawn: false
+    name: 'Books & Maps'
+    documentUuid: Compendium.tb2e.loot-tables.RollTable.lt00000000000006
+    description: ''
+    img: null
+    flags: {}
+    _key: '!tables.results!lt00000000000005.lt00r00000000010'
+  - _id: lt00r00000000020
+    type: document
+    range:
+      - 4
+      - 4
+    weight: 1
+    drawn: false
+    name: 'Treasure & Valuables 2'
+    documentUuid: Compendium.tb2e.loot-tables.RollTable.lt0000000000000f
+    description: ''
+    img: null
+    flags: {}
+    _key: '!tables.results!lt00000000000005.lt00r00000000020'
+  - _id: lt00r00000000030
+    type: document
+    range:
+      - 5
+      - 5
+    weight: 1
+    drawn: false
+    name: 'Treasure & Valuables 3'
+    documentUuid: Compendium.tb2e.loot-tables.RollTable.lt00000000000015
+    description: ''
+    img: null
+    flags: {}
+    _key: '!tables.results!lt00000000000005.lt00r00000000030'
+  - _id: lt00r00000000040
+    type: document
+    range:
+      - 6
+      - 8
+    weight: 1
+    drawn: false
+    name: 'Treasure & Valuables 4'
+    documentUuid: Compendium.tb2e.loot-tables.RollTable.lt00000000000016
+    description: ''
+    img: null
+    flags: {}
+    _key: '!tables.results!lt00000000000005.lt00r00000000040'
+  - _id: lt00r00000000050
+    type: document
+    range:
+      - 9
+      - 12
+    weight: 1
+    drawn: false
+    name: 'Magic'
+    documentUuid: Compendium.tb2e.loot-tables.RollTable.lt0000000000000a
+    description: ''
+    img: null
+    flags: {}
+    _key: '!tables.results!lt00000000000005.lt00r00000000050'
+folder: null
+sort: 0
+ownership:
+  default: 0
+flags: {}
+_key: '!tables!lt00000000000005'

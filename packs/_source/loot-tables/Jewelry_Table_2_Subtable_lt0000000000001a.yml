@@ -1,0 +1,118 @@
+_id: lt0000000000001a
+name: 'Jewelry Table 2 Subtable'
+img: systems/tb2e/icons/ffffff/transparent/1x1/delapouite/tiara.svg
+description: 'Lore Master''s Manual, p. 242'
+formula: '2d6'
+replacement: true
+displayRoll: true
+results:
+  - _id: lt00r00000000010
+    type: document
+    range:
+      - 2
+      - 2
+    weight: 1
+    drawn: false
+    name: 'Kolty'
+    documentUuid: Compendium.tb2e.richer-loot.Item.dd00000000000015
+    description: '6D, worn/head or pocket'
+    img: null
+    flags: {}
+    _key: '!tables.results!lt0000000000001a.lt00r00000000010'
+  - _id: lt00r00000000020
+    type: document
+    range:
+      - 3
+      - 5
+    weight: 1
+    drawn: false
+    name: 'Torque'
+    documentUuid: Compendium.tb2e.richer-loot.Item.dd00000000000016
+    description: '5D, worn/neck'
+    img: null
+    flags: {}
+    _key: '!tables.results!lt0000000000001a.lt00r00000000020'
+  - _id: lt00r00000000030
+    type: document
+    range:
+      - 6
+      - 7
+    weight: 1
+    drawn: false
+    name: 'Earrings'
+    documentUuid: Compendium.tb2e.richer-loot.Item.dd00000000000017
+    description: '3D, worn/ears or pocket'
+    img: null
+    flags: {}
+    _key: '!tables.results!lt0000000000001a.lt00r00000000030'
+  - _id: lt00r00000000040
+    type: document
+    range:
+      - 8
+      - 8
+    weight: 1
+    drawn: false
+    name: 'Tiara'
+    documentUuid: Compendium.tb2e.richer-loot.Item.dd00000000000018
+    description: '7D, worn/head'
+    img: null
+    flags: {}
+    _key: '!tables.results!lt0000000000001a.lt00r00000000040'
+  - _id: lt00r00000000050
+    type: document
+    range:
+      - 9
+      - 9
+    weight: 1
+    drawn: false
+    name: 'Diadem'
+    documentUuid: Compendium.tb2e.richer-loot.Item.dd00000000000019
+    description: '8D, worn/head'
+    img: null
+    flags: {}
+    _key: '!tables.results!lt0000000000001a.lt00r00000000050'
+  - _id: lt00r00000000060
+    type: document
+    range:
+      - 10
+      - 10
+    weight: 1
+    drawn: false
+    name: 'Coronet'
+    documentUuid: Compendium.tb2e.richer-loot.Item.dd0000000000001a
+    description: '9D, worn/head'
+    img: null
+    flags: {}
+    _key: '!tables.results!lt0000000000001a.lt00r00000000060'
+  - _id: lt00r00000000070
+    type: document
+    range:
+      - 11
+      - 11
+    weight: 1
+    drawn: false
+    name: 'Jeweled Headdress'
+    documentUuid: Compendium.tb2e.richer-loot.Item.dd0000000000001b
+    description: '10D, head and neck, pack 4'
+    img: null
+    flags: {}
+    _key: '!tables.results!lt0000000000001a.lt00r00000000070'
+  - _id: lt00r00000000080
+    type: document
+    range:
+      - 12
+      - 12
+    weight: 1
+    drawn: false
+    name: 'Crown'
+    documentUuid: Compendium.tb2e.richer-loot.Item.dd0000000000001c
+    description: '12D, worn/head, pack 2'
+    img: null
+    flags: {}
+    _key: '!tables.results!lt0000000000001a.lt00r00000000080'
+folder: null
+sort: 0
+ownership:
+  default: 0
+flags: {}
+_key: '!tables!lt0000000000001a'

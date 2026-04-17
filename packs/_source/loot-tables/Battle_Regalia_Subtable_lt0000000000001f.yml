@@ -1,0 +1,40 @@
+_id: lt0000000000001f
+name: 'Battle Regalia Subtable'
+img: systems/tb2e/icons/ffffff/transparent/1x1/delapouite/cross-shield.svg
+description: 'Scholar''s Guide, p. 155 (Gear Subtable row 5)'
+formula: '1d2'
+replacement: true
+displayRoll: true
+results:
+  - _id: lt00r00000000010
+    type: document
+    range:
+      - 1
+      - 1
+    weight: 1
+    drawn: false
+    name: 'Helmet'
+    documentUuid: Compendium.tb2e.armor.Item.5dea133e6d410f37
+    description: ''
+    img: null
+    flags: {}
+    _key: '!tables.results!lt0000000000001f.lt00r00000000010'
+  - _id: lt00r00000000020
+    type: document
+    range:
+      - 2
+      - 2
+    weight: 1
+    drawn: false
+    name: 'Shield'
+    documentUuid: Compendium.tb2e.armor.Item.80e21c03a6807161
+    description: ''
+    img: null
+    flags: {}
+    _key: '!tables.results!lt0000000000001f.lt00r00000000020'
+folder: null
+sort: 0
+ownership:
+  default: 0
+flags: {}
+_key: '!tables!lt0000000000001f'

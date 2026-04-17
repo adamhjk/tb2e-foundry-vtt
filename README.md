@@ -50,7 +50,7 @@ While there is a lot of automation in the system to make things easy to play whe
 - [ ] Automating the Camp Phase
 - [ ] Automating the Town Phase
 - [ ] Class options from Scavenger's Supplement
-- [ ] Loot Tables
+- [x] Loot Tables
 - [ ] Complex conflict types, like War
 - [ ] Map / Town / Adventure Site help
 - [ ] Newtown 

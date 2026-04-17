@@ -1,0 +1,92 @@
+_id: lt00000000000011
+name: 'Coins Subtable 2'
+img: systems/tb2e/icons/ffffff/transparent/1x1/delapouite/coins-pile.svg
+description: 'Scholar''s Guide, p. 160'
+formula: '1d6'
+replacement: true
+displayRoll: true
+results:
+  - _id: lt00r00000000010
+    type: document
+    range:
+      - 1
+      - 1
+    weight: 1
+    drawn: false
+    name: 'Small Sack of Copper Coins'
+    documentUuid: Compendium.tb2e.loot.Item.aa00000000000016
+    description: '1D, pack 2'
+    img: null
+    flags: {}
+    _key: '!tables.results!lt00000000000011.lt00r00000000010'
+  - _id: lt00r00000000020
+    type: document
+    range:
+      - 2
+      - 2
+    weight: 1
+    drawn: false
+    name: 'Small Sack of Silver Coins'
+    documentUuid: Compendium.tb2e.loot.Item.aa00000000000019
+    description: '2D, pack 2'
+    img: null
+    flags: {}
+    _key: '!tables.results!lt00000000000011.lt00r00000000020'
+  - _id: lt00r00000000030
+    type: document
+    range:
+      - 3
+      - 3
+    weight: 1
+    drawn: false
+    name: 'Small Sack of Gold Coins'
+    documentUuid: Compendium.tb2e.loot.Item.aa0000000000001a
+    description: '4D, pack 2'
+    img: null
+    flags: {}
+    _key: '!tables.results!lt00000000000011.lt00r00000000030'
+  - _id: lt00r00000000040
+    type: document
+    range:
+      - 4
+      - 4
+    weight: 1
+    drawn: false
+    name: 'Large Sack of Copper Coins'
+    documentUuid: Compendium.tb2e.loot.Item.aa0000000000001b
+    description: '3D, pack 6'
+    img: null
+    flags: {}
+    _key: '!tables.results!lt00000000000011.lt00r00000000040'
+  - _id: lt00r00000000050
+    type: document
+    range:
+      - 5
+      - 5
+    weight: 1
+    drawn: false
+    name: 'Satchel of Silver Coins'
+    documentUuid: Compendium.tb2e.loot.Item.aa0000000000001c
+    description: '3D, pack 3'
+    img: null
+    flags: {}
+    _key: '!tables.results!lt00000000000011.lt00r00000000050'
+  - _id: lt00r00000000060
+    type: document
+    range:
+      - 6
+      - 6
+    weight: 1
+    drawn: false
+    name: 'Satchel of Gold Coins'
+    documentUuid: Compendium.tb2e.loot.Item.aa0000000000001d
+    description: '6D, pack 3'
+    img: null
+    flags: {}
+    _key: '!tables.results!lt00000000000011.lt00r00000000060'
+folder: null
+sort: 0
+ownership:
+  default: 0
+flags: {}
+_key: '!tables!lt00000000000011'

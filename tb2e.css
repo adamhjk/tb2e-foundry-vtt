@@ -5252,6 +5252,286 @@ body.theme-dark .tb2e.sheet .torchbearer-logo,
   color: var(--tb-green);
 }
 /* ============================================ */
+/*  Chat Loot Draw Card                         */
+/*  Amber-accented treasure cascade             */
+/* ============================================ */
+.tb2e-chat-card.loot-card {
+  /* Tighten the amber accent into a cache-of-coins feel — the base */
+  /* .card-accent--amber already gives us the warm tones and gold border. */
+  position: relative;
+}
+/* Subtle radial glow under the header to evoke torchlight on treasure. */
+.tb2e-chat-card.loot-card .card-header {
+  position: relative;
+  overflow: hidden;
+}
+.tb2e-chat-card.loot-card .card-header::before {
+  content: "";
+  position: absolute;
+  inset: auto -20% -80% -20%;
+  height: 140%;
+  background: radial-gradient(ellipse at center, var(--tb-amber-glow-bright) 0%, var(--tb-amber-glow) 35%, transparent 70%);
+  pointer-events: none;
+  opacity: 0.6;
+}
+.tb2e-chat-card.loot-card .card-info {
+  position: relative;
+}
+.tb2e-chat-card.loot-card .card-subtitle {
+  color: var(--tb-amber-dim);
+  font-style: italic;
+  font-size: 0.72rem;
+  letter-spacing: 0.02em;
+}
+.tb2e-chat-card.loot-card .card-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35em;
+}
+/* -------------------------------------------- */
+/*  Chain                                       */
+/* -------------------------------------------- */
+.tb2e-chat-card.loot-card .loot-chain {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  padding: 0.5rem 0.75rem 0.25rem;
+  border-bottom: 1px solid var(--tb-border);
+}
+.tb2e-chat-card.loot-card .loot-chain-link {
+  display: grid;
+  grid-template-columns: 24px 1fr auto;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.3rem 0.4rem;
+  border-radius: var(--tb-radius, 4px);
+  background: var(--tb-overlay-white);
+  border: 1px dashed var(--tb-amber-glow-bright);
+  transition: background 0.15s ease;
+}
+.tb2e-chat-card.loot-card .loot-chain-link:hover {
+  background: var(--tb-amber-glow);
+}
+.tb2e-chat-card.loot-card .loot-chain-link--last {
+  border-style: solid;
+  border-color: var(--tb-amber);
+  background: var(--tb-amber-glow);
+}
+.tb2e-chat-card.loot-card .loot-chain-icon {
+  width: 24px;
+  height: 24px;
+  border-radius: 3px;
+  object-fit: contain;
+  background: var(--tb-bg-mid);
+  border: 1px solid var(--tb-border-light);
+}
+.tb2e-chat-card.loot-card .loot-chain-body {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.2;
+  min-width: 0;
+}
+.tb2e-chat-card.loot-card .loot-chain-name {
+  font-family: var(--tb-font-heading);
+  font-size: 0.78rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--tb-amber-dim);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.tb2e-chat-card.loot-card .loot-chain-formula {
+  font-size: 0.68rem;
+  font-family: var(--tb-font-mono, ui-monospace, "SFMono-Regular", Menlo, monospace);
+  color: var(--tb-text-faint);
+  letter-spacing: 0.03em;
+}
+.tb2e-chat-card.loot-card .loot-chain-total {
+  font-family: var(--tb-font-heading);
+  font-size: 1.1rem;
+  font-weight: 700;
+  min-width: 2ch;
+  text-align: center;
+  padding: 0.1rem 0.5rem;
+  border-radius: 3px;
+  background: var(--tb-amber);
+  color: var(--tb-bg-darkest, #0c1220);
+  box-shadow: 0 0 6px var(--tb-amber-glow-bright);
+}
+/* Connector chevrons between chain links — subtle descent. */
+.tb2e-chat-card.loot-card .loot-chain-link-connector {
+  display: flex;
+  justify-content: center;
+  color: var(--tb-amber-bright);
+  opacity: 0.55;
+  padding: 1px 0;
+  font-size: 0.65rem;
+}
+/* -------------------------------------------- */
+/*  Drops                                       */
+/* -------------------------------------------- */
+.tb2e-chat-card.loot-card .loot-drops {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  padding: 0.6rem 0.75rem;
+  background: var(--tb-overlay-white);
+}
+.tb2e-chat-card.loot-card .loot-drop {
+  display: grid;
+  grid-template-columns: 44px 1fr;
+  gap: 0.55rem;
+  align-items: center;
+  padding: 0.4rem 0.5rem;
+  border-radius: var(--tb-radius, 4px);
+  background: var(--tb-bg-raised);
+  border: 1px solid var(--tb-amber);
+  box-shadow: 0 1px 0 var(--tb-overlay-white-mid), 0 0 0 1px var(--tb-amber-glow) inset;
+}
+.tb2e-chat-card.loot-card .loot-drop-img {
+  width: 44px;
+  height: 44px;
+  border-radius: 3px;
+  object-fit: contain;
+  background: var(--tb-bg-mid);
+  border: 1px solid var(--tb-amber-glow-bright);
+}
+.tb2e-chat-card.loot-card .loot-drop-img--placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--tb-amber-dim);
+  font-size: 1.4rem;
+}
+.tb2e-chat-card.loot-card .loot-drop-body {
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+  min-width: 0;
+}
+.tb2e-chat-card.loot-card .loot-drop-name {
+  font-family: var(--tb-font-heading);
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--tb-text-bright);
+  letter-spacing: 0.01em;
+  text-decoration: none;
+  /* Foundry's content-link anchor ships with padding/border — strip to match the card language. */
+  display: inline;
+  background: none;
+  border: none;
+  padding: 0;
+  margin: 0;
+  cursor: pointer;
+}
+.tb2e-chat-card.loot-card a.loot-drop-name:hover,
+.tb2e-chat-card.loot-card a.loot-drop-name.content-link:hover {
+  color: var(--tb-amber-bright);
+  text-decoration: underline wavy;
+  text-underline-offset: 2px;
+  background: none;
+  border: none;
+}
+/* Wrapping anchor around the drop image — matches the item image click area. */
+.tb2e-chat-card.loot-card .loot-drop-img-link {
+  display: block;
+  width: 44px;
+  height: 44px;
+  flex: 0 0 auto;
+  cursor: pointer;
+  border-radius: 3px;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+  /* Suppress Foundry's default content-link chrome on this wrapper. */
+  background: none;
+  border: none;
+  padding: 0;
+}
+.tb2e-chat-card.loot-card .loot-drop-img-link .loot-drop-img {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+.tb2e-chat-card.loot-card .loot-drop-img-link:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 3px 10px var(--tb-amber-glow-bright);
+  background: none;
+  border: none;
+}
+.tb2e-chat-card.loot-card .loot-drop-img-link:hover .loot-drop-img {
+  border-color: var(--tb-amber-bright);
+}
+.tb2e-chat-card.loot-card .loot-drop-detail {
+  font-size: 0.75rem;
+  color: var(--tb-text-dim);
+  line-height: 1.3;
+}
+.tb2e-chat-card.loot-card .loot-drop-page {
+  font-size: 0.68rem;
+  color: var(--tb-text-faint);
+  font-style: italic;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3em;
+}
+/* Text-type drops (no linked Item — e.g., "Vile cult symbols") get a
+   muted treatment so they don't look like clickable Items. */
+.tb2e-chat-card.loot-card .loot-drop--text {
+  border-style: dashed;
+  border-color: var(--tb-amber-glow-bright);
+  background: var(--tb-overlay-white-mid);
+}
+.tb2e-chat-card.loot-card .loot-drop--text .loot-drop-name {
+  color: var(--tb-amber-dim);
+  font-weight: 600;
+}
+/* -------------------------------------------- */
+/*  Entrance animation                          */
+/* -------------------------------------------- */
+@keyframes tb2e-loot-coin-drop {
+  0% {
+    opacity: 0;
+    transform: translateY(-6px) scale(0.96);
+  }
+  60% {
+    opacity: 1;
+    transform: translateY(2px) scale(1.01);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+.tb2e-chat-card.loot-card .loot-chain-link,
+.tb2e-chat-card.loot-card .loot-drop {
+  animation: tb2e-loot-coin-drop 0.35s ease-out both;
+}
+.tb2e-chat-card.loot-card .loot-chain-link:nth-child(1) {
+  animation-delay: 0s;
+}
+.tb2e-chat-card.loot-card .loot-chain-link:nth-child(3) {
+  animation-delay: 0.06s;
+}
+.tb2e-chat-card.loot-card .loot-chain-link:nth-child(5) {
+  animation-delay: 0.12s;
+}
+.tb2e-chat-card.loot-card .loot-chain-link:nth-child(7) {
+  animation-delay: 0.18s;
+}
+.tb2e-chat-card.loot-card .loot-chain-link:nth-child(9) {
+  animation-delay: 0.24s;
+}
+.tb2e-chat-card.loot-card .loot-drop:nth-child(1) {
+  animation-delay: 0.3s;
+}
+.tb2e-chat-card.loot-card .loot-drop:nth-child(2) {
+  animation-delay: 0.36s;
+}
+.tb2e-chat-card.loot-card .loot-drop:nth-child(3) {
+  animation-delay: 0.42s;
+}
+/* ============================================ */
 /*  Conflict Tracker                            */
 /* ============================================ */
 .tb2e-conflict-header {

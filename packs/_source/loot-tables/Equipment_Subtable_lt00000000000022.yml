@@ -1,0 +1,92 @@
+_id: lt00000000000022
+name: 'Equipment Subtable'
+img: systems/tb2e/icons/ffffff/transparent/1x1/lorc/battle-gear.svg
+description: 'Scholar''s Guide, p. 155 (Gear Subtable row 8)'
+formula: '1d6'
+replacement: true
+displayRoll: true
+results:
+  - _id: lt00r00000000010
+    type: document
+    range:
+      - 1
+      - 1
+    weight: 1
+    drawn: false
+    name: 'Iron Spikes'
+    documentUuid: Compendium.tb2e.equipment.Item.a3b4c5d6e7f8000c
+    description: ''
+    img: null
+    flags: {}
+    _key: '!tables.results!lt00000000000022.lt00r00000000010'
+  - _id: lt00r00000000020
+    type: document
+    range:
+      - 2
+      - 2
+    weight: 1
+    drawn: false
+    name: 'Hammer'
+    documentUuid: Compendium.tb2e.equipment.Item.a3b4c5d6e7f8000a
+    description: ''
+    img: null
+    flags: {}
+    _key: '!tables.results!lt00000000000022.lt00r00000000020'
+  - _id: lt00r00000000030
+    type: document
+    range:
+      - 3
+      - 3
+    weight: 1
+    drawn: false
+    name: 'Pry Bar'
+    documentUuid: Compendium.tb2e.equipment.Item.a3b4c5d6e7f80011
+    description: ''
+    img: null
+    flags: {}
+    _key: '!tables.results!lt00000000000022.lt00r00000000030'
+  - _id: lt00r00000000040
+    type: document
+    range:
+      - 4
+      - 4
+    weight: 1
+    drawn: false
+    name: 'Chalk'
+    documentUuid: Compendium.tb2e.equipment.Item.a3b4c5d6e7f80005
+    description: ''
+    img: null
+    flags: {}
+    _key: '!tables.results!lt00000000000022.lt00r00000000040'
+  - _id: lt00r00000000050
+    type: document
+    range:
+      - 5
+      - 5
+    weight: 1
+    drawn: false
+    name: 'Rope'
+    documentUuid: Compendium.tb2e.equipment.Item.a3b4c5d6e7f80012
+    description: ''
+    img: null
+    flags: {}
+    _key: '!tables.results!lt00000000000022.lt00r00000000050'
+  - _id: lt00r00000000060
+    type: document
+    range:
+      - 6
+      - 6
+    weight: 1
+    drawn: false
+    name: 'Tinderbox'
+    documentUuid: Compendium.tb2e.equipment.Item.a3b4c5d6e7f80018
+    description: ''
+    img: null
+    flags: {}
+    _key: '!tables.results!lt00000000000022.lt00r00000000060'
+folder: null
+sort: 0
+ownership:
+  default: 0
+flags: {}
+_key: '!tables!lt00000000000022'

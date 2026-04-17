@@ -1,0 +1,206 @@
+_id: lt0000000000000d
+name: 'Stuff Subtable'
+img: systems/tb2e/icons/ffffff/transparent/1x1/lorc/swap-bag.svg
+description: 'Scholar''s Guide, p. 159'
+formula: '3d6'
+replacement: true
+displayRoll: true
+results:
+  - _id: lt00r00000000010
+    type: text
+    range:
+      - 3
+      - 3
+    weight: 1
+    drawn: false
+    name: ''
+    description: 'Vile cult symbols'
+    img: systems/tb2e/icons/ffffff/transparent/1x1/lorc/swap-bag.svg
+    flags: {}
+    _key: '!tables.results!lt0000000000000d.lt00r00000000010'
+  - _id: lt00r00000000020
+    type: text
+    range:
+      - 4
+      - 4
+    weight: 1
+    drawn: false
+    name: ''
+    description: 'Bag of rocks'
+    img: systems/tb2e/icons/ffffff/transparent/1x1/lorc/swap-bag.svg
+    flags: {}
+    _key: '!tables.results!lt0000000000000d.lt00r00000000020'
+  - _id: lt00r00000000030
+    type: text
+    range:
+      - 5
+      - 5
+    weight: 1
+    drawn: false
+    name: ''
+    description: 'Bones'
+    img: systems/tb2e/icons/ffffff/transparent/1x1/lorc/swap-bag.svg
+    flags: {}
+    _key: '!tables.results!lt0000000000000d.lt00r00000000030'
+  - _id: lt00r00000000040
+    type: text
+    range:
+      - 6
+      - 6
+    weight: 1
+    drawn: false
+    name: ''
+    description: 'String'
+    img: systems/tb2e/icons/ffffff/transparent/1x1/lorc/swap-bag.svg
+    flags: {}
+    _key: '!tables.results!lt0000000000000d.lt00r00000000040'
+  - _id: lt00r00000000050
+    type: text
+    range:
+      - 7
+      - 7
+    weight: 1
+    drawn: false
+    name: ''
+    description: 'Dried leaves'
+    img: systems/tb2e/icons/ffffff/transparent/1x1/lorc/swap-bag.svg
+    flags: {}
+    _key: '!tables.results!lt0000000000000d.lt00r00000000050'
+  - _id: lt00r00000000060
+    type: text
+    range:
+      - 8
+      - 8
+    weight: 1
+    drawn: false
+    name: ''
+    description: 'Some teeth'
+    img: systems/tb2e/icons/ffffff/transparent/1x1/lorc/swap-bag.svg
+    flags: {}
+    _key: '!tables.results!lt0000000000000d.lt00r00000000060'
+  - _id: lt00r00000000070
+    type: text
+    range:
+      - 9
+      - 9
+    weight: 1
+    drawn: false
+    name: ''
+    description: 'Lint'
+    img: systems/tb2e/icons/ffffff/transparent/1x1/lorc/swap-bag.svg
+    flags: {}
+    _key: '!tables.results!lt0000000000000d.lt00r00000000070'
+  - _id: lt00r00000000080
+    type: text
+    range:
+      - 10
+      - 10
+    weight: 1
+    drawn: false
+    name: ''
+    description: 'Worthless coins of unknown provenance'
+    img: systems/tb2e/icons/ffffff/transparent/1x1/lorc/swap-bag.svg
+    flags: {}
+    _key: '!tables.results!lt0000000000000d.lt00r00000000080'
+  - _id: lt00r00000000090
+    type: text
+    range:
+      - 11
+      - 11
+    weight: 1
+    drawn: false
+    name: ''
+    description: 'Indecipherable notes'
+    img: systems/tb2e/icons/ffffff/transparent/1x1/lorc/swap-bag.svg
+    flags: {}
+    _key: '!tables.results!lt0000000000000d.lt00r00000000090'
+  - _id: lt00r000000000a0
+    type: text
+    range:
+      - 12
+      - 12
+    weight: 1
+    drawn: false
+    name: ''
+    description: 'Rusty keys'
+    img: systems/tb2e/icons/ffffff/transparent/1x1/lorc/swap-bag.svg
+    flags: {}
+    _key: '!tables.results!lt0000000000000d.lt00r000000000a0'
+  - _id: lt00r000000000b0
+    type: text
+    range:
+      - 13
+      - 13
+    weight: 1
+    drawn: false
+    name: ''
+    description: 'An idol for an unknown religion'
+    img: systems/tb2e/icons/ffffff/transparent/1x1/lorc/swap-bag.svg
+    flags: {}
+    _key: '!tables.results!lt0000000000000d.lt00r000000000b0'
+  - _id: lt00r000000000c0
+    type: text
+    range:
+      - 14
+      - 14
+    weight: 1
+    drawn: false
+    name: ''
+    description: 'A child''s dolly or puppet'
+    img: systems/tb2e/icons/ffffff/transparent/1x1/lorc/swap-bag.svg
+    flags: {}
+    _key: '!tables.results!lt0000000000000d.lt00r000000000c0'
+  - _id: lt00r000000000d0
+    type: text
+    range:
+      - 15
+      - 15
+    weight: 1
+    drawn: false
+    name: ''
+    description: 'A tool of unknown use'
+    img: systems/tb2e/icons/ffffff/transparent/1x1/lorc/swap-bag.svg
+    flags: {}
+    _key: '!tables.results!lt0000000000000d.lt00r000000000d0'
+  - _id: lt00r000000000e0
+    type: text
+    range:
+      - 16
+      - 16
+    weight: 1
+    drawn: false
+    name: ''
+    description: 'Dice'
+    img: systems/tb2e/icons/ffffff/transparent/1x1/lorc/swap-bag.svg
+    flags: {}
+    _key: '!tables.results!lt0000000000000d.lt00r000000000e0'
+  - _id: lt00r000000000f0
+    type: text
+    range:
+      - 17
+      - 17
+    weight: 1
+    drawn: false
+    name: ''
+    description: 'A rusty nail'
+    img: systems/tb2e/icons/ffffff/transparent/1x1/lorc/swap-bag.svg
+    flags: {}
+    _key: '!tables.results!lt0000000000000d.lt00r000000000f0'
+  - _id: lt00r00000000100
+    type: text
+    range:
+      - 18
+      - 18
+    weight: 1
+    drawn: false
+    name: ''
+    description: 'A chipped bowl or cup'
+    img: systems/tb2e/icons/ffffff/transparent/1x1/lorc/swap-bag.svg
+    flags: {}
+    _key: '!tables.results!lt0000000000000d.lt00r00000000100'
+folder: null
+sort: 0
+ownership:
+  default: 0
+flags: {}
+_key: '!tables!lt0000000000000d'

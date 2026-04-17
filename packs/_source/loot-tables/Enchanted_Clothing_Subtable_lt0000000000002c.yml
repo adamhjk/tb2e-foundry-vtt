@@ -1,0 +1,92 @@
+_id: lt0000000000002c
+name: 'Enchanted Clothing Subtable'
+img: systems/tb2e/icons/ffffff/transparent/1x1/lucasms/cloak.svg
+description: 'Scholar''s Guide, p. 157 (Magic Subtable row 6)'
+formula: '1d6'
+replacement: true
+displayRoll: true
+results:
+  - _id: lt00r00000000010
+    type: document
+    range:
+      - 1
+      - 1
+    weight: 1
+    drawn: false
+    name: 'Enchanted Cloak'
+    documentUuid: Compendium.tb2e.magic-items.Item.cc00000000000013
+    description: ''
+    img: null
+    flags: {}
+    _key: '!tables.results!lt0000000000002c.lt00r00000000010'
+  - _id: lt00r00000000020
+    type: document
+    range:
+      - 2
+      - 2
+    weight: 1
+    drawn: false
+    name: 'Enchanted Hat'
+    documentUuid: Compendium.tb2e.magic-items.Item.cc00000000000014
+    description: ''
+    img: null
+    flags: {}
+    _key: '!tables.results!lt0000000000002c.lt00r00000000020'
+  - _id: lt00r00000000030
+    type: document
+    range:
+      - 3
+      - 3
+    weight: 1
+    drawn: false
+    name: 'Enchanted Wool Sweater'
+    documentUuid: Compendium.tb2e.magic-items.Item.cc00000000000015
+    description: ''
+    img: null
+    flags: {}
+    _key: '!tables.results!lt0000000000002c.lt00r00000000030'
+  - _id: lt00r00000000040
+    type: document
+    range:
+      - 4
+      - 4
+    weight: 1
+    drawn: false
+    name: 'Enchanted Shoes'
+    documentUuid: Compendium.tb2e.magic-items.Item.cc00000000000016
+    description: ''
+    img: null
+    flags: {}
+    _key: '!tables.results!lt0000000000002c.lt00r00000000040'
+  - _id: lt00r00000000050
+    type: document
+    range:
+      - 5
+      - 5
+    weight: 1
+    drawn: false
+    name: 'Enchanted Belt'
+    documentUuid: Compendium.tb2e.magic-items.Item.cc00000000000017
+    description: 'Or an enchanted bandolier — player chooses.'
+    img: null
+    flags: {}
+    _key: '!tables.results!lt0000000000002c.lt00r00000000050'
+  - _id: lt00r00000000060
+    type: document
+    range:
+      - 6
+      - 6
+    weight: 1
+    drawn: false
+    name: 'Enchanted Boots'
+    documentUuid: Compendium.tb2e.magic-items.Item.cc00000000000018
+    description: ''
+    img: null
+    flags: {}
+    _key: '!tables.results!lt0000000000002c.lt00r00000000060'
+folder: null
+sort: 0
+ownership:
+  default: 0
+flags: {}
+_key: '!tables!lt0000000000002c'

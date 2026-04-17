@@ -1,0 +1,144 @@
+_id: lt00000000000013
+name: 'Jewelry Subtable 1'
+img: systems/tb2e/icons/ffffff/transparent/1x1/lorc/gem-necklace.svg
+description: 'Scholar''s Guide, p. 160'
+formula: '2d6'
+replacement: true
+displayRoll: true
+results:
+  - _id: lt00r00000000010
+    type: document
+    range:
+      - 2
+      - 3
+    weight: 1
+    drawn: false
+    name: 'Brooch'
+    documentUuid: Compendium.tb2e.loot.Item.aa00000000000027
+    description: '4D, worn/cloak 1 or pocket'
+    img: null
+    flags: {}
+    _key: '!tables.results!lt00000000000013.lt00r00000000010'
+  - _id: lt00r00000000020
+    type: document
+    range:
+      - 4
+      - 4
+    weight: 1
+    drawn: false
+    name: 'Ring'
+    documentUuid: Compendium.tb2e.loot.Item.aa00000000000028
+    description: '5D, worn/hands 1 or pocket'
+    img: null
+    flags: {}
+    _key: '!tables.results!lt00000000000013.lt00r00000000020'
+  - _id: lt00r00000000030
+    type: document
+    range:
+      - 5
+      - 5
+    weight: 1
+    drawn: false
+    name: 'Bracelet'
+    documentUuid: Compendium.tb2e.loot.Item.aa00000000000029
+    description: '3D, worn/hands 1 or pocket'
+    img: null
+    flags: {}
+    _key: '!tables.results!lt00000000000013.lt00r00000000030'
+  - _id: lt00r00000000040
+    type: document
+    range:
+      - 6
+      - 6
+    weight: 1
+    drawn: false
+    name: 'Pendant'
+    documentUuid: Compendium.tb2e.loot.Item.aa0000000000002a
+    description: '2D, worn/neck or pocket'
+    img: null
+    flags: {}
+    _key: '!tables.results!lt00000000000013.lt00r00000000040'
+  - _id: lt00r00000000050
+    type: document
+    range:
+      - 7
+      - 7
+    weight: 1
+    drawn: false
+    name: 'Amulet'
+    documentUuid: Compendium.tb2e.loot.Item.aa0000000000002b
+    description: '1D, worn/neck or pocket'
+    img: null
+    flags: {}
+    _key: '!tables.results!lt00000000000013.lt00r00000000050'
+  - _id: lt00r00000000060
+    type: document
+    range:
+      - 8
+      - 8
+    weight: 1
+    drawn: false
+    name: 'Buckle'
+    documentUuid: Compendium.tb2e.loot.Item.aa0000000000002c
+    description: '2D, belt 1 or pocket'
+    img: null
+    flags: {}
+    _key: '!tables.results!lt00000000000013.lt00r00000000060'
+  - _id: lt00r00000000070
+    type: document
+    range:
+      - 9
+      - 9
+    weight: 1
+    drawn: false
+    name: 'Jeweled Pin'
+    documentUuid: Compendium.tb2e.loot.Item.aa0000000000002d
+    description: '3D, worn/cloak 1 or pocket'
+    img: null
+    flags: {}
+    _key: '!tables.results!lt00000000000013.lt00r00000000070'
+  - _id: lt00r00000000080
+    type: document
+    range:
+      - 10
+      - 10
+    weight: 1
+    drawn: false
+    name: 'Armband'
+    documentUuid: Compendium.tb2e.loot.Item.aa0000000000002e
+    description: '4D, upper arm 1'
+    img: null
+    flags: {}
+    _key: '!tables.results!lt00000000000013.lt00r00000000080'
+  - _id: lt00r00000000090
+    type: document
+    range:
+      - 11
+      - 11
+    weight: 1
+    drawn: false
+    name: 'Necklace'
+    documentUuid: Compendium.tb2e.loot.Item.aa0000000000002f
+    description: '5D, worn/neck or pocket'
+    img: null
+    flags: {}
+    _key: '!tables.results!lt00000000000013.lt00r00000000090'
+  - _id: lt00r000000000a0
+    type: document
+    range:
+      - 12
+      - 12
+    weight: 1
+    drawn: false
+    name: 'Gold Tooth'
+    documentUuid: Compendium.tb2e.loot.Item.aa00000000000030
+    description: '2D, mouth 1 or pocket'
+    img: null
+    flags: {}
+    _key: '!tables.results!lt00000000000013.lt00r000000000a0'
+folder: null
+sort: 0
+ownership:
+  default: 0
+flags: {}
+_key: '!tables!lt00000000000013'

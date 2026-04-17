@@ -1,0 +1,78 @@
+_id: lt00000000000030
+name: 'Enchanted Weapon Subtable'
+img: systems/tb2e/icons/ffffff/transparent/1x1/delapouite/ancient-sword.svg
+description: 'Scholar''s Guide, p. 157 (Magic Subtable row 11)'
+formula: '1d6'
+replacement: true
+displayRoll: true
+results:
+  - _id: lt00r00000000010
+    type: document
+    range:
+      - 1
+      - 1
+    weight: 1
+    drawn: false
+    name: 'Mind Sword'
+    documentUuid: Compendium.tb2e.magic-items.Item.cc00000000000004
+    description: ''
+    img: null
+    flags: {}
+    _key: '!tables.results!lt00000000000030.lt00r00000000010'
+  - _id: lt00r00000000020
+    type: document
+    range:
+      - 2
+      - 3
+    weight: 1
+    drawn: false
+    name: 'Blood-Seeking Sword'
+    documentUuid: Compendium.tb2e.magic-items.Item.cc00000000000002
+    description: ''
+    img: null
+    flags: {}
+    _key: '!tables.results!lt00000000000030.lt00r00000000020'
+  - _id: lt00r00000000030
+    type: document
+    range:
+      - 4
+      - 4
+    weight: 1
+    drawn: false
+    name: 'Celestial Mace'
+    documentUuid: Compendium.tb2e.magic-items.Item.cc00000000000003
+    description: ''
+    img: null
+    flags: {}
+    _key: '!tables.results!lt00000000000030.lt00r00000000030'
+  - _id: lt00r00000000040
+    type: document
+    range:
+      - 5
+      - 5
+    weight: 1
+    drawn: false
+    name: 'Slaughterer''s Friend'
+    documentUuid: Compendium.tb2e.magic-items.Item.cc00000000000005
+    description: ''
+    img: null
+    flags: {}
+    _key: '!tables.results!lt00000000000030.lt00r00000000040'
+  - _id: lt00r00000000050
+    type: text
+    range:
+      - 6
+      - 6
+    weight: 1
+    drawn: false
+    name: 'Elven or Dwarven Weapon'
+    description: 'Elven or dwarven weapon — see the entry below the Gear Subtable (Scholar''s Guide, p.155-156). Roll on the Weapons Subtable for type, name it, and imbue it with a wise.'
+    img: systems/tb2e/icons/ffffff/transparent/1x1/delapouite/ancient-sword.svg
+    flags: {}
+    _key: '!tables.results!lt00000000000030.lt00r00000000050'
+folder: null
+sort: 0
+ownership:
+  default: 0
+flags: {}
+_key: '!tables!lt00000000000030'

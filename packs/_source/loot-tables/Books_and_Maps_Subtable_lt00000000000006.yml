@@ -1,0 +1,221 @@
+_id: lt00000000000006
+name: 'Books & Maps Subtable'
+img: systems/tb2e/icons/ffffff/transparent/1x1/delapouite/book-pile.svg
+description: 'Scholar''s Guide, p. 153'
+formula: '3d6'
+replacement: true
+displayRoll: true
+results:
+  - _id: lt00r00000000010
+    type: document
+    range:
+      - 3
+      - 3
+    weight: 1
+    drawn: false
+    name: 'Accurate Map (Dungeon Level)'
+    documentUuid: Compendium.tb2e.loot.Item.aa00000000000001
+    description: 'Value X, pack 1'
+    img: null
+    flags: {}
+    _key: '!tables.results!lt00000000000006.lt00r00000000010'
+  - _id: lt00r00000000020
+    type: document
+    range:
+      - 4
+      - 4
+    weight: 1
+    drawn: false
+    name: 'Accurate Map (Small Region)'
+    documentUuid: Compendium.tb2e.loot.Item.aa00000000000002
+    description: 'Value X, pack 1'
+    img: null
+    flags: {}
+    _key: '!tables.results!lt00000000000006.lt00r00000000020'
+  - _id: lt00r00000000030
+    type: document
+    range:
+      - 5
+      - 5
+    weight: 1
+    drawn: false
+    name: 'Accurate Map (Single Area)'
+    documentUuid: Compendium.tb2e.loot.Item.aa00000000000003
+    description: 'Value X, pack 1'
+    img: null
+    flags: {}
+    _key: '!tables.results!lt00000000000006.lt00r00000000030'
+  - _id: lt00r00000000040
+    type: document
+    range:
+      - 6
+      - 6
+    weight: 1
+    drawn: false
+    name: 'Correspondence'
+    documentUuid: Compendium.tb2e.loot.Item.aa00000000000004
+    description: 'Value X, pack 1. Note letter''s language.'
+    img: null
+    flags: {}
+    _key: '!tables.results!lt00000000000006.lt00r00000000040'
+  - _id: lt00r00000000050
+    type: document
+    range:
+      - 7
+      - 7
+    weight: 1
+    drawn: false
+    name: 'Monograph of Prophecy'
+    documentUuid: Compendium.tb2e.loot.Item.aa00000000000005
+    description: 'Value X, pack 1. In an ancient tongue.'
+    img: null
+    flags: {}
+    _key: '!tables.results!lt00000000000006.lt00r00000000050'
+  - _id: lt00r00000000060
+    type: document
+    range:
+      - 8
+      - 8
+    weight: 1
+    drawn: false
+    name: 'Dwarven Chronicle'
+    documentUuid: Compendium.tb2e.loot.Item.aa00000000000006
+    description: 'Value X, pack 1. Of a lost settlement.'
+    img: null
+    flags: {}
+    _key: '!tables.results!lt00000000000006.lt00r00000000060'
+  - _id: lt00r00000000070
+    type: document
+    range:
+      - 9
+      - 9
+    weight: 1
+    drawn: false
+    name: 'Monster Nature Description'
+    documentUuid: Compendium.tb2e.loot.Item.aa00000000000007
+    description: 'Value X, pack 1. Written by a forgotten philosopher.'
+    img: null
+    flags: {}
+    _key: '!tables.results!lt00000000000006.lt00r00000000070'
+  - _id: lt00r00000000080
+    type: document
+    range:
+      - 10
+      - 10
+    weight: 1
+    drawn: false
+    name: 'Cyclopedia'
+    documentUuid: Compendium.tb2e.loot.Item.aa00000000000008
+    description: '3D, pack 2'
+    img: null
+    flags: {}
+    _key: '!tables.results!lt00000000000006.lt00r00000000080'
+  - _id: lt00r00000000090
+    type: document
+    range:
+      - 11
+      - 11
+    weight: 1
+    drawn: false
+    name: 'Book of Myths'
+    documentUuid: Compendium.tb2e.loot.Item.aa00000000000009
+    description: '2D, pack 1'
+    img: null
+    flags: {}
+    _key: '!tables.results!lt00000000000006.lt00r00000000090'
+  - _id: lt00r000000000a0
+    type: document
+    range:
+      - 12
+      - 12
+    weight: 1
+    drawn: false
+    name: 'Bestiary'
+    documentUuid: Compendium.tb2e.loot.Item.aa0000000000000a
+    description: '3D, pack 2'
+    img: null
+    flags: {}
+    _key: '!tables.results!lt00000000000006.lt00r000000000a0'
+  - _id: lt00r000000000b0
+    type: document
+    range:
+      - 13
+      - 13
+    weight: 1
+    drawn: false
+    name: 'Romance'
+    documentUuid: Compendium.tb2e.loot.Item.aa0000000000000b
+    description: '2D, pack 1'
+    img: null
+    flags: {}
+    _key: '!tables.results!lt00000000000006.lt00r000000000b0'
+  - _id: lt00r000000000c0
+    type: document
+    range:
+      - 14
+      - 14
+    weight: 1
+    drawn: false
+    name: 'Puzzle Book'
+    documentUuid: Compendium.tb2e.loot.Item.aa0000000000000c
+    description: 'Value X, pack 2. Reveals the location of a secret.'
+    img: null
+    flags: {}
+    _key: '!tables.results!lt00000000000006.lt00r000000000c0'
+  - _id: lt00r000000000d0
+    type: document
+    range:
+      - 15
+      - 15
+    weight: 1
+    drawn: false
+    name: 'Map to Magical Artifact'
+    documentUuid: Compendium.tb2e.loot.Item.aa0000000000000d
+    description: 'Value X, pack 1. Location of a tomb containing a magical artifact.'
+    img: null
+    flags: {}
+    _key: '!tables.results!lt00000000000006.lt00r000000000d0'
+  - _id: lt00r000000000e0
+    type: document
+    range:
+      - 16
+      - 16
+    weight: 1
+    drawn: false
+    name: 'Map to Lost Treasures'
+    documentUuid: Compendium.tb2e.loot.Item.aa0000000000000e
+    description: 'Value X, pack 2. Location of a crypt containing lost treasures.'
+    img: null
+    flags: {}
+    _key: '!tables.results!lt00000000000006.lt00r000000000e0'
+  - _id: lt00r000000000f0
+    type: document
+    range:
+      - 17
+      - 17
+    weight: 1
+    drawn: false
+    name: 'Tome of Ancient Lore'
+    documentUuid: Compendium.tb2e.loot.Item.aa0000000000000f
+    description: 'Value X, pack 3. In a forgotten tongue. Once deciphered (Scholar Ob 6 or Wisdom of the Sages Ob 3 in town), roll on the Tome of Ancient Lore subtable for content.'
+    img: null
+    flags: {}
+    _key: '!tables.results!lt00000000000006.lt00r000000000f0'
+  - _id: lt00r00000000100
+    type: text
+    range:
+      - 18
+      - 18
+    weight: 1
+    drawn: false
+    name: 'Lost Spell Book'
+    description: 'Lost spell book(s): containing 2d3 spells of circles 2 through 4 (game master''s choice). Value X, pack 2.'
+    img: systems/tb2e/icons/ffffff/transparent/1x1/delapouite/book-pile.svg
+    flags: {}
+    _key: '!tables.results!lt00000000000006.lt00r00000000100'
+folder: null
+sort: 0
+ownership:
+  default: 0
+flags: {}
+_key: '!tables!lt00000000000006'

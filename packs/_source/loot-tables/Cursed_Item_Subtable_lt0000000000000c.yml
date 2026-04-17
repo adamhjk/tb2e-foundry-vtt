@@ -1,0 +1,99 @@
+_id: lt0000000000000c
+name: 'Cursed Item Subtable'
+img: systems/tb2e/icons/ffffff/transparent/1x1/lorc/cursed-star.svg
+description: 'Scholar''s Guide, p. 158'
+formula: '2d6'
+replacement: true
+displayRoll: true
+results:
+  - _id: lt00r00000000010
+    type: text
+    range:
+      - 2
+      - 5
+    weight: 1
+    drawn: false
+    name: 'Cursed Weapon'
+    description: 'Cursed weapon. Reduces wielder''s Might by 1; must be wielded in combat; cannot be discarded until the curse is removed.'
+    img: systems/tb2e/icons/ffffff/transparent/1x1/lorc/cursed-star.svg
+    flags: {}
+    _key: '!tables.results!lt0000000000000c.lt00r00000000010'
+  - _id: lt00r00000000020
+    type: text
+    range:
+      - 6
+      - 7
+    weight: 1
+    drawn: false
+    name: 'Cursed Poison'
+    description: 'Poison. Appears as another potion; acts as poison when used.'
+    img: systems/tb2e/icons/ffffff/transparent/1x1/lorc/cursed-star.svg
+    flags: {}
+    _key: '!tables.results!lt0000000000000c.lt00r00000000020'
+  - _id: lt00r00000000030
+    type: text
+    range:
+      - 8
+      - 8
+    weight: 1
+    drawn: false
+    name: 'Cursed Amulet'
+    description: 'Cursed amulet. Worth 1D (worn/neck). It cannot be voluntarily removed except to be given away to anyone who asks for food, shelter or money. It can be stolen or taken by force.'
+    img: systems/tb2e/icons/ffffff/transparent/1x1/lorc/cursed-star.svg
+    flags: {}
+    _key: '!tables.results!lt0000000000000c.lt00r00000000030'
+  - _id: lt00r00000000040
+    type: text
+    range:
+      - 9
+      - 9
+    weight: 1
+    drawn: false
+    name: 'Cursed Scroll'
+    description: 'Cursed scroll. Appears as a standard first-circle spell, but when used it has no effect except to empty the magician''s memory palace, causing the dreaded Temerarious Discharge.'
+    img: systems/tb2e/icons/ffffff/transparent/1x1/lorc/cursed-star.svg
+    flags: {}
+    _key: '!tables.results!lt0000000000000c.lt00r00000000040'
+  - _id: lt00r00000000050
+    type: document
+    range:
+      - 10
+      - 10
+    weight: 1
+    drawn: false
+    name: 'Cursed Gem'
+    documentUuid: Compendium.tb2e.loot.Item.aa0000000000001e
+    description: 'The bearer immediately gains greed focused on the cursed gem. Write a belief about why this gem must be protected at all costs. Anyone who attempts to take the gem becomes an enemy. See Scholar''s Guide, p. 161.'
+    img: null
+    flags: {}
+    _key: '!tables.results!lt0000000000000c.lt00r00000000050'
+  - _id: lt00r00000000060
+    type: text
+    range:
+      - 11
+      - 11
+    weight: 1
+    drawn: false
+    name: 'Cursed Armor'
+    description: 'Cursed armor. Offers no protection but looks great (and counts as Finery in courtly situations). Cursed armor must be worn at all times and may not be discarded until the curse is removed.'
+    img: systems/tb2e/icons/ffffff/transparent/1x1/lorc/cursed-star.svg
+    flags: {}
+    _key: '!tables.results!lt0000000000000c.lt00r00000000060'
+  - _id: lt00r00000000070
+    type: text
+    range:
+      - 12
+      - 12
+    weight: 1
+    drawn: false
+    name: 'Cursed Equipment'
+    description: 'Cursed equipment. -1s to an appropriate skill test. The item must be used when testing the related skill and cannot be discarded until the curse is removed.'
+    img: systems/tb2e/icons/ffffff/transparent/1x1/lorc/cursed-star.svg
+    flags: {}
+    _key: '!tables.results!lt0000000000000c.lt00r00000000070'
+folder: null
+sort: 0
+ownership:
+  default: 0
+flags: {}
+_key: '!tables!lt0000000000000c'

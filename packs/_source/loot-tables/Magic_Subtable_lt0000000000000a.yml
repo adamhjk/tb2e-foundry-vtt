@@ -1,0 +1,157 @@
+_id: lt0000000000000a
+name: 'Magic Subtable'
+img: systems/tb2e/icons/ffffff/transparent/1x1/lorc/magic-lamp.svg
+description: 'Scholar''s Guide, p. 157'
+formula: '2d6'
+replacement: true
+displayRoll: true
+results:
+  - _id: lt00r00000000010
+    type: document
+    range:
+      - 2
+      - 2
+    weight: 1
+    drawn: false
+    name: 'Cursed item — roll on the Cursed Item subtable'
+    documentUuid: Compendium.tb2e.loot-tables.RollTable.lt0000000000000c
+    description: ''
+    img: null
+    flags: {}
+    _key: '!tables.results!lt0000000000000a.lt00r00000000010'
+  - _id: lt00r00000000020
+    type: document
+    range:
+      - 3
+      - 3
+    weight: 1
+    drawn: false
+    name: 'Wards and charms (1d6)'
+    documentUuid: Compendium.tb2e.loot-tables.RollTable.lt0000000000002a
+    description: ''
+    img: null
+    flags: {}
+    _key: '!tables.results!lt0000000000000a.lt00r00000000020'
+  - _id: lt00r00000000030
+    type: document
+    range:
+      - 4
+      - 4
+    weight: 1
+    drawn: false
+    name: 'Staves and wands (1d6)'
+    documentUuid: Compendium.tb2e.loot-tables.RollTable.lt0000000000002b
+    description: ''
+    img: null
+    flags: {}
+    _key: '!tables.results!lt0000000000000a.lt00r00000000030'
+  - _id: lt00r00000000040
+    type: document
+    range:
+      - 5
+      - 5
+    weight: 1
+    drawn: false
+    name: 'Spell book — 1d3 circles of spells (game master''s choice)'
+    documentUuid: Compendium.tb2e.magical-religious.Item.8a7b6c5d4e3f0004
+    description: 'Roll 1d3 for the number of circles the spell book contains. Game master chooses which spells.'
+    img: null
+    flags: {}
+    _key: '!tables.results!lt0000000000000a.lt00r00000000040'
+  - _id: lt00r00000000050
+    type: document
+    range:
+      - 6
+      - 6
+    weight: 1
+    drawn: false
+    name: 'Enchanted clothing (1d6)'
+    documentUuid: Compendium.tb2e.loot-tables.RollTable.lt0000000000002c
+    description: ''
+    img: null
+    flags: {}
+    _key: '!tables.results!lt0000000000000a.lt00r00000000050'
+  - _id: lt00r00000000060
+    type: document
+    range:
+      - 7
+      - 7
+    weight: 1
+    drawn: false
+    name: 'Potion — roll on the Potions subtable'
+    documentUuid: Compendium.tb2e.loot-tables.RollTable.lt0000000000000b
+    description: ''
+    img: null
+    flags: {}
+    _key: '!tables.results!lt0000000000000a.lt00r00000000060'
+  - _id: lt00r00000000070
+    type: document
+    range:
+      - 8
+      - 8
+    weight: 1
+    drawn: false
+    name: 'Scroll (1d6 circle)'
+    documentUuid: Compendium.tb2e.loot-tables.RollTable.lt0000000000002d
+    description: ''
+    img: null
+    flags: {}
+    _key: '!tables.results!lt0000000000000a.lt00r00000000070'
+  - _id: lt00r00000000080
+    type: document
+    range:
+      - 9
+      - 9
+    weight: 1
+    drawn: false
+    name: 'Relic (1d6: minor / named / great)'
+    documentUuid: Compendium.tb2e.loot-tables.RollTable.lt0000000000002e
+    description: ''
+    img: null
+    flags: {}
+    _key: '!tables.results!lt0000000000000a.lt00r00000000080'
+  - _id: lt00r00000000090
+    type: document
+    range:
+      - 10
+      - 10
+    weight: 1
+    drawn: false
+    name: 'Magical gear (1d6)'
+    documentUuid: Compendium.tb2e.loot-tables.RollTable.lt0000000000002f
+    description: ''
+    img: null
+    flags: {}
+    _key: '!tables.results!lt0000000000000a.lt00r00000000090'
+  - _id: lt00r000000000a0
+    type: document
+    range:
+      - 11
+      - 11
+    weight: 1
+    drawn: false
+    name: 'Enchanted weapon (1d6)'
+    documentUuid: Compendium.tb2e.loot-tables.RollTable.lt00000000000030
+    description: ''
+    img: null
+    flags: {}
+    _key: '!tables.results!lt0000000000000a.lt00r000000000a0'
+  - _id: lt00r000000000b0
+    type: document
+    range:
+      - 12
+      - 12
+    weight: 1
+    drawn: false
+    name: 'Enchanted armor (1d6)'
+    documentUuid: Compendium.tb2e.loot-tables.RollTable.lt00000000000031
+    description: ''
+    img: null
+    flags: {}
+    _key: '!tables.results!lt0000000000000a.lt00r000000000b0'
+folder: null
+sort: 0
+ownership:
+  default: 0
+flags: {}
+_key: '!tables!lt0000000000000a'

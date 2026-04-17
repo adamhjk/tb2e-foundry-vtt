@@ -1,0 +1,92 @@
+_id: lt0000000000002f
+name: 'Magical Gear Subtable'
+img: systems/tb2e/icons/ffffff/transparent/1x1/lorc/magic-lamp.svg
+description: 'Scholar''s Guide, p. 157 (Magic Subtable row 10)'
+formula: '1d6'
+replacement: true
+displayRoll: true
+results:
+  - _id: lt00r00000000010
+    type: document
+    range:
+      - 1
+      - 1
+    weight: 1
+    drawn: false
+    name: 'Horn of Drenge'
+    documentUuid: Compendium.tb2e.magic-items.Item.cc0000000000001e
+    description: ''
+    img: null
+    flags: {}
+    _key: '!tables.results!lt0000000000002f.lt00r00000000010'
+  - _id: lt00r00000000020
+    type: document
+    range:
+      - 2
+      - 2
+    weight: 1
+    drawn: false
+    name: 'Burglar''s Gloves'
+    documentUuid: Compendium.tb2e.magic-items.Item.cc0000000000000f
+    description: ''
+    img: null
+    flags: {}
+    _key: '!tables.results!lt0000000000002f.lt00r00000000020'
+  - _id: lt00r00000000030
+    type: document
+    range:
+      - 3
+      - 3
+    weight: 1
+    drawn: false
+    name: 'Elven Rope'
+    documentUuid: Compendium.tb2e.magic-items.Item.cc0000000000001a
+    description: ''
+    img: null
+    flags: {}
+    _key: '!tables.results!lt0000000000002f.lt00r00000000030'
+  - _id: lt00r00000000040
+    type: document
+    range:
+      - 4
+      - 4
+    weight: 1
+    drawn: false
+    name: 'Girdle of Troll Might'
+    documentUuid: Compendium.tb2e.magic-items.Item.cc00000000000011
+    description: ''
+    img: null
+    flags: {}
+    _key: '!tables.results!lt0000000000002f.lt00r00000000040'
+  - _id: lt00r00000000050
+    type: document
+    range:
+      - 5
+      - 5
+    weight: 1
+    drawn: false
+    name: 'Haversack of Holding'
+    documentUuid: Compendium.tb2e.magic-items.Item.cc0000000000001d
+    description: ''
+    img: null
+    flags: {}
+    _key: '!tables.results!lt0000000000002f.lt00r00000000050'
+  - _id: lt00r00000000060
+    type: document
+    range:
+      - 6
+      - 6
+    weight: 1
+    drawn: false
+    name: 'Elven Cloak'
+    documentUuid: Compendium.tb2e.magic-items.Item.cc00000000000010
+    description: ''
+    img: null
+    flags: {}
+    _key: '!tables.results!lt0000000000002f.lt00r00000000060'
+folder: null
+sort: 0
+ownership:
+  default: 0
+flags: {}
+_key: '!tables!lt0000000000002f'

@@ -1,0 +1,92 @@
+_id: lt00000000000017
+name: 'Coins Table 3'
+img: systems/tb2e/icons/ffffff/transparent/1x1/lorc/locked-chest.svg
+description: 'Lore Master''s Manual, p. 242'
+formula: '1d6'
+replacement: true
+displayRoll: true
+results:
+  - _id: lt00r00000000010
+    type: document
+    range:
+      - 1
+      - 1
+    weight: 1
+    drawn: false
+    name: 'Small Chest of Copper Coins'
+    documentUuid: Compendium.tb2e.richer-loot.Item.dd00000000000001
+    description: '2D, pack 5'
+    img: null
+    flags: {}
+    _key: '!tables.results!lt00000000000017.lt00r00000000010'
+  - _id: lt00r00000000020
+    type: document
+    range:
+      - 2
+      - 2
+    weight: 1
+    drawn: false
+    name: 'Small Chest of Silver Coins'
+    documentUuid: Compendium.tb2e.richer-loot.Item.dd00000000000002
+    description: '4D, pack 5'
+    img: null
+    flags: {}
+    _key: '!tables.results!lt00000000000017.lt00r00000000020'
+  - _id: lt00r00000000030
+    type: document
+    range:
+      - 3
+      - 3
+    weight: 1
+    drawn: false
+    name: 'Small Chest of Gold Coins'
+    documentUuid: Compendium.tb2e.richer-loot.Item.dd00000000000003
+    description: '8D, pack 5'
+    img: null
+    flags: {}
+    _key: '!tables.results!lt00000000000017.lt00r00000000030'
+  - _id: lt00r00000000040
+    type: document
+    range:
+      - 4
+      - 4
+    weight: 1
+    drawn: false
+    name: 'Two Small Sacks of Copper Coins'
+    documentUuid: Compendium.tb2e.richer-loot.Item.dd00000000000004
+    description: '1D each, pack 2 each. Add twice to inventory.'
+    img: null
+    flags: {}
+    _key: '!tables.results!lt00000000000017.lt00r00000000040'
+  - _id: lt00r00000000050
+    type: document
+    range:
+      - 5
+      - 5
+    weight: 1
+    drawn: false
+    name: 'Two Small Sacks of Silver Coins'
+    documentUuid: Compendium.tb2e.richer-loot.Item.dd00000000000005
+    description: '2D each, pack 2 each. Add twice to inventory.'
+    img: null
+    flags: {}
+    _key: '!tables.results!lt00000000000017.lt00r00000000050'
+  - _id: lt00r00000000060
+    type: document
+    range:
+      - 6
+      - 6
+    weight: 1
+    drawn: false
+    name: 'Two Small Sacks of Gold Coins'
+    documentUuid: Compendium.tb2e.richer-loot.Item.dd00000000000006
+    description: '4D each, pack 2 each. Add twice to inventory.'
+    img: null
+    flags: {}
+    _key: '!tables.results!lt00000000000017.lt00r00000000060'
+folder: null
+sort: 0
+ownership:
+  default: 0
+flags: {}
+_key: '!tables!lt00000000000017'

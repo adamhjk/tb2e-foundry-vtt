@@ -1,0 +1,62 @@
+_id: lt0000000000002d
+name: 'Scroll Circle Subtable'
+img: systems/tb2e/icons/ffffff/transparent/1x1/lorc/scroll-unfurled.svg
+description: 'Scholar''s Guide, p. 157 (Magic Subtable row 8)'
+formula: '1d6'
+replacement: true
+displayRoll: true
+results:
+  - _id: lt00r00000000010
+    type: text
+    range:
+      - 1
+      - 2
+    weight: 1
+    drawn: false
+    name: '1st Circle Scroll'
+    description: 'Scroll of a 1st circle spell (game master''s choice).'
+    img: systems/tb2e/icons/ffffff/transparent/1x1/lorc/scroll-unfurled.svg
+    flags: {}
+    _key: '!tables.results!lt0000000000002d.lt00r00000000010'
+  - _id: lt00r00000000020
+    type: text
+    range:
+      - 3
+      - 4
+    weight: 1
+    drawn: false
+    name: '2nd Circle Scroll'
+    description: 'Scroll of a 2nd circle spell (game master''s choice).'
+    img: systems/tb2e/icons/ffffff/transparent/1x1/lorc/scroll-unfurled.svg
+    flags: {}
+    _key: '!tables.results!lt0000000000002d.lt00r00000000020'
+  - _id: lt00r00000000030
+    type: text
+    range:
+      - 5
+      - 5
+    weight: 1
+    drawn: false
+    name: '3rd Circle Scroll'
+    description: 'Scroll of a 3rd circle spell (game master''s choice).'
+    img: systems/tb2e/icons/ffffff/transparent/1x1/lorc/scroll-unfurled.svg
+    flags: {}
+    _key: '!tables.results!lt0000000000002d.lt00r00000000030'
+  - _id: lt00r00000000040
+    type: text
+    range:
+      - 6
+      - 6
+    weight: 1
+    drawn: false
+    name: '4th Circle Scroll'
+    description: 'Scroll of a 4th circle spell (game master''s choice).'
+    img: systems/tb2e/icons/ffffff/transparent/1x1/lorc/scroll-unfurled.svg
+    flags: {}
+    _key: '!tables.results!lt0000000000002d.lt00r00000000040'
+folder: null
+sort: 0
+ownership:
+  default: 0
+flags: {}
+_key: '!tables!lt0000000000002d'
