@@ -20,6 +20,21 @@
            placeholder="{{localize 'TB2E.Conflict.ConflictNamePlaceholder'}}">
   </div>
 
+  {{!-- Too Much to Handle warnings (GM only, advisory) --}}
+  {{#if hasTmthWarning}}
+  <div class="setup-tmth-warnings">
+    {{#each tmthWarnings}}
+    <div class="setup-tmth-warning" data-group-id="{{this.groupId}}" data-attribute="{{this.attribute}}">
+      <i class="fa-solid fa-triangle-exclamation"></i>
+      <div class="setup-tmth-text">
+        <div class="setup-tmth-title">{{localize "TB2E.Conflict.Order.TooMuchToHandleTitle"}}</div>
+        <div class="setup-tmth-message">{{this.message}}</div>
+      </div>
+    </div>
+    {{/each}}
+  </div>
+  {{/if}}
+
   {{!-- Manual Conflict Configuration --}}
   {{#if isManual}}
   {{#if isGM}}

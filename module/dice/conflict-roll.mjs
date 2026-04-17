@@ -177,6 +177,234 @@ export function resolveActionEffect(action, margin, interaction) {
   }
 }
 
+/* ============================================ */
+/*  Order of Might & Precedence                  */
+/* ============================================ */
+
+// Conflict types governed by the Order of Might (SG pp.79-80, 174).
+const MIGHT_CONFLICT_TYPES = new Set(["kill", "capture", "driveOff"]);
+
+// Conflict types governed by Precedence / Aura of Authority (SG p.82).
+const PRECEDENCE_CONFLICT_TYPES = new Set(["convince", "convinceCrowd", "negotiate"]);
+
+/**
+ * Parse a Precedence value which may be stored as a string on monsters
+ * ("6", "1-4", "—", "", undefined) or as a number on characters/NPCs.
+ * Returns an integer or null if the creature has no applicable Precedence.
+ * For ranged values like "1-4", takes the upper bound (worst case for players).
+ * @param {string|number|null|undefined} raw
+ * @returns {number|null}
+ */
+export function parsePrecedence(raw) {
+  if ( raw == null || raw === "" ) return null;
+  if ( typeof raw === "number" ) return Number.isFinite(raw) ? raw : null;
+  const str = String(raw).trim();
+  if ( !str || str === "—" || str === "-" ) return null;
+  // Handle ranges like "1-4": take the higher bound.
+  const range = str.match(/^(\d+)\s*-\s*(\d+)$/);
+  if ( range ) return parseInt(range[2], 10);
+  const n = parseInt(str, 10);
+  return Number.isFinite(n) ? n : null;
+}
+
+/**
+ * Read a combatant's actor-side value for a given field, handling unlinked
+ * synthetic actors. Returns null if no actor is accessible.
+ * @param {Combatant} combatant
+ * @param {(actor: Actor) => *} read
+ * @returns {*}
+ */
+function _readFromActor(combatant, read) {
+  const actor = combatant?.actor;
+  if ( !actor ) return null;
+  try { return read(actor); } catch { return null; }
+}
+
+/**
+ * Gather every combatant belonging to a given conflict group.
+ * @param {Combat} combat
+ * @param {string} groupId
+ * @returns {Combatant[]}
+ */
+function _groupCombatants(combat, groupId) {
+  if ( !combat || !groupId ) return [];
+  return combat.combatants.filter(c => c._source.group === groupId);
+}
+
+/**
+ * Highest Might on the given team. Follows SG p.62 ("Compare the highest Might
+ * or Precedence on each side"). Skips combatants with no actor. Returns 0 if
+ * no combatants are present.
+ * @param {Combat} combat
+ * @param {string} groupId
+ * @returns {number}
+ */
+export function getTeamMight(combat, groupId) {
+  const combatants = _groupCombatants(combat, groupId);
+  let best = 0;
+  let found = false;
+  for ( const c of combatants ) {
+    const m = _readFromActor(c, a => Number(a.system?.might));
+    if ( Number.isFinite(m) ) {
+      if ( !found || m > best ) { best = m; found = true; }
+    }
+  }
+  return found ? best : 0;
+}
+
+/**
+ * Read the Precedence value from an actor of any type. The schema differs:
+ *   - character: `system.abilities.precedence` (NumberField)
+ *   - npc:       `system.abilities.precedence.rating` (NumberField in a SchemaField)
+ *   - monster:   `system.precedence` (StringField, may be "—" / "1-4" / "6")
+ * Returns a number, or null when the actor has no applicable Precedence.
+ * @param {Actor} actor
+ * @returns {number|null}
+ */
+function _readActorPrecedence(actor) {
+  if ( !actor ) return null;
+  if ( actor.type === "monster" ) return parsePrecedence(actor.system?.precedence);
+  const ap = actor.system?.abilities?.precedence;
+  if ( ap == null ) return null;
+  if ( typeof ap === "number" ) return Number.isFinite(ap) ? ap : null;
+  if ( typeof ap === "object" && "rating" in ap ) {
+    const n = Number(ap.rating);
+    return Number.isFinite(n) ? n : null;
+  }
+  return null;
+}
+
+/**
+ * Highest Precedence on the given team. Monsters store Precedence as a string
+ * (including "—" for "does not apply"), so those combatants are skipped when
+ * determining team precedence. If no combatant on the team has a numeric
+ * Precedence, returns null — the Aura of Authority rule then does not apply
+ * in comparisons against this team.
+ * @param {Combat} combat
+ * @param {string} groupId
+ * @returns {number|null}
+ */
+export function getTeamPrecedence(combat, groupId) {
+  const combatants = _groupCombatants(combat, groupId);
+  let best = null;
+  for ( const c of combatants ) {
+    const value = _readFromActor(c, _readActorPrecedence);
+    if ( value == null || !Number.isFinite(value) ) continue;
+    if ( best == null || value > best ) best = value;
+  }
+  return best;
+}
+
+/**
+ * Compute the Order of Might / Aura of Authority success bonus for the acting
+ * team. Applies only to kill/capture/driveOff (Might) and
+ * convince/convinceCrowd/negotiate (Precedence). The bonus is post-roll, +1s
+ * per point greater than the opposing team (SG p.80 "The Greater the Might,
+ * the More You Hurt"; SG p.82 "The Aura of Authority"). Returns null when the
+ * rule does not apply or when the acting team does not hold the advantage.
+ * @param {object} options
+ * @param {string} options.conflictType
+ * @param {string} options.ourGroupId
+ * @param {string} options.opponentGroupId
+ * @param {Combat} options.combat
+ * @returns {object|null}
+ */
+export function computeOrderModifier({ conflictType, ourGroupId, opponentGroupId, combat }) {
+  if ( !combat || !ourGroupId || !opponentGroupId ) return null;
+
+  let ours, theirs, labelKey, attribute;
+  if ( MIGHT_CONFLICT_TYPES.has(conflictType) ) {
+    ours = getTeamMight(combat, ourGroupId);
+    theirs = getTeamMight(combat, opponentGroupId);
+    labelKey = "TB2E.Conflict.Order.MightAdvantage";
+    attribute = "might";
+  } else if ( PRECEDENCE_CONFLICT_TYPES.has(conflictType) ) {
+    ours = getTeamPrecedence(combat, ourGroupId);
+    theirs = getTeamPrecedence(combat, opponentGroupId);
+    // SG p.82: the rule compares Precedence values; if one side has none, no
+    // comparison is possible (their opponent "won't be heard").
+    if ( ours == null || theirs == null ) return null;
+    labelKey = "TB2E.Conflict.Order.PrecedenceAdvantage";
+    attribute = "precedence";
+  } else {
+    return null;
+  }
+
+  const diff = ours - theirs;
+  if ( diff <= 0 ) return null;
+
+  return {
+    label: game.i18n.format(labelKey, { n: diff }),
+    type: "success",
+    value: diff,
+    source: "conflict",
+    icon: attribute === "might" ? "fa-solid fa-hand-fist" : "fa-solid fa-crown",
+    color: "--tb-amber",
+    timing: "post"
+  };
+}
+
+/**
+ * Determine whether the acting team's chosen conflict type exceeds what the
+ * Order of Might or Precedence scale allows (SG p.79 for Might, SG p.82 for
+ * Precedence). Non-blocking — the GM can still proceed. Returns null when the
+ * conflict is within scale, or a warning descriptor otherwise.
+ *
+ * Might scale (relative to acting team's highest Might):
+ *   capture   ≤ ours
+ *   kill      ≤ ours + 1
+ *   driveOff  ≤ ours + 2
+ *
+ * Precedence scale (relative to acting team's highest Precedence):
+ *   convince       ≤ ours
+ *   negotiate      ≤ ours + 1
+ *   convinceCrowd  ≤ ours + 2
+ *   trick/riddle   — no restriction (SG p.82)
+ *
+ * @param {object} options
+ * @param {string} options.conflictType
+ * @param {string} options.partyGroupId  The adventurers' group (the one being scale-checked).
+ * @param {string} options.opponentGroupId
+ * @param {Combat} options.combat
+ * @returns {{ attribute: "might"|"precedence", conflictType: string, ours: number, theirs: number, limit: number }|null}
+ */
+export function checkTooMuchToHandle({ conflictType, partyGroupId, opponentGroupId, combat }) {
+  if ( !combat || !partyGroupId || !opponentGroupId ) return null;
+
+  const mightSteps = { capture: 0, kill: 1, driveOff: 2 };
+  const precedenceSteps = { convince: 0, negotiate: 1, convinceCrowd: 2 };
+
+  if ( conflictType in mightSteps ) {
+    const ours = getTeamMight(combat, partyGroupId);
+    const theirs = getTeamMight(combat, opponentGroupId);
+    const limit = ours + mightSteps[conflictType];
+    if ( theirs > limit ) {
+      return { attribute: "might", conflictType, ours, theirs, limit };
+    }
+    return null;
+  }
+
+  if ( conflictType in precedenceSteps ) {
+    const ours = getTeamPrecedence(combat, partyGroupId);
+    const theirs = getTeamPrecedence(combat, opponentGroupId);
+    // If the acting team has no Precedence to speak of, they literally can't
+    // engage in a Precedence conflict (SG p.82: "you simply won't be heard").
+    if ( ours == null ) {
+      return { attribute: "precedence", conflictType, ours: null, theirs: theirs ?? null, limit: null };
+    }
+    if ( theirs == null ) return null;
+    const limit = ours + precedenceSteps[conflictType];
+    if ( theirs > limit ) {
+      return { attribute: "precedence", conflictType, ours, theirs, limit };
+    }
+    return null;
+  }
+
+  return null;
+}
+
+/* -------------------------------------------- */
+
 /**
  * Calculate compromise level from remaining vs starting disposition.
  * @param {number} remaining  Remaining disposition.

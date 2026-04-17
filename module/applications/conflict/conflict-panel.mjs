@@ -1,5 +1,8 @@
 import { createModifier, evaluateRoll, gatherHelpModifiers, rollTest } from "../../dice/tb2e-roll.mjs";
-import { getInteraction, buildResolutionContext, resolveActionEffect } from "../../dice/conflict-roll.mjs";
+import {
+  getInteraction, buildResolutionContext, resolveActionEffect,
+  computeOrderModifier, checkTooMuchToHandle
+} from "../../dice/conflict-roll.mjs";
 
 const { HandlebarsApplicationMixin, ApplicationV2 } = foundry.applications.api;
 
@@ -584,6 +587,46 @@ export default class ConflictPanel extends HandlebarsApplicationMixin(Applicatio
       label: game.i18n.localize(cfg.label),
       selected: key === combat.system.conflictType
     }));
+
+    // Too Much to Handle: GM-only, non-blocking warnings when a group's chosen
+    // conflict type exceeds the Order of Might / Precedence scale they're
+    // allowed to engage (SG p.79 for Might; SG p.82 for Precedence). Checked
+    // symmetrically — either side might be over their head.
+    context.tmthWarnings = [];
+    if ( context.isGM && groups.length === 2 ) {
+      for ( const group of groups ) {
+        const opponent = groups.find(g => g.id !== group.id);
+        const warning = checkTooMuchToHandle({
+          conflictType: combat.system.conflictType,
+          partyGroupId: group.id,
+          opponentGroupId: opponent.id,
+          combat
+        });
+        if ( !warning ) continue;
+        const typeKey = warning.conflictType.charAt(0).toUpperCase() + warning.conflictType.slice(1);
+        let messageKey;
+        if ( warning.attribute === "precedence" && warning.ours == null ) {
+          messageKey = "TB2E.Conflict.Order.NoPrecedence";
+        } else {
+          messageKey = `TB2E.Conflict.Order.TooMuchToHandle${typeKey}`;
+        }
+        context.tmthWarnings.push({
+          groupId: group.id,
+          groupName: group.name,
+          attribute: warning.attribute,
+          ours: warning.ours,
+          theirs: warning.theirs,
+          limit: warning.limit,
+          message: game.i18n.format(messageKey, {
+            group: group.name,
+            ours: warning.ours ?? 0,
+            theirs: warning.theirs ?? 0,
+            limit: warning.limit ?? 0
+          })
+        });
+      }
+    }
+    context.hasTmthWarning = context.tmthWarnings.length > 0;
 
     context.setupGroups = [];
     for ( const group of groups ) {
@@ -1828,10 +1871,10 @@ export default class ConflictPanel extends HandlebarsApplicationMixin(Applicatio
     const groups = Array.from(combat.groups);
     const actionIndex = combat.system.currentAction || 0;
     const volley = round?.volleys?.[actionIndex] || {};
+    const opponentGroupId = groups.length >= 2 ? groups.find(g => g.id !== groupId)?.id : null;
     let obstacle;
     let isVersus = false;
-    if ( groups.length >= 2 ) {
-      const opponentGroupId = groups.find(g => g.id !== groupId)?.id;
+    if ( opponentGroupId ) {
       const opponentAction = round?.actions[opponentGroupId]?.[actionIndex]?.action;
       if ( opponentAction ) {
         let sideInteraction = getInteraction(actionKey, opponentAction);
@@ -1846,6 +1889,18 @@ export default class ConflictPanel extends HandlebarsApplicationMixin(Applicatio
         }
       }
     }
+
+    // Order of Might / Aura of Authority: +1s per point greater than the
+    // opposing team, applied post-roll on successful or tied actions.
+    // SG p.80 (Might, kill/capture/driveOff); SG p.82 (Precedence, convince/
+    // convinceCrowd/negotiate).
+    const orderMod = computeOrderModifier({
+      conflictType: combat.system.conflictType,
+      ourGroupId: groupId,
+      opponentGroupId,
+      combat
+    });
+    if ( orderMod ) modifiers.push(orderMod);
 
     // Apply conflict weapon bonuses/penalties.
     const resolvedCombatant = combatant ?? [...combat.combatants].find(c => c.actorId === actorId);

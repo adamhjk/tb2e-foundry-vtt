@@ -6311,6 +6311,46 @@ body.theme-dark .tb2e.sheet .torchbearer-logo,
   color: var(--tb-text-body);
   font-size: 0.8rem;
 }
+.setup-tmth-warnings {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+.setup-tmth-warning {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+  padding: 0.5rem 0.6rem;
+  border: 1px solid var(--tb-amber);
+  border-left: 3px solid var(--tb-amber);
+  border-radius: 4px;
+  background: color-mix(in oklab, var(--tb-amber) 10%, var(--tb-bg-raised));
+  color: var(--tb-text-body);
+  font-size: 0.78rem;
+  line-height: 1.35;
+}
+.setup-tmth-warning > i {
+  color: var(--tb-amber);
+  font-size: 0.95rem;
+  margin-top: 0.1rem;
+  flex-shrink: 0;
+}
+.setup-tmth-text {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+.setup-tmth-title {
+  font-family: var(--tb-font-heading);
+  font-size: 0.72rem;
+  font-weight: bold;
+  color: var(--tb-amber);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+.setup-tmth-message {
+  font-size: 0.78rem;
+}
 .setup-group {
   border: 1px solid var(--tb-border);
   border-radius: 5px;

@@ -82,7 +82,8 @@ export default class CharacterData extends foundry.abstract.TypeDataModel {
         circles: advancementField(0),
         precedence: new fields.NumberField({ initial: 0, integer: true, min: 0, max: 7 })
       }),
-      might: new fields.NumberField({ initial: 1, integer: true, min: 0, max: 10 }),
+      // Adventurers are Might 3 unless otherwise noted (SG p.79).
+      might: new fields.NumberField({ initial: 3, integer: true, min: 0, max: 10 }),
       natureDescriptors: new fields.ArrayField(
         new fields.StringField(),
         { initial: [] }

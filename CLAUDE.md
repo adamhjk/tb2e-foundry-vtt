@@ -2,6 +2,15 @@
 
 This is a game system for the Foundry Virtual Tabletop for Torchbearer 2nd Edition.
 
+## Rules As Written
+
+**Always implement rules exactly as written in the books.** The Scholar's Guide and Dungeoneer's Handbook (and the Lore Master's Manual where applicable) are the authoritative sources. When implementing a mechanic:
+
+- Read the rules before coding. Use the reference extractor (see below) to pull the relevant pages into `../reference/rules/<topic>/` and cite the book and page in your code comments and commit messages.
+- Do not "improve," simplify, streamline, or houserule the mechanic unless the user explicitly asks for a deviation. If a rule feels awkward to implement, that is not grounds to change it — implement it as written.
+- If a deviation is requested, add a code comment noting **what** was changed, **why**, and the **book/page** of the original rule, so the deviation is visible in review and future audits.
+- If the rules are ambiguous or contradictory between books, stop and ask the user which interpretation to use rather than guessing.
+
 ## Architecture
 
 - **Target**: Foundry VTT v13
