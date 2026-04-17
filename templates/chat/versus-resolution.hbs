@@ -35,4 +35,12 @@
     {{/if}}
     <span>{{winsLabel}}</span>
   </div>
+
+  {{#if showManeuverSpend}}
+  <div class="maneuver-spend-prompt-card">
+    <button type="button" class="card-btn card-btn--amber" data-action="spend-maneuver">
+      <i class="fa-solid fa-crosshairs"></i> {{maneuverSpendLabel}}
+    </button>
+  </div>
+  {{/if}}
 </div>

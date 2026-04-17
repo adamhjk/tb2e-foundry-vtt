@@ -1274,6 +1274,12 @@ export default class ConflictPanel extends HandlebarsApplicationMixin(Applicatio
         resultInteractionLabel = volley.result.interactionLabel;
       }
 
+      // SG p.69: show an indicator when a past action was a maneuver whose MoS
+      // hasn't been spent yet (captain/owner should open the chat card button).
+      const spendRecord = round.effects?.maneuverSpends?.[i];
+      const hasManeuver = (isCurrent ? sides : resultSides).some(s => s.action === "maneuver");
+      const maneuverUnspent = hasManeuver && !spendRecord?.spent;
+
       context.resolveActions.push({
         index: i,
         actionNum: i + 1,
@@ -1286,8 +1292,30 @@ export default class ConflictPanel extends HandlebarsApplicationMixin(Applicatio
         result: volley.result,
         sides: isCurrent ? sides : resultSides,
         interaction: isCurrent ? interaction : resultInteraction,
-        interactionLabel: isCurrent ? interactionLabel : resultInteractionLabel
+        interactionLabel: isCurrent ? interactionLabel : resultInteractionLabel,
+        maneuverUnspent,
+        maneuverSpent: !!spendRecord?.spent
       });
+    }
+
+    // SG p.69: surface pending Impede/Gain Position that will apply to the
+    // current action for each side, so players know before rolling.
+    if ( round.effects ) {
+      context.pendingEffects = groups.map(group => {
+        const imp = round.effects.pendingImpede?.[group.id];
+        const pos = round.effects.pendingPosition?.[group.id];
+        const impedeActive = imp?.amount > 0 && imp.targetVolley === currentAction;
+        const positionActive = pos?.amount > 0 && pos.targetVolley === currentAction;
+        return {
+          groupId: group.id,
+          groupName: group.name,
+          impede: impedeActive ? imp.amount : 0,
+          position: positionActive ? pos.amount : 0,
+          hasAny: impedeActive || positionActive
+        };
+      }).filter(e => e.hasAny);
+    } else {
+      context.pendingEffects = [];
     }
 
     const allRevealed = round.volleys?.every(v => v.revealed) || false;
@@ -1840,28 +1868,31 @@ export default class ConflictPanel extends HandlebarsApplicationMixin(Applicatio
       testKey = "nature";
     }
 
-    // Build conflict modifiers from maneuver effects.
+    // Build conflict modifiers from pending maneuver effects (SG p.69:
+    // effects apply only to the next action — cleared on test in
+    // #onResolveAction, or lost if interaction has no test). Entries are
+    // stored as { amount, targetVolley }; apply only if targetVolley matches
+    // this action.
     const roundNum = combat.system.currentRound || 0;
+    const actionIndex = combat.system.currentAction || 0;
     const round = combat.system.rounds?.[roundNum];
     const modifiers = [];
     if ( round?.effects ) {
-      // Impede: opponent imposed a penalty on this side.
-      const impedeValue = round.effects.impede?.[groupId] || 0;
-      if ( impedeValue > 0 ) {
+      const imp = round.effects.pendingImpede?.[groupId];
+      if ( imp?.amount > 0 && imp.targetVolley === actionIndex ) {
         modifiers.push({
           label: game.i18n.localize("TB2E.Conflict.Maneuver.Impede"),
           type: "dice",
-          value: -impedeValue,
+          value: -imp.amount,
           source: "conflict"
         });
       }
-      // Position: this side gained bonus dice.
-      const positionValue = round.effects.position?.[groupId] || 0;
-      if ( positionValue > 0 ) {
+      const pos = round.effects.pendingPosition?.[groupId];
+      if ( pos?.amount > 0 && pos.targetVolley === actionIndex ) {
         modifiers.push({
           label: game.i18n.localize("TB2E.Conflict.Maneuver.Position"),
           type: "dice",
-          value: positionValue,
+          value: pos.amount,
           source: "conflict"
         });
       }
@@ -1869,7 +1900,6 @@ export default class ConflictPanel extends HandlebarsApplicationMixin(Applicatio
 
     // Determine per-side interaction (respects overrides).
     const groups = Array.from(combat.groups);
-    const actionIndex = combat.system.currentAction || 0;
     const volley = round?.volleys?.[actionIndex] || {};
     const opponentGroupId = groups.length >= 2 ? groups.find(g => g.id !== groupId)?.id : null;
     let obstacle;
@@ -1902,18 +1932,21 @@ export default class ConflictPanel extends HandlebarsApplicationMixin(Applicatio
     });
     if ( orderMod ) modifiers.push(orderMod);
 
-    // Apply conflict weapon bonuses/penalties.
+    // Apply conflict weapon bonuses/penalties. A weapon disarmed via the
+    // Maneuver Disarm effect (SG p.69) provides no bonuses until re-equipped.
     const resolvedCombatant = combatant ?? [...combat.combatants].find(c => c.actorId === actorId);
+    const disabledItemIds = resolvedCombatant?.system.disabledItemIds || [];
     if ( resolvedCombatant ) {
       const weaponId = resolvedCombatant.system.weaponId;
       const cfgWeapons = conflictCfg?.conflictWeapons || [];
+      const weaponDisarmed = weaponId && disabledItemIds.includes(weaponId);
 
       if ( weaponId === "__unarmed__" ) {
         modifiers.push({
           label: game.i18n.localize("TB2E.Conflict.WeaponUnarmed"),
           type: "dice", value: -1, source: "conflict", timing: "pre"
         });
-      } else {
+      } else if ( !weaponDisarmed ) {
         const weaponCfg = cfgWeapons.find(w => w.id === weaponId);
         if ( weaponCfg?.bonuses ) {
           for ( const bonus of weaponCfg.bonuses ) {
@@ -1946,6 +1979,15 @@ export default class ConflictPanel extends HandlebarsApplicationMixin(Applicatio
         isConflict: true,
         candidates: memberCombatants,
         modifiers,
+        disabledItemIds,
+        // Metadata for post-roll Maneuver MoS spending (SG p.69).
+        combatId: combat.id,
+        combatantId: resolvedCombatant?.id || combatantId,
+        groupId,
+        opponentGroupId,
+        roundNum,
+        volleyIndex: actionIndex,
+        conflictAction: actionKey,
         ...(obstacle != null ? { obstacle } : {}),
         ...(isVersus ? { isVersus: true } : {})
       }
@@ -1994,6 +2036,11 @@ export default class ConflictPanel extends HandlebarsApplicationMixin(Applicatio
       interactionLabel,
       timestamp: Date.now()
     });
+
+    // SG p.69: pending Impede/Gain Position effects targeting this volley are
+    // consumed by the test, or lost if the interaction had no test. Either way
+    // they are cleared here.
+    await combat.consumeResolvedManeuverEffects(actionIndex);
 
     // Post round summary card after the third action is resolved.
     if ( actionIndex === 2 ) {

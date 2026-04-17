@@ -1,0 +1,86 @@
+<div class="maneuver-spend">
+  <header class="maneuver-spend-header">
+    <p class="maneuver-spend-prompt">
+      {{#if spenderName}}
+      <strong>{{spenderName}}</strong> —
+      {{/if}}
+      {{localize "TB2E.Conflict.Maneuver.SpendPrompt"}}
+      <span class="maneuver-spend-mos">{{margin}} MoS</span>
+    </p>
+    <p class="maneuver-spend-ref">{{localize "TB2E.Conflict.Maneuver.PageRef"}}</p>
+  </header>
+
+  <section class="maneuver-spend-combos">
+    <p class="maneuver-spend-section-label">{{localize "TB2E.Conflict.Maneuver.ChooseEffect"}}</p>
+    {{#each combos}}
+    <label class="maneuver-spend-combo">
+      <input type="radio" name="combo" value="{{this.key}}" {{#if this.selected}}checked{{/if}}>
+      <span class="maneuver-spend-combo-cost">{{this.costLabel}}</span>
+      <span class="maneuver-spend-combo-label">{{this.label}}</span>
+      <span class="maneuver-spend-combo-effects">
+        {{#if this.impede}}<span class="badge badge-impede">-1D</span>{{/if}}
+        {{#if this.position}}<span class="badge badge-position">+2D</span>{{/if}}
+        {{#if this.disarm}}<span class="badge badge-disarm"><i class="fa-solid fa-hand-fist"></i></span>{{/if}}
+        {{#if this.rearm}}<span class="badge badge-rearm"><i class="fa-solid fa-sword"></i></span>{{/if}}
+      </span>
+    </label>
+    {{/each}}
+  </section>
+
+  {{!-- Sections always in the DOM but hidden; radio-change JS toggles the
+        `hidden` attribute based on the selected combo. Avoids the re-render
+        flash and only shows what's relevant. --}}
+  {{#if anyComboDisarm}}
+  <section class="maneuver-spend-disarm" data-combo-section="disarm" hidden>
+    <p class="maneuver-spend-section-label">{{localize "TB2E.Conflict.Maneuver.SelectTarget"}}</p>
+    {{#if anyDisarmTargets}}
+    <select class="disarm-target-select">
+      <option value="">—</option>
+      {{#each disarmTargets}}
+      {{#if this.hasItems}}
+      <optgroup label="{{this.combatantName}}">
+        {{#each this.items}}
+        <option value="{{../combatantId}}|{{this.id}}">{{this.name}} ({{this.kind}})</option>
+        {{/each}}
+      </optgroup>
+      {{/if}}
+      {{/each}}
+    </select>
+    {{else}}
+    <p class="maneuver-spend-narrative-note">
+      <i class="fa-solid fa-circle-info"></i>
+      {{localize "TB2E.Conflict.Maneuver.NoDisarmTargets"}}
+    </p>
+    {{/if}}
+  </section>
+  {{/if}}
+
+  {{#if anyComboRearm}}
+  <section class="maneuver-spend-rearm" data-combo-section="rearm" hidden>
+    <p class="maneuver-spend-section-label">{{localize "TB2E.Conflict.Maneuver.ChooseWeapon"}}</p>
+    <select class="rearm-target-select">
+      <option value="">—</option>
+      {{#if droppedWeapons.length}}
+      <optgroup label="{{localize 'TB2E.Conflict.Maneuver.PickUpDropped'}}">
+        {{#each droppedWeapons}}
+        <option value="{{this.id}}|dropped">{{this.name}}</option>
+        {{/each}}
+      </optgroup>
+      {{/if}}
+      {{#if ownWeapons.length}}
+      <optgroup label="{{localize 'TB2E.Conflict.Maneuver.OwnWeapons'}}">
+        {{#each ownWeapons}}
+        <option value="{{this.id}}|own">{{this.name}}</option>
+        {{/each}}
+      </optgroup>
+      {{/if}}
+    </select>
+  </section>
+  {{/if}}
+
+  <footer class="maneuver-spend-actions">
+    <button type="button" class="panel-action-btn" data-action="submit">
+      <i class="fa-solid fa-check"></i> {{localize "TB2E.Conflict.Maneuver.Spend"}}
+    </button>
+  </footer>
+</div>

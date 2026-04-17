@@ -161,6 +161,26 @@ async function _executeVersusResolution(initiatorMessage, opponentMessage) {
   const initiatorActor = game.actors.get(initiatorVs.initiatorActorId);
   const opponentActor = game.actors.get(opponentVs.opponentActorId);
 
+  // SG p.69: if the versus winner's conflict action was Maneuver, expose a
+  // Spend MoS prompt on the resolution card. The testContext carrying the
+  // conflict metadata was stamped onto each side's roll message by the panel.
+  const winnerTc = initiatorWins
+    ? (initiatorMessage.flags.tb2e?.testContext || {})
+    : (opponentMessage.flags.tb2e?.testContext || {});
+  const margin = Math.abs(iSuccesses - oSuccesses);
+  const showManeuverSpend = winnerTc.isConflict
+    && winnerTc.conflictAction === "maneuver"
+    && margin > 0;
+  const maneuverSpendData = showManeuverSpend ? {
+    margin,
+    combatId: winnerTc.combatId,
+    combatantId: winnerTc.combatantId,
+    groupId: winnerTc.groupId,
+    opponentGroupId: winnerTc.opponentGroupId,
+    roundNum: winnerTc.roundNum,
+    volleyIndex: winnerTc.volleyIndex
+  } : null;
+
   // Render resolution card
   const chatContent = await foundry.applications.handlebars.renderTemplate("systems/tb2e/templates/chat/versus-resolution.hbs", {
     initiatorName: initiatorActor?.name ?? "Unknown",
@@ -175,7 +195,11 @@ async function _executeVersusResolution(initiatorMessage, opponentMessage) {
     initiatorWins,
     versusTestLabel: game.i18n.localize("TB2E.Roll.VersusTest"),
     winsLabel: game.i18n.localize("TB2E.Roll.Wins"),
-    successesLabel: game.i18n.localize("TB2E.Roll.Successes")
+    successesLabel: game.i18n.localize("TB2E.Roll.Successes"),
+    showManeuverSpend,
+    maneuverSpendLabel: showManeuverSpend
+      ? game.i18n.format("TB2E.Conflict.Maneuver.SpendButton", { mos: margin })
+      : null
   });
 
   // Create resolution message
@@ -191,7 +215,8 @@ async function _executeVersusResolution(initiatorMessage, opponentMessage) {
           initiatorActorId: initiatorVs.initiatorActorId,
           opponentActorId: opponentVs.opponentActorId,
           winnerId
-        }
+        },
+        maneuverSpend: maneuverSpendData
       }
     }
   });

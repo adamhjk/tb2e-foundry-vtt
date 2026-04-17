@@ -24,7 +24,8 @@
 .tb2e-conflict-footer,
 .conflict-panel,
 .character-wizard,
-.grind-tracker {
+.grind-tracker,
+.maneuver-spend-dialog {
   .mixin-theme-light();
 }
 
@@ -36,7 +37,7 @@ body.theme-light :is(
   .tb2e, .tb2e-chat-card, .tb2e-conflict-header, .tb2e-conflict-body,
   .tb2e-conflict-footer,
   .character-conflict-panel, .conflict-panel, .character-wizard, .tb2e.gear-sheet, .tb2e.spell-sheet, .tb2e.invocation-sheet,
-  .grind-tracker) {
+  .grind-tracker, .maneuver-spend-dialog) {
   .mixin-theme-light();
 }
 
@@ -44,7 +45,7 @@ body.theme-dark :is(
   .tb2e, .tb2e-chat-card, .tb2e-conflict-header, .tb2e-conflict-body,
   .tb2e-conflict-footer,
   .character-conflict-panel, .conflict-panel, .character-wizard, .tb2e.gear-sheet, .tb2e.spell-sheet, .tb2e.invocation-sheet,
-  .grind-tracker) {
+  .grind-tracker, .maneuver-spend-dialog) {
   .mixin-theme-dark();
 }
 
@@ -57,7 +58,7 @@ body.theme-dark :is(
   .tb2e-chat-card, .tb2e-conflict-header, .tb2e-conflict-body,
   .tb2e-conflict-footer,
   .character-conflict-panel, .conflict-panel, .character-wizard, .tb2e.gear-sheet, .tb2e.spell-sheet, .tb2e.invocation-sheet,
-  .grind-tracker) {
+  .grind-tracker, .maneuver-spend-dialog) {
   .mixin-theme-light();
 }
 
@@ -66,7 +67,7 @@ body.theme-dark :is(
   .tb2e-chat-card, .tb2e-conflict-header, .tb2e-conflict-body,
   .tb2e-conflict-footer,
   .character-conflict-panel, .conflict-panel, .character-wizard, .tb2e.gear-sheet, .tb2e.spell-sheet, .tb2e.invocation-sheet,
-  .grind-tracker) {
+  .grind-tracker, .maneuver-spend-dialog) {
   .mixin-theme-dark();
 }
 
@@ -111,6 +112,7 @@ body.theme-dark :is(
 @import "conflict/cards.less";
 @import "conflict/character-panel.less";
 @import "conflict/panel.less";
+@import "conflict/maneuver-spend.less";
 
 // Alternate actor sheets
 @import "sheets/monster.less";

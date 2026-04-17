@@ -15,7 +15,10 @@ export default class ConflictData extends foundry.abstract.TypeDataModel {
       currentAction: new fields.NumberField({ initial: 0, integer: true, min: 0 }),
       manualDispositionSkills: new fields.ArrayField(new fields.StringField()),
       manualDispositionAbility: new fields.StringField({ blank: true }),
-      manualActions: new fields.ObjectField()
+      manualActions: new fields.ObjectField(),
+
+      // Weapons dropped by a Disarm effect, keyed by groupId. Consumed by Rearm.
+      droppedWeapons: new fields.ObjectField()
     };
   }
 }

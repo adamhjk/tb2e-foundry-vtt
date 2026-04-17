@@ -14,6 +14,18 @@ import { abilities, skills } from "../config.mjs";
  */
 export function activatePostRollListeners(message, html) {
   const flags = message.getFlag("tb2e", "roll");
+
+  // Maneuver MoS spend button lives on both roll-result cards (independent
+  // maneuver wins) and versus-resolution cards (versus maneuver wins).
+  // Handled outside the `flags` guard since the resolution card has no roll.
+  const spendBtn = html.querySelector(".card-btn[data-action='spend-maneuver']");
+  if ( spendBtn ) {
+    spendBtn.addEventListener("click", async (event) => {
+      event.preventDefault();
+      await _handleManeuverSpend(message);
+    });
+  }
+
   if ( !flags ) return;
 
   const resolved = message.getFlag("tb2e", "resolved");
@@ -26,6 +38,8 @@ export function activatePostRollListeners(message, html) {
       switch ( action ) {
         // Synergy buttons work even after the roll is finalized
         case "synergy": return _handleSynergy(message, btn.dataset.helperId);
+        // Maneuver spend handled above.
+        case "spend-maneuver": return;
         default: break;
       }
       // All other post-roll actions require the roll to be unresolved
@@ -40,6 +54,56 @@ export function activatePostRollListeners(message, html) {
       }
     });
   }
+}
+
+/* -------------------------------------------- */
+/*  Maneuver MoS Spend Dialog Trigger           */
+/* -------------------------------------------- */
+
+async function _handleManeuverSpend(message) {
+  if ( message.getFlag("tb2e", "maneuverSpent") ) {
+    ui.notifications.info(game.i18n.localize("TB2E.Conflict.Maneuver.Spent"));
+    return;
+  }
+  const { ManeuverSpendDialog } = await import("../applications/conflict/_module.mjs");
+
+  // Extract metadata. Independent roll card → testContext + computed margin.
+  // Versus resolution card → flags.tb2e.maneuverSpend.
+  const tbFlags = message.flags.tb2e || {};
+  const maneuverSpend = tbFlags.maneuverSpend;
+  let args;
+
+  if ( maneuverSpend ) {
+    args = { ...maneuverSpend, messageId: message.id };
+  } else {
+    const tc = tbFlags.testContext;
+    const rollData = tbFlags.roll;
+    if ( !tc?.isConflict || tc.conflictAction !== "maneuver" || !rollData ) return;
+    const finalSuccesses = rollData.finalSuccesses ?? rollData.successes;
+    const margin = Math.max(finalSuccesses - (rollData.obstacle || 0), 0);
+    if ( margin <= 0 ) return;
+    args = {
+      margin,
+      combatId: tc.combatId,
+      combatantId: tc.combatantId,
+      groupId: tc.groupId,
+      opponentGroupId: tc.opponentGroupId,
+      roundNum: tc.roundNum,
+      volleyIndex: tc.volleyIndex,
+      messageId: message.id
+    };
+  }
+
+  // Gatekeep: only the actor owner (or GM) should open the dialog.
+  const combat = game.combats.get(args.combatId);
+  const combatant = combat?.combatants.get(args.combatantId);
+  const isOwner = !!combatant?.actor?.isOwner;
+  if ( !isOwner && !game.user.isGM ) {
+    ui.notifications.warn(game.i18n.localize("TB2E.Conflict.Maneuver.NotOwner"));
+    return;
+  }
+
+  new ManeuverSpendDialog(args).render(true);
 }
 
 /* -------------------------------------------- */

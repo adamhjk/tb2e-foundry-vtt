@@ -11,11 +11,16 @@ export default class CombatantData extends foundry.abstract.TypeDataModel {
       // Weapon assignment for "assignable" conflict weapons (e.g., Blackmail, Locals).
       weaponAssignment: new fields.StringField({ blank: true }),
 
+      // Item IDs (weapons, gear, traits) disabled by a Disarm effect for the
+      // duration of this conflict (SG p.69). Cleared when combat ends.
+      disabledItemIds: new fields.ArrayField(new fields.StringField()),
+
       // Mailbox fields — player writes here, GM processes via _onUpdateDescendantDocuments.
       pendingDisposition: new fields.ObjectField(),
       pendingDistribution: new fields.ObjectField(),
       pendingActions: new fields.ArrayField(new fields.ObjectField()),
-      pendingActionsLocked: new fields.BooleanField({ initial: false })
+      pendingActionsLocked: new fields.BooleanField({ initial: false }),
+      pendingManeuverSpend: new fields.ObjectField()
     };
   }
 }

@@ -1,6 +1,22 @@
 {{!-- Resolve Tab --}}
 <div class="panel-tab-content resolve-tab">
 
+  {{#if pendingEffects.length}}
+  <div class="pending-maneuver-effects">
+    {{#each pendingEffects}}
+    <div class="pending-effect-row">
+      <span class="pending-effect-group">{{this.groupName}}:</span>
+      {{#if this.impede}}
+      <span class="pending-effect-chip impede"><i class="fa-solid fa-arrow-down"></i> -{{this.impede}}D {{localize "TB2E.Conflict.Maneuver.Impede"}}</span>
+      {{/if}}
+      {{#if this.position}}
+      <span class="pending-effect-chip position"><i class="fa-solid fa-arrow-up"></i> +{{this.position}}D {{localize "TB2E.Conflict.Maneuver.Position"}}</span>
+      {{/if}}
+    </div>
+    {{/each}}
+  </div>
+  {{/if}}
+
   {{#each resolveActions}}
   <div class="resolve-action {{#if this.isCurrent}}current{{/if}} {{#if this.isPast}}past{{/if}} {{#if this.isFuture}}future{{/if}}">
     <div class="resolve-action-header">
@@ -124,6 +140,15 @@
       {{/each}}
       {{#if this.interactionLabel}}
       <span class="resolve-summary-interaction">({{this.interactionLabel}})</span>
+      {{/if}}
+      {{#if this.maneuverUnspent}}
+      <span class="maneuver-unspent-pill" title="{{localize 'TB2E.Conflict.Maneuver.UnspentHint'}}">
+        <i class="fa-solid fa-crosshairs"></i> {{localize "TB2E.Conflict.Maneuver.Unspent"}}
+      </span>
+      {{else if this.maneuverSpent}}
+      <span class="maneuver-spent-pill" title="{{localize 'TB2E.Conflict.Maneuver.SpentHint'}}">
+        <i class="fa-solid fa-check"></i> {{localize "TB2E.Conflict.Maneuver.Spent"}}
+      </span>
       {{/if}}
     </div>
     {{/if}}

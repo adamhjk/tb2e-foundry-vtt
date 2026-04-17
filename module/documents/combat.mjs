@@ -299,7 +299,10 @@ export default class TB2ECombat extends Combat {
           { revealed: false, result: null },
           { revealed: false, result: null }
         ],
-        effects: { impede: {}, position: {} }
+        // SG p.69: Impede/Gain Position apply to the "next action" only, so
+        // stored as per-group pending buckets consumed on the next roll.
+        // maneuverSpends[volleyIndex] tracks which maneuvers have been spent.
+        effects: { pendingImpede: {}, pendingPosition: {}, maneuverSpends: {} }
       };
       update["system.currentRound"] = 1;
       update["system.rounds"] = rounds;
@@ -449,6 +452,9 @@ export default class TB2ECombat extends Combat {
       if ( "pendingActionsLocked" in system && system.pendingActionsLocked ) {
         this.#applyLockActions(groupId, change._id);
       }
+      if ( "pendingManeuverSpend" in system && system.pendingManeuverSpend?.selection ) {
+        this.#applyManeuverSpend(groupId, system.pendingManeuverSpend, change._id);
+      }
     }
 
     // Re-render the panel when weapons change (GM sees updated "Begin Scripting" button state).
@@ -537,6 +543,191 @@ export default class TB2ECombat extends Combat {
       const combatant = this.combatants.get(mailboxId);
       if ( combatant ) await combatant.update({ "system.pendingActionsLocked": false });
     }
+  }
+
+  /**
+   * Apply a maneuver MoS spend (SG p.69). Updates pending impede/position on
+   * the appropriate groups (tagged with the target round+volley so they can be
+   * applied to exactly the next action and cleared afterwards), applies Disarm
+   * (disables opponent item + drops weapon) and Rearm (sets spender's weapon,
+   * removes from dropped pool). Marks the source volley as spent so the UI
+   * hides the prompt.
+   * @param {string} groupId       The CombatantGroup ID of the spender.
+   * @param {object} payload       { roundNum, volleyIndex, selection }.
+   * @param {string} mailboxId     Combatant ID to clear the mailbox on.
+   */
+  async #applyManeuverSpend(groupId, payload, mailboxId) {
+    const { roundNum, volleyIndex, selection } = payload;
+    const clearMailbox = async () => {
+      if ( mailboxId ) {
+        const combatant = this.combatants.get(mailboxId);
+        if ( combatant ) await combatant.update({ "system.pendingManeuverSpend": {} });
+      }
+    };
+
+    if ( !selection ) return clearMailbox();
+
+    const groups = Array.from(this.groups);
+    const opponentGroup = groups.find(g => g.id !== groupId);
+    const opponentGroupId = opponentGroup?.id;
+    if ( !opponentGroupId ) return clearMailbox();
+
+    // SG p.69: effects apply to the "next action" after the maneuver.
+    // For sourceVolley 0 or 1 → target is (sourceRound, sourceVolley+1).
+    // For sourceVolley 2 → target is (sourceRound+1, 0). If the next round
+    // doesn't exist yet (player spends before GM clicks "New Round"), the
+    // effect is stashed on the source round's `carryImpede`/`carryPosition`
+    // and propagated by advanceRound().
+    const isBoundary = volleyIndex === 2;
+    const targetRound = isBoundary ? roundNum + 1 : roundNum;
+    const targetVolley = isBoundary ? 0 : volleyIndex + 1;
+
+    const rounds = foundry.utils.deepClone(this.system.rounds || {});
+    const sourceRound = rounds[roundNum];
+    if ( !sourceRound ) return clearMailbox();
+    if ( sourceRound.effects?.maneuverSpends?.[volleyIndex]?.spent ) return clearMailbox();
+
+    // Validate spend window.
+    const targetRoundData = rounds[targetRound];
+    if ( targetRound < this.system.currentRound ) return clearMailbox();
+    if ( targetRound === this.system.currentRound ) {
+      if ( targetVolley < (this.system.currentAction || 0) ) return clearMailbox();
+      if ( targetRoundData?.volleys?.[targetVolley]?.result ) return clearMailbox();
+    }
+    // targetRound > currentRound: next round not created yet; use carry fields.
+
+    if ( !sourceRound.effects ) sourceRound.effects = { pendingImpede: {}, pendingPosition: {}, maneuverSpends: {} };
+    if ( !sourceRound.effects.maneuverSpends ) sourceRound.effects.maneuverSpends = {};
+
+    const useCarry = isBoundary && !targetRoundData;
+    if ( useCarry ) {
+      if ( !sourceRound.effects.carryImpede ) sourceRound.effects.carryImpede = {};
+      if ( !sourceRound.effects.carryPosition ) sourceRound.effects.carryPosition = {};
+      if ( selection.impede ) {
+        sourceRound.effects.carryImpede[opponentGroupId] =
+          (sourceRound.effects.carryImpede[opponentGroupId] || 0) + 1;
+      }
+      if ( selection.position ) {
+        sourceRound.effects.carryPosition[groupId] =
+          (sourceRound.effects.carryPosition[groupId] || 0) + 2;
+      }
+    } else {
+      if ( !targetRoundData.effects ) targetRoundData.effects = { pendingImpede: {}, pendingPosition: {}, maneuverSpends: {} };
+      if ( !targetRoundData.effects.pendingImpede ) targetRoundData.effects.pendingImpede = {};
+      if ( !targetRoundData.effects.pendingPosition ) targetRoundData.effects.pendingPosition = {};
+      // SG p.69: Impede is -1D on opponent's next action.
+      if ( selection.impede ) {
+        const prev = targetRoundData.effects.pendingImpede[opponentGroupId];
+        targetRoundData.effects.pendingImpede[opponentGroupId] = {
+          amount: (prev?.amount || 0) + 1,
+          targetVolley
+        };
+      }
+      // SG p.69: Gain Position is +2D on your team's next action.
+      if ( selection.position ) {
+        const prev = targetRoundData.effects.pendingPosition[groupId];
+        targetRoundData.effects.pendingPosition[groupId] = {
+          amount: (prev?.amount || 0) + 2,
+          targetVolley
+        };
+      }
+    }
+
+    // SG p.69: Disarm removes a weapon/gear or disables a trait on the opponent
+    // for the remainder of the conflict. A disarmed weapon may be picked up
+    // with Rearm, or re-equipped by the target at the start of the next round.
+    let disarmedTargetUnequip = null;
+    if ( selection.disarm?.targetCombatantId && selection.disarm?.targetItemId ) {
+      const target = this.combatants.get(selection.disarm.targetCombatantId);
+      if ( target ) {
+        const current = foundry.utils.deepClone(target.system.disabledItemIds || []);
+        if ( !current.includes(selection.disarm.targetItemId) ) {
+          current.push(selection.disarm.targetItemId);
+        }
+        await target.update({ "system.disabledItemIds": current });
+        // If the disarmed item is the currently equipped weapon, unequip it and
+        // add it to the dropped pool for the opponent's group.
+        if ( target.system.weaponId === selection.disarm.targetItemId ) {
+          const dropped = foundry.utils.deepClone(this.system.droppedWeapons || {});
+          if ( !dropped[opponentGroupId] ) dropped[opponentGroupId] = [];
+          const item = target.actor?.items?.get(selection.disarm.targetItemId);
+          dropped[opponentGroupId].push({
+            itemId: selection.disarm.targetItemId,
+            itemName: item?.name || selection.disarm.targetItemName || "",
+            sourceCombatantId: target.id
+          });
+          await this.update({ "system.droppedWeapons": dropped });
+          disarmedTargetUnequip = target.id;
+        }
+      }
+    }
+
+    sourceRound.effects.maneuverSpends[volleyIndex] = {
+      spent: true,
+      by: groupId,
+      selection,
+      targetRound,
+      targetVolley
+    };
+    await this.update({ "system.rounds": rounds });
+
+    // Unequip the disarmed weapon and (if Rearm selected) equip the new one.
+    // Done after the main update so setWeapon's actor sync fires cleanly.
+    if ( disarmedTargetUnequip ) {
+      await this.setWeapon(disarmedTargetUnequip, "", "");
+    }
+    if ( selection.rearm?.itemId ) {
+      const spender = this.combatants.get(mailboxId);
+      if ( spender ) {
+        const item = spender.actor?.items?.get(selection.rearm.itemId);
+        const name = item?.name || selection.rearm.itemName || "";
+        await this.setWeapon(spender.id, name, selection.rearm.itemId);
+        if ( selection.rearm.fromDropped ) {
+          const dropped = foundry.utils.deepClone(this.system.droppedWeapons || {});
+          const pool = dropped[groupId] || [];
+          const idx = pool.findIndex(w => w.itemId === selection.rearm.itemId);
+          if ( idx >= 0 ) {
+            pool.splice(idx, 1);
+            dropped[groupId] = pool;
+            await this.update({ "system.droppedWeapons": dropped });
+          }
+        }
+      }
+    }
+
+    await clearMailbox();
+  }
+
+  /**
+   * Clear pending Impede/Gain Position effects that targeted the just-resolved
+   * volley (SG p.69: consumed by the test, or lost if the interaction had no
+   * test for the affected side). GM-only.
+   * @param {number} volleyIndex  The volley index that was just resolved.
+   */
+  async consumeResolvedManeuverEffects(volleyIndex) {
+    if ( !game.user.isGM ) return;
+    const roundNum = this.system.currentRound;
+    if ( !roundNum ) return;
+    const rounds = foundry.utils.deepClone(this.system.rounds || {});
+    const round = rounds[roundNum];
+    if ( !round?.effects ) return;
+
+    let changed = false;
+    for ( const gid of Object.keys(round.effects.pendingImpede || {}) ) {
+      const e = round.effects.pendingImpede[gid];
+      if ( e?.targetVolley === volleyIndex ) {
+        delete round.effects.pendingImpede[gid];
+        changed = true;
+      }
+    }
+    for ( const gid of Object.keys(round.effects.pendingPosition || {}) ) {
+      const e = round.effects.pendingPosition[gid];
+      if ( e?.targetVolley === volleyIndex ) {
+        delete round.effects.pendingPosition[gid];
+        changed = true;
+      }
+    }
+    if ( changed ) await this.update({ "system.rounds": rounds });
   }
 
   /**
@@ -658,19 +849,24 @@ export default class TB2ECombat extends Combat {
         { revealed: false, result: null },
         { revealed: false, result: null }
       ],
-      effects: {
-        impede: {},
-        position: {}
-      }
+      effects: { pendingImpede: {}, pendingPosition: {}, maneuverSpends: {} }
     };
 
-    // Carry over maneuver effects from the previous round's last volley results.
+    // Carry over pending maneuver effects from the previous round's volley 2
+    // spend (stashed in carryImpede/carryPosition). These target volley 0 of
+    // the new round. Earlier volleys' effects have already been consumed or
+    // lost per SG p.69.
     const prevRound = this.system.rounds?.[this.system.currentRound];
-    if ( prevRound ) {
-      for ( const group of this.groups ) {
-        // Accumulate impede/position effects that carry into the next round.
-        rounds[nextRound].effects.impede[group.id] = prevRound.effects?.impede?.[group.id] || 0;
-        rounds[nextRound].effects.position[group.id] = prevRound.effects?.position?.[group.id] || 0;
+    const carryImpede = prevRound?.effects?.carryImpede || {};
+    const carryPosition = prevRound?.effects?.carryPosition || {};
+    for ( const gid of Object.keys(carryImpede) ) {
+      if ( carryImpede[gid] > 0 ) {
+        rounds[nextRound].effects.pendingImpede[gid] = { amount: carryImpede[gid], targetVolley: 0 };
+      }
+    }
+    for ( const gid of Object.keys(carryPosition) ) {
+      if ( carryPosition[gid] > 0 ) {
+        rounds[nextRound].effects.pendingPosition[gid] = { amount: carryPosition[gid], targetVolley: 0 };
       }
     }
 

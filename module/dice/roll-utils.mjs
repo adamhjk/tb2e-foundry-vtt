@@ -95,6 +95,18 @@ export function buildChatTemplateData({ actor, rollData, tbFlags, isVersus, syne
     ? (() => { const parts = [actor.system.stock, actor.system.class].filter(Boolean); return parts.length ? `NPC \u2014 ${parts.join(" ")}` : "NPC"; })()
     : "";
 
+  const margin = isVersus ? null : (pass ? (finalSuccesses - obstacle) : (obstacle - finalSuccesses));
+
+  // Maneuver MoS spend button — only on independent maneuver wins (versus
+  // maneuvers surface the button on the versus resolution card instead).
+  const tc = tbFlags.testContext || {};
+  const showManeuverSpend = !isVersus
+    && tc.isConflict
+    && tc.conflictAction === "maneuver"
+    && pass
+    && margin > 0
+    && !tbFlags.maneuverSpent;
+
   return {
     actorName: actor.name,
     actorImg: actor.img,
@@ -120,7 +132,12 @@ export function buildChatTemplateData({ actor, rollData, tbFlags, isVersus, syne
     hasPersona: actor.type === "character" && actor.system.persona.current > 0,
     synergyHelpers,
     isVersus,
-    margin: isVersus ? null : (pass ? (finalSuccesses - obstacle) : (obstacle - finalSuccesses)),
+    margin,
+    showManeuverSpend,
+    maneuverSpendLabel: showManeuverSpend
+      ? game.i18n.format("TB2E.Conflict.Maneuver.SpendButton", { mos: margin })
+      : null,
+    maneuverSpent: !!tbFlags.maneuverSpent,
     passLabel: game.i18n.localize("TB2E.Roll.Pass"),
     failLabel: game.i18n.localize("TB2E.Roll.Fail"),
     successesLabel: game.i18n.localize("TB2E.Roll.Successes"),

@@ -335,8 +335,9 @@ function _checkBackpackEquipped(actor) {
  * @param {boolean} isAngry
  * @returns {object[]}
  */
-function _buildTraitData(actor, isAngry) {
-  return (actor.itemTypes.trait || []).map(item => {
+function _buildTraitData(actor, isAngry, disabledItemIds = []) {
+  const disabled = new Set(disabledItemIds || []);
+  return (actor.itemTypes.trait || []).filter(item => !disabled.has(item.id)).map(item => {
     const t = item.system;
     const maxBeneficial = t.maxBeneficial;
     const benefitDisabled = isAngry || (t.level < 3 && t.beneficial <= 0);
@@ -382,8 +383,9 @@ async function _showRollDialog({
   const isAfraid = actor?.system?.conditions?.afraid ?? false;
   const isAngry = isCharacter && actor.system.conditions.angry;
 
-  // Build character-specific data
-  const traitData = isCharacter ? _buildTraitData(actor, isAngry) : [];
+  // Build character-specific data (filter traits disabled by Disarm — SG p.69).
+  const disabledItemIds = testContext.disabledItemIds || [];
+  const traitData = isCharacter ? _buildTraitData(actor, isAngry, disabledItemIds) : [];
   const hasTraits = traitData.length > 0;
 
   const wiseData = isCharacter ? (actor.system.wises || []).filter(w => w.name) : [];
@@ -1465,7 +1467,15 @@ function _buildRollFlags({ actor, type, key, label, baseDice, poolSize, successe
       invocationId: config.testContext.invocationId ?? null,
       invocationName: config.testContext.invocationName ?? null,
       hasRelic: config.testContext.hasRelic ?? null,
-      burdenAmount: config.testContext.burdenAmount ?? null
+      burdenAmount: config.testContext.burdenAmount ?? null,
+      // Maneuver MoS spend metadata (SG p.69).
+      conflictAction: config.testContext.conflictAction ?? null,
+      combatId: config.testContext.combatId ?? null,
+      combatantId: config.testContext.combatantId ?? null,
+      groupId: config.testContext.groupId ?? null,
+      opponentGroupId: config.testContext.opponentGroupId ?? null,
+      roundNum: config.testContext.roundNum ?? null,
+      volleyIndex: config.testContext.volleyIndex ?? null
     } : null
   };
 }
