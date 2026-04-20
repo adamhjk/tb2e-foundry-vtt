@@ -81,6 +81,8 @@ Already shipped. Listed for completeness.
 - Nature: rating 0–7, max 0–7; the Nature rating HTML input caps at current `max` (dynamic `max="{{nature.max}}"`) — set `max` *before* `rating` or the browser silently rejects
 - Nature crisis triggers at rating=0
 - Skill rating input is replaced by an `✕` icon when `rating===0 && learning>0` — default actors have `learning=0`, so the input is present; if a spec puts a skill into "learning" mode, switch to the appropriate UI
+- Condition toggles on the sheet do a **direct** `document.update()` (no mailbox, no chat card). Toggling `fresh` clears all negative conditions. The `pendingGrindApply` mailbox is a separate path used by the grind-tracker's "Apply" button (grind-tracker.mjs); the `updateActor` hook in `tb2e.mjs` consumes + clears it.
+- Conditions strip lives at sheet top; selector `nav.conditions-strip button.condition-btn[data-condition="<key>"]`. No tab switch needed.
 - Traits have `level` 1–3 (normal) or level-1 (flawed) with bubble UI
 
 **Checkboxes:**
@@ -88,7 +90,7 @@ Already shipped. Listed for completeness.
 - [x] `tests/e2e/sheet/edit-identity.spec.mjs` — edit name/level/home, verify persistence after reload (TB2E has no "alignment" field — substituted `system.home`)
 - [x] `tests/e2e/sheet/edit-abilities.spec.mjs` — set Will, Health, Nature rating/max; verify data model constraints (ranges, clamping)
 - [x] `tests/e2e/sheet/edit-skills.spec.mjs` — set rating for each relevant skill; verify persistence
-- [ ] `tests/e2e/sheet/toggle-conditions.spec.mjs` — toggle each condition (DH p.53); verify chat card posted via `pendingGrindApply` mailbox
+- [x] `tests/e2e/sheet/toggle-conditions.spec.mjs` — toggle each condition (DH p.53); sheet does a direct update (no mailbox/chat card from the toggle itself); also covers `pendingGrindApply` mailbox clearing by GM hook
 - [ ] `tests/e2e/sheet/trait-crud.spec.mjs` — add a trait, set level, demote, delete; verify bubble UI state
 - [ ] `tests/e2e/sheet/wise-crud.spec.mjs` — add a wise, rename, delete
 - [ ] `tests/e2e/sheet/session-reset.spec.mjs` — tick trait levels, run resetSession, verify trait usage state cleared (DH p.85)

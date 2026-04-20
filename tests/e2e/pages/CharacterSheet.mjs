@@ -67,4 +67,17 @@ export class CharacterSheet {
   skillRating(key) {
     return this.root.locator(`input[name="system.skills.${key}.rating"]`);
   }
+
+  /**
+   * Condition toggle button in the sheet's conditions strip.
+   * The strip is rendered at the top of the sheet (see
+   * templates/actors/character-conditions.hbs) and is always visible —
+   * no tab switch required. Buttons carry `data-condition="<key>"`
+   * matching the condition key (fresh, hungry, angry, afraid, exhausted,
+   * injured, sick, dead).
+   * @param {string} key
+   */
+  conditionToggle(key) {
+    return this.root.locator(`nav.conditions-strip button.condition-btn[data-condition="${key}"]`);
+  }
 }
