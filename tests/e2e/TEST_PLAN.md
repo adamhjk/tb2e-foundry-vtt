@@ -90,6 +90,9 @@ Already shipped. Listed for completeness.
 - **Session usage tracking lives on the trait Item, not the actor.** `system.beneficial` = *remaining* uses this session (not consumed count): L1 max=1, L2 max=2, L3 max=0/unlimited (`TraitData.maxBeneficial` getter). `resetSession` (in `module/session.mjs` `resetTraitsForSession`) does **three things**: restores `trait.beneficial` to max, clears `trait.usedAgainst`, and ALSO resets `spell.cast` and `invocation.performed` flags. Gated by `DialogV2.confirm` (yes / no buttons with `data-action`).
 - The `resetSession` button lives in `character-header.hbs` (always visible on the sheet header; no tab switch needed).
 - `conserveNature` (on Abilities tab, Nature row): behind `DialogV2.confirm`; guards `nature.max > 1`. Yes path: `max -= 1`, `rating = new max` (slammed, not preserved), `pass = 0`, `fail = 0`. `recoverNature`: no dialog; guards `rating < max`; `rating += 1`. Neither touches anything outside `system.abilities.nature`.
+- **Inventory slot system** (`module/data/item/_fields.mjs`): every inventory Item has `system.slot` (string key, "" = unassigned), `system.slotIndex` (int, for multi-slot groups), `system.dropped` (bool, ground state), plus `slotOptions` (per-location cost map). Body slot groups: head(1), neck(1), hand-L/hand-R(2 each, Worn+Carried), feet(1), pocket(1), torso(3), belt(3). Plus a 12-slot `cache` group + dynamic container groups. **Unassigned section** = `slot === "" && dropped === false`. Actions: `removeFromSlot` (clears slot/slotIndex, keeps dropped); `dropItem` (clears slot + sets dropped=true, cascades to container children, preserving their slot); `pickUpItem` (clears dropped only — does NOT reassign slot). `placeItem` is separate for assigning into slots.
+- Drop button is only exposed on Unassigned items and on container slot-group headers (NOT on items placed in ordinary body slots).
+- Data-attribute selectors like `[data-item-id="..."]` match many elements per card (placement + action buttons nested inside). Scope via `.dropped-item` / `.unassigned-item` row classes.
 
 **Checkboxes:**
 
@@ -101,7 +104,7 @@ Already shipped. Listed for completeness.
 - [x] `tests/e2e/sheet/wise-crud.spec.mjs` — add a wise, rename, delete (wises are an actor-field array, not Items; capped at 4 per DH p.87; generic `addRow`/`deleteRow` actions with `data-array="wises"`)
 - [x] `tests/e2e/sheet/session-reset.spec.mjs` — run resetSession (behind DialogV2.confirm); verify trait `beneficial` restored + `usedAgainst` cleared; also resets spell `cast` / invocation `performed` flags
 - [x] `tests/e2e/sheet/nature-tax.spec.mjs` — use `conserveNature` (dialog; -1 max, rating slammed to new max, pass/fail zeroed) / `recoverNature` (no dialog; rating +1 toward max); verify guards
-- [ ] `tests/e2e/sheet/inventory-slots.spec.mjs` — drop item in slot, pickUp, removeFromSlot; verify slot occupancy
+- [x] `tests/e2e/sheet/inventory-slots.spec.mjs` — drop / pickUp / removeFromSlot verified against `system.slot`, `system.slotIndex`, `system.dropped` fields; dropItem cascades to container children; pickUp clears `dropped` only (does NOT reassign slot — item lands in "Unassigned")
 - [ ] `tests/e2e/sheet/inventory-supplies.spec.mjs` — consume a portion, drink a draught; verify portion counter decrements
 - [ ] `tests/e2e/sheet/inventory-bundle-split.spec.mjs` — split a bundled item stack; verify two items exist
 - [ ] `tests/e2e/sheet/biography-edit.spec.mjs` — edit notes/biography; verify persistence

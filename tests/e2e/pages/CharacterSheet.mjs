@@ -221,6 +221,115 @@ export class CharacterSheet {
   }
 
   /**
+   * Click the Inventory tab in the sheet's tab navigation. The tab id is
+   * "inventory" (see character-sheet.mjs TABS registration).
+   */
+  async openInventoryTab() {
+    await this.root.locator('nav.sheet-tabs a[data-tab="inventory"]').click();
+    await expect(this.root.locator('section[data-tab="inventory"].active')).toBeVisible();
+  }
+
+  /**
+   * Slot-group container for a given slot key (e.g. "head", "hand-R",
+   * "torso", "belt", "feet", "pocket", "neck"). Matches
+   * `[data-slot-group="<key>"]` emitted by character-inventory.hbs.
+   * @param {string} key
+   */
+  inventorySlotGroup(key) {
+    return this.root.locator(`section[data-tab="inventory"] [data-slot-group="${key}"]`);
+  }
+
+  /**
+   * Individual slot cell (0-indexed within the group) under the given slot
+   * group. Matches `.inventory-slot[data-slot-key="<key>"][data-slot-index="<i>"]`.
+   * @param {string} key
+   * @param {number} index
+   */
+  inventorySlot(key, index = 0) {
+    return this.root.locator(
+      `section[data-tab="inventory"] .inventory-slot[data-slot-key="${key}"][data-slot-index="${index}"]`
+    );
+  }
+
+  /**
+   * The dropped-items section (only rendered when any item has dropped=true).
+   */
+  get droppedSection() {
+    return this.root.locator('section[data-tab="inventory"] .inventory-dropped');
+  }
+
+  /**
+   * The unassigned-items section (only rendered when any non-dropped item
+   * has no slot assignment).
+   */
+  get unassignedSection() {
+    return this.root.locator('section[data-tab="inventory"] .inventory-unassigned');
+  }
+
+  /**
+   * Row for an item in the dropped section (either a flat dropped-item card
+   * or a dropped container group). Scoped to top-level item cards only —
+   * inner `data-item-id` attributes on placement buttons and action buttons
+   * are excluded by only matching `.dropped-item` / `.dropped-container-group`.
+   * @param {string} itemId
+   */
+  droppedItemRow(itemId) {
+    return this.droppedSection.locator(
+      `.dropped-item[data-item-id="${itemId}"], .dropped-container-group[data-item-id="${itemId}"]`
+    );
+  }
+
+  /**
+   * Row for an item in the unassigned section (either a flat unassigned-item
+   * card or an unassigned container group). Scoped to the card container
+   * elements — not the placement/action buttons inside.
+   * @param {string} itemId
+   */
+  unassignedItemRow(itemId) {
+    return this.unassignedSection.locator(
+      `.unassigned-item[data-item-id="${itemId}"], .unassigned-container-group[data-item-id="${itemId}"]`
+    );
+  }
+
+  /**
+   * "Drop" action button for an item. Appears in the unassigned section's
+   * per-item `.slot-actions` strip (see character-inventory.hbs) — the
+   * button carries `data-action="dropItem" data-item-id="<id>"`. The slot-
+   * mounted view has no drop button; drop is only offered for unassigned
+   * items. For occupied slots, test flows should first removeFromSlot().
+   * @param {string} itemId
+   */
+  dropItemButton(itemId) {
+    return this.root.locator(
+      `section[data-tab="inventory"] button[data-action="dropItem"][data-item-id="${itemId}"]`
+    );
+  }
+
+  /**
+   * "Pick up" action button for a dropped item. Appears in the dropped
+   * section's per-item `.slot-actions` strip — the button carries
+   * `data-action="pickUpItem" data-item-id="<id>"`.
+   * @param {string} itemId
+   */
+  pickUpItemButton(itemId) {
+    return this.root.locator(
+      `section[data-tab="inventory"] button[data-action="pickUpItem"][data-item-id="${itemId}"]`
+    );
+  }
+
+  /**
+   * "Remove from slot" action button for an item currently placed in a slot.
+   * Emitted as `.slot-actions button[data-action="removeFromSlot"]` in each
+   * occupied slot cell.
+   * @param {string} itemId
+   */
+  removeFromSlotButton(itemId) {
+    return this.root.locator(
+      `section[data-tab="inventory"] button[data-action="removeFromSlot"][data-item-id="${itemId}"]`
+    );
+  }
+
+  /**
    * Condition toggle button in the sheet's conditions strip.
    * The strip is rendered at the top of the sheet (see
    * templates/actors/character-conditions.hbs) and is always visible —
