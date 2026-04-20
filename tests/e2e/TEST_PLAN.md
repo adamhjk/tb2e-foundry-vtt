@@ -93,6 +93,10 @@ Already shipped. Listed for completeness.
 - **Inventory slot system** (`module/data/item/_fields.mjs`): every inventory Item has `system.slot` (string key, "" = unassigned), `system.slotIndex` (int, for multi-slot groups), `system.dropped` (bool, ground state), plus `slotOptions` (per-location cost map). Body slot groups: head(1), neck(1), hand-L/hand-R(2 each, Worn+Carried), feet(1), pocket(1), torso(3), belt(3). Plus a 12-slot `cache` group + dynamic container groups. **Unassigned section** = `slot === "" && dropped === false`. Actions: `removeFromSlot` (clears slot/slotIndex, keeps dropped); `dropItem` (clears slot + sets dropped=true, cascades to container children, preserving their slot); `pickUpItem` (clears dropped only — does NOT reassign slot). `placeItem` is separate for assigning into slots.
 - Drop button is only exposed on Unassigned items and on container slot-group headers (NOT on items placed in ordinary body slots).
 - Data-attribute selectors like `[data-item-id="..."]` match many elements per card (placement + action buttons nested inside). Scope via `.dropped-item` / `.unassigned-item` row classes.
+- **Supply item type** (`module/data/item/supply.mjs`): `system.supplyType` enum = `food` | `light` | `spellMaterial` | `sacramental` | `ammunition` | `other`. Food uses `system.quantity` / `quantityMax`; light uses `system.turnsRemaining` + `system.lit`. Items are NOT deleted at 0 — they stay for refill. Unassigned items render NO consume button; items must be in a real slot with matching `slotOptions`.
+- `consumePortion` = `quantity -= 1` (floor at 0) + clears `conditions.hungry` if true. No chat card.
+- `consumeLight` = `turnsRemaining -= 1` (floor at 0). **Does NOT flip `lit: false`, does NOT post chat card, does NOT trigger `pendingLightExtinguish` mailbox.** The light-extinguish / torch-expired flow is a separate path: `updateItem` hook watches for `changes.system?.lit === false`. Button persists as a no-op past turnsRemaining=0 (intentional).
+- **Draughts are on CONTAINERS, not supplies.** Type `container` with `CONFIG.TB2E.containerTypes.<kind>.liquid === true` (waterskin, bottle, jug, barrel, cask, clayPot, woodenCanteen). `system.liquidType` ∈ `water` | `wine` | `oil` | `holyWater` (default water). `drinkDraught` handler: decrement `quantity`; `water` clears hungry; `wine` opens `DialogV2.wait` with quench / bolster choice (bolster sets `flags.tb2e.wineBolster`); `oil` / `holyWater` decrement only.
 
 **Checkboxes:**
 
@@ -105,7 +109,7 @@ Already shipped. Listed for completeness.
 - [x] `tests/e2e/sheet/session-reset.spec.mjs` — run resetSession (behind DialogV2.confirm); verify trait `beneficial` restored + `usedAgainst` cleared; also resets spell `cast` / invocation `performed` flags
 - [x] `tests/e2e/sheet/nature-tax.spec.mjs` — use `conserveNature` (dialog; -1 max, rating slammed to new max, pass/fail zeroed) / `recoverNature` (no dialog; rating +1 toward max); verify guards
 - [x] `tests/e2e/sheet/inventory-slots.spec.mjs` — drop / pickUp / removeFromSlot verified against `system.slot`, `system.slotIndex`, `system.dropped` fields; dropItem cascades to container children; pickUp clears `dropped` only (does NOT reassign slot — item lands in "Unassigned")
-- [ ] `tests/e2e/sheet/inventory-supplies.spec.mjs` — consume a portion, drink a draught; verify portion counter decrements
+- [x] `tests/e2e/sheet/inventory-supplies.spec.mjs` — consumePortion (decrement quantity + clear hungry), drinkDraught (on containers!), consumeLight (decrement turnsRemaining); items never auto-delete at 0
 - [ ] `tests/e2e/sheet/inventory-bundle-split.spec.mjs` — split a bundled item stack; verify two items exist
 - [ ] `tests/e2e/sheet/biography-edit.spec.mjs` — edit notes/biography; verify persistence
 

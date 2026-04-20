@@ -330,6 +330,100 @@ export class CharacterSheet {
   }
 
   /**
+   * "Eat" (consume a portion) button for a food supply placed in a slot.
+   * Food items render the action strip `.slot-food-qty > button.slot-consume-btn`
+   * (see templates/actors/tabs/character-inventory.hbs). Only items with
+   * `type="supply"` and `system.supplyType="food"` that are placed in a slot
+   * get this button — unassigned supplies do NOT render it.
+   * Wired to `consumePortion` data-action.
+   * @param {string} itemId
+   */
+  consumePortionButton(itemId) {
+    return this.root.locator(
+      `section[data-tab="inventory"] button[data-action="consumePortion"][data-item-id="${itemId}"]`
+    );
+  }
+
+  /**
+   * "Drink" (drink a draught) button for a liquid container placed in a slot.
+   * Rendered when the item is `type="container"` with a containerType flagged
+   * `liquid: true` in CONFIG.TB2E.containerTypes (waterskin, bottle, jug, etc).
+   * Wired to `drinkDraught` data-action.
+   * @param {string} itemId
+   */
+  drinkDraughtButton(itemId) {
+    return this.root.locator(
+      `section[data-tab="inventory"] button[data-action="drinkDraught"][data-item-id="${itemId}"]`
+    );
+  }
+
+  /**
+   * "Use 1 turn" (consume a turn of light) button for a lit light supply
+   * placed in a slot. Only appears when the supply has `lit: true` and
+   * `supplyType: "light"`. Unlit / depleted / unassigned light items show
+   * a different control (`lightSource` or the smoke icon). Wired to
+   * `consumeLight` data-action.
+   * @param {string} itemId
+   */
+  consumeLightButton(itemId) {
+    return this.root.locator(
+      `section[data-tab="inventory"] button[data-action="consumeLight"][data-item-id="${itemId}"]`
+    );
+  }
+
+  /**
+   * The numeric quantity input for a food supply's current portion count.
+   * The template renders a pair of `<input type="number" class="slot-qty-input">`
+   * inside `.slot-food-qty`; the first is `data-field="quantity"` (current),
+   * the second is `data-field="quantityMax"`. Scoped by `data-item-id` so
+   * this locator returns just the current-portions input.
+   * @param {string} itemId
+   */
+  portionCounter(itemId) {
+    return this.root.locator(
+      `section[data-tab="inventory"] .slot-food-qty input.slot-qty-input[data-item-id="${itemId}"][data-field="quantity"]`
+    );
+  }
+
+  /**
+   * The numeric quantity input for a liquid container's current draught count.
+   * Inside `.slot-liquid-qty`, the template emits an input without an explicit
+   * `data-field` but scoped by `data-item-id`; the first such input is the
+   * current-draughts value. We match the first `.slot-liquid-qty` input.
+   * @param {string} itemId
+   */
+  draughtCounter(itemId) {
+    return this.root.locator(
+      `section[data-tab="inventory"] .slot-liquid-qty input.slot-qty-input[data-item-id="${itemId}"]`
+    ).first();
+  }
+
+  /**
+   * The numeric turns-remaining input for a light supply. Inside
+   * `.slot-light-qty`, the template emits a single input whose sibling label
+   * is the literal "t" (turns). Scoped by `data-item-id`.
+   * @param {string} itemId
+   */
+  lightTurnsCounter(itemId) {
+    return this.root.locator(
+      `section[data-tab="inventory"] .slot-light-qty input.slot-qty-input[data-item-id="${itemId}"]`
+    );
+  }
+
+  /**
+   * The "spent" smoke icon that appears in a light supply's slot cell when
+   * the item is depleted (not lit, turnsRemaining <= 0). Used to assert the
+   * terminal state after consumeLight exhausts a torch.
+   * @param {string} itemId
+   */
+  lightDepletedIcon(itemId) {
+    const slot = this.root.locator(
+      `section[data-tab="inventory"] .inventory-slot[data-item-id="${itemId}"]`
+    );
+    return slot.locator('.slot-depleted-icon');
+  }
+
+  /**
    * Condition toggle button in the sheet's conditions strip.
    * The strip is rendered at the top of the sheet (see
    * templates/actors/character-conditions.hbs) and is always visible —
