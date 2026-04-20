@@ -269,6 +269,15 @@ export class CharacterWizard {
     await this.root.locator('button.roll-btn[data-action="rollSpells"]').click();
   }
 
+  /**
+   * Locator for the list of spell-name badges rendered after rollSpells().
+   * Template (step-gear.hbs) emits `.spell-list .spell-badge` for each name
+   * in `state.spells`. Present only for `isMagician` classes.
+   */
+  get spellBadges() {
+    return this.root.locator('.spell-list .spell-badge');
+  }
+
   /* ------------------------------------------------------------------ */
   /*  Step 10: Weapons                                                  */
   /* ------------------------------------------------------------------ */
