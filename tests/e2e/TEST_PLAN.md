@@ -47,11 +47,16 @@ Already shipped. Listed for completeness.
 **Patterns:**
 - Wizard data-actions: `openWizard`, `selectClass`, `selectStock`, `selectUpbringing`, `selectHometown`, `selectHometownSkill`, `selectHomeTrait`, `selectSocial`, `selectSpecialty`, `selectRequiredWise`, `answerNature`, `selectNatureWise`, `selectNatureHomeTrait`, `answerCircles`, `selectPackType`, `rollSpells`, `rollRelics`, `selectWeapon`, `toggleShield`, `selectArmor`, `selectEquipment`, `finish`
 - Wizard writes to actor on `finish`; each step persists incrementally.
+- **Upbringing step** is dynamically filtered out for non-human/changeling stocks (`shouldSkipUpbringing` in chargen.mjs) — elves, dwarves, halflings get a 11-step sequence.
+- **rollSpells / rollRelics** are NOT dedicated wizard steps — they surface as sub-sections of step 9 (Gear) when the class is Scholar / Theurge / Shaman. Buttons render conditionally on `needsSpellRoll` / `needsRelicRoll`; clicking rerenders the step with `.relic-list` + `.invocation-list` badge lists.
+- **Theurge relic roll**: 3d6 → `THEURGE_RELIC_TABLE[total]` → always 2 relics + 2 invocations; `#applyToActor` resolves names against `tb2e.theurge-relics` / `tb2e.theurge-invocations` compendiums and creates embedded Items. On compendium miss, falls back to stub `{ type: "relic", system: { tier: "minor" } }` — note the `tier` vs schema's `relicTier` drift.
+- **Armor step** is a no-op for classes with no starting armor or with `autoLeather` pre-set (Ranger, Theurge): `#isStepComplete("armor")` delegates to `"weapons"` and the step displays only an informational note.
+- **Launch the wizard directly** via `new CharacterWizard(actor).render(true)` (imported from `/systems/tb2e/module/applications/actor/character-wizard.mjs`) to avoid opening the character sheet first.
 
 **Checkboxes:**
 
 - [x] `tests/e2e/character/wizard-walkthrough.spec.mjs` — Ranger/elf happy path (upbringing auto-skipped for non-human stocks); all 11 effective steps walked; asserts class/stock/abilities/traits/wises/items
-- [ ] `tests/e2e/character/wizard-theurge-relics.spec.mjs` — select Theurge class, verify `rollRelics` populates linked relics
+- [x] `tests/e2e/character/wizard-theurge-relics.spec.mjs` — `rollRelics` is a sub-section of step 9 (Gear), not a dedicated step; 3d6 → THEURGE_RELIC_TABLE → 2 relics + 2 invocations; noted schema drift (stub uses `tier`, compendium relics use `relicTier`)
 - [ ] `tests/e2e/character/wizard-shaman-invocations.spec.mjs` — select Shaman, verify invocations + relics populate
 - [ ] `tests/e2e/character/wizard-scholar-spells.spec.mjs` — select Scholar, verify spells populate
 - [ ] `tests/e2e/character/import-from-iconic.spec.mjs` — drag each of the 11 iconic-characters into the sidebar, verify each arrives with expected class/stock (covers Gerald already via `compendium-drag.spec.mjs`; this is the broader coverage test)

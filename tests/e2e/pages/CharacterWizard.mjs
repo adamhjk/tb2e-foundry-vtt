@@ -242,6 +242,33 @@ export class CharacterWizard {
       .click();
   }
 
+  /**
+   * Roll the theurge/shaman relic table (3d6) — triggers
+   * `#onRollRelics`, which populates state.relics + state.invocations
+   * from `THEURGE_RELIC_TABLE`/`SHAMAN_RELIC_TABLE` and re-renders. The
+   * button is only visible while `needsRelicRoll` is true; after the
+   * roll the gear step renders `.relic-list` and `.invocation-list`
+   * badges instead.
+   */
+  async rollRelics() {
+    await this.root.locator('button.roll-btn[data-action="rollRelics"]').click();
+  }
+
+  /** Locator for the list of relic badges rendered after rollRelics(). */
+  get relicBadges() {
+    return this.root.locator('.relic-list .relic-badge');
+  }
+
+  /** Locator for the list of invocation badges rendered after rollRelics(). */
+  get invocationBadges() {
+    return this.root.locator('.invocation-list .invocation-badge');
+  }
+
+  /** Roll the magician spell-school table (2d6). Parallel to rollRelics(). */
+  async rollSpells() {
+    await this.root.locator('button.roll-btn[data-action="rollSpells"]').click();
+  }
+
   /* ------------------------------------------------------------------ */
   /*  Step 10: Weapons                                                  */
   /* ------------------------------------------------------------------ */
