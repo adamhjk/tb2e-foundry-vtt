@@ -1,0 +1,13 @@
+{
+  "id": "tb2e-e2e",
+  "title": "TB2E E2E",
+  "system": "tb2e",
+  "coreVersion": "13",
+  "compatibility": {
+    "minimum": "13",
+    "verified": "13"
+  },
+  "systemVersion": "0.3.0",
+  "description": "Seed world for Playwright e2e tests. Do not commit runtime data.",
+  "flags": {}
+}

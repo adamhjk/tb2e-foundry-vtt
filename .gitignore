@@ -4,3 +4,9 @@ tb2e.css.map
 packs/*
 !packs/_source
 .envrc
+
+# Playwright e2e — NEVER commit: contains copied Foundry license + session cookies
+tests/e2e/.test-data/
+tests/e2e/.auth/
+test-results/
+playwright-report/

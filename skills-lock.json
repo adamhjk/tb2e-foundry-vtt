@@ -11,6 +11,11 @@
       "sourceType": "github",
       "computedHash": "063a0e6448123cd359ad0044cc46b0e490cc7964d45ef4bb9fd842bd2ffbca67"
     },
+    "playwright-expert": {
+      "source": "jeffallan/claude-skills",
+      "sourceType": "github",
+      "computedHash": "f6c28c80e2815b5d9fc5426441fc3e3f09245a0f8e67307a3e59b0820ec6fa1b"
+    },
     "skill-creator": {
       "source": "anthropics/skills",
       "sourceType": "github",
