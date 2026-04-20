@@ -80,13 +80,14 @@ Already shipped. Listed for completeness.
 - Will / Health / Circles / Resources: schema min=0 max=10 (via `advancementField`)
 - Nature: rating 0–7, max 0–7; the Nature rating HTML input caps at current `max` (dynamic `max="{{nature.max}}"`) — set `max` *before* `rating` or the browser silently rejects
 - Nature crisis triggers at rating=0
+- Skill rating input is replaced by an `✕` icon when `rating===0 && learning>0` — default actors have `learning=0`, so the input is present; if a spec puts a skill into "learning" mode, switch to the appropriate UI
 - Traits have `level` 1–3 (normal) or level-1 (flawed) with bubble UI
 
 **Checkboxes:**
 
 - [x] `tests/e2e/sheet/edit-identity.spec.mjs` — edit name/level/home, verify persistence after reload (TB2E has no "alignment" field — substituted `system.home`)
 - [x] `tests/e2e/sheet/edit-abilities.spec.mjs` — set Will, Health, Nature rating/max; verify data model constraints (ranges, clamping)
-- [ ] `tests/e2e/sheet/edit-skills.spec.mjs` — set rating for each relevant skill; verify persistence
+- [x] `tests/e2e/sheet/edit-skills.spec.mjs` — set rating for each relevant skill; verify persistence
 - [ ] `tests/e2e/sheet/toggle-conditions.spec.mjs` — toggle each condition (DH p.53); verify chat card posted via `pendingGrindApply` mailbox
 - [ ] `tests/e2e/sheet/trait-crud.spec.mjs` — add a trait, set level, demote, delete; verify bubble UI state
 - [ ] `tests/e2e/sheet/wise-crud.spec.mjs` — add a wise, rename, delete

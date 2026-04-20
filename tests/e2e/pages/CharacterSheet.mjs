@@ -36,6 +36,14 @@ export class CharacterSheet {
   }
 
   /**
+   * Click the Skills tab in the sheet's tab navigation.
+   */
+  async openSkillsTab() {
+    await this.root.locator('nav.sheet-tabs a[data-tab="skills"]').click();
+    await expect(this.root.locator('section[data-tab="skills"].active')).toBeVisible();
+  }
+
+  /**
    * Rating input for a given ability key (will, health, nature, circles, resources).
    * @param {string} key
    */
@@ -49,5 +57,14 @@ export class CharacterSheet {
    */
   abilityMax(key) {
     return this.root.locator(`input[name="system.abilities.${key}.max"]`);
+  }
+
+  /**
+   * Rating input for a given skill key (e.g. fighter, scholar, hunter).
+   * Requires the Skills tab to be active.
+   * @param {string} key
+   */
+  skillRating(key) {
+    return this.root.locator(`input[name="system.skills.${key}.rating"]`);
   }
 }
