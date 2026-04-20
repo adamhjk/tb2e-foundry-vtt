@@ -152,7 +152,7 @@ Already shipped. Listed for completeness.
 
 **Checkboxes:**
 
-- [ ] `tests/e2e/roll/ability-test-basic.spec.mjs` — roll Will vs Ob, no mods; verify chat card shows pool, successes, pass/fail
+- [x] `tests/e2e/roll/ability-test-basic.spec.mjs` — roll Will vs Ob 3 with stubbed dice (all-3s FAIL path + all-6s PASS path); verifies pool/successes/outcome on the chat card. Foundational RollDialog + RollChatCard POMs shipped.
 - [ ] `tests/e2e/roll/skill-test-basic.spec.mjs` — roll Fighter vs Ob; verify chat card + pass/fail pips ticked on sheet
 - [ ] `tests/e2e/roll/roll-dialog-modifiers.spec.mjs` — open roll dialog, add +1D modifier manually, submit; verify added to pool
 - [ ] `tests/e2e/roll/condition-modifiers.spec.mjs` — toggle afraid, roll Will; verify -1D applied per DH p.53

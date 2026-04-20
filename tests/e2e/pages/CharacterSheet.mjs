@@ -550,6 +550,35 @@ export class CharacterSheet {
   }
 
   /**
+   * The rollable row for a given ability key on the Abilities tab.
+   * Template emits `<div class="ability-row rollable" data-action="rollTest"
+   * data-type="ability" data-key="<key>">` — clicking anywhere on the row
+   * (outside inputs / bubbles / advance button) invokes `#onRollTest` which
+   * launches the roll dialog. Nature renders with an extra `nature-ability-row`
+   * class but still carries the same data-action attributes.
+   *
+   * Requires the Abilities tab to be active.
+   * @param {string} key will | health | nature | circles | resources
+   */
+  rollAbilityRow(key) {
+    return this.root.locator(
+      `section[data-tab="abilities"] .ability-row.rollable[data-action="rollTest"][data-type="ability"][data-key="${key}"]`
+    );
+  }
+
+  /**
+   * The rollable row for a given skill key on the Skills tab.
+   * Template emits `<div class="skill-row rollable" data-action="rollTest"
+   * data-type="skill" data-key="<key>">`. Requires the Skills tab to be active.
+   * @param {string} key
+   */
+  rollSkillRow(key) {
+    return this.root.locator(
+      `section[data-tab="skills"] .skill-row.rollable[data-action="rollTest"][data-type="skill"][data-key="${key}"]`
+    );
+  }
+
+  /**
    * Condition toggle button in the sheet's conditions strip.
    * The strip is rendered at the top of the sheet (see
    * templates/actors/character-conditions.hbs) and is always visible —
