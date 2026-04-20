@@ -50,7 +50,7 @@ Already shipped. Listed for completeness.
 
 **Checkboxes:**
 
-- [ ] `tests/e2e/character/wizard-walkthrough.spec.mjs` — open wizard from a blank character, walk every step with valid choices, assert resulting actor has expected class/stock/abilities populated
+- [x] `tests/e2e/character/wizard-walkthrough.spec.mjs` — Ranger/elf happy path (upbringing auto-skipped for non-human stocks); all 11 effective steps walked; asserts class/stock/abilities/traits/wises/items
 - [ ] `tests/e2e/character/wizard-theurge-relics.spec.mjs` — select Theurge class, verify `rollRelics` populates linked relics
 - [ ] `tests/e2e/character/wizard-shaman-invocations.spec.mjs` — select Shaman, verify invocations + relics populate
 - [ ] `tests/e2e/character/wizard-scholar-spells.spec.mjs` — select Scholar, verify spells populate
