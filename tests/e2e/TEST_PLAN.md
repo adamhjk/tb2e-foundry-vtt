@@ -71,7 +71,8 @@ Already shipped. Listed for completeness.
 - Conditions (DH p.53): fresh, hungry, angry, afraid, exhausted, injured, sick, dead
 
 **Patterns:**
-- Data-actions: `toggleCondition`, `toggleBubble`, `setTraitLevel`, `addTrait`, `deleteTrait`, `addWise`, `deleteWise`, `resetSession`, `conserveNature`, `recoverNature`, `removeFromSlot`, `dropItem`, `pickUpItem`, `consumePortion`, `drinkDraught`, `consumeLight`, `toggleDamaged`, `toggleLiquidType`, `splitBundle`
+- Data-actions: `toggleCondition`, `toggleBubble`, `setTraitLevel`, `addTrait`, `deleteTrait`, `addRow`/`deleteRow` (generic; used for wises and several other arrays — read `data-array` attr), `resetSession`, `conserveNature`, `recoverNature`, `removeFromSlot`, `dropItem`, `pickUpItem`, `consumePortion`, `drinkDraught`, `consumeLight`, `toggleDamaged`, `toggleLiquidType`, `splitBundle`
+- Wises: `system.wises` array on the actor (not an Item type), capped at 4 slots; each entry has `{ name, pass, fail, fate, persona }`. Add via `addRow[data-array="wises"]`, delete via `deleteRow[data-array="wises"][data-index="<i>"]`. Rename via `input[name="system.wises.<i>.name"]`. Rows are keyed by array index (re-index on delete).
 - Sheet root: `form.application.sheet.tb2e.actor.character` (title = `Character: <name>`)
 - Inventory slots: head, neck, hand-L, hand-R, torso, belt, feet, pocket + custom container slots
 
@@ -94,7 +95,7 @@ Already shipped. Listed for completeness.
 - [x] `tests/e2e/sheet/edit-skills.spec.mjs` — set rating for each relevant skill; verify persistence
 - [x] `tests/e2e/sheet/toggle-conditions.spec.mjs` — toggle each condition (DH p.53); sheet does a direct update (no mailbox/chat card from the toggle itself); also covers `pendingGrindApply` mailbox clearing by GM hook
 - [x] `tests/e2e/sheet/trait-crud.spec.mjs` — add a trait, set level, demote, delete; verify bubble UI state (traits are level 1–3 only; no flawed/-1 bubble — `usedAgainst` is a separate boolean set by versus system)
-- [ ] `tests/e2e/sheet/wise-crud.spec.mjs` — add a wise, rename, delete
+- [x] `tests/e2e/sheet/wise-crud.spec.mjs` — add a wise, rename, delete (wises are an actor-field array, not Items; capped at 4 per DH p.87; generic `addRow`/`deleteRow` actions with `data-array="wises"`)
 - [ ] `tests/e2e/sheet/session-reset.spec.mjs` — tick trait levels, run resetSession, verify trait usage state cleared (DH p.85)
 - [ ] `tests/e2e/sheet/nature-tax.spec.mjs` — use `conserveNature` / `recoverNature`; verify rating changes
 - [ ] `tests/e2e/sheet/inventory-slots.spec.mjs` — drop item in slot, pickUp, removeFromSlot; verify slot occupancy

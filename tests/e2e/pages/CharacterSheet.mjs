@@ -122,6 +122,56 @@ export class CharacterSheet {
   }
 
   /**
+   * The "Add Wise" button in the traits tab. Requires the Traits tab to be active.
+   * Wired to the generic `addRow` data-action with `data-array="wises"` on the
+   * character sheet (module/applications/actor/character-sheet.mjs #onAddRow).
+   * The button is only rendered when fewer than 4 wises exist (SG/DH slot cap).
+   */
+  get addWiseButton() {
+    return this.root.locator(
+      'section[data-tab="traits"] fieldset.wises-section button.btn-add[data-action="addRow"][data-array="wises"]'
+    );
+  }
+
+  /**
+   * Wise row located by its array index. Wises are an actor-field array
+   * (`system.wises`), not embedded Items, so rows are identified by index,
+   * not by id. The template emits inputs named `system.wises.<index>.name`
+   * and a delete button with `data-array="wises" data-index="<index>"`.
+   * @param {number} index
+   */
+  wiseRow(index) {
+    return this.root.locator('section[data-tab="traits"] fieldset.wises-section .wise-row').nth(index);
+  }
+
+  /**
+   * All wise rows under the Traits & Wises tab.
+   */
+  get wiseRows() {
+    return this.root.locator('section[data-tab="traits"] fieldset.wises-section .wise-row');
+  }
+
+  /**
+   * Name input for the wise at a given index. Matches the named input the
+   * template emits, which is updated by the sheet's form submission flow.
+   * @param {number} index
+   */
+  wiseNameInput(index) {
+    return this.root.locator(`input[name="system.wises.${index}.name"]`);
+  }
+
+  /**
+   * Delete button for the wise at a given index. Fires the generic
+   * `deleteRow` data-action (removes the entry from `system.wises`).
+   * @param {number} index
+   */
+  deleteWiseButton(index) {
+    return this.root.locator(
+      `section[data-tab="traits"] fieldset.wises-section .wise-row button.btn-icon[data-action="deleteRow"][data-array="wises"][data-index="${index}"]`
+    );
+  }
+
+  /**
    * Condition toggle button in the sheet's conditions strip.
    * The strip is rendered at the top of the sheet (see
    * templates/actors/character-conditions.hbs) and is always visible —
