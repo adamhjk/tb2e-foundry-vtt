@@ -172,6 +172,28 @@ export class CharacterSheet {
   }
 
   /**
+   * "New Session" button in the sheet header toolbar. Wired to the
+   * `resetSession` data-action (module/applications/actor/character-sheet.mjs),
+   * which calls `resetTraitsForSession` from module/session.mjs after a
+   * confirm dialog. Always visible (lives in character-header.hbs, not in
+   * a tab panel).
+   */
+  get resetSessionButton() {
+    return this.root.locator('button.session-reset-btn[data-action="resetSession"]');
+  }
+
+  /**
+   * Beneficial-uses input for a given trait Item id. `system.beneficial`
+   * tracks the number of +1D uses REMAINING this session (not consumed).
+   * L1 traits reset to 1, L2 to 2, L3 to 0 (unlimited, not counted) —
+   * see module/session.mjs and module/data/item/trait.mjs.
+   * @param {string} itemId
+   */
+  traitBeneficialInput(itemId) {
+    return this.traitRow(itemId).locator('input.trait-beneficial-input');
+  }
+
+  /**
    * Condition toggle button in the sheet's conditions strip.
    * The strip is rendered at the top of the sheet (see
    * templates/actors/character-conditions.hbs) and is always visible —

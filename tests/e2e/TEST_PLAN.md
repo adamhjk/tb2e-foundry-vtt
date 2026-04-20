@@ -87,6 +87,8 @@ Already shipped. Listed for completeness.
 - Traits: `module/data/item/trait.mjs` has `level` 1–3 only (min=1, max=3, integer, initial=1). **No flawed flag, no -1 level.** The "used against" state is a separate `usedAgainst: BooleanField`, written by `module/dice/versus.mjs`, not via the bubble UI.
 - `addTrait` data-action has **no dialog** — it unconditionally creates an Item named "New Trait" with level 1 via `Item.create(..., { parent: actor })`.
 - Traits tab template: `templates/actors/tabs/character-traits.hbs`. Each row has three `.level-pip` buttons (levels 1/2/3) with `data-action="setTraitLevel"` and `data-level`.
+- **Session usage tracking lives on the trait Item, not the actor.** `system.beneficial` = *remaining* uses this session (not consumed count): L1 max=1, L2 max=2, L3 max=0/unlimited (`TraitData.maxBeneficial` getter). `resetSession` (in `module/session.mjs` `resetTraitsForSession`) does **three things**: restores `trait.beneficial` to max, clears `trait.usedAgainst`, and ALSO resets `spell.cast` and `invocation.performed` flags. Gated by `DialogV2.confirm` (yes / no buttons with `data-action`).
+- The `resetSession` button lives in `character-header.hbs` (always visible on the sheet header; no tab switch needed).
 
 **Checkboxes:**
 
@@ -96,7 +98,7 @@ Already shipped. Listed for completeness.
 - [x] `tests/e2e/sheet/toggle-conditions.spec.mjs` — toggle each condition (DH p.53); sheet does a direct update (no mailbox/chat card from the toggle itself); also covers `pendingGrindApply` mailbox clearing by GM hook
 - [x] `tests/e2e/sheet/trait-crud.spec.mjs` — add a trait, set level, demote, delete; verify bubble UI state (traits are level 1–3 only; no flawed/-1 bubble — `usedAgainst` is a separate boolean set by versus system)
 - [x] `tests/e2e/sheet/wise-crud.spec.mjs` — add a wise, rename, delete (wises are an actor-field array, not Items; capped at 4 per DH p.87; generic `addRow`/`deleteRow` actions with `data-array="wises"`)
-- [ ] `tests/e2e/sheet/session-reset.spec.mjs` — tick trait levels, run resetSession, verify trait usage state cleared (DH p.85)
+- [x] `tests/e2e/sheet/session-reset.spec.mjs` — run resetSession (behind DialogV2.confirm); verify trait `beneficial` restored + `usedAgainst` cleared; also resets spell `cast` / invocation `performed` flags
 - [ ] `tests/e2e/sheet/nature-tax.spec.mjs` — use `conserveNature` / `recoverNature`; verify rating changes
 - [ ] `tests/e2e/sheet/inventory-slots.spec.mjs` — drop item in slot, pickUp, removeFromSlot; verify slot occupancy
 - [ ] `tests/e2e/sheet/inventory-supplies.spec.mjs` — consume a portion, drink a draught; verify portion counter decrements
