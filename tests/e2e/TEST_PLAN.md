@@ -98,6 +98,7 @@ Already shipped. Listed for completeness.
 - `consumeLight` = `turnsRemaining -= 1` (floor at 0). **Does NOT flip `lit: false`, does NOT post chat card, does NOT trigger `pendingLightExtinguish` mailbox.** The light-extinguish / torch-expired flow is a separate path: `updateItem` hook watches for `changes.system?.lit === false`. Button persists as a no-op past turnsRemaining=0 (intentional).
 - **Draughts are on CONTAINERS, not supplies.** Type `container` with `CONFIG.TB2E.containerTypes.<kind>.liquid === true` (waterskin, bottle, jug, barrel, cask, clayPot, woodenCanteen). `system.liquidType` ∈ `water` | `wine` | `oil` | `holyWater` (default water). `drinkDraught` handler: decrement `quantity`; `water` clears hungry; `wine` opens `DialogV2.wait` with quench / bolster choice (bolster sets `flags.tb2e.wineBolster`); `oil` / `holyWater` decrement only.
 - **Bundles** are `container` items with `quantityMax > 1` (e.g. stacked rations, arrows). `isSplittableBundle` = `type==="container" && quantityMax > 1`. `splitBundle` handler peels ONE off per click (no dialog): clones `item.toObject()` with `quantity=1, quantityMax=1, slot="", slotIndex=0, containerKey=""` (lands in Unassigned); source: `quantity -= 1, quantityMax -= 1`. Button only surfaces in the **occupied** branch of `.inventory-slot` cells (not Unassigned / Dropped). A container with `quantityMax === 1` becomes its OWN slot-group (backpack, etc.); a bundle is always an occupant inside another slot. `belt` forbids bundles; `torso` accepts them.
+- **Biography tab** renders: `textarea[name="system.bio"]` (plain StringField — no ProseMirror), an allies table (`system.allies.<i>.name | location | status`), and a level-choices table (`system.levelChoices.<level>`). Fields `belief` / `creed` / `goal` / `instinct` exist in the `character` data model but are **only** rendered on NPC / monster / wizard templates — **not** on the character sheet. Don't look for them here.
 
 **Checkboxes:**
 
@@ -112,7 +113,7 @@ Already shipped. Listed for completeness.
 - [x] `tests/e2e/sheet/inventory-slots.spec.mjs` — drop / pickUp / removeFromSlot verified against `system.slot`, `system.slotIndex`, `system.dropped` fields; dropItem cascades to container children; pickUp clears `dropped` only (does NOT reassign slot — item lands in "Unassigned")
 - [x] `tests/e2e/sheet/inventory-supplies.spec.mjs` — consumePortion (decrement quantity + clear hungry), drinkDraught (on containers!), consumeLight (decrement turnsRemaining); items never auto-delete at 0
 - [x] `tests/e2e/sheet/inventory-bundle-split.spec.mjs` — bundles are `container` items with `quantityMax > 1`; splitBundle is "peel one off" (no dialog); creates qty=1 Item in Unassigned, decrements source. Buttons hidden at qty<2.
-- [ ] `tests/e2e/sheet/biography-edit.spec.mjs` — edit notes/biography; verify persistence
+- [x] `tests/e2e/sheet/biography-edit.spec.mjs` — `system.bio` is plain textarea (not ProseMirror); covers bio + allies table rows + level-choices table; belief/creed/goal/instinct exist in schema but are NOT rendered on the character sheet
 
 ---
 

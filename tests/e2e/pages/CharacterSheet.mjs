@@ -458,6 +458,72 @@ export class CharacterSheet {
   }
 
   /**
+   * Click the Biography tab in the sheet's tab navigation. The tab id is
+   * "biography" (see character-sheet.mjs TABS registration and
+   * templates/actors/tabs/character-biography.hbs).
+   */
+  async openBiographyTab() {
+    await this.root.locator('nav.sheet-tabs a[data-tab="biography"]').click();
+    await expect(this.root.locator('section[data-tab="biography"].active')).toBeVisible();
+  }
+
+  /**
+   * The free-form Biography textarea. `system.bio` is a plain StringField
+   * (see module/data/actor/character.mjs) rendered as a `<textarea>` in
+   * the biography tab — NOT a Foundry ProseMirror/HTMLField editor. This
+   * means `.fill()` + blur persists via the sheet's submitOnChange form.
+   */
+  get bioTextarea() {
+    return this.root.locator('section[data-tab="biography"] fieldset.bio-section textarea[name="system.bio"]');
+  }
+
+  /**
+   * The "Add Row" button for the allies table on the biography tab. Wired
+   * to the generic `addRow` data-action with `data-array="allies"`. Each
+   * row exposes three text inputs (`name`, `location`, `status`) that
+   * persist through the standard form submission path.
+   */
+  get addAllyButton() {
+    return this.root.locator(
+      'section[data-tab="biography"] fieldset.allies-section button.btn-add[data-action="addRow"][data-array="allies"]'
+    );
+  }
+
+  /**
+   * Name input for the ally row at the given index.
+   * @param {number} index
+   */
+  allyNameInput(index) {
+    return this.root.locator(`input[name="system.allies.${index}.name"]`);
+  }
+
+  /**
+   * Location input for the ally row at the given index.
+   * @param {number} index
+   */
+  allyLocationInput(index) {
+    return this.root.locator(`input[name="system.allies.${index}.location"]`);
+  }
+
+  /**
+   * Status input for the ally row at the given index.
+   * @param {number} index
+   */
+  allyStatusInput(index) {
+    return this.root.locator(`input[name="system.allies.${index}.status"]`);
+  }
+
+  /**
+   * Level-choice input for the given target level (2..10). Emitted as
+   * `<input name="system.levelChoices.<level>">` in the level-requirements
+   * table on the biography tab.
+   * @param {number} level
+   */
+  levelChoiceInput(level) {
+    return this.root.locator(`input[name="system.levelChoices.${level}"]`);
+  }
+
+  /**
    * Condition toggle button in the sheet's conditions strip.
    * The strip is rendered at the top of the sheet (see
    * templates/actors/character-conditions.hbs) and is always visible —
