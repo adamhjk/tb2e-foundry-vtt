@@ -177,7 +177,7 @@ export default class CharacterSheet extends HandlebarsApplicationMixin(ActorShee
 
   static {
     Hooks.once("init", () => {
-      loadTemplates(CharacterSheet.PARTIALS);
+      foundry.applications.handlebars.loadTemplates(CharacterSheet.PARTIALS);
     });
   }
 

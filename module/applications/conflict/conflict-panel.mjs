@@ -91,7 +91,7 @@ export default class ConflictPanel extends HandlebarsApplicationMixin(Applicatio
 
   static {
     Hooks.once("init", () => {
-      loadTemplates(ConflictPanel.PARTIALS);
+      foundry.applications.handlebars.loadTemplates(ConflictPanel.PARTIALS);
     });
   }
 

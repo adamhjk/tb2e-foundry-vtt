@@ -102,10 +102,10 @@ Hooks.once("init", function() {
   });
 
   // Preload grind tracker template.
-  loadTemplates(["systems/tb2e/templates/grind-tracker.hbs"]);
+  foundry.applications.handlebars.loadTemplates(["systems/tb2e/templates/grind-tracker.hbs"]);
 
   // Preload templates.
-  loadTemplates([
+  foundry.applications.handlebars.loadTemplates([
     "systems/tb2e/templates/dice/roll-dialog.hbs",
     "systems/tb2e/templates/chat/roll-result.hbs",
     "systems/tb2e/templates/chat/versus-pending.hbs",

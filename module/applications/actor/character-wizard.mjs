@@ -95,7 +95,7 @@ export default class CharacterWizard extends HandlebarsApplicationMixin(Applicat
 
   static {
     Hooks.once("init", () => {
-      loadTemplates(CharacterWizard.PARTIALS);
+      foundry.applications.handlebars.loadTemplates(CharacterWizard.PARTIALS);
     });
   }
 
