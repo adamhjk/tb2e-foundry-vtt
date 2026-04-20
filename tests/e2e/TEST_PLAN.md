@@ -63,7 +63,7 @@ Already shipped. Listed for completeness.
 - [x] `tests/e2e/character/wizard-scholar-spells.spec.mjs` — class key is actually `magician` (not "scholar"); 2d6 `SPELL_SCHOOL_TABLE` (entries 2–10 give 3 spells, 11–12 yield `school:"Choose"` + empty spells[]); no stub fallback (missing names silently drop); no re-roll path; weapon list `["Dagger","Staff"]`; `requiresMentor: true`. Test stubs `CONFIG.Dice.randomUniform` for determinism.
 - [x] `tests/e2e/character/import-from-iconic.spec.mjs` — 9 iconics (not 11 — original count was stale): Beren, Gerald, Karolina, Nienna, Rörik, Taika, Tiziri, Ulrik, Varg. One UI-drag path (Taika) + one bulk programmatic import asserting class/stock against a ground-truth table. `afterEach` deletes tagged actors via `flags.tb2e.e2eTag`.
 - [x] `tests/e2e/character/create-monster.spec.mjs` — Create Actor dialog, type=monster, assert monster sheet opens
-- [ ] `tests/e2e/character/create-npc.spec.mjs` — Create Actor dialog, type=npc, assert NPC sheet opens
+- [ ] ~~skipped~~ `tests/e2e/character/create-npc.spec.mjs` — **PRODUCTION BUG**: `module/applications/actor/npc-sheet.mjs:43` references `templates/actors/character-conflict.hbs` which doesn't exist; NPC sheets throw ENOENT on render. Spec + POM are written and ready behind `test.fixme()`; remove the fixme once the bug is fixed.
 
 ---
 
