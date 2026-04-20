@@ -26,4 +26,28 @@ export class CharacterSheet {
     await this.root.locator('nav.sheet-tabs a[data-tab="identity"]').click();
     await expect(this.root.locator('section[data-tab="identity"].active')).toBeVisible();
   }
+
+  /**
+   * Click the Abilities tab in the sheet's tab navigation.
+   */
+  async openAbilitiesTab() {
+    await this.root.locator('nav.sheet-tabs a[data-tab="abilities"]').click();
+    await expect(this.root.locator('section[data-tab="abilities"].active')).toBeVisible();
+  }
+
+  /**
+   * Rating input for a given ability key (will, health, nature, circles, resources).
+   * @param {string} key
+   */
+  abilityRating(key) {
+    return this.root.locator(`input[name="system.abilities.${key}.rating"]`);
+  }
+
+  /**
+   * Max input for a given ability key. Currently only `nature` exposes a max field.
+   * @param {string} key
+   */
+  abilityMax(key) {
+    return this.root.locator(`input[name="system.abilities.${key}.max"]`);
+  }
 }

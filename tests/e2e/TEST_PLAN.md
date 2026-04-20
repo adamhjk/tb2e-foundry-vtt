@@ -77,13 +77,15 @@ Already shipped. Listed for completeness.
 
 **Gotchas:**
 - Ability/skill rating inputs are `input[name="system.abilities.<key>.rating"]`
-- Nature has both `rating` and `max`; Nature crisis triggers at rating=0
+- Will / Health / Circles / Resources: schema min=0 max=10 (via `advancementField`)
+- Nature: rating 0–7, max 0–7; the Nature rating HTML input caps at current `max` (dynamic `max="{{nature.max}}"`) — set `max` *before* `rating` or the browser silently rejects
+- Nature crisis triggers at rating=0
 - Traits have `level` 1–3 (normal) or level-1 (flawed) with bubble UI
 
 **Checkboxes:**
 
 - [x] `tests/e2e/sheet/edit-identity.spec.mjs` — edit name/level/home, verify persistence after reload (TB2E has no "alignment" field — substituted `system.home`)
-- [ ] `tests/e2e/sheet/edit-abilities.spec.mjs` — set Will, Health, Nature rating/max; verify data model constraints (ranges, clamping)
+- [x] `tests/e2e/sheet/edit-abilities.spec.mjs` — set Will, Health, Nature rating/max; verify data model constraints (ranges, clamping)
 - [ ] `tests/e2e/sheet/edit-skills.spec.mjs` — set rating for each relevant skill; verify persistence
 - [ ] `tests/e2e/sheet/toggle-conditions.spec.mjs` — toggle each condition (DH p.53); verify chat card posted via `pendingGrindApply` mailbox
 - [ ] `tests/e2e/sheet/trait-crud.spec.mjs` — add a trait, set level, demote, delete; verify bubble UI state
