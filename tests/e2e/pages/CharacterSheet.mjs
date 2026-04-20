@@ -69,6 +69,59 @@ export class CharacterSheet {
   }
 
   /**
+   * Click the Traits (Traits & Wises) tab in the sheet's tab navigation.
+   */
+  async openTraitsTab() {
+    await this.root.locator('nav.sheet-tabs a[data-tab="traits"]').click();
+    await expect(this.root.locator('section[data-tab="traits"].active')).toBeVisible();
+  }
+
+  /**
+   * The "Add Trait" button in the traits tab. Requires the Traits tab to be active.
+   * Wired to the `addTrait` data-action on the character sheet.
+   */
+  get addTraitButton() {
+    return this.root.locator('section[data-tab="traits"] fieldset.traits-section button.btn-add[data-action="addTrait"]');
+  }
+
+  /**
+   * Trait row for a given trait Item by id. The template emits
+   * `.trait-row[data-item-id="<id>"]`.
+   * @param {string} itemId
+   */
+  traitRow(itemId) {
+    return this.root.locator(`.trait-row[data-item-id="${itemId}"]`);
+  }
+
+  /**
+   * Name input for a given trait Item id (inline text input).
+   * @param {string} itemId
+   */
+  traitNameInput(itemId) {
+    return this.traitRow(itemId).locator('input.trait-name-input');
+  }
+
+  /**
+   * Level bubble (pip) button for a trait row. `level` is 1, 2, or 3.
+   * Clicking dispatches the `setTraitLevel` data-action.
+   * @param {string} itemId
+   * @param {number} level
+   */
+  traitLevelBubble(itemId, level) {
+    return this.traitRow(itemId).locator(
+      `button.level-pip[data-action="setTraitLevel"][data-level="${level}"]`
+    );
+  }
+
+  /**
+   * Delete button for a trait row (fires the `deleteTrait` data-action).
+   * @param {string} itemId
+   */
+  deleteTraitButton(itemId) {
+    return this.traitRow(itemId).locator('button.btn-icon[data-action="deleteTrait"]');
+  }
+
+  /**
    * Condition toggle button in the sheet's conditions strip.
    * The strip is rendered at the top of the sheet (see
    * templates/actors/character-conditions.hbs) and is always visible —

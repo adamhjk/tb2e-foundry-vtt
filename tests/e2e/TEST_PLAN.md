@@ -83,7 +83,9 @@ Already shipped. Listed for completeness.
 - Skill rating input is replaced by an `✕` icon when `rating===0 && learning>0` — default actors have `learning=0`, so the input is present; if a spec puts a skill into "learning" mode, switch to the appropriate UI
 - Condition toggles on the sheet do a **direct** `document.update()` (no mailbox, no chat card). Toggling `fresh` clears all negative conditions. The `pendingGrindApply` mailbox is a separate path used by the grind-tracker's "Apply" button (grind-tracker.mjs); the `updateActor` hook in `tb2e.mjs` consumes + clears it.
 - Conditions strip lives at sheet top; selector `nav.conditions-strip button.condition-btn[data-condition="<key>"]`. No tab switch needed.
-- Traits have `level` 1–3 (normal) or level-1 (flawed) with bubble UI
+- Traits: `module/data/item/trait.mjs` has `level` 1–3 only (min=1, max=3, integer, initial=1). **No flawed flag, no -1 level.** The "used against" state is a separate `usedAgainst: BooleanField`, written by `module/dice/versus.mjs`, not via the bubble UI.
+- `addTrait` data-action has **no dialog** — it unconditionally creates an Item named "New Trait" with level 1 via `Item.create(..., { parent: actor })`.
+- Traits tab template: `templates/actors/tabs/character-traits.hbs`. Each row has three `.level-pip` buttons (levels 1/2/3) with `data-action="setTraitLevel"` and `data-level`.
 
 **Checkboxes:**
 
@@ -91,7 +93,7 @@ Already shipped. Listed for completeness.
 - [x] `tests/e2e/sheet/edit-abilities.spec.mjs` — set Will, Health, Nature rating/max; verify data model constraints (ranges, clamping)
 - [x] `tests/e2e/sheet/edit-skills.spec.mjs` — set rating for each relevant skill; verify persistence
 - [x] `tests/e2e/sheet/toggle-conditions.spec.mjs` — toggle each condition (DH p.53); sheet does a direct update (no mailbox/chat card from the toggle itself); also covers `pendingGrindApply` mailbox clearing by GM hook
-- [ ] `tests/e2e/sheet/trait-crud.spec.mjs` — add a trait, set level, demote, delete; verify bubble UI state
+- [x] `tests/e2e/sheet/trait-crud.spec.mjs` — add a trait, set level, demote, delete; verify bubble UI state (traits are level 1–3 only; no flawed/-1 bubble — `usedAgainst` is a separate boolean set by versus system)
 - [ ] `tests/e2e/sheet/wise-crud.spec.mjs` — add a wise, rename, delete
 - [ ] `tests/e2e/sheet/session-reset.spec.mjs` — tick trait levels, run resetSession, verify trait usage state cleared (DH p.85)
 - [ ] `tests/e2e/sheet/nature-tax.spec.mjs` — use `conserveNature` / `recoverNature`; verify rating changes
