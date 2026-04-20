@@ -57,7 +57,7 @@ Already shipped. Listed for completeness.
 
 - [x] `tests/e2e/character/wizard-walkthrough.spec.mjs` — Ranger/elf happy path (upbringing auto-skipped for non-human stocks); all 11 effective steps walked; asserts class/stock/abilities/traits/wises/items
 - [x] `tests/e2e/character/wizard-theurge-relics.spec.mjs` — `rollRelics` is a sub-section of step 9 (Gear), not a dedicated step; 3d6 → THEURGE_RELIC_TABLE → 2 relics + 2 invocations; noted schema drift (stub uses `tier`, compendium relics use `relicTier`)
-- [ ] `tests/e2e/character/wizard-shaman-invocations.spec.mjs` — select Shaman, verify invocations + relics populate
+- [x] `tests/e2e/character/wizard-shaman-invocations.spec.mjs` — Shaman mirrors Theurge: same 3d6 roll shape (2 relics + 2 invocations) against `SHAMAN_RELIC_TABLE`, resolved from `tb2e.shamanic-relics` / `tb2e.shamanic-invocations`; narrower weapon list (`Dagger | Hand Axe | Sling | Staff`); class trait "Between Two Worlds"
 - [ ] `tests/e2e/character/wizard-scholar-spells.spec.mjs` — select Scholar, verify spells populate
 - [ ] `tests/e2e/character/import-from-iconic.spec.mjs` — drag each of the 11 iconic-characters into the sidebar, verify each arrives with expected class/stock (covers Gerald already via `compendium-drag.spec.mjs`; this is the broader coverage test)
 - [ ] `tests/e2e/character/create-monster.spec.mjs` — Create Actor dialog, type=monster, assert monster sheet opens
