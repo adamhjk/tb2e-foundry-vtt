@@ -97,6 +97,7 @@ Already shipped. Listed for completeness.
 - `consumePortion` = `quantity -= 1` (floor at 0) + clears `conditions.hungry` if true. No chat card.
 - `consumeLight` = `turnsRemaining -= 1` (floor at 0). **Does NOT flip `lit: false`, does NOT post chat card, does NOT trigger `pendingLightExtinguish` mailbox.** The light-extinguish / torch-expired flow is a separate path: `updateItem` hook watches for `changes.system?.lit === false`. Button persists as a no-op past turnsRemaining=0 (intentional).
 - **Draughts are on CONTAINERS, not supplies.** Type `container` with `CONFIG.TB2E.containerTypes.<kind>.liquid === true` (waterskin, bottle, jug, barrel, cask, clayPot, woodenCanteen). `system.liquidType` ∈ `water` | `wine` | `oil` | `holyWater` (default water). `drinkDraught` handler: decrement `quantity`; `water` clears hungry; `wine` opens `DialogV2.wait` with quench / bolster choice (bolster sets `flags.tb2e.wineBolster`); `oil` / `holyWater` decrement only.
+- **Bundles** are `container` items with `quantityMax > 1` (e.g. stacked rations, arrows). `isSplittableBundle` = `type==="container" && quantityMax > 1`. `splitBundle` handler peels ONE off per click (no dialog): clones `item.toObject()` with `quantity=1, quantityMax=1, slot="", slotIndex=0, containerKey=""` (lands in Unassigned); source: `quantity -= 1, quantityMax -= 1`. Button only surfaces in the **occupied** branch of `.inventory-slot` cells (not Unassigned / Dropped). A container with `quantityMax === 1` becomes its OWN slot-group (backpack, etc.); a bundle is always an occupant inside another slot. `belt` forbids bundles; `torso` accepts them.
 
 **Checkboxes:**
 
@@ -110,7 +111,7 @@ Already shipped. Listed for completeness.
 - [x] `tests/e2e/sheet/nature-tax.spec.mjs` — use `conserveNature` (dialog; -1 max, rating slammed to new max, pass/fail zeroed) / `recoverNature` (no dialog; rating +1 toward max); verify guards
 - [x] `tests/e2e/sheet/inventory-slots.spec.mjs` — drop / pickUp / removeFromSlot verified against `system.slot`, `system.slotIndex`, `system.dropped` fields; dropItem cascades to container children; pickUp clears `dropped` only (does NOT reassign slot — item lands in "Unassigned")
 - [x] `tests/e2e/sheet/inventory-supplies.spec.mjs` — consumePortion (decrement quantity + clear hungry), drinkDraught (on containers!), consumeLight (decrement turnsRemaining); items never auto-delete at 0
-- [ ] `tests/e2e/sheet/inventory-bundle-split.spec.mjs` — split a bundled item stack; verify two items exist
+- [x] `tests/e2e/sheet/inventory-bundle-split.spec.mjs` — bundles are `container` items with `quantityMax > 1`; splitBundle is "peel one off" (no dialog); creates qty=1 Item in Unassigned, decrements source. Buttons hidden at qty<2.
 - [ ] `tests/e2e/sheet/biography-edit.spec.mjs` — edit notes/biography; verify persistence
 
 ---

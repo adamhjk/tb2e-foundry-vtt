@@ -424,6 +424,40 @@ export class CharacterSheet {
   }
 
   /**
+   * "Split one off" (scissors) button for a splittable bundle container
+   * placed in a body slot. Rendered by character-inventory.hbs under
+   * `.slot-bundle-qty` when an item's `#itemSummary.isSplittableBundle`
+   * is true — i.e. `type === "container"` AND `quantityMax > 1`. Wired
+   * to the `splitBundle` data-action (character-sheet.mjs #onSplitBundle).
+   *
+   * The button is only emitted for items occupying a slot (occupied-slot
+   * branch of the template). Unassigned container rows — even bundled
+   * ones — render the edit/drop/delete strip only; they do NOT include
+   * the split affordance. Scoped here to the `.slot-bundle-qty` ancestor
+   * to avoid matching other `data-action="splitBundle"` buttons (there
+   * are none today, but the class scope makes intent explicit).
+   * @param {string} itemId
+   */
+  splitBundleButton(itemId) {
+    return this.root.locator(
+      `section[data-tab="inventory"] .slot-bundle-qty button[data-action="splitBundle"][data-item-id="${itemId}"]`
+    );
+  }
+
+  /**
+   * The bundle "quantity/quantityMax" text span rendered next to the
+   * split button for splittable bundles. Template emits
+   * `<span class="slot-qty-text">{{quantity}}/{{quantityMax}}</span>`
+   * inside the owning `.inventory-slot[data-item-id="<id>"]`.
+   * @param {string} itemId
+   */
+  bundleQtyText(itemId) {
+    return this.root.locator(
+      `section[data-tab="inventory"] .inventory-slot[data-item-id="${itemId}"] .slot-bundle-qty .slot-qty-text`
+    );
+  }
+
+  /**
    * Condition toggle button in the sheet's conditions strip.
    * The strip is rendered at the top of the sheet (see
    * templates/actors/character-conditions.hbs) and is always visible —
