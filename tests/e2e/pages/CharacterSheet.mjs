@@ -524,6 +524,32 @@ export class CharacterSheet {
   }
 
   /**
+   * Conviction textarea on the Identity tab for a given conviction key.
+   * The "What You Fight For" fieldset renders one `<textarea name="system.<key>">`
+   * per conviction (belief, creed, goal, instinct) — see
+   * templates/actors/tabs/character-identity.hbs and the source of
+   * `_prepareConvictionFields()` in character-sheet.mjs. All four fields are
+   * plain StringFields on the data model, so `.fill()` + blur persists via
+   * the sheet's `submitOnChange: true` form submission.
+   * @param {string} key One of "belief", "creed", "goal", "instinct".
+   */
+  convictionTextarea(key) {
+    return this.root.locator(
+      `section[data-tab="identity"] fieldset.what-you-fight-for textarea[name="system.${key}"]`
+    );
+  }
+
+  /**
+   * The header "goal" badge — `<span class="header-goal">` in
+   * templates/actors/character-header.hbs. Only rendered when
+   * `system.goal` is truthy; re-rendered by the sheet after each
+   * form submission so writes to `system.goal` surface here.
+   */
+  get headerGoalBadge() {
+    return this.root.locator('.header-goal');
+  }
+
+  /**
    * Condition toggle button in the sheet's conditions strip.
    * The strip is rendered at the top of the sheet (see
    * templates/actors/character-conditions.hbs) and is always visible —

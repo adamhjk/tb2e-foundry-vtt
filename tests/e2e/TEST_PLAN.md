@@ -122,7 +122,7 @@ Already shipped. Listed for completeness.
 - [x] `tests/e2e/sheet/inventory-supplies.spec.mjs` — consumePortion (decrement quantity + clear hungry), drinkDraught (on containers!), consumeLight (decrement turnsRemaining); items never auto-delete at 0
 - [x] `tests/e2e/sheet/inventory-bundle-split.spec.mjs` — bundles are `container` items with `quantityMax > 1`; splitBundle is "peel one off" (no dialog); creates qty=1 Item in Unassigned, decrements source. Buttons hidden at qty<2.
 - [x] `tests/e2e/sheet/biography-edit.spec.mjs` — `system.bio` is plain textarea (not ProseMirror); covers bio + allies table rows + level-choices table (NOTE: convictions belief/creed/goal/instinct are NOT on this tab — they're on Identity tab; see edit-convictions box below)
-- [ ] `tests/e2e/sheet/edit-convictions.spec.mjs` — edit belief / creed / goal / instinct textareas on the Identity tab's "What You Fight For" fieldset; verify persistence + header badge updates for `system.goal`
+- [x] `tests/e2e/sheet/edit-convictions.spec.mjs` — edit belief / creed / goal / instinct textareas on the Identity tab's "What You Fight For" fieldset; verify persistence + header badge updates for `system.goal`
 
 ---
 
