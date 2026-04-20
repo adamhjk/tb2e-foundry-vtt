@@ -62,7 +62,7 @@ Already shipped. Listed for completeness.
 - [x] `tests/e2e/character/wizard-shaman-invocations.spec.mjs` — Shaman mirrors Theurge: same 3d6 roll shape (2 relics + 2 invocations) against `SHAMAN_RELIC_TABLE`, resolved from `tb2e.shamanic-relics` / `tb2e.shamanic-invocations`; narrower weapon list (`Dagger | Hand Axe | Sling | Staff`); class trait "Between Two Worlds"
 - [x] `tests/e2e/character/wizard-scholar-spells.spec.mjs` — class key is actually `magician` (not "scholar"); 2d6 `SPELL_SCHOOL_TABLE` (entries 2–10 give 3 spells, 11–12 yield `school:"Choose"` + empty spells[]); no stub fallback (missing names silently drop); no re-roll path; weapon list `["Dagger","Staff"]`; `requiresMentor: true`. Test stubs `CONFIG.Dice.randomUniform` for determinism.
 - [x] `tests/e2e/character/import-from-iconic.spec.mjs` — 9 iconics (not 11 — original count was stale): Beren, Gerald, Karolina, Nienna, Rörik, Taika, Tiziri, Ulrik, Varg. One UI-drag path (Taika) + one bulk programmatic import asserting class/stock against a ground-truth table. `afterEach` deletes tagged actors via `flags.tb2e.e2eTag`.
-- [ ] `tests/e2e/character/create-monster.spec.mjs` — Create Actor dialog, type=monster, assert monster sheet opens
+- [x] `tests/e2e/character/create-monster.spec.mjs` — Create Actor dialog, type=monster, assert monster sheet opens
 - [ ] `tests/e2e/character/create-npc.spec.mjs` — Create Actor dialog, type=npc, assert NPC sheet opens
 
 ---
