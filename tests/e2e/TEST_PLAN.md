@@ -89,6 +89,7 @@ Already shipped. Listed for completeness.
 - Traits tab template: `templates/actors/tabs/character-traits.hbs`. Each row has three `.level-pip` buttons (levels 1/2/3) with `data-action="setTraitLevel"` and `data-level`.
 - **Session usage tracking lives on the trait Item, not the actor.** `system.beneficial` = *remaining* uses this session (not consumed count): L1 max=1, L2 max=2, L3 max=0/unlimited (`TraitData.maxBeneficial` getter). `resetSession` (in `module/session.mjs` `resetTraitsForSession`) does **three things**: restores `trait.beneficial` to max, clears `trait.usedAgainst`, and ALSO resets `spell.cast` and `invocation.performed` flags. Gated by `DialogV2.confirm` (yes / no buttons with `data-action`).
 - The `resetSession` button lives in `character-header.hbs` (always visible on the sheet header; no tab switch needed).
+- `conserveNature` (on Abilities tab, Nature row): behind `DialogV2.confirm`; guards `nature.max > 1`. Yes path: `max -= 1`, `rating = new max` (slammed, not preserved), `pass = 0`, `fail = 0`. `recoverNature`: no dialog; guards `rating < max`; `rating += 1`. Neither touches anything outside `system.abilities.nature`.
 
 **Checkboxes:**
 
@@ -99,7 +100,7 @@ Already shipped. Listed for completeness.
 - [x] `tests/e2e/sheet/trait-crud.spec.mjs` — add a trait, set level, demote, delete; verify bubble UI state (traits are level 1–3 only; no flawed/-1 bubble — `usedAgainst` is a separate boolean set by versus system)
 - [x] `tests/e2e/sheet/wise-crud.spec.mjs` — add a wise, rename, delete (wises are an actor-field array, not Items; capped at 4 per DH p.87; generic `addRow`/`deleteRow` actions with `data-array="wises"`)
 - [x] `tests/e2e/sheet/session-reset.spec.mjs` — run resetSession (behind DialogV2.confirm); verify trait `beneficial` restored + `usedAgainst` cleared; also resets spell `cast` / invocation `performed` flags
-- [ ] `tests/e2e/sheet/nature-tax.spec.mjs` — use `conserveNature` / `recoverNature`; verify rating changes
+- [x] `tests/e2e/sheet/nature-tax.spec.mjs` — use `conserveNature` (dialog; -1 max, rating slammed to new max, pass/fail zeroed) / `recoverNature` (no dialog; rating +1 toward max); verify guards
 - [ ] `tests/e2e/sheet/inventory-slots.spec.mjs` — drop item in slot, pickUp, removeFromSlot; verify slot occupancy
 - [ ] `tests/e2e/sheet/inventory-supplies.spec.mjs` — consume a portion, drink a draught; verify portion counter decrements
 - [ ] `tests/e2e/sheet/inventory-bundle-split.spec.mjs` — split a bundled item stack; verify two items exist

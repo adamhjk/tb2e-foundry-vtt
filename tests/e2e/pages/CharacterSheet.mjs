@@ -194,6 +194,33 @@ export class CharacterSheet {
   }
 
   /**
+   * "Conserve Nature" button in the Nature row on the Abilities tab. Wired
+   * to the `conserveNature` data-action (module/applications/actor/
+   * character-sheet.mjs #onConserveNature), which opens a DialogV2.confirm
+   * and — on Yes — decrements `system.abilities.nature.max` by 1, sets
+   * `rating` to the new max, and zeroes pass/fail. Disabled by the template
+   * when `canConserve === false` (i.e. `nature.max <= 1`).
+   */
+  get conserveNatureButton() {
+    return this.root.locator(
+      'section[data-tab="abilities"] .nature-ability-row button.nature-action-btn[data-action="conserveNature"]'
+    );
+  }
+
+  /**
+   * "Recover Nature" button in the Nature row on the Abilities tab. Wired
+   * to the `recoverNature` data-action (module/applications/actor/
+   * character-sheet.mjs #onRecoverNature), which — with no confirm dialog —
+   * increments `system.abilities.nature.rating` by 1, up to `max`. Disabled
+   * by the template when `canRecover === false` (i.e. `rating >= max`).
+   */
+  get recoverNatureButton() {
+    return this.root.locator(
+      'section[data-tab="abilities"] .nature-ability-row button.nature-action-btn[data-action="recoverNature"]'
+    );
+  }
+
+  /**
    * Condition toggle button in the sheet's conditions strip.
    * The strip is rendered at the top of the sheet (see
    * templates/actors/character-conditions.hbs) and is always visible —
