@@ -182,7 +182,7 @@ Already shipped. Listed for completeness.
 
 - [x] `tests/e2e/advancement/auto-trigger.spec.mjs` — stage Fighter rating 2 at (1P, 1F) one pass-pip below the (2P, 1F) threshold (DH p.84); PASS roll + Finalize fills the final pip and auto-opens the advancement dialog (label/current→new rating asserted); negative control at (0, 0) confirms the dialog stays closed
 - [x] `tests/e2e/advancement/accept.spec.mjs` — stage Fighter rating 2 at (1P, 1F), PASS roll + Finalize opens the dialog; clicking Advance bumps rating 2 → 3 and hard-resets pips to (0, 0) per advancement.mjs:57-61 (NOT overflow-carry), and a celebration chat card (advancement-result.hbs) is posted speaker-scoped to the actor
-- [ ] `tests/e2e/advancement/cancel.spec.mjs` — cancel advancement; verify rating unchanged, pips unchanged
+- [x] `tests/e2e/advancement/cancel.spec.mjs` — cancel advancement should leave rating unchanged and pips at their threshold-met values (the pip tick in `_logAdvancement` fires pre-dialog and cancel is a no-op), plus no celebration chat card. **Landed as `test.fixme` — production bug in advancement.mjs:45-54**: the cancel button has no `callback`, so DialogV2's `_onSubmit` resolves `wait()` with the truthy string `"cancel"` (dialog.mjs:242 `?? button?.action`), which passes the `if (!result) return` guard and runs the accept mutation. Fix: add `callback: () => false` to the cancel button OR tighten the guard to `if (result !== true) return`
 - [ ] `tests/e2e/advancement/skill-open.spec.mjs` — roll a skill the character doesn't have (opens a beginner's luck attempt); verify skill-opened card on success per DH p.84
 - [ ] `tests/e2e/advancement/wise-advancement.spec.mjs` — use wise aid on a milestone roll; verify wise-advancement card and rating bump (DH p.87)
 
