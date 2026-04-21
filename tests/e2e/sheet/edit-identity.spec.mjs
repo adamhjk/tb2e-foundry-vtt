@@ -1,4 +1,4 @@
-import { test, expect } from '@playwright/test';
+import { test, expect } from '../test.mjs';
 import { GameUI } from '../pages/GameUI.mjs';
 import { CharacterSheet } from '../pages/CharacterSheet.mjs';
 import { getActorByName } from '../helpers/game.mjs';

@@ -1,4 +1,4 @@
-import { test, expect } from '@playwright/test';
+import { test, expect } from './test.mjs';
 import { JoinPage } from './pages/JoinPage.mjs';
 import { GameUI } from './pages/GameUI.mjs';
 import { getSystemId } from './helpers/game.mjs';

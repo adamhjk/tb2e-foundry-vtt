@@ -1,12 +1,11 @@
-import { readFile, rm } from 'node:fs/promises';
+import { readFile, rm, readdir } from 'node:fs/promises';
 import { existsSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const REPO_ROOT = path.resolve(__dirname, '..', '..');
-const TEST_DATA = path.join(REPO_ROOT, 'tests', 'e2e', '.test-data');
-const PID_FILE = path.join(TEST_DATA, '.foundry.pid');
+const PID_FILE = path.join(REPO_ROOT, '.e2e-pids');
 
 async function waitForExit(pid, timeoutMs = 10_000) {
   const deadline = Date.now() + timeoutMs;
@@ -21,30 +20,48 @@ async function waitForExit(pid, timeoutMs = 10_000) {
   return false;
 }
 
+async function stopPid(pid) {
+  try {
+    process.kill(pid, 'SIGTERM');
+  } catch (err) {
+    if (err.code === 'ESRCH') return;
+    throw err;
+  }
+  const exited = await waitForExit(pid, 10_000);
+  if (!exited) {
+    try {
+      process.kill(pid, 'SIGKILL');
+      console.log(`[e2e] Forced SIGKILL on Foundry (pid ${pid})`);
+    } catch (err) {
+      if (err.code !== 'ESRCH') throw err;
+    }
+  }
+}
+
 export default async function globalTeardown() {
   if (!existsSync(PID_FILE)) {
     console.log('[e2e] No PID file; Foundry already stopped');
     return;
   }
-  const pid = Number((await readFile(PID_FILE, 'utf-8')).trim());
-  if (!pid) return;
+  const pids = (await readFile(PID_FILE, 'utf-8'))
+    .split('\n')
+    .map((s) => Number(s.trim()))
+    .filter((n) => Number.isFinite(n) && n > 0);
+  if (!pids.length) return;
 
-  try {
-    process.kill(pid, 'SIGTERM');
-    console.log(`[e2e] Sent SIGTERM to Foundry (pid ${pid})`);
-    const exited = await waitForExit(pid, 10_000);
-    if (!exited) {
-      process.kill(pid, 'SIGKILL');
-      console.log(`[e2e] Forced SIGKILL on Foundry (pid ${pid})`);
-    }
-  } catch (err) {
-    if (err.code !== 'ESRCH') throw err;
+  console.log(`[e2e] Stopping ${pids.length} Foundry instance(s): ${pids.join(', ')}`);
+  await Promise.all(pids.map(stopPid));
+  await rm(PID_FILE, { force: true });
+
+  if (process.env.KEEP_TEST_DATA) {
+    console.log('[e2e] KEEP_TEST_DATA set — leaving scratch dirs in place');
+    return;
   }
 
-  if (!process.env.KEEP_TEST_DATA) {
-    await rm(TEST_DATA, { recursive: true, force: true });
-    console.log('[e2e] Removed scratch test data dir');
-  } else {
-    console.log('[e2e] KEEP_TEST_DATA set — leaving scratch dir in place');
-  }
+  const entries = await readdir(REPO_ROOT, { withFileTypes: true });
+  const dataDirs = entries
+    .filter((d) => d.isDirectory() && /^\.e2e-test-data-\d+$/.test(d.name))
+    .map((d) => path.join(REPO_ROOT, d.name));
+  await Promise.all(dataDirs.map((d) => rm(d, { recursive: true, force: true })));
+  console.log(`[e2e] Removed ${dataDirs.length} scratch test data dir(s)`);
 }

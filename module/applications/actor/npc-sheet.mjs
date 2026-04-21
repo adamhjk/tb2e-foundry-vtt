@@ -39,50 +39,11 @@ export default class NPCSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
     conditions: {
       template: "systems/tb2e/templates/actors/npc-conditions.hbs"
     },
-    conflict: {
-      template: "systems/tb2e/templates/actors/character-conflict.hbs"
-    },
     body: {
       template: "systems/tb2e/templates/actors/npc-body.hbs",
       scrollable: [""]
     }
   };
-
-  /* -------------------------------------------- */
-  /*  Combat Hooks                                */
-  /* -------------------------------------------- */
-
-  /** @type {number|null} */
-  #updateCombatHookId = null;
-
-  /** @type {number|null} */
-  #updateCombatantHookId = null;
-
-  /** @override */
-  async _onFirstRender(context, options) {
-    await super._onFirstRender(context, options);
-    this.#updateCombatHookId = Hooks.on("updateCombat", () => {
-      this.render({ parts: ["conflict"] });
-    });
-    this.#updateCombatantHookId = Hooks.on("updateCombatant", (combatant) => {
-      if ( combatant.actorId === this.document.id || combatant.parent?.combatants.some(c => c.actorId === this.document.id) ) {
-        this.render({ parts: ["conflict"] });
-      }
-    });
-  }
-
-  /** @override */
-  async _onClose(options) {
-    if ( this.#updateCombatHookId != null ) {
-      Hooks.off("updateCombat", this.#updateCombatHookId);
-      this.#updateCombatHookId = null;
-    }
-    if ( this.#updateCombatantHookId != null ) {
-      Hooks.off("updateCombatant", this.#updateCombatantHookId);
-      this.#updateCombatantHookId = null;
-    }
-    await super._onClose(options);
-  }
 
   /* -------------------------------------------- */
   /*  Context Preparation                         */
@@ -107,9 +68,6 @@ export default class NPCSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
         break;
       case "conditions":
         this.#prepareConditionsContext(partContext);
-        break;
-      case "conflict":
-        this.#prepareConflictContext(partContext);
         break;
       case "body":
         this.#prepareBodyContext(partContext);
@@ -167,71 +125,6 @@ export default class NPCSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
         color: cfg.color,
         active: sys.conditions[key]
       }));
-  }
-
-  /* -------------------------------------------- */
-
-  #prepareConflictContext(context) {
-    const actor = this.document;
-    const combat = game.combats?.find(c =>
-      c.isConflict && c.combatants.some(cb => cb.actorId === actor.id)
-    );
-
-    if ( !combat ) {
-      context.conflict = { active: false };
-      return;
-    }
-
-    const combatant = combat.combatants.find(c => c.actorId === actor.id);
-    if ( !combatant ) {
-      context.conflict = { active: false };
-      return;
-    }
-
-    const groupId = combatant._source.group;
-    const gd = combat.system.groupDispositions || {};
-    const groupData = gd[groupId] || {};
-    const phase = combat.system.phase;
-    const conflictCfg = combat.getEffectiveConflictConfig();
-    const isCaptain = groupData.captainId === combatant.id;
-    const disp = actor.system.conflict.hp;
-
-    const weaponId = combatant.system.weaponId || actor.system.conflict.weaponId || "";
-    const usesGear = !!conflictCfg?.usesGear;
-    const isUnarmed = weaponId === "__unarmed__";
-    const isImprovised = weaponId === "__improvised__";
-
-    const conflictCtx = {
-      active: true,
-      combatId: combat.id,
-      groupId,
-      combatantId: combatant.id,
-      typeLabel: game.i18n.localize(conflictCfg?.label ?? "TB2E.Conflict.Title"),
-      phase,
-      isCaptain,
-      hp: disp,
-      hpPercent: disp.max > 0 ? Math.round((disp.value / disp.max) * 100) : 0,
-      weapon: combatant.system.weapon || actor.system.conflict.weapon || "",
-      weaponId,
-      usesGear,
-      isUnarmed,
-      isImprovised,
-      isDisposition: phase === "disposition",
-      isWeapons: phase === "weapons",
-      isScriptingOrResolve: phase === "scripting" || phase === "resolve"
-    };
-
-    // During weapons phase for gear conflicts, provide weapon choices from inventory.
-    if ( phase === "weapons" && usesGear ) {
-      const weapons = (actor.itemTypes.weapon || []).filter(w => !w.system.dropped);
-      conflictCtx.weaponChoices = [
-        { id: "__unarmed__", name: game.i18n.localize("TB2E.Conflict.WeaponUnarmed"), selected: weaponId === "__unarmed__" },
-        ...weapons.map(w => ({ id: w.id, name: w.name, selected: weaponId === w.id })),
-        { id: "__improvised__", name: game.i18n.localize("TB2E.Conflict.WeaponImprovised"), selected: weaponId === "__improvised__" }
-      ];
-    }
-
-    context.conflict = conflictCtx;
   }
 
   /* -------------------------------------------- */
@@ -306,61 +199,6 @@ export default class NPCSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
         const itemId = input.closest("[data-item-id]")?.dataset.itemId;
         const item = this.document.items.get(itemId);
         if ( item ) item.update({ name: input.value });
-      });
-    }
-
-    // Conflict weapon select (gear conflicts on NPC sheet).
-    const conflictWeaponSelect = this.element.querySelector(".conflict-weapon-select");
-    if ( conflictWeaponSelect ) {
-      conflictWeaponSelect.addEventListener("change", (event) => {
-        const combat = game.combats?.find(c =>
-          c.isConflict && c.combatants.some(cb => cb.actorId === this.document.id)
-        );
-        if ( !combat ) return;
-        const combatant = combat.combatants.find(c => c.actorId === this.document.id);
-        if ( !combatant ) return;
-        const weaponId = event.target.value;
-        const improvisedInput = this.element.querySelector(".conflict-weapon-improvised-input");
-
-        if ( weaponId === "__improvised__" ) {
-          improvisedInput?.classList.remove("hidden");
-          const name = improvisedInput?.value.trim() || game.i18n.localize("TB2E.Conflict.WeaponImprovised");
-          combat.setWeapon(combatant.id, name, "__improvised__");
-        } else {
-          improvisedInput?.classList.add("hidden");
-          const selectedOption = event.target.options[event.target.selectedIndex];
-          const name = weaponId ? selectedOption.text : "";
-          combat.setWeapon(combatant.id, name, weaponId);
-        }
-      });
-    }
-
-    // Conflict improvised weapon name input (gear conflicts on NPC sheet).
-    const conflictImprovisedInput = this.element.querySelector(".conflict-weapon-improvised-input");
-    if ( conflictImprovisedInput ) {
-      conflictImprovisedInput.addEventListener("change", (event) => {
-        const combat = game.combats?.find(c =>
-          c.isConflict && c.combatants.some(cb => cb.actorId === this.document.id)
-        );
-        if ( !combat ) return;
-        const combatant = combat.combatants.find(c => c.actorId === this.document.id);
-        if ( !combatant ) return;
-        const name = event.target.value.trim() || game.i18n.localize("TB2E.Conflict.WeaponImprovised");
-        combat.setWeapon(combatant.id, name, "__improvised__");
-      });
-    }
-
-    // Conflict weapon text input (non-gear conflicts on NPC sheet).
-    const conflictWeaponInput = this.element.querySelector(".conflict-weapon-input");
-    if ( conflictWeaponInput ) {
-      conflictWeaponInput.addEventListener("change", (event) => {
-        const combat = game.combats?.find(c =>
-          c.isConflict && c.combatants.some(cb => cb.actorId === this.document.id)
-        );
-        if ( !combat ) return;
-        const combatant = combat.combatants.find(c => c.actorId === this.document.id);
-        if ( !combatant ) return;
-        combat.setWeapon(combatant.id, event.target.value.trim());
       });
     }
   }

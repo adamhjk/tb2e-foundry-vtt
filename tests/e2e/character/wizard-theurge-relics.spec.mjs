@@ -1,6 +1,5 @@
-import { test, expect } from '@playwright/test';
-import { GameUI } from '../pages/GameUI.mjs';
-import { CharacterWizard } from '../pages/CharacterWizard.mjs';
+import { test, expect } from '../test.mjs';
+import { applyWizardState, bootGame, createCharacter, deleteActor } from '../helpers/fixtures.mjs';
 
 test.use({ viewport: { width: 1600, height: 900 } });
 
@@ -9,200 +8,74 @@ test.use({ viewport: { width: 1600, height: 900 } });
  *
  * The Theurge (DH p.27) is a religious class that receives starting
  * relics and invocations from a 3d6 roll on `THEURGE_RELIC_TABLE`
- * (chargen.mjs). On the gear step the wizard exposes a "Roll Relics"
- * button whose handler (`#onRollRelics` in character-wizard.mjs) rolls
- * 3d6, looks up the entry in the table, stores `state.relics` +
- * `state.invocations`, and posts the roll to chat.
+ * (chargen.mjs). On Finish, the wizard walks `state.relics` and
+ * `state.invocations` and imports each named item from the
+ * `tb2e.theurge-relics` / `tb2e.theurge-invocations` compendiums as
+ * embedded items on the character actor — falling back to a stub
+ * `type: relic`/`invocation` if the compendium lookup misses.
  *
- * On Finish, the wizard walks those two arrays and imports each named
- * item from the `tb2e.theurge-relics` / `tb2e.theurge-invocations`
- * compendiums as embedded items on the character actor (fallback to a
- * stub `type: relic`/`invocation` if the compendium lookup misses —
- * see `#applyToActor`).
+ * The full UI walkthrough of the wizard (all 12 steps) is covered by
+ * tests/e2e/character/wizard-walkthrough.spec.mjs. This spec exercises
+ * the **class-specific finish branch** — THEURGE_RELIC_TABLE lookup +
+ * `#applyToActor` theurge path + compendium import (with stub fallback)
+ * — by seeding a complete wizard state via
+ * CharacterWizard._applyStateForTest() and inspecting the resulting
+ * actor.
  *
- * Because the 3d6 roll is non-deterministic, this spec asserts shape
- * invariants only (counts, types, that every rolled name appears in
- * the table's value set). It does NOT assert specific relic or
- * invocation names — every table entry has exactly 2 relics + 2
- * invocations (3-18 inclusive), so the count invariant is stable.
+ * Shape invariants: every table entry has exactly 2 relics + 2
+ * invocations, but the compendium may not have a 1:1 match for every
+ * name — so we assert `>= 1` and `<= 2` on each list. We also confirm
+ * every created item's name is present in the table's value-set
+ * (guards against drift between `#applyToActor` and the table).
  *
- * Chosen build, rationale:
- *   - Class: theurge — triggers the relic branch we want to cover.
- *   - Stock: human — theurge stocks are ["human", "changeling"]; human
- *     requires the Upbringing step (not skipped), whereas changeling
- *     also requires it but adds a Huldrekall trait we don't care about.
- *   - Upbringing: laborer — not in theurge class skills
- *     (fighter/ritualist/orator/healer/theologian), so fresh rating-3.
- *   - Hometown: religiousBastion — open to all stocks, thematically
- *     appropriate; skills include cartographer (fresh rating-2, not in
- *     class). Trait: Defender.
- *   - Social: manipulator — not in theurge class skills.
- *   - Specialty: dungeoneer — not in class, hometown, social, or
- *     upbringing picks so guaranteed to go in fresh at rating 2.
- *   - Wises: human has 0 required picks + 1 free slot (index 0).
- *   - Nature: all yes — human Q1/Q2/Q3 yes = +1 nature each, no
- *     secondary wise/trait choice required.
- *   - Circles: all yes.
- *   - Gear: satchel + rollRelics (asserts relic/invocation badges
- *     appear before advancing).
- *   - Weapons: Mace — in theurge's WEAPON_RESTRICTIONS list.
- *   - Armor: theurge has autoLeather=false and helmet=false, so the
- *     armor step renders the "no starting armor" note and has nothing
- *     to select; step-complete is inherited from weapons.
- *   - Finishing: name is the only required field.
+ * Chosen build (matches the previous UI-driven version):
+ *   - Class: theurge, Stock: human.
+ *   - Upbringing: laborer. Hometown: religiousBastion / cartographer /
+ *     Defender. Social: manipulator. Specialty: dungeoneer.
+ *   - Free wise: Hymns-wise. All-yes nature + circles answers.
+ *   - Relics+invocations seeded from THEURGE_RELIC_TABLE[10] (Drinking
+ *     Horn... / Vial of Perfume + Benediction... / Gift of Hospitality).
+ *   - Weapon: Mace. Pack: satchel.
  */
 
-const WIZARD_ACTOR_NAME = () => `E2E Theurge ${Date.now()}`;
+const SEEDED_ROLL = 10; // Median 3d6 entry; both relics and invocations exist in compendium.
+const ACTOR_NAME = () => `E2E Theurge ${Date.now()}`;
 
 test.describe('Character wizard Theurge relics', () => {
   test('Theurge / human walkthrough populates linked relics and invocations', async ({ page }) => {
-    const originalName = WIZARD_ACTOR_NAME();
-    const finalName = `${originalName} Vesna`;
-    const freeWise = 'Hymns-wise';
+    const name = ACTOR_NAME();
 
-    await page.goto('/game');
-    const ui = new GameUI(page);
-    await ui.waitForReady();
-    await ui.dismissTours();
+    await bootGame(page);
+    const actorId = await createCharacter(page, name);
 
-    // Create a blank character actor directly via the game API.
-    const actorId = await page.evaluate(async (n) => {
-      const actor = await Actor.create({ name: n, type: 'character' });
-      return actor.id;
-    }, originalName);
-    expect(actorId).toBeTruthy();
+    const seeded = await page.evaluate(async (roll) => {
+      const mod = await import('/systems/tb2e/module/data/actor/chargen.mjs');
+      const entry = mod.THEURGE_RELIC_TABLE[roll];
+      return { relics: [...entry.relics], invocations: [...entry.invocations] };
+    }, SEEDED_ROLL);
+    expect(seeded.relics).toHaveLength(2);
+    expect(seeded.invocations).toHaveLength(2);
 
-    // Open the wizard for this actor by constructing it directly.
-    await page.evaluate(async (id) => {
-      const { default: CharacterWizard } = await import(
-        '/systems/tb2e/module/applications/actor/character-wizard.mjs'
-      );
-      const actor = game.actors.get(id);
-      new CharacterWizard(actor).render(true);
-    }, actorId);
-
-    const wizard = new CharacterWizard(page, originalName);
-    await wizard.expectOpen();
-
-    // Step 1: Class & Stock ------------------------------------------------
-    // Theurge has multiple stocks (human/changeling), so the class pick
-    // does NOT auto-select a stock. We must click the stock button.
-    await wizard.selectClass('theurge');
-    await wizard.selectStock('human');
-    await expect(wizard.currentStepHeading).toHaveText(/Class/i);
-    await wizard.next();
-
-    // Step 2: Upbringing (human gets this step) --------------------------
-    await expect(wizard.currentStepHeading).toHaveText(/Upbringing/i);
-    await wizard.selectUpbringing('laborer');
-    await wizard.next();
-
-    // Step 3: Hometown ---------------------------------------------------
-    await expect(wizard.currentStepHeading).toHaveText(/Hometown/i);
-    await wizard.selectHometown('religiousBastion');
-    await wizard.selectHometownSkill('cartographer');
-    await wizard.selectHomeTrait('Defender');
-    await wizard.next();
-
-    // Step 4: Social grace -----------------------------------------------
-    await expect(wizard.currentStepHeading).toHaveText(/Social/i);
-    await wizard.selectSocial('manipulator');
-    await wizard.next();
-
-    // Step 5: Specialty --------------------------------------------------
-    await expect(wizard.currentStepHeading).toHaveText(/Specialty/i);
-    await wizard.selectSpecialty('dungeoneer');
-    await wizard.next();
-
-    // Step 6: Wises ------------------------------------------------------
-    // Human has 0 required picks but 1 free-choice slot at index 0.
-    await expect(wizard.currentStepHeading).toHaveText(/Wises/i);
-    await wizard.fillFreeWise(0, freeWise);
-    await wizard.next();
-
-    // Step 7: Nature -----------------------------------------------------
-    // Human Q1/Q2/Q3 "yes" answers each grant +1 nature; no answer
-    // requires a wise/trait secondary choice with all-yes answers.
-    await expect(wizard.currentStepHeading).toHaveText(/Nature/i);
-    await wizard.answerNature(0, 'yes');
-    await wizard.answerNature(1, 'yes');
-    await wizard.answerNature(2, 'yes');
-    await wizard.next();
-
-    // Step 8: Circles ----------------------------------------------------
-    await expect(wizard.currentStepHeading).toHaveText(/Circles/i);
-    await wizard.answerCircles('hasFriend', 'yes');
-    await wizard.fillCirclesDetail('friend', 'Sister Ingrid');
-    await wizard.answerCircles('hasParents', 'yes');
-    await wizard.fillCirclesDetail('parents', 'Orhan and Freyja');
-    await wizard.answerCircles('hasMentor', 'yes');
-    await wizard.fillCirclesDetail('mentor', 'Archdeacon Jovan');
-    await wizard.answerCircles('hasEnemy', 'yes');
-    await wizard.fillCirclesDetail('enemy', 'The Heretic Miroslav');
-    await wizard.next();
-
-    // Step 9: Gear + Roll Relics -----------------------------------------
-    await expect(wizard.currentStepHeading).toHaveText(/Gear/i);
-    await wizard.selectPackType('satchel');
-
-    // Rolling relics is the load-bearing assertion of this spec. Every
-    // table entry grants exactly 2 relics + 2 invocations, so after the
-    // roll both lists should be non-empty in the DOM.
-    await wizard.rollRelics();
-    await expect(wizard.relicBadges).toHaveCount(2);
-    await expect(wizard.invocationBadges).toHaveCount(2);
-
-    // Snapshot the rolled names from the DOM so we can correlate them
-    // against the compendium entries after finish.
-    const rolledRelics = await wizard.relicBadges.allInnerTexts();
-    const rolledInvocations = await wizard.invocationBadges.allInnerTexts();
-    expect(rolledRelics).toHaveLength(2);
-    expect(rolledInvocations).toHaveLength(2);
-
-    await wizard.next();
-
-    // Step 10: Weapons ---------------------------------------------------
-    await expect(wizard.currentStepHeading).toHaveText(/Weapons/i);
-    await wizard.selectWeapon('Mace');
-    await wizard.next();
-
-    // Step 11: Armor -----------------------------------------------------
-    // Theurge has no autoLeather and no helmet option — the step
-    // renders a "no starting armor" note and is complete as soon as
-    // weapons is complete.
-    await expect(wizard.currentStepHeading).toHaveText(/Armor/i);
-    await wizard.next();
-
-    // Step 12: Finishing -------------------------------------------------
-    await expect(wizard.currentStepHeading).toHaveText(/Finishing/i);
-    await wizard.fillFinishing('name', finalName);
-    await wizard.fillFinishing('belief', 'The old gods endure through those who remember.');
-    await wizard.fillFinishing('instinct', 'Always light a candle before entering darkness.');
-    await wizard.fillFinishing('raiment', 'Ashen wool robes, silver icon at the throat.');
-    await wizard.fillFinishing('age', 19);
-
-    await wizard.finish();
-    await wizard.expectClosed();
-
-    // Poll until the actor reflects the updated name — the wizard
-    // writes via actor.update() which resolves asynchronously.
-    await expect
-      .poll(() => page.evaluate((id) => game.actors.get(id)?.name ?? null, actorId))
-      .toBe(finalName);
-
-    // Also poll until the relic items are materialized. The wizard
-    // creates items in a second batch after the actor update.
-    await expect
-      .poll(
-        () =>
-          page.evaluate((id) => {
-            const a = game.actors.get(id);
-            if ( !a ) return 0;
-            return Array.from(a.items).filter((i) => i.type === 'relic').length;
-          }, actorId),
-        { timeout: 15_000 },
-      )
-      .toBeGreaterThan(0);
+    const state = {
+      class: 'theurge', stock: 'human', will: 4, health: 4,
+      upbringingSkill: 'laborer',
+      hometown: 'religiousBastion', hometownSkill: 'cartographer', homeTrait: 'Defender',
+      socialGrace: 'manipulator', specialty: 'dungeoneer',
+      wises: ['Hymns-wise'],
+      natureAnswers: { 0: true, 1: true, 2: true },
+      circles: 5,
+      hasFriend: true, hasParents: true, hasMentor: true, hasEnemy: true,
+      friend: 'Sister Ingrid', parents: 'Orhan and Freyja',
+      mentor: 'Archdeacon Jovan', enemy: 'The Heretic Miroslav',
+      packType: 'satchel',
+      relicRoll: SEEDED_ROLL, relics: seeded.relics, invocations: seeded.invocations,
+      selectedWeapon: 'Mace',
+      name, age: 19,
+      belief: 'The old gods endure through those who remember.',
+      instinct: 'Always light a candle before entering darkness.',
+      raiment: 'Ashen wool robes, silver icon at the throat.'
+    };
+    await applyWizardState(page, actorId, state);
 
     const actorData = await page.evaluate((id) => {
       const actor = game.actors.get(id);
@@ -213,79 +86,36 @@ test.describe('Character wizard Theurge relics', () => {
         linkedInvocations: Array.isArray(i.system?.linkedInvocations)
           ? [...i.system.linkedInvocations]
           : null,
-        linkedCircle: i.system?.linkedCircle ?? null,
-        immortal: i.system?.immortal ?? null,
+        immortal: i.system?.immortal ?? null
       }));
       return {
-        name: actor.name,
         class: actor.system.class,
         stock: actor.system.stock,
         relicItems: items.filter((i) => i.type === 'relic'),
-        invocationItems: items.filter((i) => i.type === 'invocation'),
+        invocationItems: items.filter((i) => i.type === 'invocation')
       };
     }, actorId);
 
-    // Class + stock.
     expect(actorData.class).toBe('theurge');
     expect(actorData.stock).toBe('human');
 
-    // Relics: at least one relic was rolled. The 3d6 table always
-    // yields 2 relic names, but some rolls map to relic names that
-    // don't exist in the compendium — in that case `#applyToActor`
-    // falls back to creating a stub `{ type: "relic", system: { tier:
-    // "minor" } }`. Either way we expect `>= 1` relic item.
     expect(actorData.relicItems.length).toBeGreaterThanOrEqual(1);
-    // Cap the count: the table yields exactly 2 relics, no more.
     expect(actorData.relicItems.length).toBeLessThanOrEqual(2);
-
-    // Every created relic's name must match one of the names that
-    // appeared in the UI after the roll (shape invariant, not
-    // specific content).
     for ( const relic of actorData.relicItems ) {
-      expect(rolledRelics).toContain(relic.name);
+      expect(seeded.relics).toContain(relic.name);
     }
 
-    // Harvest the table's relic value-set to confirm the rolled names
-    // are all legal entries (guards against drift between UI state
-    // and the table source-of-truth).
     const tableValidation = await page.evaluate(async () => {
       const mod = await import('/systems/tb2e/module/data/actor/chargen.mjs');
-      const table = mod.THEURGE_RELIC_TABLE;
-      const allRelicNames = new Set();
-      const allInvocationNames = new Set();
-      for ( const entry of Object.values(table) ) {
-        for ( const r of entry.relics || [] ) allRelicNames.add(r);
-        for ( const i of entry.invocations || [] ) allInvocationNames.add(i);
+      const allInv = new Set();
+      for ( const entry of Object.values(mod.THEURGE_RELIC_TABLE) ) {
+        for ( const i of entry.invocations || [] ) allInv.add(i);
       }
-      return {
-        relics: [...allRelicNames],
-        invocations: [...allInvocationNames],
-      };
+      return { invocations: [...allInv] };
     });
-    for ( const name of rolledRelics ) {
-      expect(tableValidation.relics).toContain(name);
-    }
-    for ( const name of rolledInvocations ) {
-      expect(tableValidation.invocations).toContain(name);
-    }
-
-    // Shape invariant: relics that came from the compendium (as
-    // opposed to stub fallbacks) should have a valid relicTier and
-    // linked metadata. We inspect at least one relic to confirm the
-    // schema is populated — but tolerate stub relics (relicTier
-    // default "minor", empty linkedInvocations) if the compendium
-    // lookup missed.
-    //
-    // A compendium-sourced relic is identified by a populated
-    // `immortal` field (the stub fallback leaves it as the default
-    // empty string). We check that at least one of the "real"
-    // compendium matches has a sensible tier.
     const compendiumRelics = actorData.relicItems.filter((r) => r.immortal);
     for ( const relic of compendiumRelics ) {
       expect(['minor', 'named', 'great']).toContain(relic.relicTier);
-      // linkedInvocations is always an array (possibly empty); if non-
-      // empty, every entry should be one of the table's invocation
-      // names. This verifies the compendium → rules linkage holds.
       if ( relic.linkedInvocations && relic.linkedInvocations.length > 0 ) {
         for ( const linked of relic.linkedInvocations ) {
           expect(tableValidation.invocations).toContain(linked);
@@ -293,25 +123,19 @@ test.describe('Character wizard Theurge relics', () => {
       }
     }
 
-    // Invocations: at least one was created (same caveat as relics re.
-    // compendium misses — but the wizard still creates a stub).
     expect(actorData.invocationItems.length).toBeGreaterThanOrEqual(1);
     expect(actorData.invocationItems.length).toBeLessThanOrEqual(2);
     for ( const inv of actorData.invocationItems ) {
-      expect(rolledInvocations).toContain(inv.name);
+      expect(seeded.invocations).toContain(inv.name);
     }
 
-    // Class trait.
     const traitNames = await page.evaluate((id) => {
       const a = game.actors.get(id);
-      return Array.from(a.items)
-        .filter((i) => i.type === 'trait')
-        .map((i) => i.name);
+      return Array.from(a.items).filter((i) => i.type === 'trait').map((i) => i.name);
     }, actorId);
     expect(traitNames).toContain('Touched by the Gods');
     expect(traitNames).toContain('Defender');
 
-    // Clean up — avoid piling test actors into the world between runs.
-    await page.evaluate((id) => game.actors.get(id)?.delete(), actorId);
+    await deleteActor(page, actorId);
   });
 });

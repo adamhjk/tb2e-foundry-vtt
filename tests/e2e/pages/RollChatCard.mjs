@@ -49,6 +49,34 @@ export class RollChatCard {
     this.obstacleText = this.root.locator('.roll-card-tally .tally-obstacle');
     this.passBanner = this.root.locator('.card-banner.banner-pass');
     this.failBanner = this.root.locator('.card-banner.banner-fail');
+
+    // Post-roll action buttons. The Finalize button is rendered inside
+    // `.card-actions` and carries `data-action="finalize"`. Clicking it
+    // triggers `_handleFinalize` in module/dice/post-roll.mjs, which logs
+    // pass/fail pip advancement (for non-versus, non-disposition rolls).
+    this.finalizeButton = this.root.locator('.card-actions button[data-action="finalize"]');
+  }
+
+  /**
+   * Click the green "Finalize" button on the chat card. This triggers the
+   * pass/fail pip advancement pipeline (see module/dice/post-roll.mjs
+   * `_handleFinalize` → `logAdvancementForSide` → `_logAdvancement`) and
+   * re-renders the card without the post-roll action buttons. Callers
+   * should await this before reading actor pip counters.
+   *
+   * The chat log is a flex-column container with overflow; newly-posted
+   * cards land in-view at the bottom but the Finalize button can still sit
+   * below the scroll viewport when the card is tall. Scroll the button
+   * into view before clicking to avoid "element is outside of the viewport"
+   * auto-retry stalls.
+   */
+  async clickFinalize() {
+    await this.finalizeButton.scrollIntoViewIfNeeded();
+    await this.finalizeButton.click();
+    // After finalize the chat message updates and the card re-renders without
+    // the `.card-actions` block — the button disappears. Give the message
+    // update + re-render a generous timeout.
+    await expect(this.finalizeButton).toHaveCount(0, { timeout: 10_000 });
   }
 
   /** Assert that a roll card is present. */

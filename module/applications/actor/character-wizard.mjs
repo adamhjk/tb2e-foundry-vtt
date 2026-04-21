@@ -1200,6 +1200,21 @@ export default class CharacterWizard extends HandlebarsApplicationMixin(Applicat
   /*  Finish — Apply to Actor                     */
   /* -------------------------------------------- */
 
+  /**
+   * Test-only: seed a wizard state object and run the same #applyToActor
+   * pipeline #onFinish uses. Lets e2e specs exercise the class-specific
+   * finish branch (spells/relics/invocations/traits) without clicking
+   * through all 12 wizard steps. Do not call from production code — the
+   * wizard UI is the only supported user-driven path.
+   * @param {Actor} actor
+   * @param {object} partialState - merged over #createInitialState()
+   */
+  static async _applyStateForTest(actor, partialState) {
+    const wiz = new CharacterWizard(actor);
+    wiz.#state = { ...wiz.#createInitialState(), ...partialState };
+    await wiz.#applyToActor();
+  }
+
   /** @this {CharacterWizard} */
   static async #onFinish() {
     // Read final text inputs from the DOM.

@@ -6,7 +6,8 @@ packs/*
 .envrc
 
 # Playwright e2e — NEVER commit: contains copied Foundry license + session cookies
-tests/e2e/.test-data/
+.e2e-test-data-*/
+.e2e-pids
 tests/e2e/.auth/
 test-results/
 playwright-report/
