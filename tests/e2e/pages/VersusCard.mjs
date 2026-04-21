@@ -222,6 +222,94 @@ export class VersusResolutionCard {
 }
 
 /**
+ * POM for a versus-tied chat card posted by `_handleVersusTied`
+ * (module/dice/versus.mjs line 309-394). Rendered from
+ * templates/chat/versus-tied.hbs — it shows both combatants, their
+ * (equal) successes, a `banner-amber` "Tied" banner, and per-side
+ * trait-spend buttons.
+ *
+ * Selector map (versus-tied.hbs):
+ *   - `.versus-combatants .versus-combatant`  per-side block
+ *   - `.card-banner.banner-amber`             "Tied" banner
+ *   - `.tied-actions`                         container for tie-break buttons
+ *   - `[data-action="level3-break-tie"]`      L3 "win the tie" buttons (blue)
+ *                                              (see versus-tied.hbs line 37-40,
+ *                                               55-58)
+ *   - `[data-action="trait-break-tie"]`       "concede / earn 2 checks" buttons
+ *                                              (amber; line 77-79, 91-93)
+ *   - `[data-actor-id]`                       buttons carry their actor id so
+ *                                              we can filter per-side
+ *
+ * Buttons are wired in tb2e.mjs line 167-180 (renderChatMessageHTML hook) —
+ * native click handlers calling `handleLevel3TraitBreakTie` /
+ * `handleTraitBreakTie` from versus.mjs.
+ */
+export class VersusTiedCard {
+  /**
+   * @param {import('@playwright/test').Page} page
+   * @param {string} messageId ChatMessage id of the tied card
+   */
+  constructor(page, messageId) {
+    this.page = page;
+    this.messageId = messageId;
+    // Same `.first()` rationale as VersusPendingCard — the message renders
+    // in both the chat log and the floating `#chat-notifications` stack;
+    // button handlers attach to each re-render so clicking either reaches
+    // the same handleTraitBreakTie / handleLevel3TraitBreakTie path.
+    this.root = page
+      .locator(`li.chat-message[data-message-id="${messageId}"] .tb2e-chat-card`)
+      .first();
+    this.tiedBanner = this.root.locator('.card-banner.banner-amber');
+    this.actions = this.root.locator('.tied-actions');
+  }
+
+  async expectPresent() {
+    await expect(this.root).toBeVisible();
+    await expect(this.tiedBanner).toBeVisible();
+  }
+
+  /**
+   * Locator for a specific actor's L3 tie-break button. Buttons are emitted
+   * one-per-L3-trait in versus-tied.hbs line 37-40 / 55-58 with
+   * `data-action="level3-break-tie"` + `data-actor-id` + `data-trait-id`.
+   * @param {string} actorId
+   * @param {string} traitId
+   */
+  level3BreakTieButton(actorId, traitId) {
+    return this.root.locator(
+      `button[data-action="level3-break-tie"][data-actor-id="${actorId}"][data-trait-id="${traitId}"]`
+    );
+  }
+
+  /**
+   * Count of L3 "win the tie" buttons currently rendered for an actor.
+   * Used to assert the absent case (B has no L3 trait → 0 buttons).
+   */
+  level3BreakTieButtonsFor(actorId) {
+    return this.root.locator(
+      `button[data-action="level3-break-tie"][data-actor-id="${actorId}"]`
+    );
+  }
+
+  /**
+   * Click an actor's L3 "Win the tie" button by trait id. Uses the native-
+   * click evaluate pattern from VersusPendingCard.clickFinalize — the
+   * chat-log scroll container confuses Playwright's viewport math but the
+   * production handler is a plain `addEventListener("click", ...)` wired
+   * in tb2e.mjs line 174-180. After dispatch, `handleLevel3TraitBreakTie`
+   * (versus.mjs line 485-518) sets `flags.tb2e.tiedResolved: true` on this
+   * card and posts a new resolution card naming the acting actor as winner.
+   * @param {string} actorId
+   * @param {string} traitId
+   */
+  async clickLevel3BreakTie(actorId, traitId) {
+    const btn = this.level3BreakTieButton(actorId, traitId);
+    await expect(btn).toBeVisible();
+    await btn.evaluate(el => el.click());
+  }
+}
+
+/**
  * Utility locator for the roll dialog's "mode" toggle badge + challenge
  * dropdown. Not a full POM — just the selectors a versus spec needs in
  * addition to the generic RollDialog surface.
