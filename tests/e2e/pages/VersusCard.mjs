@@ -307,6 +307,52 @@ export class VersusTiedCard {
     await expect(btn).toBeVisible();
     await btn.evaluate(el => el.click());
   }
+
+  /**
+   * Locator for a specific actor's "trait against yourself" concession button
+   * (any trait level — the template emits one amber button per eligible
+   * trait in versus-tied.hbs line 77-79 / 91-93, filtered by
+   * `_getEligibleTieBreakTraits` in versus.mjs line 278-282 which excludes
+   * traits already flagged `system.usedAgainst`).
+   * @param {string} actorId
+   * @param {string} traitId
+   */
+  traitBreakTieButton(actorId, traitId) {
+    return this.root.locator(
+      `button[data-action="trait-break-tie"][data-actor-id="${actorId}"][data-trait-id="${traitId}"]`
+    );
+  }
+
+  /**
+   * Count of "trait against yourself" concession buttons currently rendered
+   * for an actor. Used to assert that a side with no eligible traits shows
+   * the empty-state `.tied-no-traits` instead of buttons.
+   */
+  traitBreakTieButtonsFor(actorId) {
+    return this.root.locator(
+      `button[data-action="trait-break-tie"][data-actor-id="${actorId}"]`
+    );
+  }
+
+  /**
+   * Click an actor's "Use trait against yourself" concession button. Native-
+   * click pattern (same rationale as `clickLevel3BreakTie`). After dispatch,
+   * `handleTraitBreakTie` (versus.mjs line 435-476):
+   *   - sets `trait.system.usedAgainst: true`
+   *   - adds +2 to `trait.system.checks`
+   *   - adds +2 to the acting character's `system.checks` (line 463-467;
+   *     only for `actor.type === "character"`)
+   *   - picks the OTHER actor as winner (line 471) and routes to
+   *     `_resolveFromTied` which posts a resolution card and flips
+   *     `flags.tb2e.tiedResolved: true` on this tied card.
+   * @param {string} actorId
+   * @param {string} traitId
+   */
+  async clickTraitBreakTie(actorId, traitId) {
+    const btn = this.traitBreakTieButton(actorId, traitId);
+    await expect(btn).toBeVisible();
+    await btn.evaluate(el => el.click());
+  }
 }
 
 /**
