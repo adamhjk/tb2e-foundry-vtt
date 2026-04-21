@@ -279,7 +279,7 @@ Already shipped. Listed for completeness.
 **Checkboxes:**
 
 - [x] `tests/e2e/compendium/open-each-pack.spec.mjs` — open every pack under system.json, assert window renders with expected entry count range (programmatic sweep over `game.system.packs` + per-pack floor table in `EXPECTED_MIN_ENTRIES`; UI sanity test opens `tb2e.monsters` via sidebar and asserts rendered rows)
-- [ ] `tests/e2e/compendium/drag-weapon-to-inventory.spec.mjs` — drag a weapon from the `weapons` pack onto a character sheet inventory
+- [x] `tests/e2e/compendium/drag-weapon-to-inventory.spec.mjs` — drag the `Sword` entry (id `026b10bdba9bf1a4`) from `tb2e.weapons` onto the character sheet's inventory tab; programmatic drop via `CharacterSheet#_onDropItem` (module/applications/actor/character-sheet.mjs:2008) with a synthetic `DragEvent` whose target is the inventory section (no `[data-slot-key]` ancestor → unassigned). Asserts the embedded `weapon` Item is created with matching `cost`, `wield`, and `slotOptions` copied from the pack source, lands with `system.slot === ""` / `system.slotIndex === 0` / `system.dropped === false`, and shows up in the unassigned section row. Native Playwright drag-and-drop was tried first but is flaky against AppV2 sheet windows (works for the Actors sidebar in tests/e2e/compendium-drag.spec.mjs, but not reliably for the sheet's drop zone).
 - [ ] `tests/e2e/compendium/drag-spell-to-magic-tab.spec.mjs` — drag a spell from `spells` pack onto character magic tab
 - [ ] `tests/e2e/compendium/drag-monster-to-scene.spec.mjs` — drag a monster from `monsters` pack onto the active scene; verify token created
 - [ ] `tests/e2e/compendium/drag-relic-to-slot.spec.mjs` — drag a relic into a character's inventory slot
