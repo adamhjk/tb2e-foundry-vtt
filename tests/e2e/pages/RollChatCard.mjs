@@ -67,6 +67,36 @@ export class RollChatCard {
     // persona) are then set, `_checkWiseAdvancement` posts the wise-
     // advancement card (DH p.78).
     this.ofCourseButton = this.root.locator('.card-actions button[data-action="of-course"]');
+
+    // "Fate: Luck" (Fate 1) — post-roll exploding 6s spend (DH p.47 / SG
+    // p.87). Appears only when `hasFate` (actor.system.fate.current > 0)
+    // AND `hasSuns` (at least one die rolled a 6 — an "isSun" die). Clicking
+    // triggers `_handleFateLuck` in module/dice/post-roll.mjs: counts suns
+    // in the ORIGINAL roll, rolls that many new dice (tagged `isLuck: true`),
+    // cascades by rerolling every new 6 until no suns remain, appends all
+    // luck dice to the pool, adds their successes to the tally, and flips
+    // `flags.tb2e.luckUsed = true` on the message (hides the button on
+    // re-render via `{{#unless luckUsed}}` in roll-result.hbs line 110).
+    // Also decrements actor.system.fate.current by 1 and increments
+    // actor.system.fate.spent by 1.
+    this.fateLuckButton = this.root.locator('.card-actions button[data-action="fate-luck"]');
+  }
+
+  /**
+   * Click the "Fate: Luck" post-roll button. Uses the same native-click
+   * pattern as `clickFinalize` / `clickOfCourse` — the chat-log's inner
+   * overflow scroller confuses Playwright's viewport math, but the handler
+   * is a plain `addEventListener("click", ...)` so dispatching a synthetic
+   * click event on the button node triggers the production code path.
+   *
+   * After dispatch, wait for `_handleFateLuck` to flip `luckUsed: true`
+   * (post-roll.mjs line 161) which removes the button from the re-rendered
+   * card template (roll-result.hbs `{{#unless luckUsed}}` at line 110).
+   */
+  async clickFateLuck() {
+    await expect(this.fateLuckButton).toBeVisible();
+    await this.fateLuckButton.evaluate(btn => btn.click());
+    await expect(this.fateLuckButton).toHaveCount(0, { timeout: 10_000 });
   }
 
   /**
