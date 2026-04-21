@@ -154,6 +154,19 @@ export class RollDialog {
   }
 
   /**
+   * Locator for the `.roll-dialog-helpers` section wrapper. Rendered only
+   * when `hasHelpers` is true (at least one non-blocked eligible helper on
+   * the scene — see `getEligibleHelpers` + `isBlockedFromHelping` in
+   * module/dice/help.mjs and the `{{#if hasHelpers}}` guard in
+   * templates/dice/roll-dialog.hbs line 202). Use `.toHaveCount(0)` to
+   * assert the helpers block is entirely absent, e.g. when the only
+   * candidate is KO'd / afraid / dead (help.mjs lines 53-59).
+   */
+  get helpersSection() {
+    return this.root.locator('.roll-dialog-helpers');
+  }
+
+  /**
    * Locator for a PC helper-toggle button by helper actor id. The helpers
    * block only renders when `hasHelpers` is true (roller has eligible, non-
    * blocked helpers on the scene); see module/dice/help.mjs `getEligibleHelpers`
@@ -163,7 +176,9 @@ export class RollDialog {
    * (`.collapsible.collapsed` in the template), and the CSS hides the
    * section body via `display: none` — callers should use `.toHaveCount(1)`
    * for existence assertions or call `toggleHelper()` which expands the
-   * section before clicking.
+   * section before clicking. For absence checks (e.g. KO'd helper filtered
+   * out of the pool), `.toHaveCount(0)` works against a scoped locator that
+   * only exists inside `.roll-dialog-helpers`.
    * @param {string} helperId  The actor id of the helper
    */
   helperToggle(helperId) {
@@ -185,7 +200,7 @@ export class RollDialog {
    * @param {string} helperId
    */
   async toggleHelper(helperId) {
-    const section = this.root.locator('.roll-dialog-helpers');
+    const section = this.helpersSection;
     await expect(section).toHaveCount(1);
     // The helpers block starts with `.collapsed`, which applies
     // `display: none` to its `.section-body` (see
