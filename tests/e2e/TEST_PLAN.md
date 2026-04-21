@@ -180,7 +180,7 @@ Already shipped. Listed for completeness.
 
 **Checkboxes:**
 
-- [ ] `tests/e2e/advancement/auto-trigger.spec.mjs` — set character to 1 pass + 1 fail below threshold, roll the triggering test, assert advancement dialog opens
+- [x] `tests/e2e/advancement/auto-trigger.spec.mjs` — stage Fighter rating 2 at (1P, 1F) one pass-pip below the (2P, 1F) threshold (DH p.84); PASS roll + Finalize fills the final pip and auto-opens the advancement dialog (label/current→new rating asserted); negative control at (0, 0) confirms the dialog stays closed
 - [ ] `tests/e2e/advancement/accept.spec.mjs` — accept advancement; verify rating +1 and pips reset
 - [ ] `tests/e2e/advancement/cancel.spec.mjs` — cancel advancement; verify rating unchanged, pips unchanged
 - [ ] `tests/e2e/advancement/skill-open.spec.mjs` — roll a skill the character doesn't have (opens a beginner's luck attempt); verify skill-opened card on success per DH p.84
