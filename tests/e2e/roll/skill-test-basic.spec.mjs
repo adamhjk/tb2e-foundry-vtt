@@ -58,7 +58,7 @@ test.describe('§3 Rolls — basic skill test', () => {
     });
   });
 
-  test('rolls Fighter vs Ob 3 on a stubbed PASS (all 6s → 4 successes) — pass pip ticks', async ({ page }) => {
+  test('rolls Fighter vs Ob 3 on a stubbed PASS (all 6s → 3 successes) — pass pip ticks', async ({ page }) => {
     const actorName = `E2E Skill Roll Pass ${Date.now()}`;
 
     await page.goto('/game');
