@@ -156,7 +156,7 @@ Already shipped. Listed for completeness.
 - [x] `tests/e2e/roll/skill-test-basic.spec.mjs` — roll Fighter vs Ob; verify chat card + pass/fail pips ticked on sheet
 - [x] `tests/e2e/roll/roll-dialog-modifiers.spec.mjs` — open roll dialog, add +1D modifier manually, submit; verify added to pool
 - [ ] ~~skipped~~ `tests/e2e/roll/condition-modifiers.spec.mjs` — **TEST-PLAN / RAW MISMATCH**: afraid does NOT impose -1D per RAW (SG p.48 says afraid blocks help + BL only; -1D is for injured/sick per SG pp.49-52). `module/dice/tb2e-roll.mjs` `gatherConditionModifiers` correctly implements RAW (fresh +1D, injured/sick -1D, afraid = no dice mod). Spec is written behind `test.fixme()` with the expected-pass shape; to green it, either retarget the entry to injured/sick OR add afraid → -1D as an explicit deviation from SG p.48 in `gatherConditionModifiers`.
-- [ ] `tests/e2e/roll/help-accept.spec.mjs` — Character A rolls, Character B clicks Help on chat card; verify +1D added to A's pool
+- [x] `tests/e2e/roll/help-accept.spec.mjs` — Character A opens roll dialog with Helper B eligible (scene token, same-ability rating > 0); toggle Help in the dialog, verify +1D added to A's pool (DH p.63). Note: help is a pre-roll dialog toggle in this codebase, not a post-roll chat-card action — only `synergy` (helper fate-for-advancement) lives on the chat card.
 - [ ] `tests/e2e/roll/help-blocked-when-ko.spec.mjs` — KO'd helper cannot accept Help (help.mjs line 57)
 - [ ] `tests/e2e/roll/wise-aid-persona.spec.mjs` — post-roll, spend Persona + pick wise; verify wise added as +1s; wise-advancement card posts on milestone
 - [ ] `tests/e2e/roll/fate-reroll.spec.mjs` — post-roll spend Fate; verify 6s rerolled, new successes shown (DH p.47)

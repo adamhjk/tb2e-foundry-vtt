@@ -154,6 +154,54 @@ export class RollDialog {
   }
 
   /**
+   * Locator for a PC helper-toggle button by helper actor id. The helpers
+   * block only renders when `hasHelpers` is true (roller has eligible, non-
+   * blocked helpers on the scene); see module/dice/help.mjs `getEligibleHelpers`
+   * and the `.roll-dialog-helpers` block in templates/dice/roll-dialog.hbs.
+   *
+   * The helpers section is rendered collapsed by default
+   * (`.collapsible.collapsed` in the template), and the CSS hides the
+   * section body via `display: none` — callers should use `.toHaveCount(1)`
+   * for existence assertions or call `toggleHelper()` which expands the
+   * section before clicking.
+   * @param {string} helperId  The actor id of the helper
+   */
+  helperToggle(helperId) {
+    return this.root.locator(
+      `.roll-dialog-helpers .helper-toggle[data-helper-id="${helperId}"]`
+    );
+  }
+
+  /**
+   * Toggle a specific helper ON in the dialog. Expands the collapsed helpers
+   * section (`.roll-dialog-helpers.collapsed` → remove `.collapsed`) and clicks
+   * the helper's toggle button. The dialog's JS click handler (module/dice/
+   * tb2e-roll.mjs near line 669) adds `.active` to the button, bumps
+   * `helperBonus`, re-renders the modifier list, and updates the summary.
+   *
+   * Asserts the button ends up in the `.active` state so callers can trust
+   * the pool includes the +1D by the time this resolves (DH p.63 — help is
+   * +1D per helper).
+   * @param {string} helperId
+   */
+  async toggleHelper(helperId) {
+    const section = this.root.locator('.roll-dialog-helpers');
+    await expect(section).toHaveCount(1);
+    // The helpers block starts with `.collapsed`, which applies
+    // `display: none` to its `.section-body` (see
+    // less/dice/roll-dialog.less line 977) — expand it so the toggle
+    // button inside is hittable by click. The production render() wires a
+    // click listener on `.helpers-heading` that toggles `.collapsed` on
+    // the parent; we replicate the end state directly to avoid relying
+    // on the (visible) heading's layout position.
+    await section.evaluate(el => el.classList.remove('collapsed'));
+    const btn = this.helperToggle(helperId);
+    await expect(btn).toBeVisible();
+    await btn.click();
+    await expect(btn).toHaveClass(/(^|\s)active(\s|$)/);
+  }
+
+  /**
    * Add a manual modifier via the dialog's inline form (DH "no RAW modifiers
    * added by UI" — this is the dialog's free-form field the player fills out
    * at the table). Clicks "Add Manual Modifier" to reveal the label/type/value
