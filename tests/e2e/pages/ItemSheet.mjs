@@ -190,3 +190,55 @@ export class ContainerItemSheet extends ItemSheet {
     );
   }
 }
+
+/**
+ * Supply-specific POM extension. Targets the `#if isSupply` fieldset in
+ * `templates/items/gear-sheet.hbs` lines 197-244:
+ *   - `supplyType` (select) — `system.supplyType`, StringField with choices
+ *     food|light|spellMaterial|sacramental|ammunition|other
+ *     (`module/data/item/supply.mjs` lines 10-13; enum labelled via
+ *     `CONFIG.TB2E.supplyTypes`, `module/config.mjs` lines 147-154).
+ *   - `turnsRemaining` (number) — `system.turnsRemaining`, NumberField
+ *     (supply.mjs line 14). Only meaningful for light supplies (torches,
+ *     lanterns — DH p.71), but the input renders for every supply.
+ *   - `nameSingular` (text) — `system.nameSingular`, StringField (supply.mjs
+ *     line 16). Display helper for bundled supplies (e.g. "Torch" for a
+ *     bundle named "Torches").
+ *   - `lit` (checkbox) — `system.lit`, BooleanField (supply.mjs line 15).
+ *     Controls the consumeLight / lightSource button-rendering branch in
+ *     the character sheet inventory (see `inventory-supplies.spec.mjs`).
+ *
+ * Portions are NOT a supply-specific field — they are the shared
+ * `system.quantity` / `system.quantityMax` from `inventoryFields`
+ * (`module/data/item/_fields.mjs` lines 30-31). The gear-sheet renders
+ * these on every item type (template lines 53-63), and the base
+ * `ItemSheet` POM already exposes `quantityInput` / `quantityMaxInput` for
+ * them — RAW a "portion" in TB2E is one unit of `quantity` on a food supply
+ * (DH pp.71-72: a supply's portions count is its `quantity`; when it runs
+ * out, the supply is depleted).
+ *
+ * TB2E supplies have no "quality" field. The TEST_PLAN §22 checkbox
+ * ("supply with multiple portions; consume one; verify counter decrement")
+ * maps to `system.quantity` + `system.quantityMax` as the portion counters.
+ * The sheet-side consumePortion flow is already covered in full by
+ * `tests/e2e/sheet/inventory-supplies.spec.mjs` (§2 Character Sheet line
+ * 122); this spec covers the complementary item-sheet edit surface — i.e.
+ * setting a supply up with N portions via the GearSheet form and proving
+ * the values round-trip through the data model.
+ */
+export class SupplyItemSheet extends ItemSheet {
+  constructor(page, itemName) {
+    super(page, { typeLabel: 'Supply', itemName });
+
+    this.supplyTypeSelect = this.root.locator(
+      'select[name="system.supplyType"]'
+    );
+    this.turnsRemainingInput = this.root.locator(
+      'input[name="system.turnsRemaining"]'
+    );
+    this.nameSingularInput = this.root.locator(
+      'input[name="system.nameSingular"]'
+    );
+    this.litCheckbox = this.root.locator('input[name="system.lit"]');
+  }
+}
