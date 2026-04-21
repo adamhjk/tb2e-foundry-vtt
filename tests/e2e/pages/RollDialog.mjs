@@ -54,6 +54,7 @@ export class RollDialog {
       '.persona-advantage .stepper-btn[data-delta="-1"]'
     );
     this.channelNatureCheckbox = this.root.locator('input[name="channelNature"]');
+    this.personaSection = this.root.locator('.roll-dialog-persona');
 
     // Submit / cancel. DialogV2 renders button[data-action="roll"] / "cancel".
     this.submitButton = this.root.locator('button[data-action="roll"]');
@@ -260,6 +261,34 @@ export class RollDialog {
     await section.evaluate(el => el.classList.remove('collapsed'));
     await expect(this.wiseSelect).toBeVisible();
     await this.wiseSelect.selectOption(String(index));
+  }
+
+  /**
+   * Toggle "Channel Your Nature" (SG p.87 / DH p.119) in the roll dialog's
+   * persona section. Channeling your Nature costs 1 Persona and adds
+   * `natureRating` dice to the pool (tb2e-roll.mjs lines 615-622). It also
+   * sets `flags.tb2e.channelNature = true` on the resulting chat message
+   * (tb2e-roll.mjs line 1452), which gates the post-roll Nature Tax prompt
+   * (`showNatureTax` in roll-utils.mjs and tb2e-roll.mjs line 1518 / post-
+   * roll.mjs line 892).
+   *
+   * The persona section is rendered `.collapsible.collapsed` (roll-dialog.hbs
+   * line 164) — its CSS hides the section body via `display: none`. Same
+   * pattern as `toggleHelper` / `selectWise`: expand the section first, then
+   * click the checkbox so Playwright sees it as visible.
+   *
+   * The `change` handler in tb2e-roll.mjs line 831-841 also clamps persona
+   * advantage if the available persona drops below the current advantage +
+   * channel-nature cost — stage actors with persona.current >= 1 + any
+   * advantage needed.
+   */
+  async toggleChannelNature() {
+    const section = this.personaSection;
+    await expect(section).toHaveCount(1);
+    await section.evaluate(el => el.classList.remove('collapsed'));
+    await expect(this.channelNatureCheckbox).toBeVisible();
+    await this.channelNatureCheckbox.check();
+    await expect(this.channelNatureCheckbox).toBeChecked();
   }
 
   /**

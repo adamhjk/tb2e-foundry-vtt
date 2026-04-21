@@ -97,6 +97,54 @@ export class RollChatCard {
     this.deeperUnderstandingButton = this.root.locator(
       '.card-actions button[data-action="deeper-understanding"]'
     );
+
+    // Nature Tax post-roll prompt (DH p.119). Rendered when
+    // `showNatureTax = channelNature && !natureTaxResolved` (post-roll.mjs
+    // line 892 / tb2e-roll.mjs line 1518). The template emits a pair of
+    // buttons inside `.nature-tax-prompt` — "Yes" (`data-action="nature-yes"`)
+    // marks the roll as within the character's Nature descriptors (no tax),
+    // "No" (`data-action="nature-no"`) applies the nature tax to the actor:
+    // `_handleNatureTax` in module/dice/post-roll.mjs (lines 328-365) deducts
+    // `calculateNatureTax(...)` from `system.abilities.nature.rating`
+    // (1 on pass, `obstacle - finalSuccesses` clamped to >= 1 on fail;
+    // see roll-utils.mjs line 68-71). When the decrement lands nature at 0,
+    // a nature-crisis chat card is posted (`_postNatureCrisis`, post-roll.mjs
+    // line 600). Both buttons flip `flags.tb2e.natureTaxResolved = true` on
+    // the message, which removes the prompt from the re-rendered card.
+    this.natureTaxPrompt = this.root.locator('.card-actions .nature-tax-prompt');
+    this.natureTaxYesButton = this.root.locator(
+      '.card-actions button[data-action="nature-yes"]'
+    );
+    this.natureTaxNoButton = this.root.locator(
+      '.card-actions button[data-action="nature-no"]'
+    );
+  }
+
+  /**
+   * Click the "No" (outside descriptors, tax applies) nature-tax button.
+   * Same native-click pattern as `clickFateLuck` / `clickOfCourse` — the
+   * production handler is wired via plain `addEventListener` in
+   * `activatePostRollListeners`, so `button.click()` dispatches the handler
+   * without Playwright viewport math. After dispatch, wait for
+   * `_handleNatureTax` to flip `natureTaxResolved: true` (post-roll.mjs line
+   * 360) which removes the prompt from the re-rendered card template
+   * (roll-result.hbs `{{#if showNatureTax}}` at line 118, gated by
+   * `channelNature && !natureTaxResolved` in buildChatTemplateData).
+   */
+  async clickNatureTaxNo() {
+    await expect(this.natureTaxNoButton).toBeVisible();
+    await this.natureTaxNoButton.evaluate(btn => btn.click());
+    await expect(this.natureTaxNoButton).toHaveCount(0, { timeout: 10_000 });
+  }
+
+  /**
+   * Click the "Yes" (within descriptors — no tax) nature-tax button.
+   * See `clickNatureTaxNo` for the native-click rationale.
+   */
+  async clickNatureTaxYes() {
+    await expect(this.natureTaxYesButton).toBeVisible();
+    await this.natureTaxYesButton.evaluate(btn => btn.click());
+    await expect(this.natureTaxYesButton).toHaveCount(0, { timeout: 10_000 });
   }
 
   /**
