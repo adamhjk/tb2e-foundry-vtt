@@ -115,3 +115,35 @@ export class WeaponItemSheet extends ItemSheet {
     );
   }
 }
+
+/**
+ * Armor-specific POM extension. Targets the `#if isArmor` fieldset in
+ * `templates/items/gear-sheet.hbs` lines 110-132:
+ *   - `armorType` (select) — `system.armorType`, StringField with choices
+ *     leather|chain|plate|helmet|shield (`module/data/item/armor.mjs` lines
+ *     10-13; enum labelled via `CONFIG.TB2E.armorTypes`, `module/config.mjs`
+ *     lines 100-106).
+ *   - `absorbs` (number) — `system.absorbs`, NumberField (armor.mjs line 14).
+ *     This is TB2E's "protection" stat (SG p.149, DH p.112: armor rating =
+ *     success rolls absorbed when hit in conflict). Per DH p.112: "Armor has
+ *     a rating (1s to 3s) that absorbs successes from opponents' attacks."
+ *   - `specialRules` (textarea) — `system.specialRules` (armor.mjs line 15).
+ *
+ * Burden is modelled on TB2E armor via the shared `system.cost` field
+ * (`module/data/item/_fields.mjs` line 27) — slot cost from the Buyer's
+ * Guide (DH p.72-74). TB2E has no separate numeric "burden" field; per-slot
+ * costs are captured in `system.slotOptions`. For a single-value "burden"
+ * analog the `cost` input is the correct target (same usage as the weapon
+ * spec, `weapon-sheet.spec.mjs` lines 56-58).
+ */
+export class ArmorItemSheet extends ItemSheet {
+  constructor(page, itemName) {
+    super(page, { typeLabel: 'Armor', itemName });
+
+    this.armorTypeSelect = this.root.locator('select[name="system.armorType"]');
+    this.absorbsInput = this.root.locator('input[name="system.absorbs"]');
+    this.specialRulesTextarea = this.root.locator(
+      'textarea[name="system.specialRules"]'
+    );
+  }
+}
