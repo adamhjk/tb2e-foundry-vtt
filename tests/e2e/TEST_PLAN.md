@@ -555,7 +555,7 @@ Already shipped. Listed for completeness.
 
 **Checkboxes:**
 
-- [ ] `tests/e2e/sheet/monster-open.spec.mjs` — open a monster from compendium; verify sheet renders with Nature, conflict dispositions, traits
+- [x] `tests/e2e/sheet/monster-open.spec.mjs` — imports Kobold from `tb2e.monsters`, renders sheet, asserts Nature (`templates/actors/monster-body.hbs` line 9), 3 conflict dispositions (`module/data/actor/monster.mjs` lines 30-33), and weapons loadout (monsters have no trait items — `weapons` is the sheet's loadout concept)
 - [ ] `tests/e2e/sheet/monster-nature-roll.spec.mjs` — roll Nature from monster sheet; verify roll card
 - [ ] `tests/e2e/sheet/npc-open.spec.mjs` — open an NPC; verify sheet renders
 - [ ] `tests/e2e/sheet/npc-edit-basics.spec.mjs` — edit NPC name/notes; verify persistence
