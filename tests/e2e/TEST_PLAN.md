@@ -278,7 +278,7 @@ Already shipped. Listed for completeness.
 
 **Checkboxes:**
 
-- [ ] `tests/e2e/compendium/open-each-pack.spec.mjs` — open every pack under system.json, assert window renders with expected entry count range
+- [x] `tests/e2e/compendium/open-each-pack.spec.mjs` — open every pack under system.json, assert window renders with expected entry count range (programmatic sweep over `game.system.packs` + per-pack floor table in `EXPECTED_MIN_ENTRIES`; UI sanity test opens `tb2e.monsters` via sidebar and asserts rendered rows)
 - [ ] `tests/e2e/compendium/drag-weapon-to-inventory.spec.mjs` — drag a weapon from the `weapons` pack onto a character sheet inventory
 - [ ] `tests/e2e/compendium/drag-spell-to-magic-tab.spec.mjs` — drag a spell from `spells` pack onto character magic tab
 - [ ] `tests/e2e/compendium/drag-monster-to-scene.spec.mjs` — drag a monster from `monsters` pack onto the active scene; verify token created
