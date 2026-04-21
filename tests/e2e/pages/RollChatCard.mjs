@@ -55,6 +55,34 @@ export class RollChatCard {
     // triggers `_handleFinalize` in module/dice/post-roll.mjs, which logs
     // pass/fail pip advancement (for non-versus, non-disposition rolls).
     this.finalizeButton = this.root.locator('.card-actions button[data-action="finalize"]');
+
+    // "Ah, Of Course!" (Persona 1) — post-roll wise aid. Appears only when
+    // all three of: `wiseSelected` (roller picked a related wise pre-roll),
+    // `hasPersona` (actor has persona.current > 0), and `hasWyrms` (at
+    // least one failed die in the roll). Clicking triggers `_handleOfCourse`
+    // in module/dice/post-roll.mjs: spends 1 Persona, rolls `wyrmCount` new
+    // d6 and appends them to the dice results (DH p.77 "reroll all failed
+    // dice on a test related to your wise"), and marks `wises[index].persona
+    // = true` on the actor. If all four advancement boxes (pass/fail/fate/
+    // persona) are then set, `_checkWiseAdvancement` posts the wise-
+    // advancement card (DH p.78).
+    this.ofCourseButton = this.root.locator('.card-actions button[data-action="of-course"]');
+  }
+
+  /**
+   * Click the "Ah, Of Course!" (Persona 1) post-roll button. Uses the same
+   * native-click pattern as `clickFinalize` (the button's click handler is
+   * attached via a plain `addEventListener` in `activatePostRollListeners`,
+   * so `button.click()` dispatches the production handler without Playwright
+   * viewport math). Waits for the subsequent re-render to tag the button
+   * with the "used" state — after `_handleOfCourse`, the template sets
+   * `ofCourseUsed: true` (post-roll.mjs line 308) which hides the button on
+   * re-render (`{{#unless ofCourseUsed}}` guard in roll-result.hbs line 100).
+   */
+  async clickOfCourse() {
+    await expect(this.ofCourseButton).toBeVisible();
+    await this.ofCourseButton.evaluate(btn => btn.click());
+    await expect(this.ofCourseButton).toHaveCount(0, { timeout: 10_000 });
   }
 
   /**

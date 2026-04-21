@@ -217,6 +217,52 @@ export class RollDialog {
   }
 
   /**
+   * Locator for the wise-selector section wrapper. Rendered only when
+   * `hasWises` is true (the roller is a character with at least one named
+   * wise on `system.wises`, and is not Angry — see tb2e-roll.mjs lines
+   * 391-392 and the `{{#if hasWises}}` guard in templates/dice/roll-dialog.hbs
+   * line 260). Use `.toHaveCount(0)` to assert the wise block is absent
+   * when the actor has no wises.
+   */
+  get wiseSection() {
+    return this.root.locator('.roll-dialog-wises');
+  }
+
+  /**
+   * The native `<select name="wise">` element inside the wise section.
+   * Wise entries are emitted in actor-array order with `option[value="<index>"]`;
+   * the default "None" is `value="-1"` (see roll-dialog.hbs line 268).
+   */
+  get wiseSelect() {
+    return this.root.locator('select[name="wise"]');
+  }
+
+  /**
+   * Choose the wise at the given `system.wises[index]` as the "Related Wise"
+   * for this roll. Expands the collapsed wise section (same pattern as
+   * `toggleHelper`) and sets the select value. Selecting a wise enables the
+   * post-roll "Ah, Of Course!" (Persona) and "Deeper Understanding" (Fate)
+   * buttons on the chat card (DH p.77) — see `wiseSelected` in
+   * roll-utils.mjs `buildChatTemplateData` line 130 and the template guards
+   * in templates/chat/roll-result.hbs lines 92-107.
+   *
+   * On submit the selected index travels as `config.wiseIndex`
+   * (tb2e-roll.mjs line 1136/1158/1184) into `_buildRollFlags` where it
+   * becomes `flags.tb2e.roll.wise = { name, index }` (line 1451).
+   * @param {number} index 0-based index into actor.system.wises
+   */
+  async selectWise(index) {
+    const section = this.wiseSection;
+    await expect(section).toHaveCount(1);
+    // Same collapsed-section handling as `toggleHelper` — the section body
+    // is hidden by `display: none` until `.collapsed` is removed. Playwright
+    // can `selectOption` a visible select, so we expand the section first.
+    await section.evaluate(el => el.classList.remove('collapsed'));
+    await expect(this.wiseSelect).toBeVisible();
+    await this.wiseSelect.selectOption(String(index));
+  }
+
+  /**
    * Add a manual modifier via the dialog's inline form (DH "no RAW modifiers
    * added by UI" — this is the dialog's free-form field the player fills out
    * at the table). Clicks "Add Manual Modifier" to reveal the label/type/value
