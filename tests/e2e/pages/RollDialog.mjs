@@ -125,4 +125,63 @@ export class RollDialog {
     const v = await this.obstacleInput.inputValue();
     return Number(v);
   }
+
+  /**
+   * Read the live summary text at the bottom of the form (e.g. "5D vs Ob 3").
+   * Source: `updateSummary` in module/dice/tb2e-roll.mjs writes to
+   * `.roll-dialog-summary-text` on every relevant input event. Useful for
+   * asserting that the pool size reflects dialog-side modifiers before submit.
+   */
+  async getSummaryText() {
+    return (await this.summaryText.innerText()).trim();
+  }
+
+  /**
+   * Parse the leading NN from the summary's "ND vs Ob M" line. For the
+   * independent/disposition/versus templates alike, the summary starts with
+   * a pool-size integer followed by `D`.
+   */
+  async getSummaryPool() {
+    const text = await this.getSummaryText();
+    const match = text.match(/(\d+)\s*D/);
+    if (!match) throw new Error(`RollDialog: cannot parse summary pool from "${text}"`);
+    return Number(match[1]);
+  }
+
+  /** All currently-rendered modifier rows (conditions + helpers + manual + ...). */
+  get modifierRows() {
+    return this.modifierList.locator('.roll-modifier');
+  }
+
+  /**
+   * Add a manual modifier via the dialog's inline form (DH "no RAW modifiers
+   * added by UI" — this is the dialog's free-form field the player fills out
+   * at the table). Clicks "Add Manual Modifier" to reveal the label/type/value
+   * row, fills it, and presses the confirm button which rolls up into the
+   * modifier list and `updateSummary()`.
+   *
+   * Source: tb2e-roll.mjs `render()` wires `.add-modifier-btn` to an inline
+   * `.manual-modifier-input` row with:
+   *   - `input.manual-label` — free-text label
+   *   - `select.manual-type`  — "dice" | "success" | "obstacle"
+   *   - `input.manual-value`  — signed integer
+   *   - `button.manual-confirm` — commits the modifier
+   *
+   * @param {object} opts
+   * @param {string} [opts.label] label text (free-form); defaults to the input's placeholder
+   * @param {'dice'|'success'|'obstacle'} [opts.type='dice']
+   * @param {number} [opts.value=1]
+   */
+  async addManualModifier({ label, type = 'dice', value = 1 } = {}) {
+    await this.addModifierButton.click();
+    const row = this.root.locator('.manual-modifier-input').last();
+    await expect(row).toBeVisible();
+    if (label !== undefined) await row.locator('.manual-label').fill(label);
+    await row.locator('.manual-type').selectOption(type);
+    await row.locator('.manual-value').fill(String(value));
+    await row.locator('.manual-confirm').click();
+    // Confirm strips the inline row; wait for it to detach so subsequent
+    // assertions see the committed modifier list.
+    await expect(row).toHaveCount(0);
+  }
 }
