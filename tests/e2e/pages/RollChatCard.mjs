@@ -80,6 +80,41 @@ export class RollChatCard {
     // Also decrements actor.system.fate.current by 1 and increments
     // actor.system.fate.spent by 1.
     this.fateLuckButton = this.root.locator('.card-actions button[data-action="fate-luck"]');
+
+    // "Deeper Understanding" (Fate 1) — post-roll wise-aid fate spend
+    // (SG p.87). Appears only when `hasFate` (actor.system.fate.current > 0),
+    // `wiseSelected` (roller picked a related wise pre-roll), AND `hasWyrms`
+    // (at least one failed die). Also hidden by `{{#unless deeperUsed}}` and
+    // `{{#unless luckUsed}}` guards — Deeper Understanding must be used
+    // BEFORE Fate: Luck per SG p.87 ("Use this option before spending fate
+    // to reroll 6s"). Clicking triggers `_handleDeeperUnderstanding` in
+    // module/dice/post-roll.mjs: spends 1 Fate, rerolls the first wyrm
+    // (failed die) in place (tagged `isRerolled: true`, replacing — NOT
+    // appending like Fate: Luck / Of Course), recalculates successes, marks
+    // `wises[index].fate = true` on the actor (DH p.78 advancement box),
+    // and flips `flags.tb2e.deeperUsed = true` to hide the button on
+    // subsequent re-renders (roll-result.hbs line 90 `{{#unless deeperUsed}}`).
+    this.deeperUnderstandingButton = this.root.locator(
+      '.card-actions button[data-action="deeper-understanding"]'
+    );
+  }
+
+  /**
+   * Click the "Deeper Understanding" (Fate 1) post-roll wise-aid button.
+   * Uses the same native-click pattern as `clickFateLuck` / `clickOfCourse`
+   * — the button's click handler is attached via a plain `addEventListener`
+   * in `activatePostRollListeners`, so dispatching `button.click()` triggers
+   * the production handler without Playwright viewport math.
+   *
+   * After dispatch, wait for `_handleDeeperUnderstanding` to flip
+   * `deeperUsed: true` (post-roll.mjs line 234) which removes the button
+   * from the re-rendered card template (roll-result.hbs `{{#unless
+   * deeperUsed}}` at line 90).
+   */
+  async clickDeeperUnderstanding() {
+    await expect(this.deeperUnderstandingButton).toBeVisible();
+    await this.deeperUnderstandingButton.evaluate(btn => btn.click());
+    await expect(this.deeperUnderstandingButton).toHaveCount(0, { timeout: 10_000 });
   }
 
   /**
