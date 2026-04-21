@@ -556,7 +556,7 @@ Already shipped. Listed for completeness.
 **Checkboxes:**
 
 - [x] `tests/e2e/sheet/monster-open.spec.mjs` — imports Kobold from `tb2e.monsters`, renders sheet, asserts Nature (`templates/actors/monster-body.hbs` line 9), 3 conflict dispositions (`module/data/actor/monster.mjs` lines 30-33), and weapons loadout (monsters have no trait items — `weapons` is the sheet's loadout concept)
-- [ ] `tests/e2e/sheet/monster-nature-roll.spec.mjs` — roll Nature from monster sheet; verify roll card
+- [x] `tests/e2e/sheet/monster-nature-roll.spec.mjs` — click Nature surface on monster-body (`templates/actors/monster-body.hbs` line 7 `data-action="rollNature"` → `MonsterSheet.#onRollNature` at `module/applications/actor/monster-sheet.mjs` line 177); imports Kobold (Nature 2) from `tb2e.monsters`, stubs all-6s, asserts dialog pool = 2, submits default Ob 1, asserts chat card shape (poolSize/baseDice/successes = 2, pass = true) + speaker + `flags.tb2e.roll` metadata + `directNatureTest`/`withinNature` flags (roll-result.hbs "within — no tax" notice), finalizes (no-op for monsters per `_logAdvancement` early-return at `module/dice/tb2e-roll.mjs` line 193), confirms `system.nature` unchanged
 - [ ] `tests/e2e/sheet/npc-open.spec.mjs` — open an NPC; verify sheet renders
 - [ ] `tests/e2e/sheet/npc-edit-basics.spec.mjs` — edit NPC name/notes; verify persistence
 

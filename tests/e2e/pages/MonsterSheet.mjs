@@ -38,6 +38,21 @@ export class MonsterSheet {
 
     // Weapon rows — variable length from system.weapons array.
     this.weaponRows = this.root.locator('.weapons-table tbody tr');
+
+    // The Nature "row" on the monster body doubles as the roll surface:
+    // templates/actors/monster-body.hbs line 7 —
+    //   <div class="field-pair rollable" data-action="rollNature">
+    // which wires to MonsterSheet.#onRollNature (monster-sheet.mjs line 177)
+    // calling `rollTest({ actor, type: "ability", key: "nature" })`. We scope
+    // to the element carrying the data-action so the locator stays tight to
+    // the production contract.
+    this.rollNatureSurface = this.root.locator('[data-action="rollNature"]');
+    // The inner label carries the localized "Nature" text — preferable to
+    // click over the sibling <input type="number">, which would otherwise
+    // just receive focus (the AppV2 action fires on click regardless, but
+    // clicking the label avoids any browser-level caret / focus side effects
+    // that could race with the dialog opening).
+    this.rollNatureLabel = this.rollNatureSurface.locator('.ability-name');
   }
 
   async expectOpen() {
@@ -57,5 +72,15 @@ export class MonsterSheet {
   /** Locator for the idx-th weapon row's name input. */
   weaponNameInput(idx) {
     return this.root.locator(`input[name="system.weapons.${idx}.name"]`);
+  }
+
+  /**
+   * Click the Nature label on the monster body to trigger the "Roll Nature"
+   * action (monster-sheet.mjs #onRollNature → rollTest). Opens the shared
+   * roll dialog (`_showRollDialog` in module/dice/tb2e-roll.mjs).
+   */
+  async clickRollNature() {
+    await expect(this.rollNatureLabel).toBeVisible();
+    await this.rollNatureLabel.click();
   }
 }
