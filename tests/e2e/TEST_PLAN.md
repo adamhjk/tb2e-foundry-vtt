@@ -181,7 +181,7 @@ Already shipped. Listed for completeness.
 **Checkboxes:**
 
 - [x] `tests/e2e/advancement/auto-trigger.spec.mjs` — stage Fighter rating 2 at (1P, 1F) one pass-pip below the (2P, 1F) threshold (DH p.84); PASS roll + Finalize fills the final pip and auto-opens the advancement dialog (label/current→new rating asserted); negative control at (0, 0) confirms the dialog stays closed
-- [ ] `tests/e2e/advancement/accept.spec.mjs` — accept advancement; verify rating +1 and pips reset
+- [x] `tests/e2e/advancement/accept.spec.mjs` — stage Fighter rating 2 at (1P, 1F), PASS roll + Finalize opens the dialog; clicking Advance bumps rating 2 → 3 and hard-resets pips to (0, 0) per advancement.mjs:57-61 (NOT overflow-carry), and a celebration chat card (advancement-result.hbs) is posted speaker-scoped to the actor
 - [ ] `tests/e2e/advancement/cancel.spec.mjs` — cancel advancement; verify rating unchanged, pips unchanged
 - [ ] `tests/e2e/advancement/skill-open.spec.mjs` — roll a skill the character doesn't have (opens a beginner's luck attempt); verify skill-opened card on success per DH p.84
 - [ ] `tests/e2e/advancement/wise-advancement.spec.mjs` — use wise aid on a milestone roll; verify wise-advancement card and rating bump (DH p.87)
