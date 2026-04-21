@@ -147,3 +147,46 @@ export class ArmorItemSheet extends ItemSheet {
     );
   }
 }
+
+/**
+ * Container-specific POM extension. Targets the `#if isContainer` fieldset in
+ * `templates/items/gear-sheet.hbs` lines 135-168:
+ *   - `containerType` (select) — `system.containerType`, StringField with
+ *     choices backpack|satchel|largeSack|smallSack|pouch|quiver|waterskin|
+ *     bottle|jug|framePack|barrel|cask|chestSmall|seaChest|clayPot|purse|
+ *     woodenCanteen (`module/data/item/container.mjs` lines 12-17).
+ *   - `containerSlots` (number) — `system.containerSlots`, NumberField
+ *     (initial 6, min 0, integer; `container.mjs` line 11). This is the
+ *     number of sub-slots the container provides when equipped on the
+ *     character (DH pp.71-74 — a backpack provides Pack slots, a quiver
+ *     provides Quiver slots, etc.). The character sheet reads this at
+ *     `module/applications/actor/character-sheet.mjs` line 442 and renders
+ *     that many cells under the container's dynamic slot group.
+ *   - `containerKey` (text) — `system.containerKey`, StringField (initial
+ *     "", line 10). The slot-group key used when children reference this
+ *     container as their `slot`. When empty, the sheet falls back to the
+ *     item's id as the key (`character-sheet.mjs` line 438).
+ *
+ * Note: the `containerSlots` + `containerKey` inputs are rendered only in
+ * the non-liquid branch (template lines 157-164) — liquid containers
+ * (waterskin/bottle/jug) expose a `liquidType` select instead and don't
+ * provide slot groups at all (`character-sheet.mjs` line 437 skips them).
+ */
+export class ContainerItemSheet extends ItemSheet {
+  constructor(page, itemName) {
+    super(page, { typeLabel: 'Container', itemName });
+
+    this.containerTypeSelect = this.root.locator(
+      'select[name="system.containerType"]'
+    );
+    this.containerSlotsInput = this.root.locator(
+      'input[name="system.containerSlots"]'
+    );
+    this.containerKeyInput = this.root.locator(
+      'input[name="system.containerKey"]'
+    );
+    this.liquidTypeSelect = this.root.locator(
+      'select[name="system.liquidType"]'
+    );
+  }
+}
