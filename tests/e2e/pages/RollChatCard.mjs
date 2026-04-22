@@ -118,6 +118,58 @@ export class RollChatCard {
     this.natureTaxNoButton = this.root.locator(
       '.card-actions button[data-action="nature-no"]'
     );
+
+    // Helper-synergy block (SG p.87). Rendered inside `.roll-card-helpers`
+    // for every synergy-marked helper that hasn't yet been processed — the
+    // filter is `h.synergy && !helperSynergy[h.id] && game.actors.has(h.id)`
+    // in `_buildSynergyHelpers` at module/dice/tb2e-roll.mjs L1549-1560,
+    // emitted by templates/chat/roll-result.hbs L141-151. Clicking the
+    // button dispatches `data-action="synergy"` to `_handleSynergy` in
+    // module/dice/post-roll.mjs L376-402 — if the current user is GM, it
+    // runs `_processSynergy` directly (deducts 1 fate, logs advancement,
+    // marks `flags.tb2e.helperSynergy.<id> = true`); otherwise the helper's
+    // owning player writes `flags.tb2e.pendingSynergy = { messageId }` on
+    // the helper actor, and the GM hook at tb2e.mjs L187-188 picks it up
+    // via `processSynergyMailbox` (post-roll.mjs L466-471).
+    this.synergySection = this.root.locator('.roll-card-helpers');
+  }
+
+  /**
+   * Locator for the post-roll synergy button for a specific helper actor id.
+   * The block is rendered iff at least one helper has `synergy: true` on
+   * the message's `flags.tb2e.helpers` and hasn't yet been processed (see
+   * `_buildSynergyHelpers` at module/dice/tb2e-roll.mjs L1549-1560). After a
+   * successful synergy invocation the button disappears via
+   * `_reRenderChatCard` (module/dice/post-roll.mjs L857-906) because the
+   * processed helper is filtered out at L1551.
+   * @param {string} helperId  Actor id of the helper
+   */
+  synergyButton(helperId) {
+    return this.root.locator(
+      `.roll-card-helpers button[data-action="synergy"][data-helper-id="${helperId}"]`
+    );
+  }
+
+  /**
+   * Click the post-roll "Synergy" button for a specific helper. Uses the
+   * same native-click pattern as `clickFinalize` / `clickFateLuck` — the
+   * handler is wired via `addEventListener` in `activatePostRollListeners`
+   * (module/dice/post-roll.mjs L15-57) so `button.click()` triggers the
+   * production code path without Playwright viewport math.
+   *
+   * After dispatch, wait for `_processSynergy` (GM path) or
+   * `processSynergyMailbox` (player path) to mark the helper as processed
+   * (`flags.tb2e.helperSynergy.<id> = true` at module/dice/post-roll.mjs
+   * L445) and re-render the card — the button disappears on re-render
+   * because `_buildSynergyHelpers` filters processed helpers at
+   * tb2e-roll.mjs L1551.
+   * @param {string} helperId
+   */
+  async clickSynergy(helperId) {
+    const btn = this.synergyButton(helperId);
+    await expect(btn).toBeVisible();
+    await btn.evaluate((el) => el.click());
+    await expect(btn).toHaveCount(0, { timeout: 10_000 });
   }
 
   /**

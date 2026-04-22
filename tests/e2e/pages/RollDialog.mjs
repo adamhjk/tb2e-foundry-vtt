@@ -218,6 +218,64 @@ export class RollDialog {
   }
 
   /**
+   * The `.helper-row` wrapper for a specific helper id. Contains both the
+   * `.helper-toggle` and (when the helper is a character with fate > 0) the
+   * `.helper-synergy-btn` — see templates/dice/roll-dialog.hbs L215-228.
+   * When the synergy button is clicked, this row gets the `.synergy-active`
+   * class added (module/dice/tb2e-roll.mjs L707).
+   * @param {string} helperId
+   */
+  helperRow(helperId) {
+    return this.root.locator(
+      `.roll-dialog-helpers .helper-row[data-helper-id="${helperId}"]`
+    );
+  }
+
+  /**
+   * The star-icon synergy button inside a specific helper's row. Rendered
+   * iff the helper is a character with `fate.current > 0` (`{{#if hasFate}}`
+   * guard at templates/dice/roll-dialog.hbs L224). Clicking it auto-toggles
+   * the help on (tb2e-roll.mjs L695-705) AND marks the row
+   * `.synergy-active` (L707) — on submit, the helper's `synergy` field is
+   * set to `true` in `selectedHelpers` (L1122). That flows into the chat
+   * card's `synergyHelpers` array (roll-utils.mjs L133) which renders the
+   * post-roll synergy button for this helper.
+   * @param {string} helperId
+   */
+  helperSynergyButton(helperId) {
+    return this.root.locator(
+      `.roll-dialog-helpers .helper-synergy-btn[data-helper-id="${helperId}"]`
+    );
+  }
+
+  /**
+   * Click the synergy (star) button on a helper row. Expands the helpers
+   * section first (same collapsed-section handling as `toggleHelper`), then
+   * dispatches the native click so the production handler at tb2e-roll.mjs
+   * L691-708 runs. Asserts both post-conditions:
+   *   - the row ends up `.synergy-active` (tb2e-roll.mjs L707)
+   *   - the sibling `.helper-toggle` becomes `.active` (auto-engaged at
+   *     L696-704 when the help wasn't previously active)
+   * so callers can trust both the +1D help contribution and the
+   * synergy marker by the time this resolves.
+   * @param {string} helperId
+   */
+  async toggleHelperSynergy(helperId) {
+    const section = this.helpersSection;
+    await expect(section).toHaveCount(1);
+    await section.evaluate(el => el.classList.remove('collapsed'));
+    const btn = this.helperSynergyButton(helperId);
+    await expect(btn).toBeVisible();
+    await btn.click();
+    await expect(this.helperRow(helperId)).toHaveClass(
+      /(^|\s)synergy-active(\s|$)/
+    );
+    await expect(this.helperToggle(helperId)).toHaveClass(
+      /(^|\s)active(\s|$)/
+    );
+  }
+
+  /**
    * Locator for the wise-selector section wrapper. Rendered only when
    * `hasWises` is true (the roller is a character with at least one named
    * wise on `system.wises`, and is not Angry — see tb2e-roll.mjs lines
