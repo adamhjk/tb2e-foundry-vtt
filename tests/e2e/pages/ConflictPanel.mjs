@@ -1003,4 +1003,40 @@ export class ConflictPanel {
   get resolutionCompromiseLabel() {
     return this.resolutionCompromise.locator('.resolution-compromise-label');
   }
+
+  /**
+   * "End Conflict" button at the bottom of the resolution tab
+   * (panel-resolution.hbs L69-77). Only rendered when the viewer is GM.
+   * Clicking dispatches to `ConflictPanel.#onEndConflict` (conflict-panel.mjs
+   * L2328-2386), which opens a `DialogV2.confirm`. On confirm: when the
+   * combat is already in the "resolution" phase (our path — the resolve →
+   * resolution transition happened first, via `#onResolveConflict`), the
+   * handler skips the chat card (the compromise card was already posted on
+   * resolution entry) and directly calls `this.close()` + `combat.endConflict()`.
+   * `combat.endConflict()` (combat.mjs L967-969) deletes the Combat document,
+   * which triggers `_preDelete` (combat.mjs L941-961) to reset
+   * `system.conflict.hp.{value,max}` to 0 on every participating actor
+   * (iterated via `combatant.actor`, so for unlinked synthetic tokens this
+   * lands on the synthetic actor — CLAUDE.md §Unlinked Actors).
+   */
+  get endConflictButton() {
+    return this.resolutionContent.locator(
+      'button.setup-next-btn[data-action="endConflict"]'
+    );
+  }
+
+  /**
+   * Click "End Conflict" and accept the DialogV2.confirm. Does NOT wait for
+   * teardown — callers should poll `game.combats.get(...)` becoming null
+   * and/or the panel's `.conflict-panel` DOM clearing. The confirm button
+   * pattern (`dialog.application.dialog > button[data-action="yes"]`) matches
+   * `tests/e2e/sheet/session-reset.spec.mjs` L108-110 and Foundry's DialogV2
+   * implementation (foundry/client/applications/api/dialog.mjs).
+   */
+  async clickEndConflictAndConfirm() {
+    await this.endConflictButton.click();
+    const dialog = this.page.locator('dialog.application.dialog').last();
+    await expect(dialog).toBeVisible();
+    await dialog.locator('button[data-action="yes"]').click();
+  }
 }
