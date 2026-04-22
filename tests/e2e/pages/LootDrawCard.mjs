@@ -60,6 +60,12 @@ export class LootDrawCard {
     this.chainConnectors = this.root.locator('.loot-chain-link-connector');
     this.drops = this.root.locator('.loot-drops .loot-drop');
     this.dropNames = this.root.locator('.loot-drops .loot-drop-name');
+    // `.loot-drop-page` is the per-drop page reference, rendered via
+    // `{{#if pageRef}}` in loot-draw.hbs lines 65-67. The data source is
+    // `linkedDoc.system.description` in loot-table.mjs line 138 — so for
+    // Scholar's Guide Item entries this surfaces things like
+    // "Scholar's Guide, p. 153".
+    this.dropPageRefs = this.root.locator('.loot-drops .loot-drop-page');
     this.banner = this.root.locator('.card-banner.banner-amber');
   }
 
@@ -77,5 +83,15 @@ export class LootDrawCard {
   /** Text of every terminal drop name rendered on the card. */
   async dropNameTexts() {
     return (await this.dropNames.allInnerTexts()).map((s) => s.trim());
+  }
+
+  /**
+   * Text of every rendered per-drop page reference on the card. The icon
+   * (`<i class="fa-book">`) is empty content, so `innerText` returns just the
+   * reference string (trimmed — leading whitespace in the template would
+   * otherwise sneak in).
+   */
+  async dropPageRefTexts() {
+    return (await this.dropPageRefs.allInnerTexts()).map((s) => s.trim());
   }
 }
