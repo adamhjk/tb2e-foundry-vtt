@@ -321,7 +321,7 @@ Already shipped. Listed for completeness.
 
 **Checkboxes:**
 
-- [ ] `tests/e2e/grind/advance-turn.spec.mjs` — GM advances turn counter; verify display updates for all clients
+- [x] `tests/e2e/grind/advance-turn.spec.mjs` — GM advances turn counter; verify display updates for all clients (state: `game.settings` `tb2e.grindTurn` world-scoped, registered in `tb2e.mjs` L17-19; advance handler at `module/applications/grind-tracker.mjs` L305-360; HUD singleton opened via `GrindTracker.getInstance()` at `module/applications/grind-tracker.mjs` L51-53; Advance button `button.advance-btn[data-action="advanceTurn"]` in `templates/grind-tracker.hbs` L38-41)
 - [ ] `tests/e2e/grind/set-phase.spec.mjs` — cycle phases; verify dropdown/state
 - [ ] `tests/e2e/grind/apply-condition-mailbox.spec.mjs` — player triggers a condition via sheet; GM hook processes; verify condition applied and mailbox cleared
 - [ ] `tests/e2e/grind/consolidated-card.spec.mjs` — multiple conditions in one turn render as single consolidated chat card
