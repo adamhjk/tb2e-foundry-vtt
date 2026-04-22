@@ -518,6 +518,70 @@ export class ConflictPanel {
   }
 
   /**
+   * Per-combatant weapon row (panel-weapons.hbs L9). Scoped locator
+   * used to find sibling affordances (improvised input, assignment
+   * select, unarmed badge, display span) for a specific combatant.
+   * @param {string} combatantId
+   */
+  weaponRow(combatantId) {
+    return this.weaponsContent.locator(
+      `li.weapon-row:has(select.weapon-select[data-combatant-id="${combatantId}"])`
+    );
+  }
+
+  /**
+   * Improvised-weapon name input (panel-weapons.hbs L24-29). Only
+   * rendered when the parent conflict is `usesGear` (Kill, Capture,
+   * Drive Off per `config.mjs`); toggled visible by removing the
+   * `hidden` class when the dropdown value is `__improvised__`
+   * (conflict-panel.mjs L152-160 on change, or initially via the
+   * template's `{{#unless this.isImprovised}}hidden{{/unless}}`).
+   *
+   * A `change` event on this input dispatches to the handler at
+   * `conflict-panel.mjs L181-189`, which calls
+   * `combat.setWeapon(combatantId, name, "__improvised__")` —
+   * storing the trimmed custom name as `system.weapon` and the
+   * sentinel as `system.weaponId` (combat.mjs L268-274). Empty/
+   * whitespace-only values fall back to the localized
+   * "Improvised" label.
+   *
+   * @param {string} combatantId
+   */
+  improvisedInput(combatantId) {
+    return this.weaponsContent.locator(
+      `input.weapon-improvised-input[data-combatant-id="${combatantId}"]`
+    );
+  }
+
+  /**
+   * Set a custom improvised-weapon name. Fills the input, then
+   * dispatches `change` (Playwright's `fill` only dispatches `input`,
+   * and the panel listens for `change` — conflict-panel.mjs L182).
+   * Polls the combatant's `system.weapon` until it reflects the
+   * trimmed value, so the caller knows the server-side write landed.
+   *
+   * @param {string} combatantId
+   * @param {string} name  — arbitrary user-provided weapon label.
+   */
+  async setImprovisedName(combatantId, name) {
+    const input = this.improvisedInput(combatantId);
+    await input.fill(name);
+    await input.dispatchEvent('change');
+    const expected = name.trim();
+    await expect
+      .poll(() =>
+        this.page.evaluate((id) => {
+          for ( const c of game.combats ) {
+            const co = c.combatants.get(id);
+            if ( co ) return co.system.weapon ?? null;
+          }
+          return null;
+        }, combatantId)
+      )
+      .toBe(expected);
+  }
+
+  /**
    * "Next → Script" button at the bottom of the weapons tab
    * (panel-weapons.hbs L52-56). Gated by `canBeginScripting`, which
    * only flips true once every non-KO'd combatant has a weapon set
