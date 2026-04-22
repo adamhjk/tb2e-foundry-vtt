@@ -933,4 +933,74 @@ export class ConflictPanel {
       )
       .toBe(newCombatantId);
   }
+
+  /**
+   * "Resolve Conflict" button at the bottom of the resolve tab
+   * (panel-resolve.hbs L163-166). Only rendered when `canResolveConflict`
+   * is true — i.e. `combat.checkConflictEnd().ended === true`
+   * (conflict-panel.mjs L1327-1328). Clicking dispatches to
+   * `ConflictPanel.#onResolveConflict` (conflict-panel.mjs L2256-2303),
+   * which posts the `conflict-compromise.hbs` chat card, calls
+   * `combat.beginResolution()` (combat.mjs L935-938), and flips the
+   * active tab to "resolution".
+   */
+  get resolveConflictButton() {
+    return this.resolveContent.locator(
+      'button.setup-next-btn[data-action="resolveConflict"]'
+    );
+  }
+
+  /**
+   * Click "Resolve Conflict" and wait for the resolution tab to become
+   * active. The handler at conflict-panel.mjs L2256-2303 is async — it
+   * renders + posts the chat card, then calls `beginResolution()` and
+   * flips `#activeTab`. The phase-to-tab sync at L490-499 ensures the
+   * re-render lands on the resolution tab.
+   */
+  async clickResolveConflict() {
+    await this.resolveConflictButton.click();
+    await expect.poll(() => this.activeTabId()).toBe('resolution');
+  }
+
+  /* -------------------------------------------- */
+  /*  Resolution tab                               */
+  /* -------------------------------------------- */
+
+  /**
+   * Locator for the resolution-tab content region. Rendered by
+   * `templates/conflict/panel-resolution.hbs` as
+   * `<div class="panel-tab-content resolution-tab">` (L2).
+   */
+  get resolutionContent() {
+    return this.root.locator('.panel-tab-content.resolution-tab');
+  }
+
+  /**
+   * Winner/tie banner inside the resolution tab (panel-resolution.hbs
+   * L5-13). Carries the `.tie` or `.winner` modifier class.
+   */
+  get resolutionBanner() {
+    return this.resolutionContent.locator('.resolution-banner');
+  }
+
+  /**
+   * Compromise block inside the resolution tab (panel-resolution.hbs
+   * L17-25). Present when `compromise` context is truthy (conflict-
+   * panel.mjs L1358-1365/L1367-1373). Carries `level-{minor|half|major}`
+   * modifier on the `.resolution-compromise` element.
+   */
+  get resolutionCompromise() {
+    return this.resolutionContent.locator('.resolution-compromise');
+  }
+
+  /**
+   * Label span inside the compromise block (panel-resolution.hbs L19 or
+   * L21). When `noCompromise` context flag is true (winner took zero
+   * damage — conflict-panel.mjs L1365), this renders
+   * `TB2E.Conflict.Compromise.None`. Otherwise renders the
+   * `compromise.label` (Minor/Half/Major).
+   */
+  get resolutionCompromiseLabel() {
+    return this.resolutionCompromise.locator('.resolution-compromise-label');
+  }
 }
