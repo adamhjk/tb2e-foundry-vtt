@@ -322,7 +322,7 @@ Already shipped. Listed for completeness.
 **Checkboxes:**
 
 - [x] `tests/e2e/grind/advance-turn.spec.mjs` — GM advances turn counter; verify display updates for all clients (state: `game.settings` `tb2e.grindTurn` world-scoped, registered in `tb2e.mjs` L17-19; advance handler at `module/applications/grind-tracker.mjs` L305-360; HUD singleton opened via `GrindTracker.getInstance()` at `module/applications/grind-tracker.mjs` L51-53; Advance button `button.advance-btn[data-action="advanceTurn"]` in `templates/grind-tracker.hbs` L38-41)
-- [ ] `tests/e2e/grind/set-phase.spec.mjs` — cycle phases; verify dropdown/state
+- [x] `tests/e2e/grind/set-phase.spec.mjs` — cycle phases; verify dropdown/state (phase enum hard-coded in `module/applications/grind-tracker.mjs` L407 as `["adventure", "camp", "town"]`; `setPhase` handler L406-418 cycles + resets turn on wrap-to-adventure L412-414; UI is a single cycle button `button.phase-btn[data-action="setPhase"]` in `templates/grind-tracker.hbs` L10-13 with label `.phase-btn-label` containing `{{phaseLabel}}` mapped in `_prepareContext` L124; non-adventure phases render `.phase-name-large` instead of the turn/advance block per template L22/L42-44)
 - [ ] `tests/e2e/grind/apply-condition-mailbox.spec.mjs` — player triggers a condition via sheet; GM hook processes; verify condition applied and mailbox cleared
 - [ ] `tests/e2e/grind/consolidated-card.spec.mjs` — multiple conditions in one turn render as single consolidated chat card
 - [ ] `tests/e2e/grind/light-extinguish.spec.mjs` — exhaust a torch; verify torch-expired card and inventory state change via `pendingLightExtinguish` mailbox

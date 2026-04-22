@@ -32,6 +32,10 @@ export class GrindTracker {
     this.turnInput = this.root.locator('input.turn-number-input');
     this.advanceButton = this.root.locator('button.advance-btn[data-action="advanceTurn"]');
     this.phaseButton = this.root.locator('button.phase-btn[data-action="setPhase"]');
+    this.phaseLabel = this.phaseButton.locator('.phase-btn-label');
+    // When phase !== "adventure", the turn block is replaced by this large
+    // phase name element (grind-tracker.hbs L42-44).
+    this.phaseNameLarge = this.root.locator('.phase-name-large');
     this.turnPips = this.root.locator('.turn-pips .turn-pip');
   }
 
@@ -79,6 +83,35 @@ export class GrindTracker {
   /** Click the Advance button; returns when the button handler has resolved. */
   async advanceTurn() {
     await this.advanceButton.click();
+  }
+
+  /**
+   * Click the phase-cycle button once. The handler at grind-tracker.mjs L406
+   * cycles adventure → camp → town → adventure, re-rendering the HUD.
+   */
+  async cyclePhase() {
+    await this.phaseButton.click();
+  }
+
+  /**
+   * Read the phase-button label text. Maps to {adventure|camp|town} via the
+   * `phaseLabels` dict in grind-tracker.mjs L124 ("Adventure" / "Camp" / "Town").
+   *
+   * Uses `textContent` (not `innerText`) so the assertion reads the raw
+   * Handlebars-emitted text — the element has `text-transform: uppercase`
+   * applied in less/grind-tracker.less L157, which `innerText` would reflect.
+   */
+  async getPhaseLabelFromDom() {
+    return (await this.phaseLabel.evaluate((el) => el.textContent)).trim();
+  }
+
+  /**
+   * Read the large phase-name block shown in non-adventure phases
+   * (grind-tracker.hbs L43). Same uppercase-via-CSS caveat as
+   * {@link getPhaseLabelFromDom}.
+   */
+  async getPhaseNameLargeFromDom() {
+    return (await this.phaseNameLarge.evaluate((el) => el.textContent)).trim();
   }
 
   /**
