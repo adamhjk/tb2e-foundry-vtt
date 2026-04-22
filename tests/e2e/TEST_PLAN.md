@@ -340,7 +340,7 @@ Already shipped. Listed for completeness.
 
 **Checkboxes:**
 
-- [ ] `tests/e2e/nature/crisis-triggered.spec.mjs` — nature=1, tax 1 point post-roll, verify nature-crisis card posted
+- [x] `tests/e2e/nature/crisis-triggered.spec.mjs` — deep shape of the pending nature-crisis chat card emitted when a post-roll tax drops rating to 0 (`_postNatureCrisis` post-roll.mjs:600-632 / nature-crisis.hbs): flags (`natureCrisis:true`, `actorId`, no `crisisResolved`), DOM (amber card accent, header name + `{name}'s Nature Crumbles` label, crisis text containing DH p.119 rule intent), select listing non-class traits only (class traits filtered by post-roll.mjs:609), placeholder `<option>—</option>`, new-name input, `.nature-crisis-confirm` button; asserts rating=0, max unchanged (resolve path NOT exercised — next checkbox)
 - [ ] `tests/e2e/nature/recovery.spec.mjs` — after crisis, recover nature via sheet action; verify rating restored toward max
 
 ---
