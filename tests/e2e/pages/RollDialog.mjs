@@ -350,6 +350,39 @@ export class RollDialog {
   }
 
   /**
+   * Increment the pre-roll Persona Advantage stepper by `n` clicks of the
+   * `+` button (SG p.88 — "Advantage: each persona point adds +1D to the
+   * roll"). Each click fires the handler wired at tb2e-roll.mjs L820-829:
+   * clamps `personaState.advantage` to [0, min(3, personaAvailable − (chan
+   * ? 1 : 0))], updates the `.stepper-value[data-field='personaAdvantage']`
+   * readout, re-renders the modifier list (which now contains `advantage`
+   * copies of a +1D source="persona" modifier — tb2e-roll.mjs L607-613),
+   * and refreshes the live `.roll-dialog-summary-text` pool.
+   *
+   * Expands the collapsed persona section first — same pattern as
+   * `toggleChannelNature` / `toggleHelper` / `selectWise`. The section body
+   * is hidden by `display: none` until `.collapsed` is removed (`less/dice/
+   * roll-dialog.less`), so we drop the class to make the stepper button
+   * hittable by click without relying on the heading's layout position.
+   *
+   * Asserts the visible stepper value lands at exactly `n` so callers can
+   * trust the +nD advantage contribution has been registered by the time
+   * this resolves — catches a regression where the stepper clamps silently
+   * (e.g. `personaAvailable < n` would pin advantage below n).
+   *
+   * Stage actors with `persona.current >= n` for this to reach exactly n.
+   * @param {number} n  Number of persona points to spend on advantage (1-3).
+   */
+  async incrementPersonaAdvantage(n = 1) {
+    const section = this.personaSection;
+    await expect(section).toHaveCount(1);
+    await section.evaluate(el => el.classList.remove('collapsed'));
+    await expect(this.personaAdvantagePlus).toBeVisible();
+    for ( let i = 0; i < n; i++ ) await this.personaAdvantagePlus.click();
+    await expect(this.personaAdvantageValue).toHaveText(String(n));
+  }
+
+  /**
    * Add a manual modifier via the dialog's inline form (DH "no RAW modifiers
    * added by UI" — this is the dialog's free-form field the player fills out
    * at the table). Clicks "Add Manual Modifier" to reveal the label/type/value
