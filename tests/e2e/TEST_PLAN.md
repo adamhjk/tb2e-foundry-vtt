@@ -259,7 +259,7 @@ Already shipped. Listed for completeness.
 **Checkboxes:**
 
 - [x] `tests/e2e/invocation/perform-basic.spec.mjs` — perform a Theurge invocation with no relic; verify burden applied (Bone Knitter, packs/_source/theurge-invocations/Bone_Knitter_b2c3d4e5f6a7b8c9.yml — fixedObstacle 3 → Ob 4 with no-relic bump per invocation-casting.mjs:52; burden 2 added to `actor.system.urdr.burden` via processInvocationPerformed invocation-casting.mjs:231-262, wired from Finalize in post-roll.mjs:582-584; handler `CharacterSheet.#onPerformInvocation` at character-sheet.mjs:1372-1377)
-- [ ] `tests/e2e/invocation/perform-with-relic.spec.mjs` — relic slotted + auto-detected; verify reduced burden (`burdenWithRelic`) applied
+- [x] `tests/e2e/invocation/perform-with-relic.spec.mjs` — relic slotted + auto-detected; verify reduced burden (`burdenWithRelic`) applied (Bone Knitter invocation `b2c3d4e5f6a7b8c9` + Bone Knitting Needles relic `e02a2b3c4d5e6f7a` — lesser/minor auto-detect via `linkedInvocations.includes(name)` at invocation-casting.mjs:92-93; slotted (`slot: "head", dropped: false`) satisfies `findApplicableRelic` guard at invocation-casting.mjs:88-89; with hasRelic=true the `obstacle += 1` at invocation-casting.mjs:52 is skipped so Ob stays at fixedObstacle 3; `burdenWithRelic: 1` picked over `burden: 2` at invocation-casting.mjs:39 and applied via processInvocationPerformed invocation-casting.mjs:231-262)
 - [ ] `tests/e2e/invocation/perform-without-relic-penalty.spec.mjs` — versus invocation, no relic; verify -1s applied
 - [ ] `tests/e2e/invocation/sacramental.spec.mjs` — sacramental flag behavior on appropriate invocation
 - [ ] `tests/e2e/invocation/shaman-invocation.spec.mjs` — shaman invocation end-to-end
