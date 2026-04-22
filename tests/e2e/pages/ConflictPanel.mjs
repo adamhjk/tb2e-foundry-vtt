@@ -30,6 +30,12 @@ export class ConflictPanel {
     this.setupContent = this.root.locator('.panel-tab-content.setup-tab');
     this.conflictTypeSelect = this.root.locator('select.conflict-type-select');
     this.conflictNameInput = this.root.locator('input.conflict-name-input');
+    // Setup tab — group roster + per-group add-combatant select.
+    // DOM contract: panel-setup.hbs L83-136 emits one `<div class="setup-group"
+    // data-group-id="{{id}}">` per group with `<ul class="setup-combatant-list">`
+    // → `<li class="setup-combatant" data-combatant-id="...">`.
+    this.setupGroups = this.setupContent.locator('.setup-group');
+    this.setupCombatants = this.setupContent.locator('li.setup-combatant');
   }
 
   /**
@@ -60,6 +66,57 @@ export class ConflictPanel {
   async switchTab(tabId) {
     await this.tab(tabId).click();
     await expect(this.tab(tabId)).toHaveClass(/\bactive\b/);
+  }
+
+  /**
+   * Locator for a specific setup-tab group by CombatantGroup id.
+   * @param {string} groupId
+   */
+  setupGroup(groupId) {
+    return this.setupContent.locator(`.setup-group[data-group-id="${groupId}"]`);
+  }
+
+  /**
+   * Locator for the combatant list items inside a given setup-tab group.
+   * @param {string} groupId
+   */
+  setupGroupCombatants(groupId) {
+    return this.setupGroup(groupId).locator('li.setup-combatant');
+  }
+
+  /**
+   * Programmatic combatant-add helper that mirrors the panel's own
+   * `#onDropActor` path (conflict-panel.mjs L2189-2197) — we use the same
+   * `combat.createEmbeddedDocuments("Combatant", …)` call the UI makes, with
+   * the same `{ type: "conflict", actorId, name, img, group }` payload.
+   *
+   * Chosen over native HTML5 drag-and-drop because the setup select dropdown
+   * (add-combatant-select) is filtered to `character`/`npc` actors present
+   * on the current scene (conflict-panel.mjs L657-660) — monsters can only
+   * be added via drop — and DnD is flaky in Playwright.
+   */
+  async addCombatant({ combatId, actorId, groupId }) {
+    return this.page.evaluate(async ({ cId, aId, gId }) => {
+      const combat = game.combats.get(cId);
+      const actor = game.actors.get(aId);
+      if ( !combat || !actor ) throw new Error('addCombatant: missing combat or actor');
+      const [created] = await combat.createEmbeddedDocuments('Combatant', [{
+        actorId: actor.id,
+        name: actor.name,
+        img: actor.img,
+        group: gId,
+        type: 'conflict'
+      }]);
+      // The panel subscribes to updateCombat/updateCombatant/updateActor
+      // (conflict-panel.mjs L120-129) but *not* createCombatant, so a bare
+      // create doesn't trigger a re-render. Force one so the DOM reflects
+      // the new roster. (In the real UI, users typically add combatants
+      // before the panel opens, or the select dropdown's own flow runs,
+      // so this hasn't been a production issue.)
+      const panel = game.tb2e?.conflictPanel;
+      if ( panel?.rendered ) await panel.render();
+      return created?.id ?? null;
+    }, { cId: combatId, aId: actorId, gId: groupId });
   }
 
   /**

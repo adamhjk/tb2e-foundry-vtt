@@ -363,7 +363,7 @@ Already shipped. Listed for completeness.
 **Checkboxes:**
 
 - [x] `tests/e2e/conflict/setup-create-conflict.spec.mjs` — create a new conflict, assert panel opens on setup tab, tracker appears in sidebar (cites `conflict-tracker.mjs:267-269`, `combat.mjs:20-48`, `conflict-panel.mjs:17,40-41,510-526`, `tb2e.mjs:67`)
-- [ ] `tests/e2e/conflict/setup-add-combatants.spec.mjs` — add two characters + two monsters via the panel, assert combatant list
+- [x] `tests/e2e/conflict/setup-add-combatants.spec.mjs` — add two characters + two monsters via the panel, assert combatant list (cites `conflict-panel.mjs:2127-2158` select-path, `conflict-panel.mjs:2165-2198` drop-path, `conflict-panel.mjs:655-660` availableActors filter, `combat.mjs:20-35` default-groups seed, `panel-setup.hbs:83-136` combatant-list DOM, top-level `combatant._source.group` grouping field)
 - [ ] `tests/e2e/conflict/setup-assign-captain.spec.mjs` — assign captain per side; verify captain flag stored
 - [ ] `tests/e2e/conflict/setup-assign-boss.spec.mjs` — assign monster boss; verify `setBoss` action stored
 - [ ] `tests/e2e/conflict/setup-select-type.spec.mjs` — cycle through all 14 conflict types; verify each type's allowed actions/skills shown per config
