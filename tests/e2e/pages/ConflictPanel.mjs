@@ -352,4 +352,57 @@ export class ConflictPanel {
   dispositionDistributedBadge(groupId) {
     return this.dispositionGroup(groupId).locator('.disp-distributed-badge');
   }
+
+  /**
+   * Locator for the GM-only "flat disposition" block inside a group
+   * section — rendered by panel-disposition.hbs L60-72 when the viewer is
+   * GM AND the group has not yet rolled. Contains `.gm-disposition-input`
+   * (prefilled with `suggestedDisposition` on listed monster conflicts,
+   * conflict-panel.mjs L751) and a submit button wired to
+   * `ConflictPanel.#onSetFlatDisposition` (conflict-panel.mjs L1509-1521),
+   * which calls `combat.storeDispositionRoll(groupId, { rolled, … })`
+   * directly — no dice, no chat-card finalize step.
+   * @param {string} groupId
+   */
+  flatDispositionSection(groupId) {
+    return this.dispositionGroup(groupId).locator('.disp-gm-flat');
+  }
+
+  /**
+   * Number input inside the flat-disposition block. For monster groups on
+   * a listed conflict, panel-disposition.hbs L63 pre-fills `value` with
+   * `suggestedDisposition` (= matchingDisp.hp + helpDice per
+   * conflict-panel.mjs L751). For unlisted / character groups it is blank
+   * and uses `placeholder` instead.
+   * @param {string} groupId
+   */
+  flatDispositionInput(groupId) {
+    return this.flatDispositionSection(groupId).locator('.gm-disposition-input');
+  }
+
+  /**
+   * Confirm button inside the flat-disposition block. Clicking dispatches
+   * to `ConflictPanel.#onSetFlatDisposition` (conflict-panel.mjs
+   * L1509-1521), which reads the sibling input's value and calls
+   * `combat.storeDispositionRoll(groupId, { rolled: value, diceResults: [],
+   * cardHtml: "<em>GM set disposition to N</em>" })` (combat.mjs
+   * L201-210) — unlike the roll path, there is no chat-card finalize step,
+   * so `rolled` is stamped immediately.
+   * @param {string} groupId
+   */
+  setFlatDispositionButton(groupId) {
+    return this.flatDispositionSection(groupId).locator(
+      'button[data-action="setFlatDisposition"]'
+    );
+  }
+
+  /**
+   * Hint span rendered on monster groups (panel-disposition.hbs L70)
+   * showing the predetermined disposition (+ optional group-help math).
+   * Text is built from conflict-panel.mjs L752-760.
+   * @param {string} groupId
+   */
+  monsterDispositionHint(groupId) {
+    return this.flatDispositionSection(groupId).locator('.disp-monster-hint');
+  }
 }
