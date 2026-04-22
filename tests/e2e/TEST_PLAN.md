@@ -236,7 +236,7 @@ Already shipped. Listed for completeness.
 **Checkboxes:**
 
 - [x] `tests/e2e/spell/cast-fixed-obstacle.spec.mjs` — cast a fixed-Ob spell; verify roll vs correct Ob, chat card has spell source (Beast Cloak `a1b2c3d4e5f63003`, `fixedObstacle: 3`; castSpell→`#onCastSpell` at character-sheet.mjs:1396 → `castSpell` at spell-casting.mjs:11 → rolls Arcanist; spell label on card from `flags.tb2e.testContext.spellName` rendered via roll-result.hbs:21-26 `.roll-card-spell`)
-- [ ] `tests/e2e/spell/cast-factors.spec.mjs` — cast a factors spell; factor dialog opens, selections compute Ob, roll resolves
+- [x] `tests/e2e/spell/cast-factors.spec.mjs` — cast a factors spell; factor dialog opens, selections compute Ob, roll resolves (Wyrd Lights `a1b2c3d4e5f60010`, factors Number/Duration; `castSpell`→`_showFactorDialog` at spell-casting.mjs:59-64,77-139 renders templates/dice/spell-factors.hbs; `cast` callback sums all `input[type='radio']:checked` values at spell-casting.mjs:104-111 and passes total as `testContext.obstacle`; roll dialog pre-fills obstacle from `testContext.obstacle` at tb2e-roll.mjs:513-515; selecting Number=3 + Duration=1 ⇒ Ob 4, Arcanist rating 4 vs Ob 4 PASS)
 - [ ] `tests/e2e/spell/cast-versus.spec.mjs` — cast a versus spell; verify versus-pending card, opponent responds
 - [ ] `tests/e2e/spell/materials-focus-bonus.spec.mjs` — toggle materials+focus on spell; verify +2D added to roll
 - [ ] `tests/e2e/spell/scroll-one-use.spec.mjs` — cast from a scroll; verify scroll is consumed / marked burned
