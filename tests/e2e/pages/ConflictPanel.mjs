@@ -405,4 +405,137 @@ export class ConflictPanel {
   monsterDispositionHint(groupId) {
     return this.flatDispositionSection(groupId).locator('.disp-monster-hint');
   }
+
+  /* -------------------------------------------- */
+  /*  Weapons tab                                  */
+  /* -------------------------------------------- */
+
+  /**
+   * "Next → Weapons" button at the bottom of the disposition tab
+   * (panel-disposition.hbs L166-170, gated by `allDistributed`).
+   * Dispatches to `ConflictPanel.#onBeginWeapons` (conflict-panel.mjs
+   * L1691-1697), which calls `combat.beginWeapons()` (combat.mjs
+   * L249-255) and flips `system.phase = "weapons"`. The phase-to-tab
+   * sync at conflict-panel.mjs L490-499 advances the active tab
+   * accordingly on the next render.
+   */
+  get beginWeaponsButton() {
+    return this.dispositionContent.locator(
+      'button.setup-next-btn[data-action="beginWeapons"]'
+    );
+  }
+
+  /** Click "Next → Weapons" and wait for the weapons tab to become active. */
+  async clickBeginWeapons() {
+    await this.beginWeaponsButton.click();
+    await expect.poll(() => this.activeTabId()).toBe('weapons');
+  }
+
+  /**
+   * Locator for the weapons-tab content region. Rendered by
+   * `panel-weapons.hbs` as `<div class="panel-tab-content weapons-tab">`
+   * (L2). Contains one `.weapon-group[data-group-id]` per CombatantGroup,
+   * each holding a `<ul class="weapon-list">` of per-combatant rows.
+   */
+  get weaponsContent() {
+    return this.root.locator('.panel-tab-content.weapons-tab');
+  }
+
+  /**
+   * Per-group container on the weapons tab (panel-weapons.hbs L5).
+   * @param {string} groupId
+   */
+  weaponGroup(groupId) {
+    return this.weaponsContent.locator(
+      `.weapon-group[data-group-id="${groupId}"]`
+    );
+  }
+
+  /**
+   * Per-combatant weapon-select dropdown (panel-weapons.hbs L16).
+   * Each option's `value` is a weapon id or sentinel
+   * (`__unarmed__`, `__improvised__`, `__monster_{N}__`, item id, or
+   * spell/invocation id — conflict-panel.mjs L933-970). A `change` event
+   * on this select dispatches through the `_onRender` handler at
+   * `conflict-panel.mjs L146-167` which calls
+   * `combat.setWeapon(combatantId, name, weaponId)` (combat.mjs
+   * L268-274), persisting both `system.weapon` / `system.weaponId` on
+   * the combatant AND mirroring `system.conflict.weapon` /
+   * `system.conflict.weaponId` onto the actor.
+   *
+   * @param {string} combatantId
+   */
+  weaponSelect(combatantId) {
+    return this.weaponsContent.locator(
+      `select.weapon-select[data-combatant-id="${combatantId}"]`
+    );
+  }
+
+  /**
+   * Options available inside a combatant's weapon dropdown, in rendered
+   * order. Each entry returns the raw `value` attribute — i.e. the
+   * weapon id / sentinel — which is what gets written to
+   * `combatant.system.weaponId` (conflict-panel.mjs L158, L164).
+   * @param {string} combatantId
+   */
+  async weaponOptionValues(combatantId) {
+    return this.weaponSelect(combatantId)
+      .locator('option')
+      .evaluateAll((opts) => opts.map((o) => o.value));
+  }
+
+  /**
+   * Select a weapon for a combatant by its dropdown value (weapon id or
+   * sentinel — see `weaponSelect` jsdoc). Triggers the `change` event
+   * that fires `combat.setWeapon`, then waits for the combatant's
+   * `system.weaponId` to reflect the selection. The change listener at
+   * `conflict-panel.mjs` L146-167 invokes `combat.setWeapon` without
+   * awaiting it; `combat.setWeapon` itself awaits the combatant.update
+   * BEFORE the actor.update mirror (combat.mjs L268-274), so polling on
+   * the combatant field is sufficient to know the combatant write
+   * landed. The actor mirror is only present on actor types whose data
+   * model declares `system.conflict.{weapon,weaponId}` (characters do —
+   * `character.mjs` L161-168; monsters don't — `monster.mjs` L46-52),
+   * so its presence/absence is verified at the call-site, not here.
+   *
+   * @param {string} combatantId
+   * @param {string} weaponId  — e.g. "__unarmed__", "__monster_0__",
+   *   or an item id returned by `actor.createEmbeddedDocuments`.
+   */
+  async selectWeapon(combatantId, weaponId) {
+    await this.weaponSelect(combatantId).selectOption(weaponId);
+    await expect
+      .poll(() =>
+        this.page.evaluate((id) => {
+          for ( const c of game.combats ) {
+            const co = c.combatants.get(id);
+            if ( co ) return co.system.weaponId ?? null;
+          }
+          return null;
+        }, combatantId)
+      )
+      .toBe(weaponId);
+  }
+
+  /**
+   * "Next → Script" button at the bottom of the weapons tab
+   * (panel-weapons.hbs L52-56). Gated by `canBeginScripting`, which
+   * only flips true once every non-KO'd combatant has a weapon set
+   * (conflict-panel.mjs L978-979). Clicking dispatches to
+   * `ConflictPanel.#onBeginScripting` (conflict-panel.mjs L1720-1726)
+   * which calls `combat.beginScripting()` (combat.mjs L282-312), flips
+   * `system.phase = "scripting"`, and (on round 1) allocates the
+   * per-group 3-slot action arrays.
+   */
+  get beginScriptingButton() {
+    return this.weaponsContent.locator(
+      'button.setup-next-btn[data-action="beginScripting"]'
+    );
+  }
+
+  /** Click "Next → Script" and wait for the script tab to become active. */
+  async clickBeginScripting() {
+    await this.beginScriptingButton.click();
+    await expect.poll(() => this.activeTabId()).toBe('script');
+  }
 }
