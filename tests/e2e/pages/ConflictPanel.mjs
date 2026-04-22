@@ -582,6 +582,55 @@ export class ConflictPanel {
   }
 
   /**
+   * Target-action select for assignable conflict weapons (panel-weapons.hbs
+   * L30-37). Only rendered when the selected weapon's config entry has
+   * `assignable: true` — `isAssignable` is derived at conflict-panel.mjs
+   * L894 from `conflictWeapons.find(w => w.id === weaponId)?.assignable`.
+   *
+   * A `change` event on this select dispatches to the handler at
+   * `conflict-panel.mjs L170-178` which calls
+   * `combatant.update({ "system.weaponAssignment": <action> })`. The field
+   * is declared on `CombatantData` at `module/data/combat/combatant.mjs`
+   * L12. The stored action key is later consumed by `#onRollAction` at
+   * `conflict-panel.mjs L1953` — when a bonus has `assignable: true`, the
+   * `targetAction` switches from the static `bonus.action` to
+   * `resolvedCombatant.system.weaponAssignment`.
+   *
+   * @param {string} combatantId
+   */
+  weaponAssignmentSelect(combatantId) {
+    return this.weaponsContent.locator(
+      `select.weapon-assignment-select[data-combatant-id="${combatantId}"]`
+    );
+  }
+
+  /**
+   * Pick a target action for an assignable weapon. Options are the four
+   * conflict actions ("attack", "defend", "feint", "maneuver") — populated
+   * from `weaponAssignmentChoices` at conflict-panel.mjs L906-911. Polls
+   * the combatant's `system.weaponAssignment` until it reflects the value
+   * (the change handler at conflict-panel.mjs L170-178 fires the update
+   * without awaiting; combatant.update is async).
+   *
+   * @param {string} combatantId
+   * @param {"attack"|"defend"|"feint"|"maneuver"} actionKey
+   */
+  async selectWeaponAssignment(combatantId, actionKey) {
+    await this.weaponAssignmentSelect(combatantId).selectOption(actionKey);
+    await expect
+      .poll(() =>
+        this.page.evaluate((id) => {
+          for ( const c of game.combats ) {
+            const co = c.combatants.get(id);
+            if ( co ) return co.system.weaponAssignment ?? null;
+          }
+          return null;
+        }, combatantId)
+      )
+      .toBe(actionKey);
+  }
+
+  /**
    * "Next → Script" button at the bottom of the weapons tab
    * (panel-weapons.hbs L52-56). Gated by `canBeginScripting`, which
    * only flips true once every non-KO'd combatant has a weapon set
