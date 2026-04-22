@@ -822,4 +822,28 @@ export class ConflictPanel {
   scriptSlotsLocked(groupId) {
     return this.scriptGroup(groupId).locator('.script-slots.locked');
   }
+
+  /**
+   * GM "Peek at Actions" toggle button for a scripting group
+   * (panel-script.hbs L101-105 and L133-137). Rendered only when the
+   * viewer is GM and the group is the party group — the context flag
+   * `gmCanPeek` is computed at `conflict-panel.mjs` L1164 as
+   * `game.user.isGM && isPartyGroup`. Clicking dispatches to
+   * `ConflictPanel.#onPeekActions` (L2311-2320) which toggles the
+   * group's membership in the panel's private `#gmPeekGroups` Set
+   * (L31-32) and re-renders. This is **purely local UI state** — no
+   * combat/combatant document is mutated, so player clients are
+   * unaffected.
+   *
+   * The button has an `.active` class when currently peeking
+   * (template L101, L133) — used as a stable DOM-level assertion
+   * target for the toggle state.
+   * @param {string} groupId
+   */
+  peekActionsButton(groupId) {
+    return this.scriptGroup(groupId).locator(
+      'button[data-action="peekActions"]'
+    );
+  }
+
 }
