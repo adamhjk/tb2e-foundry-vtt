@@ -139,4 +139,24 @@ export class ManeuverSpendDialog {
     await expect(this.disarmSection).toBeVisible();
     await this.disarmSelect.selectOption(`${combatantId}|${itemId}`);
   }
+
+  /**
+   * Select a rearm source from the rearm-target `<select>`. The option
+   * values are encoded as `"<itemId>|dropped"` for picks from the team's
+   * dropped-weapons pool, or `"<itemId>|own"` for the spender's carried
+   * weapons (template maneuver-spend-dialog.hbs L66, L73). The change
+   * listener at maneuver-spend-dialog.mjs L217-224 splits on `|` and sets
+   * `#rearmItemId` + `#rearmFromDropped` (true iff suffix === "dropped").
+   *
+   * Note the rearm beneficiary is the SPENDER themselves (combat.mjs
+   * L679-684 — `setWeapon(spender.id, ...)`), there is no separate
+   * target-combatant picker like disarm has.
+   *
+   * @param {string} itemId
+   * @param {"dropped"|"own"} source
+   */
+  async selectRearmTarget(itemId, source = "dropped") {
+    await expect(this.rearmSection).toBeVisible();
+    await this.rearmSelect.selectOption(`${itemId}|${source}`);
+  }
 }
