@@ -103,6 +103,8 @@
   "TB2E.Condition.Injured": "Injured",
   "TB2E.Condition.Sick": "Sick",
   "TB2E.Condition.Dead": "Dead",
+  "TB2E.Condition.HungryPenalty": "Hungry & Thirsty -{n}s",
+  "TB2E.Condition.ExhaustedPenalty": "Exhausted -{n}s",
 
   "TB2E.Ability.Will": "Will",
   "TB2E.Ability.Health": "Health",

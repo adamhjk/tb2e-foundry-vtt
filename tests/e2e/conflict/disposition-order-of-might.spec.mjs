@@ -196,7 +196,7 @@ test.describe('§13 Conflict: Disposition — Order of Might', () => {
     });
   });
 
-  test.fixme(
+  test(
     'Kill conflict: party with higher Might gets +1s per point on disposition roll',
     async ({ page }, testInfo) => {
       const tag = `e2e-disp-oom-${testInfo.parallelIndex}-${Date.now()}`;

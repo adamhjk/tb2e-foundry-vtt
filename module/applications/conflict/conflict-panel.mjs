@@ -1,7 +1,7 @@
 import { createModifier, evaluateRoll, gatherHelpModifiers, rollTest } from "../../dice/tb2e-roll.mjs";
 import {
   getInteraction, buildResolutionContext, resolveActionEffect,
-  computeOrderModifier, checkTooMuchToHandle
+  computeOrderModifier, computeTeamConditionPenalties, checkTooMuchToHandle
 } from "../../dice/conflict-roll.mjs";
 
 const { HandlebarsApplicationMixin, ApplicationV2 } = foundry.applications.api;
@@ -1630,6 +1630,27 @@ export default class ConflictPanel extends HandlebarsApplicationMixin(Applicatio
         }));
       }
     }
+
+    // Team condition penalties: Hungry & Thirsty and Exhausted each apply
+    // -1s to disposition, once per team, stacking with each other (SG pp.47,
+    // 48-49, 54). All conflict types.
+    contextModifiers.push(...computeTeamConditionPenalties(combat, groupId));
+
+    // Order of Might (SG p.80) and Aura of Authority / Precedence (SG p.82)
+    // apply +1s per point of advantage to all successful tests in their
+    // respective conflict families — including the disposition test (first
+    // roll of the conflict). MIGHT_CONFLICT_TYPES = {kill, capture, driveOff};
+    // PRECEDENCE_CONFLICT_TYPES = {convince, convinceCrowd, negotiate}.
+    // Volley action rolls at L1927-1933 already consume this helper; mirror
+    // that here so the disposition test receives the advantage too.
+    const opponentGroupId = Array.from(combat.groups).find(g => g.id !== groupId)?.id;
+    const orderMod = computeOrderModifier({
+      conflictType: combat.system.conflictType,
+      ourGroupId: groupId,
+      opponentGroupId,
+      combat
+    });
+    if ( orderMod ) contextModifiers.push(orderMod);
 
     await rollTest({
       actor,

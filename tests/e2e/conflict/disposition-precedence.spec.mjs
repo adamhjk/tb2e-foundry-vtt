@@ -212,7 +212,7 @@ test.describe('§13 Conflict: Disposition — Aura of Authority (Precedence)', (
     });
   });
 
-  test.fixme(
+  test(
     'Convince conflict: party with higher Precedence gets +1s per point on disposition roll',
     async ({ page }, testInfo) => {
       const tag = `e2e-disp-prec-${testInfo.parallelIndex}-${Date.now()}`;

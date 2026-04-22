@@ -26,14 +26,19 @@ test.use({ viewport: { width: 1600, height: 900 } });
  *   - `module/dice/tb2e-roll.mjs` L392 (`hasWises`) flips the wise
  *     selector off in the roll dialog when `isAngry` is true.
  *
+ * Covered elsewhere:
+ *   - hungry & exhausted -1s team-disposition penalty (SG pp.47, 48-49, 54)
+ *     live in `tests/e2e/conflict/disposition-hungry-penalty.spec.mjs`
+ *     and `.../disposition-exhausted-penalty.spec.mjs` — they gate the
+ *     conflict disposition roll rather than the standalone roll dialog.
+ *
  * Out of scope:
  *   - RAW condition effects NOT implemented in production (and thus not
  *     yet wired anywhere to assert):
- *       * hungry  → -1s team disposition in conflicts      (SG pp.47, 54)
- *       * exhausted → -1s team disposition in conflicts    (SG pp.48-49, 54)
  *       * angry   → +1 Ob / -1s in social conflicts        (SG pp.47-48, 54)
  *       * sick    → blocks advancement / practice / learning (SG p.51)
  *       * dead    → skills/abilities reduced to 0 at test  (SG pp.52, 54)
+ *       * exhausted → instinct not free / +1 Ob             (SG p.48)
  *     These are RAW gaps in production. Leaving them uncovered until the
  *     feature lands, per CLAUDE.md §"Rules As Written" ("don't test for
  *     anything that isn't RAW" ⟂ production).

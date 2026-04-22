@@ -345,6 +345,48 @@ export function computeOrderModifier({ conflictType, ourGroupId, opponentGroupId
 }
 
 /**
+ * Compute -1s team-disposition penalties for Hungry & Thirsty and Exhausted
+ * conditions per SG pp.47, 48-49, 54. Each condition applies once per team
+ * regardless of how many members are affected; the two penalties stack when
+ * both conditions are present on the team. Applies to all conflict types.
+ *
+ * @param {Combat} combat
+ * @param {string} groupId
+ * @returns {object[]} 0, 1, or 2 post-timing success modifiers
+ */
+export function computeTeamConditionPenalties(combat, groupId) {
+  if ( !combat || !groupId ) return [];
+  const members = combat.combatants.filter(c => c._source.group === groupId);
+  const hasHungry    = members.some(c => c.actor?.system?.conditions?.hungry);
+  const hasExhausted = members.some(c => c.actor?.system?.conditions?.exhausted);
+
+  const mods = [];
+  if ( hasHungry ) {
+    mods.push({
+      label: game.i18n.format("TB2E.Condition.HungryPenalty", { n: 1 }),
+      type: "success",
+      value: -1,
+      source: "condition",
+      icon: "fa-solid fa-drumstick-bite",
+      color: "--tb-cond-hungry",
+      timing: "post"
+    });
+  }
+  if ( hasExhausted ) {
+    mods.push({
+      label: game.i18n.format("TB2E.Condition.ExhaustedPenalty", { n: 1 }),
+      type: "success",
+      value: -1,
+      source: "condition",
+      icon: "fa-solid fa-bed",
+      color: "--tb-cond-exhausted",
+      timing: "post"
+    });
+  }
+  return mods;
+}
+
+/**
  * Determine whether the acting team's chosen conflict type exceeds what the
  * Order of Might or Precedence scale allows (SG p.79 for Might, SG p.82 for
  * Precedence). Non-blocking — the GM can still proceed. Returns null when the
