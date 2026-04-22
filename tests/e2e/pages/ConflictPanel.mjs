@@ -651,4 +651,147 @@ export class ConflictPanel {
     await this.beginScriptingButton.click();
     await expect.poll(() => this.activeTabId()).toBe('script');
   }
+
+  /* -------------------------------------------- */
+  /*  Scripting tab                                */
+  /* -------------------------------------------- */
+
+  /**
+   * Locator for the scripting-tab content region. Rendered by
+   * `panel-script.hbs` as `<div class="panel-tab-content script-tab">`
+   * (L2). Contains one `.script-group[data-group-id]` per CombatantGroup,
+   * each holding a `.script-slots` list of three `.script-slot`
+   * rows (volleys 1-3).
+   */
+  get scriptContent() {
+    return this.root.locator('.panel-tab-content.script-tab');
+  }
+
+  /**
+   * Per-group scripting container (panel-script.hbs L5). Owns the
+   * per-volley slots + action-card rows.
+   * @param {string} groupId
+   */
+  scriptGroup(groupId) {
+    return this.scriptContent.locator(
+      `.script-group[data-group-id="${groupId}"]`
+    );
+  }
+
+  /**
+   * Per-volley slot inside a scripting group (panel-script.hbs L38).
+   * `volleyIndex` is 0-based (slot indices 0/1/2, displayed as 1/2/3).
+   * @param {string} groupId
+   * @param {number} volleyIndex
+   */
+  scriptSlot(groupId, volleyIndex) {
+    return this.scriptGroup(groupId).locator(
+      `.script-slot[data-slot-index="${volleyIndex}"]`
+    );
+  }
+
+  /**
+   * Hidden action-select input inside a script slot (panel-script.hbs L54).
+   * Its `value` is the current action key ("attack"/"defend"/"feint"/
+   * "maneuver") or `""` if none selected — written by the action-card
+   * click handler at `conflict-panel.mjs` L228-250.
+   * @param {string} groupId
+   * @param {number} volleyIndex
+   */
+  actionSelectInput(groupId, volleyIndex) {
+    return this.scriptSlot(groupId, volleyIndex).locator('input.action-select');
+  }
+
+  /**
+   * Action-card button for a specific action within a slot
+   * (panel-script.hbs L57-61). Clicking dispatches to the handler at
+   * `conflict-panel.mjs` L228-250, which:
+   *   - sets the hidden input's value to `actionKey`
+   *   - toggles `.selected` on all sibling cards
+   *   - caches the selection in the panel's `#pendingSelections`
+   *     (survives re-renders)
+   *   - calls `#syncPendingActions(groupId)` which (300ms debounced)
+   *     invokes `combat.setActions(groupId, actions)` (combat.mjs
+   *     L324-333). On the non-GM branch that writes
+   *     `captain.update({"system.pendingActions": actions})`; on the
+   *     GM branch it calls `#applyActions` directly.
+   *
+   * @param {string} groupId
+   * @param {number} volleyIndex
+   * @param {"attack"|"defend"|"feint"|"maneuver"} actionKey
+   */
+  actionCard(groupId, volleyIndex, actionKey) {
+    return this.scriptSlot(groupId, volleyIndex).locator(
+      `button.action-card[data-action-key="${actionKey}"]`
+    );
+  }
+
+  /**
+   * Combatant-select dropdown inside a script slot (panel-script.hbs
+   * L44-51). Only rendered when the group has > 1 non-KO'd member
+   * (solo groups use a read-only label at L41-43). Each option's
+   * `value` is a combatant id. A `change` event caches the selection
+   * in the panel's `#pendingSelections` and triggers the debounced
+   * `#syncPendingActions` (conflict-panel.mjs L253-264).
+   *
+   * @param {string} groupId
+   * @param {number} volleyIndex
+   */
+  combatantSelect(groupId, volleyIndex) {
+    return this.scriptSlot(groupId, volleyIndex).locator(
+      'select.combatant-select'
+    );
+  }
+
+  /**
+   * Click an action-card to select that action for the slot, then wait
+   * for the hidden input to reflect the selection (so callers know the
+   * DOM-side write landed). The server-side write via
+   * `#syncPendingActions` is debounced by 300ms and is not awaited here
+   * — callers that care about the server state should poll for it.
+   *
+   * @param {string} groupId
+   * @param {number} volleyIndex
+   * @param {"attack"|"defend"|"feint"|"maneuver"} actionKey
+   */
+  async clickAction(groupId, volleyIndex, actionKey) {
+    const card = this.actionCard(groupId, volleyIndex, actionKey);
+    await card.click();
+    await expect(this.actionSelectInput(groupId, volleyIndex)).toHaveValue(
+      actionKey
+    );
+    await expect(card).toHaveClass(/\bselected\b/);
+  }
+
+  /**
+   * Pick a combatant for a slot. Fires `change`, which caches the
+   * selection and kicks `#syncPendingActions`. Polls for the stored
+   * `value` to stabilise before returning.
+   *
+   * @param {string} groupId
+   * @param {number} volleyIndex
+   * @param {string} combatantId
+   */
+  async selectSlotCombatant(groupId, volleyIndex, combatantId) {
+    await this.combatantSelect(groupId, volleyIndex).selectOption(combatantId);
+    await expect(this.combatantSelect(groupId, volleyIndex)).toHaveValue(
+      combatantId
+    );
+  }
+
+  /**
+   * "Lock Actions" button inside a script group
+   * (panel-script.hbs L69-71). Rendered when `canLock` is true —
+   * i.e. viewer is captain/GM and group is not yet locked
+   * (conflict-panel.mjs L1152). Clicking dispatches to
+   * `ConflictPanel.#onLockActions` (conflict-panel.mjs L1735-1774) which
+   * reads the current form state, calls `combat.setActions` and then
+   * `combat.lockActions(groupId)`.
+   * @param {string} groupId
+   */
+  lockActionsButton(groupId) {
+    return this.scriptGroup(groupId).locator(
+      'button[data-action="lockActions"]'
+    );
+  }
 }
