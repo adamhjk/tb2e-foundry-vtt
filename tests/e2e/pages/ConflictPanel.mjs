@@ -794,4 +794,32 @@ export class ConflictPanel {
       'button[data-action="lockActions"]'
     );
   }
+
+  /**
+   * "Actions Locked" badge inside a script group header — rendered by
+   * `panel-script.hbs` L9-16 only when the group's `isLocked` context
+   * flag is true (conflict-panel.mjs L1150 → `round.locked[group.id]`).
+   * The badge contains a `<i class="fa-solid fa-lock">` and the
+   * "Actions Locked" label (localized via `TB2E.Conflict.ActionsLocked`).
+   * Used as a positive DOM signal that the lock state propagated through
+   * the re-render.
+   * @param {string} groupId
+   */
+  scriptLockedBadge(groupId) {
+    return this.scriptGroup(groupId).locator('.script-locked-badge');
+  }
+
+  /**
+   * Post-lock read-only card container inside a script group — rendered
+   * by `panel-script.hbs` L107 when `isOwnTeam && isLocked`. The
+   * interactive `.script-slots` (without `.locked`) at L36 and the lock
+   * button at L69-71 are both dropped from the re-render when
+   * `isLocked` flips true (panel-script.hbs L21 `{{#unless
+   * this.isLocked}}` gate). We assert this container is visible to
+   * confirm the UI reached the locked state.
+   * @param {string} groupId
+   */
+  scriptSlotsLocked(groupId) {
+    return this.scriptGroup(groupId).locator('.script-slots.locked');
+  }
 }
