@@ -168,4 +168,46 @@ export class ConflictPanel {
     await this.captainButton(combatantId).click();
     await expect(this.setupCombatantRow(combatantId)).toHaveClass(/\bis-captain\b/);
   }
+
+  /**
+   * Boss button for a given combatant. Emitted by `panel-setup.hbs` L97-103
+   * as `<button class="setup-boss-btn" data-action="setBoss"
+   * data-combatant-id>`, *only* on rows whose combatant resolves to a
+   * `monster` actor (the `{{#if this.isMonster}}` guard at L97; the
+   * `isMonster` flag is derived at conflict-panel.mjs L648 from
+   * `actor.type === "monster"`). Clicking dispatches to
+   * `ConflictPanel.#onSetBoss` (conflict-panel.mjs L1494-1501) which toggles
+   * `combatant.system.isBoss` via a direct `combatant.update` (no per-group
+   * mailbox — boss is a per-combatant bit on `CombatantData` at
+   * data/combat/combatant.mjs L8). The button gets an `.active` class when
+   * `isBoss` is true (panel-setup.hbs L98).
+   *
+   * @param {string} combatantId
+   */
+  bossButton(combatantId) {
+    return this.setupContent.locator(
+      `button.setup-boss-btn[data-combatant-id="${combatantId}"]`
+    );
+  }
+
+  /**
+   * Click the boss button for a combatant and wait for the re-render to
+   * reflect the toggled boss state. Unlike `is-captain` (which tags the
+   * whole `<li>`), boss state is only surfaced on the button itself via
+   * `.active` — see `panel-setup.hbs` L98. We pass the expected post-click
+   * state so the wait can key off the right class transition.
+   *
+   * @param {string} combatantId
+   * @param {object} [opts]
+   * @param {boolean} [opts.expectActive=true] — whether the boss button
+   *   should end up active after the click (false when toggling off).
+   */
+  async clickBossButton(combatantId, { expectActive = true } = {}) {
+    await this.bossButton(combatantId).click();
+    if ( expectActive ) {
+      await expect(this.bossButton(combatantId)).toHaveClass(/\bactive\b/);
+    } else {
+      await expect(this.bossButton(combatantId)).not.toHaveClass(/\bactive\b/);
+    }
+  }
 }
