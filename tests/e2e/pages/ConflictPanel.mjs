@@ -36,6 +36,10 @@ export class ConflictPanel {
     // → `<li class="setup-combatant" data-combatant-id="...">`.
     this.setupGroups = this.setupContent.locator('.setup-group');
     this.setupCombatants = this.setupContent.locator('li.setup-combatant');
+    // Manual-config block — only rendered when `system.conflictType === "manual"`
+    // AND the viewer is GM (panel-setup.hbs L38-80, conflict-panel.mjs L663-707).
+    this.setupManualConfig = this.setupContent.locator('.setup-manual-config');
+    this.manualActionRows = this.setupManualConfig.locator('.manual-action-row');
   }
 
   /**
@@ -209,5 +213,44 @@ export class ConflictPanel {
     } else {
       await expect(this.bossButton(combatantId)).not.toHaveClass(/\bactive\b/);
     }
+  }
+
+  /**
+   * Read the list of option values available on the conflict-type select.
+   * Mirrors panel-setup.hbs L8-12 output which is populated from
+   * `context.conflictTypes` (conflict-panel.mjs L585-589 — one entry per
+   * key in `CONFIG.TB2E.conflictTypes`).
+   */
+  async conflictTypeOptionValues() {
+    return this.conflictTypeSelect.locator('option').evaluateAll((opts) =>
+      opts.map((o) => o.value)
+    );
+  }
+
+  /**
+   * Change the conflict type via the `<select>` element (the user-facing UI
+   * path — `change` listener at conflict-panel.mjs L201-207 dispatches to
+   * `combat.update({ "system.conflictType": value })`). We use
+   * `selectOption` + then wait for `combat.system.conflictType` to reflect
+   * the change, since the update + re-render is async and Playwright's own
+   * `toHaveValue` assertion would race against the panel re-rendering the
+   * whole select element.
+   *
+   * @param {string} typeKey  One of `CONFIG.TB2E.conflictTypes` keys.
+   */
+  async selectConflictType(typeKey) {
+    await this.conflictTypeSelect.selectOption(typeKey);
+    await expect
+      .poll(() =>
+        this.page.evaluate(() => {
+          const c = game.combats.find((x) => x.isConflict);
+          return c?.system.conflictType ?? null;
+        })
+      )
+      .toBe(typeKey);
+    // Wait for the setup-tab select to re-render with the new selected
+    // value (the updateCombat hook at conflict-panel.mjs L120-122 triggers
+    // this.render()).
+    await expect(this.conflictTypeSelect).toHaveValue(typeKey);
   }
 }
