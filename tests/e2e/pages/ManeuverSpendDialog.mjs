@@ -126,4 +126,17 @@ export class ManeuverSpendDialog {
     await expect(this.submitButton).toBeVisible();
     await this.submitButton.click();
   }
+
+  /**
+   * Select a disarm target from the disarm-target `<select>`. The option
+   * values are encoded as `"<combatantId>|<itemId>"` by the template
+   * (maneuver-spend-dialog.hbs L43). The change listener at maneuver-
+   * spend-dialog.mjs L210-214 splits on `|` and stores both halves.
+   * @param {string} combatantId
+   * @param {string} itemId
+   */
+  async selectDisarmTarget(combatantId, itemId) {
+    await expect(this.disarmSection).toBeVisible();
+    await this.disarmSelect.selectOption(`${combatantId}|${itemId}`);
+  }
 }
