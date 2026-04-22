@@ -362,7 +362,7 @@ Already shipped. Listed for completeness.
 
 **Checkboxes:**
 
-- [ ] `tests/e2e/conflict/setup-create-conflict.spec.mjs` — create a new conflict, assert panel opens on setup tab, tracker appears in sidebar
+- [x] `tests/e2e/conflict/setup-create-conflict.spec.mjs` — create a new conflict, assert panel opens on setup tab, tracker appears in sidebar (cites `conflict-tracker.mjs:267-269`, `combat.mjs:20-48`, `conflict-panel.mjs:17,40-41,510-526`, `tb2e.mjs:67`)
 - [ ] `tests/e2e/conflict/setup-add-combatants.spec.mjs` — add two characters + two monsters via the panel, assert combatant list
 - [ ] `tests/e2e/conflict/setup-assign-captain.spec.mjs` — assign captain per side; verify captain flag stored
 - [ ] `tests/e2e/conflict/setup-assign-boss.spec.mjs` — assign monster boss; verify `setBoss` action stored
