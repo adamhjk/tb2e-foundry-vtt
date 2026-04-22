@@ -846,4 +846,91 @@ export class ConflictPanel {
     );
   }
 
+  /* -------------------------------------------- */
+  /*  Resolve tab                                  */
+  /* -------------------------------------------- */
+
+  /**
+   * Locator for the resolve-tab content region. Rendered by
+   * `templates/conflict/panel-resolve.hbs` as
+   * `<div class="panel-tab-content resolve-tab">` (L2). Contains one
+   * `.resolve-action` per action/volley (panel-resolve.hbs L20).
+   */
+  get resolveContent() {
+    return this.root.locator('.panel-tab-content.resolve-tab');
+  }
+
+  /**
+   * Per-action container on the resolve tab (panel-resolve.hbs L20-21).
+   * There are three — one per volley. Only the one matching
+   * `combat.system.currentAction` (conflict-panel.mjs L1186) gets the
+   * `.current` class, and only `.current` + `!isRevealed` shows the
+   * pre-reveal swap UI (panel-resolve.hbs L35-53).
+   * @param {number} actionIndex  0-based volley index.
+   */
+  resolveAction(actionIndex) {
+    return this.resolveContent
+      .locator('.resolve-action')
+      .nth(actionIndex);
+  }
+
+  /**
+   * Pre-reveal swap select for a KO'd combatant on a given group, scoped
+   * to the currently active/unrevealed volley (panel-resolve.hbs
+   * L40-49). Rendered inside `.resolve-pre-swap` only when the side's
+   * `needsSwap` flag is true (conflict-panel.mjs L1214) AND the viewer
+   * is GM or the actor owner (L1216). Its options are populated from
+   * `swapCandidates` (L1218-1221), which lists alive same-group
+   * teammates other than the KO'd combatant. A `change` event
+   * dispatches to the handler at conflict-panel.mjs L363-373 which
+   * calls `combat.swapActionCombatant(currentAction, groupId,
+   * newCombatantId)` (combat.mjs L413-424).
+   *
+   * @param {number} actionIndex  The volley index this swap targets.
+   * @param {string} groupId      The CombatantGroup ID.
+   */
+  resolveSwapSelect(actionIndex, groupId) {
+    return this.resolveAction(actionIndex)
+      .locator('.resolve-pre-swap')
+      .locator(`select.resolve-swap-select[data-group-id="${groupId}"]`);
+  }
+
+  /**
+   * KO warning chip inside the pre-reveal swap block
+   * (panel-resolve.hbs L41). Emitted only when `needsSwap` is true —
+   * surfaces the "<combatantName> — Knocked Out" banner with the skull
+   * icon. Used as a structural assertion that the resolve tab detected
+   * the KO state.
+   *
+   * @param {number} actionIndex
+   */
+  resolveKoWarning(actionIndex) {
+    return this.resolveAction(actionIndex).locator('.resolve-ko-warning');
+  }
+
+  /**
+   * Select a replacement combatant in the pre-reveal swap dropdown.
+   * Fires `change`, which invokes `combat.swapActionCombatant` — polls
+   * the stored `round.actions[groupId][actionIndex].combatantId` until
+   * it flips to the new id so the caller knows the server-side update
+   * landed.
+   *
+   * @param {number} actionIndex
+   * @param {string} groupId
+   * @param {string} newCombatantId
+   */
+  async selectResolveSwap(actionIndex, groupId, newCombatantId) {
+    await this.resolveSwapSelect(actionIndex, groupId).selectOption(
+      newCombatantId
+    );
+    await expect
+      .poll(() =>
+        this.page.evaluate(({ gId, idx }) => {
+          const c = game.combats.find((x) => x.isConflict);
+          const round = c?.system.rounds?.[c.system.currentRound];
+          return round?.actions?.[gId]?.[idx]?.combatantId ?? null;
+        }, { gId: groupId, idx: actionIndex })
+      )
+      .toBe(newCombatantId);
+  }
 }
