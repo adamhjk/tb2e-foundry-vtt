@@ -129,4 +129,43 @@ export class ConflictPanel {
       .locator('nav.panel-tabs button.panel-tab.active')
       .getAttribute('data-tab');
   }
+
+  /**
+   * Captain button for a given combatant (GM-only affordance, emitted by
+   * `panel-setup.hbs` L92-96 with `data-action="setCaptain"`
+   * `data-combatant-id`). Clicking it dispatches to
+   * `ConflictPanel.#onSetCaptain` (conflict-panel.mjs L1479-1486) which
+   * calls `TB2ECombat.setCaptain(groupId, combatantId)` (combat.mjs
+   * L101-106), persisting the id at
+   * `combat.system.groupDispositions[groupId].captainId`.
+   *
+   * @param {string} combatantId
+   */
+  captainButton(combatantId) {
+    return this.setupContent.locator(
+      `button.setup-captain-btn[data-combatant-id="${combatantId}"]`
+    );
+  }
+
+  /**
+   * Combatant row `<li>` for a given id. Used to assert the `.is-captain`
+   * class added by `panel-setup.hbs` L88 when the combatant is the captain.
+   * @param {string} combatantId
+   */
+  setupCombatantRow(combatantId) {
+    return this.setupContent.locator(
+      `li.setup-combatant[data-combatant-id="${combatantId}"]`
+    );
+  }
+
+  /**
+   * Click the captain button for a combatant and wait for the re-render to
+   * reflect the new captain. The panel hooks updateCombat (conflict-panel.mjs
+   * L120-129) so the server-side update drives a re-render of the setup tab.
+   * @param {string} combatantId
+   */
+  async clickCaptainButton(combatantId) {
+    await this.captainButton(combatantId).click();
+    await expect(this.setupCombatantRow(combatantId)).toHaveClass(/\bis-captain\b/);
+  }
 }
