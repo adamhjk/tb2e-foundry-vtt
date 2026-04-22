@@ -458,6 +458,30 @@ export class CharacterSheet {
   }
 
   /**
+   * Click the Magic tab in the sheet's tab navigation. The tab id is
+   * "magic" (see character-sheet.mjs TABS registration and
+   * templates/actors/tabs/character-magic.hbs). The Magic tab is always
+   * rendered regardless of class — `#prepareMagicContext` has no class
+   * gating (character-sheet.mjs #prepareMagicContext).
+   */
+  async openMagicTab() {
+    await this.root.locator('nav.sheet-tabs a[data-tab="magic"]').click();
+    await expect(this.root.locator('section[data-tab="magic"].active')).toBeVisible();
+  }
+
+  /**
+   * Row in the Arcane Spells table for a given spell Item id. The template
+   * emits `<tr data-item-id="<id>">` inside `.spells-section .spells-table
+   * tbody` (templates/actors/tabs/character-magic.hbs).
+   * @param {string} itemId
+   */
+  spellRow(itemId) {
+    return this.root.locator(
+      `section[data-tab="magic"] fieldset.spells-section table.spells-table tbody tr[data-item-id="${itemId}"]`
+    );
+  }
+
+  /**
    * Click the Biography tab in the sheet's tab navigation. The tab id is
    * "biography" (see character-sheet.mjs TABS registration and
    * templates/actors/tabs/character-biography.hbs).
