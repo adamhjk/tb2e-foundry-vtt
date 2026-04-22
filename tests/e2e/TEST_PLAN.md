@@ -303,7 +303,7 @@ Already shipped. Listed for completeness.
 **Checkboxes:**
 
 - [x] `tests/e2e/loot/draw-terminal-table.spec.mjs` — roll a non-recursive loot table (e.g. "Coins"); verify single chat card with terminal result (Coins Subtable 1 `lt00000000000010`; `table.draw()` via `TB2ELootTable` override in `module/documents/loot-table.mjs:83`; scopes by `.loot-card` from `templates/chat/loot-draw.hbs:2` + `flags.tb2e.lootDraw`)
-- [ ] `tests/e2e/loot/draw-recursive-chain.spec.mjs` — roll a top-level table that chains to a subtable (e.g. "Treasure Type" → "Enchanted Weapon"); verify chain trace shown in single card
+- [x] `tests/e2e/loot/draw-recursive-chain.spec.mjs` — roll a top-level table that chains to a subtable (e.g. "Treasure Type" → "Enchanted Weapon"); verify chain trace shown in single card (Loot Table 1 `lt00000000000001` → Books & Maps Subtable `lt00000000000006`; `CONFIG.Dice.randomUniform = () => 0.999` locks every die to face 1 so 2d6→2→"Books & Maps" and 3d6→3→"Accurate Map (Dungeon Level)"; asserts one chat message, chain length 2, connector count 1, `loot-chain-link--last` only on last link, `flags.core.RollTable` is TOP id per `module/documents/loot-table.mjs:172`; reuses `LootDrawCard` POM unchanged)
 - [ ] `tests/e2e/loot/draw-max-depth.spec.mjs` — verify recursion stops at depth 5
 - [ ] `tests/e2e/loot/draw-page-refs.spec.mjs` — verify page references appear in chat card
 
