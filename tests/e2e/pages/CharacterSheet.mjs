@@ -482,6 +482,21 @@ export class CharacterSheet {
   }
 
   /**
+   * Row in the Invocations table for a given invocation Item id. The template
+   * emits `<tr data-item-id="<id>">` inside `.invocations-section
+   * .invocations-table tbody` (templates/actors/tabs/character-magic.hbs:
+   * 138-170). The "Perform" button on the row carries
+   * `data-action="performInvocation"` and is wired to
+   * `CharacterSheet.#onPerformInvocation` (character-sheet.mjs:62, 1372-1377).
+   * @param {string} itemId
+   */
+  invocationRow(itemId) {
+    return this.root.locator(
+      `section[data-tab="magic"] fieldset.invocations-section table.invocations-table tbody tr[data-item-id="${itemId}"]`
+    );
+  }
+
+  /**
    * Click the Biography tab in the sheet's tab navigation. The tab id is
    * "biography" (see character-sheet.mjs TABS registration and
    * templates/actors/tabs/character-biography.hbs).

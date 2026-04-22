@@ -258,7 +258,7 @@ Already shipped. Listed for completeness.
 
 **Checkboxes:**
 
-- [ ] `tests/e2e/invocation/perform-basic.spec.mjs` — perform a Theurge invocation with no relic; verify burden applied
+- [x] `tests/e2e/invocation/perform-basic.spec.mjs` — perform a Theurge invocation with no relic; verify burden applied (Bone Knitter, packs/_source/theurge-invocations/Bone_Knitter_b2c3d4e5f6a7b8c9.yml — fixedObstacle 3 → Ob 4 with no-relic bump per invocation-casting.mjs:52; burden 2 added to `actor.system.urdr.burden` via processInvocationPerformed invocation-casting.mjs:231-262, wired from Finalize in post-roll.mjs:582-584; handler `CharacterSheet.#onPerformInvocation` at character-sheet.mjs:1372-1377)
 - [ ] `tests/e2e/invocation/perform-with-relic.spec.mjs` — relic slotted + auto-detected; verify reduced burden (`burdenWithRelic`) applied
 - [ ] `tests/e2e/invocation/perform-without-relic-penalty.spec.mjs` — versus invocation, no relic; verify -1s applied
 - [ ] `tests/e2e/invocation/sacramental.spec.mjs` — sacramental flag behavior on appropriate invocation
