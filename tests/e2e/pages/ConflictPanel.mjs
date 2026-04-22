@@ -40,6 +40,17 @@ export class ConflictPanel {
     // AND the viewer is GM (panel-setup.hbs L38-80, conflict-panel.mjs L663-707).
     this.setupManualConfig = this.setupContent.locator('.setup-manual-config');
     this.manualActionRows = this.setupManualConfig.locator('.manual-action-row');
+    // Setup-tab "Next → begin disposition" button (panel-setup.hbs L140,
+    // gated by `canBeginDisposition` at conflict-panel.mjs L709-710).
+    this.beginDispositionButton = this.setupContent.locator(
+      'button.setup-next-btn[data-action="beginDisposition"]'
+    );
+    // Disposition-tab scope — one `.disp-group[data-group-id]` per
+    // CombatantGroup (panel-disposition.hbs L5). Contains the roll button,
+    // distribution form, and post-distribution readout.
+    this.dispositionContent = this.root.locator(
+      '.panel-tab-content.disposition-tab'
+    );
   }
 
   /**
@@ -252,5 +263,93 @@ export class ConflictPanel {
     // value (the updateCombat hook at conflict-panel.mjs L120-122 triggers
     // this.render()).
     await expect(this.conflictTypeSelect).toHaveValue(typeKey);
+  }
+
+  /**
+   * Click "Next → Disposition" in the setup tab. Dispatches to
+   * `ConflictPanel.#onBeginDisposition` (conflict-panel.mjs L1543-1574)
+   * which calls `combat.beginDisposition()` (combat.mjs L144-174) and
+   * advances the active tab to "disposition" (conflict-panel.mjs L1546).
+   * Waits for the disposition tab to become active.
+   */
+  async clickBeginDisposition() {
+    await this.beginDispositionButton.click();
+    await expect
+      .poll(() => this.activeTabId())
+      .toBe('disposition');
+  }
+
+  /**
+   * Locator for a disposition-tab group section by CombatantGroup id.
+   * Rendered by panel-disposition.hbs L5 as
+   * `<div class="disp-group" data-group-id>`. The group section is the
+   * scope for the per-side roll button, the distribution form, and the
+   * post-distribution readout — all targeted by helper methods below.
+   * @param {string} groupId
+   */
+  dispositionGroup(groupId) {
+    return this.dispositionContent.locator(
+      `.disp-group[data-group-id="${groupId}"]`
+    );
+  }
+
+  /**
+   * Roll-disposition button for a given group. Rendered inside
+   * `.disp-roll-area` (panel-disposition.hbs L40, L52) when `canRoll` is
+   * true (conflict-panel.mjs L838-840). Clicking dispatches to
+   * `ConflictPanel.#onRollDisposition` (conflict-panel.mjs L1582-1653)
+   * which calls `rollTest({...testContext: { isDisposition: true, …}})`.
+   * @param {string} groupId
+   */
+  rollDispositionButton(groupId) {
+    return this.dispositionGroup(groupId).locator(
+      'button[data-action="rollDisposition"]'
+    );
+  }
+
+  /**
+   * Locator for the distribution form inside a group. Rendered by
+   * panel-disposition.hbs L84 after a roll is stored (`hasRolled` true,
+   * `hasDistributed` false). The form contains one `input.dist-value`
+   * per team member pre-filled with the suggested split
+   * (conflict-panel.mjs L791-820).
+   * @param {string} groupId
+   */
+  distributionSection(groupId) {
+    return this.dispositionGroup(groupId).locator('.distribution-section');
+  }
+
+  /**
+   * "Distribute" submit button inside the distribution form. Clicking
+   * dispatches to `ConflictPanel.#onDistribute` (conflict-panel.mjs
+   * L1661-1683) which reads each `.dist-value` input and calls
+   * `combat.distributeDisposition(groupId, distribution)` (combat.mjs
+   * L219-242). That update applies `system.conflict.hp.{value,max}` to
+   * each member's actor.
+   * @param {string} groupId
+   */
+  distributeButton(groupId) {
+    return this.distributionSection(groupId).locator(
+      'button[data-action="distribute"]'
+    );
+  }
+
+  /**
+   * The rendered "Disposition: N" value inside a group section. Rendered
+   * by panel-disposition.hbs L79 once `hasRolled` is true.
+   * @param {string} groupId
+   */
+  dispositionRolledValue(groupId) {
+    return this.dispositionGroup(groupId).locator('.disp-rolled-value');
+  }
+
+  /**
+   * The post-distribution "Distributed" badge for a group. Rendered by
+   * panel-disposition.hbs L110 once `hasDistributed` is true — surfaces
+   * that `distributeDisposition` has run to completion.
+   * @param {string} groupId
+   */
+  dispositionDistributedBadge(groupId) {
+    return this.dispositionGroup(groupId).locator('.disp-distributed-badge');
   }
 }

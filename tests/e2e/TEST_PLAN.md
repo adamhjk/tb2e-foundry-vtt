@@ -387,7 +387,7 @@ Already shipped. Listed for completeness.
 
 **Checkboxes:**
 
-- [ ] `tests/e2e/conflict/disposition-roll-captain.spec.mjs` — GM captain rolls disposition, verify `conflict.hp` set on each combatant
+- [x] `tests/e2e/conflict/disposition-roll-captain.spec.mjs` — GM captain rolls disposition, verify `conflict.hp` set on each combatant (kill conflict, fighter+health; stubs PRNG → 3 successes + 4 health = 7; clicks Finalize → `storeDispositionRoll`; Distribute writes `conflict.hp.{value,max}` on party members; monster side stays at 0 as negative control; cites `conflict-panel.mjs#L1543-1574`, `L1582-1653`, `L1661-1683`, `L791-820`; `combat.mjs#L144-174`, `L201-242`; `post-roll.mjs#L483-504`; `tb2e-roll.mjs#L1659-1739`; `config.mjs#L200-211`)
 - [ ] `tests/e2e/conflict/disposition-flat-monster.spec.mjs` — monster side uses flat disposition; verify HP set without roll
 - [ ] `tests/e2e/conflict/disposition-distribution-player.spec.mjs` — player captain writes to `pendingDistribution`; verify GM processes and clears mailbox
 - [ ] `tests/e2e/conflict/disposition-order-of-might.spec.mjs` — Kill conflict; team with higher Might bonus receives +1s per point advantage (SG p.80; see `computeOrderModifier`)
