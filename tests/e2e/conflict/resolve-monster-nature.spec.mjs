@@ -1,4 +1,5 @@
 import { test, expect } from '../test.mjs';
+import { scriptAndLockActions } from '../helpers/conflict-scripting.mjs';
 import { GameUI } from '../pages/GameUI.mjs';
 import { ConflictTracker } from '../pages/ConflictTracker.mjs';
 import { ConflictPanel } from '../pages/ConflictPanel.mjs';
@@ -383,46 +384,16 @@ test.describe('§16 Conflict: Resolve — Monster uses Nature for action rolls',
           { action: 'defend',   combatantId: cmb.kobold },
           { action: 'feint',    combatantId: cmb.goblin }
         ];
-        await page.evaluate(async ({ cId, pId, gId, pa, ga }) => {
-          const c = game.combats.get(cId);
-          await c.setActions(pId, pa);
-          await c.setActions(gId, ga);
-        }, {
-          cId: combatId, pId: partyGroupId, gId: gmGroupId,
-          pa: partyActions, ga: gmActions
+        /* ---------- Script + lock + resolve ---------- */
+
+        await scriptAndLockActions(page, {
+          combatId, partyGroupId, gmGroupId, partyActions, gmActions
         });
-
-        await expect
-          .poll(() => page.evaluate(({ cId, pId, gId }) => {
-            const c = game.combats.get(cId);
-            const round = c.system.rounds?.[c.system.currentRound];
-            return {
-              party: (round?.actions?.[pId] ?? []).map((e) => e?.action ?? null),
-              gm: (round?.actions?.[gId] ?? []).map((e) => e?.action ?? null)
-            };
-          }, { cId: combatId, pId: partyGroupId, gId: gmGroupId }))
-          .toEqual({
-            party: ['attack', 'defend', 'feint'],
-            gm: ['attack', 'defend', 'feint']
-          });
-
-        await page.evaluate(async ({ cId, pId, gId }) => {
-          const c = game.combats.get(cId);
-          await c.lockActions(pId);
-          await c.lockActions(gId);
-        }, { cId: combatId, pId: partyGroupId, gId: gmGroupId });
-
-        /* ---------- Transition to resolve phase ---------- */
 
         expect(await page.evaluate(({ cId }) => {
           const c = game.combats.get(cId);
           return c.getVolleyInteraction(0);
         }, { cId: combatId })).toBe('independent');
-
-        await page.evaluate(async ({ cId }) => {
-          const c = game.combats.get(cId);
-          await c.beginResolve();
-        }, { cId: combatId });
 
         await expect.poll(() => panel.activeTabId()).toBe('resolve');
 

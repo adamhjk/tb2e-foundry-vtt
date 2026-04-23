@@ -1,4 +1,5 @@
 import { test, expect } from '../test.mjs';
+import { scriptAndLockActions } from '../helpers/conflict-scripting.mjs';
 import { GameUI } from '../pages/GameUI.mjs';
 import { ConflictTracker } from '../pages/ConflictTracker.mjs';
 import { ConflictPanel } from '../pages/ConflictPanel.mjs';
@@ -335,43 +336,12 @@ test.describe('§15 Conflict: Scripting — GM peek', () => {
           { action: 'attack',   combatantId: cmb.monB },
           { action: 'defend',   combatantId: cmb.monA }
         ];
-        await page.evaluate(async ({ cId, pId, gId, pa, ga }) => {
-          const c = game.combats.get(cId);
-          await c.setActions(pId, pa);
-          await c.setActions(gId, ga);
-        }, {
-          cId: combatId,
-          pId: partyGroupId,
-          gId: gmGroupId,
-          pa: partyActions,
-          ga: gmActions
+        /* ---------- Script + lock (no resolve — script-phase-only spec) ---------- */
+
+        await scriptAndLockActions(page, {
+          combatId, partyGroupId, gmGroupId, partyActions, gmActions,
+          beginResolve: false
         });
-
-        // `combat.setActions` is async but its internal `#applyActions`
-        // call at combat.mjs L332 is unawaited — we must poll for the
-        // `system.rounds[n].actions[groupId]` write to land before
-        // firing `lockActions`, or `#applyLockActions`'s all-filled gate
-        // (L534) will see stale empty slots and silently no-op.
-        await expect
-          .poll(() => page.evaluate(({ cId, pId, gId }) => {
-            const c = game.combats.get(cId);
-            const round = c.system.rounds?.[c.system.currentRound];
-            const pa = round?.actions?.[pId] ?? [];
-            const ga = round?.actions?.[gId] ?? [];
-            return (
-              pa.length === 3 && pa.every((e) => e?.action && e?.combatantId) &&
-              ga.length === 3 && ga.every((e) => e?.action && e?.combatantId)
-            );
-          }, { cId: combatId, pId: partyGroupId, gId: gmGroupId }), {
-            timeout: 10_000
-          })
-          .toBe(true);
-
-        await page.evaluate(async ({ cId, pId, gId }) => {
-          const c = game.combats.get(cId);
-          await c.lockActions(pId);
-          await c.lockActions(gId);
-        }, { cId: combatId, pId: partyGroupId, gId: gmGroupId });
 
         // Wait for both sides to surface as locked in the panel.
         await expect(panel.scriptLockedBadge(partyGroupId)).toBeVisible();
