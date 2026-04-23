@@ -406,11 +406,40 @@ async function stageKillConflict(page, {
     ga: gmActions
   });
 
+  // Poll for both teams' actions to actually land before locking. Under
+  // parallel/contested runs the setActions update can be awaited but the
+  // round.actions read by lockActions still sees the pre-write snapshot;
+  // lockActions silently bails if any slot is incomplete (combat.mjs
+  // L534), and then beginResolve's allLocked gate (combat.mjs L363-367)
+  // fails — symptom: activeTabId stays on "script".
+  await expect
+    .poll(() => page.evaluate(({ cId, pId, gId }) => {
+      const c = game.combats.get(cId);
+      const round = c?.system.rounds?.[c.system.currentRound];
+      const pSlots = (round?.actions?.[pId] || []).filter(a => a?.action && a?.combatantId).length;
+      const gSlots = (round?.actions?.[gId] || []).filter(a => a?.action && a?.combatantId).length;
+      return { pSlots, gSlots };
+    }, { cId: combatId, pId: partyGroupId, gId: gmGroupId }), { timeout: 10_000 })
+    .toEqual({ pSlots: 3, gSlots: 3 });
+
   await page.evaluate(async ({ cId, pId, gId }) => {
     const c = game.combats.get(cId);
     await c.lockActions(pId);
     await c.lockActions(gId);
   }, { cId: combatId, pId: partyGroupId, gId: gmGroupId });
+
+  // Similar poll before beginResolve — lockActions silently bails when
+  // all 3 slots aren't filled with an action + combatantId.
+  await expect
+    .poll(() => page.evaluate(({ cId, pId, gId }) => {
+      const c = game.combats.get(cId);
+      const round = c?.system.rounds?.[c.system.currentRound];
+      return {
+        p: round?.locked?.[pId] ?? false,
+        g: round?.locked?.[gId] ?? false
+      };
+    }, { cId: combatId, pId: partyGroupId, gId: gmGroupId }), { timeout: 10_000 })
+    .toEqual({ p: true, g: true });
 
   await page.evaluate(async ({ cId }) => {
     const c = game.combats.get(cId);
