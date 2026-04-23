@@ -280,16 +280,21 @@ test.describe('§11 Nature Crisis — triggered chat card shape (DH p.119)', () 
     expect(allOpts[0].label).toBe('—');
     expect(allOpts[0].attrValue === null || allOpts[0].attrValue === '').toBe(true);
     // Non-placeholder options — the filter order matches the actor's
-    // itemTypes.trait order (post-roll.mjs line 601), which for a freshly
-    // created actor with `createEmbeddedDocuments` follows insertion order.
+    // itemTypes.trait order (post-roll.mjs line 601). Foundry's embedded-
+    // document creation does not guarantee that the returned array preserves
+    // insertion order when mapped back to IDs, so we assert the set of
+    // labels (order-independent) and the set of IDs separately rather than
+    // hardcoding which ID pairs with which label.
     const traitOpts = allOpts.slice(1).map(o => ({
       value: o.attrValue,
       label: o.label
     }));
-    expect(traitOpts).toEqual(expect.arrayContaining([
-      { value: nonClassTraitIds[0], label: 'Stubborn (L1)' },
-      { value: nonClassTraitIds[1], label: 'Curious (L2)' }
-    ]));
+    expect(traitOpts.map(o => o.label).sort()).toEqual(
+      ['Curious (L2)', 'Stubborn (L1)']
+    );
+    expect(traitOpts.map(o => o.value).sort()).toEqual(
+      [...nonClassTraitIds].sort()
+    );
     // Negative assertion: no option for the class trait "Ranger" — it's
     // filtered out by post-roll.mjs line 609 `filter(t => t.name && !t.isClass)`.
     for (const opt of allOpts) {
