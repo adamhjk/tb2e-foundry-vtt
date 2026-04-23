@@ -472,7 +472,12 @@ export default class TB2ECombat extends Combat {
     await this.storeDispositionRoll(groupId, result);
     // Clear the mailbox.
     const combatant = this.combatants.get(combatantId);
-    if ( combatant ) await combatant.update({ "system.pendingDisposition": {} });
+    // Use the `==` force-replace idiom: Foundry's ObjectField merges the
+    // patch rather than replaces, so `{ pendingDisposition: {} }` leaves
+    // stale payload intact. `==pendingDisposition: {}` is Foundry's
+    // force-replace prefix (helpers.mjs:957-960, requires
+    // performDeletions: true which document.update sets by default).
+    if ( combatant ) await combatant.update({ system: { "==pendingDisposition": {} } });
   }
 
   /**
@@ -486,7 +491,8 @@ export default class TB2ECombat extends Combat {
     await this.distributeDisposition(groupId, distribution);
     // Clear the mailbox.
     const combatant = this.combatants.get(combatantId);
-    if ( combatant ) await combatant.update({ "system.pendingDistribution": {} });
+    // `==pendingDistribution` — see #processDispositionResult for rationale.
+    if ( combatant ) await combatant.update({ system: { "==pendingDistribution": {} } });
   }
 
   /**
@@ -561,7 +567,8 @@ export default class TB2ECombat extends Combat {
     const clearMailbox = async () => {
       if ( mailboxId ) {
         const combatant = this.combatants.get(mailboxId);
-        if ( combatant ) await combatant.update({ "system.pendingManeuverSpend": {} });
+        // `==pendingManeuverSpend` — ObjectField force-replace idiom.
+        if ( combatant ) await combatant.update({ system: { "==pendingManeuverSpend": {} } });
       }
     };
 

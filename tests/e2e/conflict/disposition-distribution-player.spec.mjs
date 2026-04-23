@@ -137,14 +137,14 @@ test.describe('§13 Conflict: Disposition — player-captain distribution mailbo
   });
 
   // BLOCKED — see the describe-level header above. `#processDistribution`
-  // (combat.mjs L485-490) tries to clear `system.pendingDistribution` with
-  // `{}`, but Foundry's update deep-merges empty objects over `ObjectField`
-  // values — the mailbox retains the full `{ groupId, distribution }`
-  // payload even after the GM hook successfully routes it through
-  // `distributeDisposition` (HP + `distributed` flag both land). Remove
-  // `test.fixme` once the clear switches to `system.-=pendingDistribution`
-  // (Foundry's deletion idiom) or an equivalent schema-level reset.
-  test.fixme(
+  // (combat.mjs L485-490) clears `system.pendingDistribution` using the
+  // `==` force-replace idiom: `combatant.update({ system: {
+  // "==pendingDistribution": {} } })`. Foundry's `==` prefix
+  // (helpers.mjs:957-960) replaces the whole field value rather than
+  // deep-merging, which is what ObjectField otherwise does. The bug fix
+  // also applies to siblings `pendingDisposition` (L475) and
+  // `pendingManeuverSpend` (L564).
+  test(
     'player-side pendingDistribution write triggers GM hook, HP distributed, mailbox cleared (DH pp.120-122)',
     async ({ page }, testInfo) => {
       const tag = `e2e-disp-dist-player-${testInfo.parallelIndex}-${Date.now()}`;
@@ -296,8 +296,10 @@ test.describe('§13 Conflict: Disposition — player-captain distribution mailbo
 
         /* ---------- Assert GM hook processed + cleared ---------- */
 
-        // 1. Cardinal contract: mailbox is drained (combat.mjs L489 writes
-        //    `{}` back). **THIS FAILS TODAY** — see header analysis.
+        // 1. Cardinal contract: mailbox is drained. After the fix, combat.mjs
+        //    L489 uses `{system: {"==pendingDistribution": {}}}` — Foundry's
+        //    force-replace idiom — so `_source.system.pendingDistribution`
+        //    ends up as exactly `{}` (payload keys gone).
         await expect
           .poll(
             () => page.evaluate(
