@@ -438,12 +438,7 @@ test.describe('§18 Conflict: HP & KO — synthetic-token parity (CLAUDE.md regr
   // world HP untouched at 5) — the same shape the spec would take after a
   // fix. When the fix lands (targetActor resolution walks active conflict
   // combatants to prefer a synthetic match), flip fixme → test.
-  test.fixme('targetActorId cross-write on unlinked monster: desired behavior — synthetic HP lands, world actor untouched (CLAUDE.md gotcha — tb2e.mjs L196 `game.actors.get` reaches world template not synthetic)', {
-    annotation: {
-      type: 'issue',
-      description: 'tb2e.mjs L196 resolves `targetActor = game.actors.get(pendingHP.targetActorId)` — for unlinked monsters this returns the world template, not the per-token synthetic actor that `combatant.actor` resolves to. Empirically: with world seeded max=5/value=5 and synthetic 3/3, cross-write newValue=1 drops world 5→1 while synthetic stays 3. Fix shape: walk active conflict `game.combats` for a combatant whose `actorId === targetActorId` AND carries a `tokenId`; prefer its `combatant.actor` (synthetic). Fall back to `game.actors.get(targetActorId)` only when no synthetic match exists (linked character + flat actor cases).'
-    }
-  }, async ({ page }, testInfo) => {
+  test('targetActorId cross-write on unlinked monster: synthetic HP lands, world actor untouched (CLAUDE.md §Unlinked Actors)', async ({ page }, testInfo) => {
     const tag = `e2e-hp-syn-tgt-${testInfo.parallelIndex}-${Date.now()}`;
     const stamp = Date.now();
     const captainName = `E2E Captain Syn ${stamp}`;

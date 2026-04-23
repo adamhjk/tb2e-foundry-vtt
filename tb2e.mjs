@@ -193,7 +193,28 @@ Hooks.on("updateActor", (actor, changes, options, userId) => {
   const pendingHP = changes.flags?.tb2e?.pendingConflictHP;
   if ( pendingHP?.newValue != null ) {
     // Support targetActorId for captain editing another player's HP.
-    const targetActor = pendingHP.targetActorId ? game.actors.get(pendingHP.targetActorId) : actor;
+    // For the targetActorId branch, prefer the synthetic actor from an
+    // active conflict combatant (per CLAUDE.md §Unlinked Actors) — if a
+    // conflict combat has a combatant wrapping this actor id via a token,
+    // `combatant.actor` resolves to the synthetic (unlinked case) or the
+    // world actor (linked case). Falling through to `game.actors.get` only
+    // when no combatant match exists keeps flat/outside-conflict writes
+    // working unchanged.
+    let targetActor = actor;
+    if ( pendingHP.targetActorId ) {
+      targetActor = null;
+      for ( const combat of game.combats ?? [] ) {
+        if ( !combat.isConflict ) continue;
+        for ( const cmb of combat.combatants ) {
+          if ( cmb.actorId === pendingHP.targetActorId && cmb.actor ) {
+            targetActor = cmb.actor;
+            break;
+          }
+        }
+        if ( targetActor ) break;
+      }
+      if ( !targetActor ) targetActor = game.actors.get(pendingHP.targetActorId);
+    }
     if ( targetActor ) {
       const max = targetActor.system.conflict?.hp?.max || 0;
       const newVal = Math.max(0, Math.min(pendingHP.newValue, max));
