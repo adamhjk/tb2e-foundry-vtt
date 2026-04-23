@@ -90,13 +90,7 @@ test.describe('§4 Advancement — cancel', () => {
     });
   });
 
-  // BLOCKED — see describe-level comment above. The cancel button in
-  // `showAdvancementDialog` has no callback, so DialogV2 resolves the
-  // `wait()` promise with the truthy string "cancel", which passes the
-  // `if (!result) return` guard at advancement.mjs:54 and runs the accept
-  // mutation. Remove `test.fixme` once the cancel button is fixed per
-  // Option A or B above.
-  test.fixme('Cancel leaves rating and pips at their threshold-met values; no celebration card', async ({ page }) => {
+  test('Cancel leaves rating and pips at their threshold-met values; no celebration card', async ({ page }) => {
     const actorName = `E2E Advance Cancel ${Date.now()}`;
 
     await page.goto('/game');

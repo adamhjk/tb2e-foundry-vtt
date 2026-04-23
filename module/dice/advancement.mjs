@@ -51,7 +51,13 @@ export async function showAdvancementDialog({ actor, type, key }) {
     close: () => null
   });
 
-  if ( !result ) return;
+  // Only the accept button's `callback: () => true` above returns the
+  // truthy-sentinel `true`. Every other resolution path — clicking Cancel
+  // (no callback → falls through to `button?.action` = the string
+  // `"cancel"`, which is truthy), Escape-dismiss (`close: () => null`),
+  // or any future button — must NOT fire the accept mutation. Gate on
+  // exact equality to true rather than mere truthiness.
+  if ( result !== true ) return;
 
   // Apply advancement: rating +1, pips reset to 0
   const updates = {
