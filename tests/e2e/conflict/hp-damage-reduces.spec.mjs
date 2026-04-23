@@ -172,7 +172,7 @@ test.describe('§18 Conflict: HP & KO — damage reduces loser HP', () => {
     });
   });
 
-  test.fixme(
+  test(
     'Attack vs Defend: loser HP reduced by margin of success (DH pp.120-127, SG p.69)',
     async ({ page }, testInfo) => {
       const tag = `e2e-hp-damage-${testInfo.parallelIndex}-${Date.now()}`;

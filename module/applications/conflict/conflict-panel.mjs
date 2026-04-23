@@ -2289,10 +2289,14 @@ export default class ConflictPanel extends HandlebarsApplicationMixin(Applicatio
       const winnerGroup = combat.groups.get(endState.winnerGroupId);
       winnerName = winnerGroup?.name || "???";
       const comp = combat.calculateCompromise(endState.winnerGroupId);
-      const levelKey = comp.level.charAt(0).toUpperCase() + comp.level.slice(1);
+      // SG pp.74-76: if the winner took zero damage, no compromise is
+      // required. Mirrors the resolution-tab predicate at L1365.
+      const noCompromise = comp.remaining === comp.starting;
+      const levelKey = noCompromise ? "None" : comp.level.charAt(0).toUpperCase() + comp.level.slice(1);
       compromise = {
-        level: comp.level,
-        label: game.i18n.localize(`TB2E.Conflict.Compromise.${levelKey}`)
+        level: noCompromise ? "none" : comp.level,
+        label: game.i18n.localize(`TB2E.Conflict.Compromise.${levelKey}`),
+        noCompromise
       };
     }
 

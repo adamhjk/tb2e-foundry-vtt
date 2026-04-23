@@ -1,6 +1,7 @@
 import { _logAdvancement, _logBLLearning } from "./tb2e-roll.mjs";
 import { _checkWiseAdvancement } from "./post-roll.mjs";
 import { processWiseAiders, logAdvancementForSide } from "./roll-utils.mjs";
+import { resolveActionEffect } from "./conflict-roll.mjs";
 import { abilities, skills } from "../config.mjs";
 
 /**
@@ -220,6 +221,42 @@ async function _executeVersusResolution(initiatorMessage, opponentMessage) {
       }
     }
   });
+
+  // Apply HP effect from the versus resolution (SG p.69, DH p.123).
+  // Attack/Feint winner: loser's combatant takes `margin` damage.
+  // Defend winner (versus): winning defender's combatant restores `margin` HP.
+  // Maneuver/none: no HP change here — handled by the MoS spend dialog
+  // downstream or explicitly a no-op.
+  if ( winnerTc.isConflict ) {
+    const effect = resolveActionEffect(winnerTc.conflictAction, margin, "versus");
+    const combat = game.combats.get(winnerTc.combatId);
+    if ( combat && effect.amount > 0 ) {
+      const winnerCombatantId = winnerTc.combatantId;
+      const loserTc = initiatorWins
+        ? (opponentMessage.flags.tb2e?.testContext || {})
+        : (initiatorMessage.flags.tb2e?.testContext || {});
+      const loserCombatantId = loserTc?.combatantId;
+
+      if ( effect.type === "damage" && loserCombatantId ) {
+        const loser = combat.combatants.get(loserCombatantId);
+        if ( loser?.actor ) {
+          const hp = loser.actor.system.conflict?.hp;
+          const newVal = Math.max(0, (hp?.value ?? 0) - effect.amount);
+          // Use combatant.actor.update so synthetic tokens write through to
+          // the token's synthetic actor (CLAUDE.md §Unlinked Actors).
+          await loser.actor.update({ "system.conflict.hp.value": newVal });
+        }
+      } else if ( effect.type === "restore" && winnerCombatantId ) {
+        const winner = combat.combatants.get(winnerCombatantId);
+        if ( winner?.actor ) {
+          const hp = winner.actor.system.conflict?.hp;
+          const max = hp?.max ?? 0;
+          const newVal = Math.min(max, (hp?.value ?? 0) + effect.amount);
+          await winner.actor.update({ "system.conflict.hp.value": newVal });
+        }
+      }
+    }
+  }
 
   // Mark both versus flags as resolved
   await initiatorMessage.setFlag("tb2e", "versus.resolved", true);

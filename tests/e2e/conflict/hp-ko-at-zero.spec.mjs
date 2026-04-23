@@ -187,7 +187,7 @@ async function cleanupTaggedActorsAndCombats(page, tag, combatId) {
 }
 
 test.describe('§18 Conflict: HP & KO — HP→0 flips combatant.knockedOut', () => {
-  test.fixme('HP hitting 0 marks combatant knockedOut; restoring HP clears it (tb2e.mjs L193-204, combatant.mjs L7)',
+  test('HP hitting 0 marks combatant knockedOut; restoring HP clears it (tb2e.mjs L193-204, combatant.mjs L7)',
   async ({ page }, testInfo) => {
     const tag = `e2e-hp-ko-${testInfo.parallelIndex}-${Date.now()}`;
     const name = `E2E HP-KO Actor ${Date.now()}`;

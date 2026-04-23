@@ -203,6 +203,29 @@ Hooks.on("updateActor", (actor, changes, options, userId) => {
     }
   }
 
+  // Flip Combatant.system.knockedOut when HP crosses 0 in either direction.
+  // This observes any `system.conflict.hp.value` change (including the
+  // pendingConflictHP mailbox's inner update above, the versus.mjs
+  // auto-damage path, and direct actor.update calls from roster inputs or
+  // initial disposition). Mirrors the help-blocking predicate at
+  // module/dice/help.mjs L57 (`hp.value <= 0 && hp.max > 0`) so combatant-
+  // level `.knockedOut` stays coherent with the HP predicate that consumers
+  // (conflict-panel, conflict-tracker, swap eligibility, etc.) rely on.
+  const hpChange = changes.system?.conflict?.hp;
+  if ( hpChange !== undefined && (hpChange.value !== undefined || hpChange.max !== undefined) ) {
+    const newHp = actor.system.conflict?.hp;
+    const ko = (newHp?.max ?? 0) > 0 && (newHp?.value ?? 0) <= 0;
+    for ( const combat of game.combats ?? [] ) {
+      if ( !combat.isConflict ) continue;
+      for ( const cmb of combat.combatants ) {
+        if ( cmb.actorId !== actor.id ) continue;
+        if ( cmb.system.knockedOut !== ko ) {
+          cmb.update({ "system.knockedOut": ko });
+        }
+      }
+    }
+  }
+
   const pendingCaptain = changes.flags?.tb2e?.pendingCaptainReassign;
   if ( pendingCaptain?.newCaptainId ) {
     const combat = game.combats?.find(c => c.isConflict);

@@ -285,14 +285,8 @@ test.describe('§20 Conflict: Resolution — major victory (no compromise) outco
     });
   });
 
-  test.fixme(
-    'winner at 100% HP, loser at 0 HP → resolution tab "No Compromise", chat card DOES NOT (gap: missing noCompromise branch in conflict-compromise.hbs)',
-    {
-      annotation: {
-        type: 'issue',
-        description: 'The chat card template `templates/chat/conflict-compromise.hbs` renders `<div class="card-compromise compromise-{{compromise.level}}">{{compromise.label}}</div>` unconditionally when `compromise` is truthy, with NO branch for the winner-took-no-damage case. For a winner at 100% HP, `calculateCompromise` returns level "minor" (percent 1.0 > 0.5), so the card posts "Minor Compromise" contradicting SG pp.74-76 (no compromise is owed when the loser did not reduce the winner\'s disposition). Verified empirically: rendered card markup is `<div class="card-compromise compromise-minor">Minor Compromise</div>`. The RESOLUTION TAB already handles this correctly via `#prepareResolutionContext` L1365 `context.noCompromise = comp.remaining === comp.starting` and panel-resolution.hbs L18-19 which emits `TB2E.Conflict.Compromise.None` ("No Compromise") — that half of the spec passes green. Fix: pass `noCompromise` from `#onResolveConflict` (conflict-panel.mjs L2256-2303) into the chat-card render context, and add a `{{#if noCompromise}}` branch to conflict-compromise.hbs emitting the "No Compromise" localized label with a distinctive class (e.g. `compromise-none`). Once landed, flip `test.fixme` → `test` here — all upstream staging + resolution-tab assertions already pass; the only live failure today is the two chat-card class/label assertions at the end of the test body.'
-      }
-    },
+  test(
+    'winner at 100% HP, loser at 0 HP → resolution tab AND chat card both render "No Compromise"',
     async ({ page }, testInfo) => {
       const tag = `e2e-resolution-victory-${testInfo.parallelIndex}-${Date.now()}`;
       const stamp = Date.now();

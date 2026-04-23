@@ -222,7 +222,7 @@ test.describe('§16 Conflict: Resolve — Attack vs Defend', () => {
     });
   });
 
-  test.fixme(
+  test(
     'Attack vs Defend (versus): attacker wins by margin, loser HP reduced (DH pp.120-127)',
     async ({ page }, testInfo) => {
       const tag = `e2e-resolve-avd-${testInfo.parallelIndex}-${Date.now()}`;

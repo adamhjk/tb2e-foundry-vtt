@@ -1460,6 +1460,10 @@ function _buildRollFlags({ actor, type, key, label, baseDice, poolSize, successe
     ofCourseUsed: false,
     testContext: config.testContext ? {
       isConflict: config.testContext.isConflict ?? null,
+      // `isVersus` is load-bearing for the versus-resolve HP auto-write
+      // path (versus.mjs _executeVersusResolution reads testContext off
+      // each paired roll message to pick the damage/restore target).
+      isVersus: config.testContext.isVersus ?? null,
       spellId: config.testContext.spellId ?? null,
       spellName: config.testContext.spellName ?? null,
       castingSource: config.testContext.castingSource ?? null,
