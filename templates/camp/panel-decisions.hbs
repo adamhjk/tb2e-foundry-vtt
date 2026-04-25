@@ -1,0 +1,129 @@
+{{!-- Decisions tab — survey, fire/dark, watch. SG pp. 91–92. --}}
+<div class="panel-tab-content decisions-tab">
+
+  {{#unless hasCampActor}}
+  <div class="camp-setup-empty">
+    <p>{{localize "TB2E.Camp.Setup.NoCamp"}}</p>
+    <button type="button" class="camp-advance-btn" data-action="switchTab" data-tab="site">
+      <i class="fa-solid fa-arrow-left"></i> {{localize "TB2E.Camp.Back"}}
+    </button>
+  </div>
+  {{else}}
+
+  <section class="camp-decisions-section">
+    <h3 class="camp-decisions-heading">{{localize "TB2E.Camp.Decisions.SurveyHeading"}}</h3>
+    <p class="camp-decisions-hint">{{localize "TB2E.Camp.Decisions.SurveyHint"}}</p>
+    <label class="camp-decisions-check">
+      <input type="checkbox" {{#if campState.survey.performed}}checked{{/if}}
+             {{#unless isGM}}disabled{{/unless}}
+             data-action="toggleSurvey" data-key="performed">
+      {{localize "TB2E.Camp.Decisions.SurveyPerformed"}}
+    </label>
+    {{#if campState.survey.performed}}
+    <ul class="camp-decisions-amenities">
+      <li>
+        <label class="camp-decisions-check{{#if campActor.system.amenities.shelter}} existing{{/if}}">
+          <input type="checkbox"
+                 {{#if campState.survey.shelter}}checked{{/if}}
+                 {{#if campActor.system.amenities.shelter}}checked disabled{{/if}}
+                 {{#unless isGM}}disabled{{/unless}}
+                 data-action="toggleSurvey" data-key="shelter">
+          <i class="fa-solid fa-house"></i>
+          {{localize "TB2E.Camp.Amenity.shelter"}}
+          <span class="camp-decisions-bonus">+1 events roll</span>
+          {{#if campActor.system.amenities.shelter}}<span class="camp-decisions-existing">({{localize "TB2E.Camp.Decisions.Already"}})</span>{{/if}}
+        </label>
+      </li>
+      <li>
+        <label class="camp-decisions-check{{#if campActor.system.amenities.concealment}} existing{{/if}}">
+          <input type="checkbox"
+                 {{#if campState.survey.concealment}}checked{{/if}}
+                 {{#if campActor.system.amenities.concealment}}checked disabled{{/if}}
+                 {{#unless isGM}}disabled{{/unless}}
+                 data-action="toggleSurvey" data-key="concealment">
+          <i class="fa-solid fa-eye-slash"></i>
+          {{localize "TB2E.Camp.Amenity.concealment"}}
+          <span class="camp-decisions-bonus">+1 events roll</span>
+          {{#if campActor.system.amenities.concealment}}<span class="camp-decisions-existing">({{localize "TB2E.Camp.Decisions.Already"}})</span>{{/if}}
+        </label>
+      </li>
+      <li>
+        <label class="camp-decisions-check{{#if campActor.system.amenities.water}} existing{{/if}}">
+          <input type="checkbox"
+                 {{#if campState.survey.water}}checked{{/if}}
+                 {{#if campActor.system.amenities.water}}checked disabled{{/if}}
+                 {{#unless isGM}}disabled{{/unless}}
+                 data-action="toggleSurvey" data-key="water">
+          <i class="fa-solid fa-droplet"></i>
+          {{localize "TB2E.Camp.Amenity.water"}}
+          <span class="camp-decisions-bonus">({{localize "TB2E.Camp.Decisions.NoRollBonus"}})</span>
+          {{#if campActor.system.amenities.water}}<span class="camp-decisions-existing">({{localize "TB2E.Camp.Decisions.Already"}})</span>{{/if}}
+        </label>
+      </li>
+    </ul>
+    {{/if}}
+  </section>
+
+  <section class="camp-decisions-section">
+    <h3 class="camp-decisions-heading">{{localize "TB2E.Camp.Decisions.FireHeading"}}</h3>
+    <div class="camp-decisions-fire">
+      <label class="camp-decisions-radio{{#if (eq campState.fire "lit")}} selected{{/if}}">
+        <input type="radio" name="fire" value="lit"
+               {{#if (eq campState.fire "lit")}}checked{{/if}}
+               {{#unless isGM}}disabled{{/unless}}
+               data-action="setFire">
+        <i class="fa-solid fa-fire"></i>
+        {{localize "TB2E.Camp.Decisions.FireLit"}}
+      </label>
+      <label class="camp-decisions-radio{{#if (eq campState.fire "dark")}} selected{{/if}}">
+        <input type="radio" name="fire" value="dark"
+               {{#if (eq campState.fire "dark")}}checked{{/if}}
+               {{#unless isGM}}disabled{{/unless}}
+               data-action="setFire">
+        <i class="fa-solid fa-moon"></i>
+        {{localize "TB2E.Camp.Decisions.FireDark"}}
+      </label>
+    </div>
+    {{#if (eq campState.fire "dark")}}
+    <p class="camp-decisions-hint dark-camp-hint">
+      <i class="fa-solid fa-circle-info"></i> {{localize "TB2E.Camp.Decisions.DarkCampHint"}}
+    </p>
+    {{/if}}
+  </section>
+
+  <section class="camp-decisions-section">
+    <h3 class="camp-decisions-heading">{{localize "TB2E.Camp.Decisions.WatchHeading"}}</h3>
+    <p class="camp-decisions-hint">{{localize "TB2E.Camp.Decisions.WatchHint"}}</p>
+    {{#if partyChecks.length}}
+    <ul class="camp-decisions-watchers">
+      {{#each partyChecks}}
+      <li>
+        <label class="camp-decisions-check{{#if this.isWatcher}} selected{{/if}}">
+          <input type="checkbox" {{#if this.isWatcher}}checked{{/if}}
+                 {{#unless @root.isGM}}disabled{{/unless}}
+                 data-action="toggleWatcher" data-actor-id="{{this.id}}">
+          <img class="camp-decisions-watcher-img" src="{{this.img}}" alt="{{this.name}}">
+          <span class="camp-decisions-watcher-name">{{this.name}}</span>
+        </label>
+      </li>
+      {{/each}}
+    </ul>
+    {{else}}
+    <p class="camp-decisions-empty">{{localize "TB2E.Camp.Decisions.NoPCs"}}</p>
+    {{/if}}
+  </section>
+
+  <div class="camp-decisions-footer">
+    <button type="button" class="camp-back-btn" data-action="switchTab" data-tab="setup">
+      <i class="fa-solid fa-arrow-left"></i> {{localize "TB2E.Camp.Back"}}
+    </button>
+    {{#if isGM}}
+    <button type="button" class="camp-advance-btn"
+            data-action="advanceTo" data-phase="events">
+      {{localize "TB2E.Camp.Next"}} <i class="fa-solid fa-arrow-right"></i>
+    </button>
+    {{/if}}
+  </div>
+  {{/unless}}
+
+</div>

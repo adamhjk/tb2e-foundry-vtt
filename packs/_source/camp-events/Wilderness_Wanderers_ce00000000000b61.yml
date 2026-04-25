@@ -1,0 +1,18 @@
+_id: ce00000000000b61
+name: 'Wilderness Wanderers'
+img: systems/tb2e/icons/ffffff/transparent/1x1/delapouite/forest-camp.svg
+description: "Scholar's Guide, p. 277 — inner roll for Wilderness result 5-6 (Wandering monsters)"
+formula: '1d6'
+replacement: true
+displayRoll: true
+_key: '!tables!ce00000000000b61'
+flags:
+  tb2e:
+    campEvents:
+      isSubtable: true
+      parentCampType: wilderness
+results:
+  - { _id: ce00000000rb6101, type: document, range: [1, 2], weight: 1, drawn: false, name: 'Dire wolves 1d6 (SG p. 277)', documentUuid: 'Compendium.tb2e.monsters.Actor.a1b2c3d4e5f60007', description: '', img: null, flags: {}, _key: '!tables.results!ce00000000000b61.ce00000000rb6101' }
+  - { _id: ce00000000rb6103, type: document, range: [3, 4], weight: 1, drawn: false, name: 'Gnolls 2d3 (SG p. 277)',      documentUuid: 'Compendium.tb2e.monsters.Actor.a1b2c3d4e5f6000b', description: '', img: null, flags: {}, _key: '!tables.results!ce00000000000b61.ce00000000rb6103' }
+  - { _id: ce00000000rb6105, type: document, range: [5, 5], weight: 1, drawn: false, name: 'Bugbears 1d6 (SG p. 277)',    documentUuid: 'Compendium.tb2e.monsters.Actor.a1b2c3d4e5f60005', description: '', img: null, flags: {}, _key: '!tables.results!ce00000000000b61.ce00000000rb6105' }
+  - { _id: ce00000000rb6106, type: document, range: [6, 6], weight: 1, drawn: false, name: 'Devil boars 1d3 (SG p. 277)', documentUuid: 'Compendium.tb2e.monsters.Actor.a1b2c3d4e5f6001c', description: '', img: null, flags: {}, _key: '!tables.results!ce00000000000b61.ce00000000rb6106' }

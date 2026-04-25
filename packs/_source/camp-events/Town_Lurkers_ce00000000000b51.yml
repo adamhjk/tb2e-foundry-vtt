@@ -1,0 +1,18 @@
+_id: ce00000000000b51
+name: 'Town Lurkers'
+img: systems/tb2e/icons/ffffff/transparent/1x1/delapouite/hut.svg
+description: "Scholar's Guide, p. 274 — inner roll for Squatting result 3 (Late night lurker)"
+formula: '1d6'
+replacement: true
+displayRoll: true
+_key: '!tables!ce00000000000b51'
+flags:
+  tb2e:
+    campEvents:
+      isSubtable: true
+      parentCampType: squatting-in-town
+results:
+  - { _id: ce00000000rb5101, type: document, range: [1, 2], weight: 1, drawn: false, name: 'Ghouls 1d2+1 (SG p. 274)',    documentUuid: 'Compendium.tb2e.monsters.Actor.a1b2c3d4e5f6000a', description: '', img: null, flags: {}, _key: '!tables.results!ce00000000000b51.ce00000000rb5101' }
+  - { _id: ce00000000rb5103, type: document, range: [3, 4], weight: 1, drawn: false, name: 'Strixes 2d6 (SG p. 274)',     documentUuid: 'Compendium.tb2e.monsters.Actor.a1b2c3d4e5f60025', description: '', img: null, flags: {}, _key: '!tables.results!ce00000000000b51.ce00000000rb5103' }
+  - { _id: ce00000000rb5105, type: document, range: [5, 5], weight: 1, drawn: false, name: 'Wererats 1d6 (SG p. 274)',    documentUuid: 'Compendium.tb2e.monsters.Actor.a1b2c3d4e5f60017', description: '', img: null, flags: {}, _key: '!tables.results!ce00000000000b51.ce00000000rb5105' }
+  - { _id: ce00000000rb5106, type: document, range: [6, 6], weight: 1, drawn: false, name: 'Sprikken 1d3 (SG p. 274)',    documentUuid: 'Compendium.tb2e.monsters.Actor.a1b2c3d4e5f60024', description: '', img: null, flags: {}, _key: '!tables.results!ce00000000000b51.ce00000000rb5106' }

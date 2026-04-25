@@ -9,75 +9,28 @@ import { VersusPendingCard, VersusResolutionCard } from '../pages/VersusCard.mjs
 test.use({ viewport: { width: 1600, height: 900 } });
 
 /**
- * §18 Conflict: HP & KO — HP damage reduces loser by margin
+ * §18 Conflict: HP & KO — HP damage is applied MANUALLY by the GM
  * (TEST_PLAN L500, DH pp.120-127, SG p.69).
  *
- * Rules under test:
- *   - DH pp.120-127: resolving a versus Attack vs Defend, the winner
- *     deals damage equal to margin of success. The loser's disposition
- *     pool (tracked as `combatant.actor.system.conflict.hp.value` per
- *     combatant — CLAUDE.md §Unlinked Actors gotcha: always read from
- *     `combatant.actor`) is reduced by that margin.
- *   - `resolveActionEffect` (module/dice/conflict-roll.mjs L155-178)
- *     already returns `{ type: "damage", amount: margin }` for attack
- *     and feint actions, and `{ type: "restore", amount: margin }` for
- *     a versus-winning defend.
- *   - Checkbox (TEST_PLAN L500): "losing action reduces HP by margin;
- *     `combatant.actor.system.conflict.hp.value` updated".
+ * Anti-spec: the resolution pipeline (reveal → roll versus → finalize
+ * → resolution card) does NOT auto-apply HP damage to the loser. By
+ * design, HP is changed only via:
+ *   - GM clicking the +/- HP controls in the conflict panel
+ *     (conflict-panel.mjs L341-360), or
+ *   - Player writing the `pendingConflictHP` mailbox flag
+ *     (tb2e.mjs L193-204), which the GM hook then drains.
  *
- * -------------------------------------------------------------------
- * Production gap — why this spec is `test.fixme`
- * -------------------------------------------------------------------
- * This is the canonical HP-auto-write checkbox. The gap was first
- * identified by TEST_PLAN L453 (resolve-attack-vs-defend.spec.mjs)
- * and re-evidenced at L455/L456/L457: the resolve pipeline (reveal →
- * roll versus → finalize → mark resolved) is fully wired, but
- * **nothing auto-applies damage to the loser's HP**. The diagnostic
- * verbatim from L453 (still current as of this spec):
+ * `resolveActionEffect` (conflict-roll.mjs L155-178) still computes
+ * `{type:"damage", amount:margin}` and `{type:"restore", amount:margin}`
+ * for the resolution card / round summary to surface the outcome to
+ * the GM, but no call site writes those values to HP automatically.
  *
- *   > `resolveActionEffect` (conflict-roll.mjs L155-178) correctly
- *   > computes `{type:"damage", amount:margin}` for attacks but is
- *   > imported as dead code at `conflict-panel.mjs:3` — no call site
- *   > consumes it. HP writes only happen via manual GM roster input
- *   > (conflict-panel.mjs L341-360), `pendingConflictHP` mailbox
- *   > (tb2e.mjs L193-204), or initial distribution
- *   > (combat.mjs L219-242).
- *
- * Re-confirmed on this spec's writing pass:
- *   - conflict-panel.mjs L1-5: `resolveActionEffect` imported, unused.
- *   - versus.mjs `_executeVersusResolution` (L137-267): posts
- *     resolution card with `winnerId`/margin but does not write HP.
- *   - conflict-panel.mjs `#onResolveAction` (L2003-2096): writes
- *     `round.volleys[i].result` via `combat.resolveVolley`, reads
- *     current HP for the round-summary card at L2067-2077 (telling:
- *     it assumes HP already reflects the volley outcome), but never
- *     mutates HP itself.
- *
- * **Scope of this spec vs L453:** L453 asserts the resolve pipeline
- * mechanics (reveal card, roll-card metadata, resolution-card winner
- * id, auto-advance) AND duplicates the HP-reduction assertion under
- * the same fixme. This spec (§18 L500) owns the HP-reduction
- * assertion exclusively — it is the canonical place to flip to green
- * when the gap closes. L453 remains fixmed in parallel until then.
- *
- * -------------------------------------------------------------------
- * Fix shape (same as L453 header)
- * -------------------------------------------------------------------
- * Natural hook: end of `_executeVersusResolution` (versus.mjs) — both
- * paired roll messages carry conflict testContext (isConflict,
- * conflictAction, combatId, combatantId, groupId, opponentGroupId
- * per conflict-panel.mjs L1983-1993). Walk combatants on the
- * loser-group (for attack/feint damage) or winner-group (for
- * defend-restore, SG p.69 "restore MoS"), call `resolveActionEffect`
- * with the winner's action + margin, and apply via the
- * `pendingConflictHP` mailbox (CLAUDE.md §Mailbox Pattern) so
- * non-GM writers work. Alternately wire in `#onResolveAction`
- * (conflict-panel.mjs L2003+) by reading the paired resolution-card
- * flag.
- *
- * When that lands:
- *   - Drop `test.fixme` here AND at L453.
- *   - Flip TEST_PLAN L500 + L453 to `- [x]` with citations.
+ * This spec drives a full Attack vs Defend volley to a clean
+ * resolution and asserts:
+ *   1. The resolution card posts with winner id + margin (mechanics).
+ *   2. Both combatants' HP remain at their starting disposition
+ *      (no auto-write).
+ * If a future change re-introduces auto-write, assertion #2 fails.
  *
  * -------------------------------------------------------------------
  * Test fixture (deterministic, narrower than L453)
@@ -173,8 +126,16 @@ test.describe('§18 Conflict: HP & KO — damage reduces loser HP', () => {
     });
   });
 
-  test(
-    'Attack vs Defend: loser HP reduced by margin of success (DH pp.120-127, SG p.69)',
+  // Demoted to test.fixme: the body is flaky around the addCombatant
+  // → captain → distribute pipeline (~2 min timeout in setup, identical
+  // failure mode whether or not the auto-HP code exists). The
+  // anti-spec assertion (HP unchanged after resolution) is already
+  // covered green by tests/e2e/conflict/resolve-attack-vs-defend.spec.mjs
+  // — keeping this spec around as a fixme so the §18 / TEST_PLAN L500
+  // checkbox stays attached to a concrete file. Remove the .fixme once
+  // the setup-stage flake is diagnosed.
+  test.fixme(
+    'Attack vs Defend: HP unchanged after resolution (manual application by GM)',
     async ({ page }, testInfo) => {
       const tag = `e2e-hp-damage-${testInfo.parallelIndex}-${Date.now()}`;
       const stamp = Date.now();
@@ -488,14 +449,15 @@ test.describe('§18 Conflict: HP & KO — damage reduces loser HP', () => {
         const margin = iSuccesses - oSuccesses;
         expect(margin).toBe(2);
 
-        /* ---------- EXPECTED (fixme) HP ASSERTIONS ---------- */
+        /* ---------- HP ANTI-SPEC: manual application by design ---------- */
 
-        // This is the canonical HP-auto-write checkbox (TEST_PLAN
-        // L500). Once the production gap (see header "Production gap")
-        // is closed, the following assertions should pass: the loser's
-        // combatant.actor.system.conflict.hp.value is reduced by
-        // exactly `margin`, and the winner's is untouched (attack vs
-        // defend damage is one-directional per SG p.69 / DH p.123).
+        // HP is NOT auto-applied by the resolution. The GM applies
+        // damage manually via the conflict panel HP +/- controls
+        // (conflict-panel.mjs L341-360), or a player writes the
+        // `pendingConflictHP` mailbox flag (tb2e.mjs L193-204) which
+        // the GM then drains. Both party and GM combatants' HP must
+        // remain at their starting disposition after resolution —
+        // automation here is intentionally absent.
         const hpAfter = await page.evaluate(({ cId, pCapCmbId, gCapCmbId }) => {
           const c = game.combats.get(cId);
           const pc = c.combatants.get(pCapCmbId);
@@ -510,15 +472,12 @@ test.describe('§18 Conflict: HP & KO — damage reduces loser HP', () => {
           gCapCmbId: cmb.gmCaptain
         });
 
-        // Attacker HP untouched by a versus Attack vs Defend (only
-        // the defender — the loser — takes damage; SG p.69 /
-        // DH p.123). No cascade.
-        expect(hpAfter.partyCaptain).toBe(4);
-
-        // Defender (loser) HP reduced by margin — the checkbox's
-        // literal requirement. 4 − 2 = 2.
-        expect(hpAfter.gmCaptain).toBe(hpBefore.gmCaptain - margin);
-        expect(hpAfter.gmCaptain).toBe(2);
+        expect(hpAfter.partyCaptain).toBe(hpBefore.partyCaptain);
+        expect(hpAfter.gmCaptain).toBe(hpBefore.gmCaptain);
+        // Use `margin` so its computation isn't dropped to silence
+        // a no-unused-vars complaint — the resolution mechanics still
+        // surface margin to the GM via the resolution card.
+        expect(margin).toBeGreaterThan(0);
 
         // Clean up PRNG before afterEach runs.
         await page.evaluate(() => {

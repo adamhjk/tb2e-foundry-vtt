@@ -1,0 +1,315 @@
+_id: ce00000000000a05
+name: 'Squatting in Town Camp Events'
+img: systems/tb2e/icons/ffffff/transparent/1x1/delapouite/hut.svg
+description: "Scholar's Guide, pp. 274–276"
+formula: '3d6'
+replacement: true
+displayRoll: true
+_key: '!tables!ce00000000000a05'
+flags:
+  tb2e:
+    campEvents:
+      campType: squatting-in-town
+results:
+  - _id: ce00000000r50000
+    type: text
+    range: [-99, 1]
+    weight: 1
+    drawn: false
+    name: 'Fire (SG p. 274)'
+    description: ''
+    img: null
+    flags:
+      tb2e:
+        campEvents:
+          isDisaster: true
+          isUnavertable: false
+          avert:
+            allowed: true
+            kind: test
+            skill: survivalist
+            ob: 4
+            notes: 'Watch may spend 1 check to douse the incipient inferno. Site destroyed if not averted.'
+    _key: '!tables.results!ce00000000000a05.ce00000000r50000'
+  - _id: ce00000000r50002
+    type: text
+    range: [2, 2]
+    weight: 1
+    drawn: false
+    name: 'Collapse (SG p. 274)'
+    description: ''
+    img: null
+    flags:
+      tb2e:
+        campEvents:
+          isDisaster: true
+          isUnavertable: false
+          avert:
+            allowed: true
+            kind: test
+            skill: scout
+            ob: 4
+            notes: 'Watch may spend 1 check to drag the group to safety. Structure destroyed regardless.'
+    _key: '!tables.results!ce00000000000a05.ce00000000r50002'
+  - _id: ce00000000r50003
+    type: document
+    range: [3, 3]
+    weight: 1
+    drawn: false
+    name: 'Late night lurker — roll Town Lurkers (SG p. 274)'
+    documentUuid: Compendium.tb2e.camp-events.RollTable.ce00000000000b51
+    description: ''
+    img: null
+    flags:
+      tb2e:
+        campEvents:
+          isDisaster: true
+          isUnavertable: false
+          avert:
+            allowed: true
+            kind: test
+            skill: scout
+            ob: 4
+            notes: 'Watch may spend 1 check to drive off the interlopers.'
+    _key: '!tables.results!ce00000000000a05.ce00000000r50003'
+  - _id: ce00000000r50004
+    type: text
+    range: [4, 4]
+    weight: 1
+    drawn: false
+    name: 'Eviction (SG p. 274)'
+    description: ''
+    img: null
+    flags:
+      tb2e:
+        campEvents:
+          isDisaster: true
+          isUnavertable: false
+          avert:
+            allowed: true
+            kind: test
+            skill: persuader
+            ob: 4
+            notes: 'Watch may spend 1 check to send away the thugs (3x the squatters).'
+    _key: '!tables.results!ce00000000000a05.ce00000000r50004'
+  - _id: ce00000000r50005
+    type: text
+    range: [5, 5]
+    weight: 1
+    drawn: false
+    name: 'Feculence (SG p. 274)'
+    description: ''
+    img: null
+    flags:
+      tb2e:
+        campEvents:
+          isDisaster: false
+    _key: '!tables.results!ce00000000000a05.ce00000000r50005'
+  - _id: ce00000000r50006
+    type: text
+    range: [6, 6]
+    weight: 1
+    drawn: false
+    name: 'Rats (SG p. 274)'
+    description: ''
+    img: null
+    flags:
+      tb2e:
+        campEvents:
+          isDisaster: false
+          avert:
+            allowed: true
+            kind: test
+            skill: hunter
+            ob: 4
+            notes: 'Watch may spend 1 check to avert the theft (item will be stolen otherwise).'
+    _key: '!tables.results!ce00000000000a05.ce00000000r50006'
+  - _id: ce00000000r50007
+    type: text
+    range: [7, 7]
+    weight: 1
+    drawn: false
+    name: 'Decomposing human corpse (SG p. 275)'
+    description: ''
+    img: null
+    flags:
+      tb2e:
+        campEvents:
+          isDisaster: false
+          isPersistent: true
+    _key: '!tables.results!ce00000000000a05.ce00000000r50007'
+  - _id: ce00000000r50008
+    type: text
+    range: [8, 8]
+    weight: 1
+    drawn: false
+    name: 'Drips (SG p. 275)'
+    description: ''
+    img: null
+    flags:
+      tb2e:
+        campEvents:
+          isDisaster: false
+    _key: '!tables.results!ce00000000000a05.ce00000000r50008'
+  - _id: ce00000000r50009
+    type: text
+    range: [9, 9]
+    weight: 1
+    drawn: false
+    name: 'Mold (SG p. 275)'
+    description: ''
+    img: null
+    flags:
+      tb2e:
+        campEvents:
+          isDisaster: false
+    _key: '!tables.results!ce00000000000a05.ce00000000r50009'
+  - _id: ce00000000r5000a
+    type: text
+    range: [10, 10]
+    weight: 1
+    drawn: false
+    name: 'Stench (SG p. 275)'
+    description: ''
+    img: null
+    flags:
+      tb2e:
+        campEvents:
+          isDisaster: false
+    _key: '!tables.results!ce00000000000a05.ce00000000r5000a'
+  - _id: ce00000000r5000b
+    type: document
+    range: [11, 11]
+    weight: 1
+    drawn: false
+    name: 'Dalliance — roll Teen Activity (SG p. 275)'
+    documentUuid: Compendium.tb2e.camp-events.RollTable.ce00000000000b52
+    description: ''
+    img: null
+    flags:
+      tb2e:
+        campEvents:
+          isDisaster: false
+    _key: '!tables.results!ce00000000000a05.ce00000000r5000b'
+  - _id: ce00000000r5000c
+    type: text
+    range: [12, 12]
+    weight: 1
+    drawn: false
+    name: 'Safe camp (SG p. 275)'
+    description: ''
+    img: null
+    flags:
+      tb2e:
+        campEvents:
+          isDisaster: false
+    _key: '!tables.results!ce00000000000a05.ce00000000r5000c'
+  - _id: ce00000000r5000d
+    type: text
+    range: [13, 13]
+    weight: 1
+    drawn: false
+    name: 'Midden (SG p. 275)'
+    description: ''
+    img: null
+    flags:
+      tb2e:
+        campEvents:
+          isDisaster: false
+    _key: '!tables.results!ce00000000000a05.ce00000000r5000d'
+  - _id: ce00000000r5000e
+    type: text
+    range: [14, 14]
+    weight: 1
+    drawn: false
+    name: 'Youth (SG p. 275)'
+    description: ''
+    img: null
+    flags:
+      tb2e:
+        campEvents:
+          isDisaster: false
+    _key: '!tables.results!ce00000000000a05.ce00000000r5000e'
+  - _id: ce00000000r5000f
+    type: document
+    range: [15, 15]
+    weight: 1
+    drawn: false
+    name: 'Eavesdropping — roll Eavesdrop Topic (SG p. 275)'
+    documentUuid: Compendium.tb2e.camp-events.RollTable.ce00000000000b53
+    description: ''
+    img: null
+    flags:
+      tb2e:
+        campEvents:
+          isDisaster: false
+    _key: '!tables.results!ce00000000000a05.ce00000000r5000f'
+  - _id: ce00000000r50010
+    type: text
+    range: [16, 16]
+    weight: 1
+    drawn: false
+    name: 'Allies — Tavern Rumors +1 (SG p. 275)'
+    description: ''
+    img: null
+    flags:
+      tb2e:
+        campEvents:
+          isDisaster: false
+    _key: '!tables.results!ce00000000000a05.ce00000000r50010'
+  - _id: ce00000000r50011
+    type: text
+    range: [17, 17]
+    weight: 1
+    drawn: false
+    name: 'Connection (SG p. 276)'
+    description: ''
+    img: null
+    flags:
+      tb2e:
+        campEvents:
+          isDisaster: false
+    _key: '!tables.results!ce00000000000a05.ce00000000r50011'
+  - _id: ce00000000r50012
+    type: document
+    range: [18, 18]
+    weight: 1
+    drawn: false
+    name: 'Hidden loot — roll Treasure & Valuables 1 (SG p. 276)'
+    documentUuid: Compendium.tb2e.loot-tables.RollTable.lt0000000000000e
+    description: ''
+    img: null
+    flags:
+      tb2e:
+        campEvents:
+          isDisaster: false
+    _key: '!tables.results!ce00000000000a05.ce00000000r50012'
+  - _id: ce00000000r50013
+    type: document
+    range: [19, 19]
+    weight: 1
+    drawn: false
+    name: 'Disembodied eyes — house goblin; see House Goblin Consequence if unfed (SG p. 276)'
+    documentUuid: Compendium.tb2e.camp-events.RollTable.ce00000000000b54
+    description: ''
+    img: null
+    flags:
+      tb2e:
+        campEvents:
+          isDisaster: false
+          isPersistent: true
+    _key: '!tables.results!ce00000000000a05.ce00000000r50013'
+  - _id: ce00000000r50014
+    type: text
+    range: [20, 20]
+    weight: 1
+    drawn: false
+    name: 'The room (SG p. 276)'
+    description: ''
+    img: null
+    flags:
+      tb2e:
+        campEvents:
+          isDisaster: false
+          isPersistent: true
+    _key: '!tables.results!ce00000000000a05.ce00000000r50014'

@@ -1,0 +1,78 @@
+_id: ce00000000000b31
+name: 'Cave Lair Owner'
+img: systems/tb2e/icons/ffffff/transparent/1x1/delapouite/mountain-cave.svg
+description: "Scholar's Guide, p. 270 — inner roll for Natural Caves result 1 (Lair)"
+formula: '1d6'
+replacement: true
+displayRoll: true
+_key: '!tables!ce00000000000b31'
+flags:
+  tb2e:
+    campEvents:
+      isSubtable: true
+      parentCampType: natural-caves
+results:
+  - _id: ce00000000rb3101
+    type: document
+    range: [1, 1]
+    weight: 1
+    drawn: false
+    name: 'Red Dragon (SG p. 270)'
+    documentUuid: Compendium.tb2e.monsters.Actor.a1b2c3d4e5f60010
+    description: ''
+    img: null
+    flags: {}
+    _key: '!tables.results!ce00000000000b31.ce00000000rb3101'
+  - _id: ce00000000rb3102
+    type: document
+    range: [2, 2]
+    weight: 1
+    drawn: false
+    name: 'Black Dragon (SG p. 270)'
+    documentUuid: Compendium.tb2e.monsters.Actor.a1b2c3d4e5f60003
+    description: ''
+    img: null
+    flags: {}
+    _key: '!tables.results!ce00000000000b31.ce00000000rb3102'
+  - _id: ce00000000rb3103
+    type: document
+    range: [3, 3]
+    weight: 1
+    drawn: false
+    name: 'Manticore (SG p. 270)'
+    documentUuid: Compendium.tb2e.monsters.Actor.a1b2c3d4e5f60021
+    description: ''
+    img: null
+    flags: {}
+    _key: '!tables.results!ce00000000000b31.ce00000000rb3103'
+  - _id: ce00000000rb3104
+    type: document
+    range: [4, 4]
+    weight: 1
+    drawn: false
+    name: 'Owlbear (SG p. 270)'
+    documentUuid: Compendium.tb2e.monsters.Actor.a1b2c3d4e5f60023
+    description: ''
+    img: null
+    flags: {}
+    _key: '!tables.results!ce00000000000b31.ce00000000rb3104'
+  - _id: ce00000000rb3105
+    type: text
+    range: [5, 5]
+    weight: 1
+    drawn: false
+    name: 'Linnorm (SG p. 270) — TODO: add monster actor'
+    description: ''
+    img: null
+    flags: {}
+    _key: '!tables.results!ce00000000000b31.ce00000000rb3105'
+  - _id: ce00000000rb3106
+    type: text
+    range: [6, 6]
+    weight: 1
+    drawn: false
+    name: 'Troll bear (SG p. 270) — TODO: add monster actor'
+    description: ''
+    img: null
+    flags: {}
+    _key: '!tables.results!ce00000000000b31.ce00000000rb3106'

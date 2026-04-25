@@ -1,0 +1,301 @@
+_id: ce00000000000a04
+name: 'Outside or Near Town Camp Events'
+img: systems/tb2e/icons/ffffff/transparent/1x1/delapouite/village.svg
+description: "Scholar's Guide, pp. 272–273"
+formula: '3d6'
+replacement: true
+displayRoll: true
+_key: '!tables!ce00000000000a04'
+flags:
+  tb2e:
+    campEvents:
+      campType: outside-town
+results:
+  - _id: ce00000000r40000
+    type: text
+    range: [-99, 1]
+    weight: 1
+    drawn: false
+    name: 'Brushfire or blizzard (SG p. 272)'
+    description: ''
+    img: null
+    flags:
+      tb2e:
+        campEvents:
+          isDisaster: true
+          isUnavertable: false
+          avert:
+            allowed: true
+            kind: test
+            skill: scout
+            ob: 4
+            notes: 'Watch may spend 1 check to sound the alarm and get the group to safety.'
+    _key: '!tables.results!ce00000000000a04.ce00000000r40000'
+  - _id: ce00000000r40002
+    type: text
+    range: [2, 2]
+    weight: 1
+    drawn: false
+    name: 'Bad weather (SG p. 272)'
+    description: ''
+    img: null
+    flags:
+      tb2e:
+        campEvents:
+          isDisaster: true
+          isUnavertable: false
+          avert:
+            allowed: true
+            kind: test
+            skill: survivalist
+            ob: 4
+            notes: 'Requires shelter AND watch. Watch may spend 1 check to get everyone under cover.'
+    _key: '!tables.results!ce00000000000a04.ce00000000r40002'
+  - _id: ce00000000r40003
+    type: document
+    range: [3, 3]
+    weight: 1
+    drawn: false
+    name: 'Raiding beasts — roll Near-Town Raiders (SG p. 272)'
+    documentUuid: Compendium.tb2e.camp-events.RollTable.ce00000000000b41
+    description: ''
+    img: null
+    flags:
+      tb2e:
+        campEvents:
+          isDisaster: true
+          isUnavertable: false
+          avert:
+            allowed: true
+            kind: conflict
+            notes: 'Watch may spend 1 check to kill or drive off the raiders.'
+    _key: '!tables.results!ce00000000000a04.ce00000000r40003'
+  - _id: ce00000000r40004
+    type: text
+    range: [4, 4]
+    weight: 1
+    drawn: false
+    name: 'Bandits 2d6 (SG p. 272)'
+    description: ''
+    img: null
+    flags:
+      tb2e:
+        campEvents:
+          isDisaster: true
+          isUnavertable: false
+          avert:
+            allowed: true
+            kind: conflict
+            notes: 'Watch may spend 1 check to test or engage in a conflict to keep the peace.'
+    _key: '!tables.results!ce00000000000a04.ce00000000r40004'
+  - _id: ce00000000r40005
+    type: text
+    range: [5, 5]
+    weight: 1
+    drawn: false
+    name: 'Trespassing (SG p. 272)'
+    description: ''
+    img: null
+    flags:
+      tb2e:
+        campEvents:
+          isDisaster: true
+          isUnavertable: false
+          avert:
+            allowed: true
+            kind: test
+            skill: persuader
+            ob: 4
+            notes: 'Watch may spend 1 check to test to see off the authorities.'
+    _key: '!tables.results!ce00000000000a04.ce00000000r40005'
+  - _id: ce00000000r40006
+    type: text
+    range: [6, 6]
+    weight: 1
+    drawn: false
+    name: 'Traps (SG p. 272)'
+    description: ''
+    img: null
+    flags:
+      tb2e:
+        campEvents:
+          isDisaster: true
+          isUnavertable: false
+          avert:
+            allowed: true
+            kind: test
+            skill: hunter
+            ob: 4
+            notes: 'Watch may spend 1 check to detect or disarm the snares.'
+    _key: '!tables.results!ce00000000000a04.ce00000000r40006'
+  - _id: ce00000000r40007
+    type: text
+    range: [7, 7]
+    weight: 1
+    drawn: false
+    name: 'Fouled stream (SG p. 272)'
+    description: ''
+    img: null
+    flags:
+      tb2e:
+        campEvents:
+          isDisaster: false
+    _key: '!tables.results!ce00000000000a04.ce00000000r40007'
+  - _id: ce00000000r40008
+    type: text
+    range: [8, 8]
+    weight: 1
+    drawn: false
+    name: 'Barren lands (SG p. 273)'
+    description: ''
+    img: null
+    flags:
+      tb2e:
+        campEvents:
+          isDisaster: false
+    _key: '!tables.results!ce00000000000a04.ce00000000r40008'
+  - _id: ce00000000r40009
+    type: text
+    range: [9, 9]
+    weight: 1
+    drawn: false
+    name: 'Hanged man (SG p. 273)'
+    description: ''
+    img: null
+    flags:
+      tb2e:
+        campEvents:
+          isDisaster: false
+    _key: '!tables.results!ce00000000000a04.ce00000000r40009'
+  - _id: ce00000000r4000a
+    type: text
+    range: [10, 10]
+    weight: 1
+    drawn: false
+    name: 'Burial mound (SG p. 273)'
+    description: ''
+    img: null
+    flags:
+      tb2e:
+        campEvents:
+          isDisaster: false
+    _key: '!tables.results!ce00000000000a04.ce00000000r4000a'
+  - _id: ce00000000r4000b
+    type: text
+    range: [11, 12]
+    weight: 1
+    drawn: false
+    name: 'Safe camp (SG p. 273)'
+    description: ''
+    img: null
+    flags:
+      tb2e:
+        campEvents:
+          isDisaster: false
+    _key: '!tables.results!ce00000000000a04.ce00000000r4000b'
+  - _id: ce00000000r4000d
+    type: text
+    range: [13, 13]
+    weight: 1
+    drawn: false
+    name: 'Midden (SG p. 273)'
+    description: ''
+    img: null
+    flags:
+      tb2e:
+        campEvents:
+          isDisaster: false
+    _key: '!tables.results!ce00000000000a04.ce00000000r4000d'
+  - _id: ce00000000r4000e
+    type: text
+    range: [14, 14]
+    weight: 1
+    drawn: false
+    name: 'Sympathetic children (SG p. 273)'
+    description: ''
+    img: null
+    flags:
+      tb2e:
+        campEvents:
+          isDisaster: false
+    _key: '!tables.results!ce00000000000a04.ce00000000r4000e'
+  - _id: ce00000000r4000f
+    type: document
+    range: [15, 15]
+    weight: 1
+    drawn: false
+    name: 'Fell off the wagon — roll Gear subtable (SG p. 273)'
+    documentUuid: Compendium.tb2e.loot-tables.RollTable.lt00000000000008
+    description: ''
+    img: null
+    flags:
+      tb2e:
+        campEvents:
+          isDisaster: false
+    _key: '!tables.results!ce00000000000a04.ce00000000r4000f'
+  - _id: ce00000000r40010
+    type: text
+    range: [16, 16]
+    weight: 1
+    drawn: false
+    name: 'Domesticated beasts (SG p. 273)'
+    description: ''
+    img: null
+    flags:
+      tb2e:
+        campEvents:
+          isDisaster: false
+    _key: '!tables.results!ce00000000000a04.ce00000000r40010'
+  - _id: ce00000000r40011
+    type: text
+    range: [17, 17]
+    weight: 1
+    drawn: false
+    name: 'Fruit-bearing trees (SG p. 273)'
+    description: ''
+    img: null
+    flags:
+      tb2e:
+        campEvents:
+          isDisaster: false
+    _key: '!tables.results!ce00000000000a04.ce00000000r40011'
+  - _id: ce00000000r40012
+    type: text
+    range: [18, 18]
+    weight: 1
+    drawn: false
+    name: 'Abandoned structure (SG p. 273)'
+    description: ''
+    img: null
+    flags:
+      tb2e:
+        campEvents:
+          isDisaster: false
+    _key: '!tables.results!ce00000000000a04.ce00000000r40012'
+  - _id: ce00000000r40013
+    type: text
+    range: [19, 19]
+    weight: 1
+    drawn: false
+    name: 'Friendly camp — Tavern Rumors (SG p. 273)'
+    description: ''
+    img: null
+    flags:
+      tb2e:
+        campEvents:
+          isDisaster: false
+    _key: '!tables.results!ce00000000000a04.ce00000000r40013'
+  - _id: ce00000000r40014
+    type: text
+    range: [20, 20]
+    weight: 1
+    drawn: false
+    name: 'Shelter (SG p. 273)'
+    description: ''
+    img: null
+    flags:
+      tb2e:
+        campEvents:
+          isDisaster: false
+          isPersistent: true
+    _key: '!tables.results!ce00000000000a04.ce00000000r40014'

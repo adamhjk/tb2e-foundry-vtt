@@ -1,0 +1,18 @@
+_id: ce00000000000b41
+name: 'Near-Town Raiders'
+img: systems/tb2e/icons/ffffff/transparent/1x1/delapouite/village.svg
+description: "Scholar's Guide, p. 272 — inner roll for Outside Town result 3 (Raiding beasts)"
+formula: '1d6'
+replacement: true
+displayRoll: true
+_key: '!tables!ce00000000000b41'
+flags:
+  tb2e:
+    campEvents:
+      isSubtable: true
+      parentCampType: outside-town
+results:
+  - { _id: ce00000000rb4101, type: document, range: [1, 2], weight: 1, drawn: false, name: 'Dragefolk raiders 2d6 (SG p. 272)', documentUuid: 'Compendium.tb2e.monsters.Actor.a1b2c3d4e5f60009', description: '', img: null, flags: {}, _key: '!tables.results!ce00000000000b41.ce00000000rb4101' }
+  - { _id: ce00000000rb4103, type: document, range: [3, 4], weight: 1, drawn: false, name: 'Gnolls 2d3 (SG p. 272)',           documentUuid: 'Compendium.tb2e.monsters.Actor.a1b2c3d4e5f6000b', description: '', img: null, flags: {}, _key: '!tables.results!ce00000000000b41.ce00000000rb4103' }
+  - { _id: ce00000000rb4105, type: document, range: [5, 5], weight: 1, drawn: false, name: 'Hobgoblins 2d6 (SG p. 272)',       documentUuid: 'Compendium.tb2e.monsters.Actor.a1b2c3d4e5f6000f', description: '', img: null, flags: {}, _key: '!tables.results!ce00000000000b41.ce00000000rb4105' }
+  - { _id: ce00000000rb4106, type: document, range: [6, 6], weight: 1, drawn: false, name: 'Bugbears 2d3 (SG p. 272)',         documentUuid: 'Compendium.tb2e.monsters.Actor.a1b2c3d4e5f60005', description: '', img: null, flags: {}, _key: '!tables.results!ce00000000000b41.ce00000000rb4106' }

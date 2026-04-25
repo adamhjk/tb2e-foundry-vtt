@@ -11,6 +11,20 @@ This is a game system for the Foundry Virtual Tabletop for Torchbearer 2nd Editi
 - If a deviation is requested, add a code comment noting **what** was changed, **why**, and the **book/page** of the original rule, so the deviation is visible in review and future audits.
 - If the rules are ambiguous or contradictory between books, stop and ask the user which interpretation to use rather than guessing.
 
+## Development Flow
+
+Every mechanic-touching change follows the same five steps, in order:
+
+1. **Read the rules.** Pull the relevant pages into `../reference/rules/<topic>/` using the reference extractor if they aren't already extracted, and read them end-to-end before writing any code or plan.
+2. **Plan.** Produce a plan that cites the book and page(s), identifies the files to touch, and names the existing patterns/utilities to reuse. Get user agreement on the plan before coding.
+3. **Write code.** Implement the plan. Cite the book and page in code comments where the rule is non-obvious or the mapping to code is not one-to-one.
+4. **Write e2e tests.** Add Playwright specs under `tests/e2e/<area>/` that verify both (a) the code works end-to-end through the UI and (b) the rules from step 1 are actually followed — not just that the code runs, but that the outcomes match the book. Each spec's header comment should list the book/page it is enforcing.
+5. **Run the tests.** Tests must pass before the change is considered done.
+
+**When a test fails because the code and the rules disagree, the rules win.** Fix the code to match the book, not the test to match the code. If the rules themselves appear ambiguous or wrong, stop and ask the user — do not silently choose an interpretation.
+
+**When a test fails because the UI is broken, fix the UI — never work around it in the test.** If Playwright reports a control isn't visible, enabled, or clickable, a human user can't use it either. `click({ force: true })` / `check({ force: true })` / `setChecked({ force: true })` / `evaluate(() => el.click())` hide real UX bugs: they make the test green while production is broken. The test's purpose is to prove a human can drive the feature — forcing the interaction defeats that. Diagnose the actual issue (missing CSS, overlapping element, disabled state) and fix the underlying cause. Before writing custom UI, look at existing working patterns in the codebase (e.g. character sheet checkboxes, conflict panel radios, grind tracker inputs) and reuse their style conventions.
+
 ## Architecture
 
 - **Target**: Foundry VTT v13
@@ -134,6 +148,7 @@ Foundry VTT restricts document updates to owners. The mailbox pattern works as f
 | Conflict HP | `flags.tb2e.pendingConflictHP` | Actor | `updateActor` (in `tb2e.mjs`) |
 | Light extinguish | `flags.tb2e.pendingLightExtinguish` | Actor | `updateActor` (in `tb2e.mjs`) |
 | Grind condition apply | `flags.tb2e.pendingGrindApply` | Actor | `updateActor` (in `tb2e.mjs`) |
+| Camp action (spend / share / memorize / purify / avert / instinct) | `flags.tb2e.pendingCampAction` | Actor | `updateActor` → `processCampActionMailbox` (in `module/applications/camp/mailbox.mjs`) |
 
 ## Unlinked Actors (Synthetic Tokens)
 

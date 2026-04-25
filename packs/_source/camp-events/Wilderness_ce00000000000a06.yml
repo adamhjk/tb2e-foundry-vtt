@@ -1,0 +1,303 @@
+_id: ce00000000000a06
+name: 'Wilderness Camp Events'
+img: systems/tb2e/icons/ffffff/transparent/1x1/delapouite/forest-camp.svg
+description: "Scholar's Guide, pp. 276–278"
+formula: '3d6'
+replacement: true
+displayRoll: true
+_key: '!tables!ce00000000000a06'
+flags:
+  tb2e:
+    campEvents:
+      campType: wilderness
+results:
+  - _id: ce00000000r60000
+    type: text
+    range: [-99, 0]
+    weight: 1
+    drawn: false
+    name: 'Sinkhole (SG p. 276)'
+    description: ''
+    img: null
+    flags:
+      tb2e:
+        campEvents:
+          isDisaster: true
+          isUnavertable: false
+          avert:
+            allowed: true
+            kind: test
+            skill: scout
+            ob: 4
+            notes: 'Watch may spend 1 check to get the group to safety.'
+    _key: '!tables.results!ce00000000000a06.ce00000000r60000'
+  - _id: ce00000000r60001
+    type: text
+    range: [1, 1]
+    weight: 1
+    drawn: false
+    name: 'Evil weather (SG p. 276)'
+    description: ''
+    img: null
+    flags:
+      tb2e:
+        campEvents:
+          isDisaster: true
+          isUnavertable: false
+          avert:
+            allowed: true
+            kind: test
+            skill: survivalist
+            ob: 4
+            notes: 'Watch may spend 1 check to save gear and animals.'
+    _key: '!tables.results!ce00000000000a06.ce00000000r60001'
+  - _id: ce00000000r60002
+    type: text
+    range: [2, 2]
+    weight: 1
+    drawn: false
+    name: 'Falls in the woods (SG p. 276)'
+    description: ''
+    img: null
+    flags:
+      tb2e:
+        campEvents:
+          isDisaster: true
+          isUnavertable: false
+          avert:
+            allowed: true
+            kind: test
+            type: ability
+            skill: health
+            ob: 5
+            notes: 'A tree, rock, or meteor falls on camp. One character makes an Ob 5 Health test; watch may help. Failure: injured, or a twist (pack destroyed).'
+    _key: '!tables.results!ce00000000000a06.ce00000000r60002'
+  - _id: ce00000000r60003
+    type: text
+    range: [3, 3]
+    weight: 1
+    drawn: false
+    name: 'Gnits (SG p. 277)'
+    description: ''
+    img: null
+    flags:
+      tb2e:
+        campEvents:
+          isDisaster: true
+          isUnavertable: true
+          avert:
+            allowed: false
+            notes: 'No watch can save you against the gnits. Camp ends.'
+    _key: '!tables.results!ce00000000000a06.ce00000000r60003'
+  - _id: ce00000000r60004
+    type: text
+    range: [4, 4]
+    weight: 1
+    drawn: false
+    name: 'Wildfire (SG p. 277)'
+    description: ''
+    img: null
+    flags:
+      tb2e:
+        campEvents:
+          isDisaster: true
+          isUnavertable: false
+          avert:
+            allowed: true
+            kind: test
+            skill: survivalist
+            ob: 4
+            notes: 'Watch may spend 1 check to save packs and gear. Area unusable as future camp.'
+    _key: '!tables.results!ce00000000000a06.ce00000000r60004'
+  - _id: ce00000000r60005
+    type: document
+    range: [5, 6]
+    weight: 1
+    drawn: false
+    name: 'Wandering monsters — roll Wilderness Wanderers (SG p. 277)'
+    documentUuid: Compendium.tb2e.camp-events.RollTable.ce00000000000b61
+    description: ''
+    img: null
+    flags:
+      tb2e:
+        campEvents:
+          isDisaster: true
+          isUnavertable: false
+          avert:
+            allowed: true
+            kind: conflict
+            notes: 'Watch may spend 1 check to test or engage in a conflict to avert the attack.'
+    _key: '!tables.results!ce00000000000a06.ce00000000r60005'
+  - _id: ce00000000r60007
+    type: text
+    range: [7, 7]
+    weight: 1
+    drawn: false
+    name: 'Foul water (SG p. 277)'
+    description: ''
+    img: null
+    flags:
+      tb2e:
+        campEvents:
+          isDisaster: false
+    _key: '!tables.results!ce00000000000a06.ce00000000r60007'
+  - _id: ce00000000r60008
+    type: text
+    range: [8, 8]
+    weight: 1
+    drawn: false
+    name: 'Lost (SG p. 277)'
+    description: ''
+    img: null
+    flags:
+      tb2e:
+        campEvents:
+          isDisaster: false
+    _key: '!tables.results!ce00000000000a06.ce00000000r60008'
+  - _id: ce00000000r60009
+    type: text
+    range: [9, 9]
+    weight: 1
+    drawn: false
+    name: 'Vermin (SG p. 277)'
+    description: ''
+    img: null
+    flags:
+      tb2e:
+        campEvents:
+          isDisaster: false
+    _key: '!tables.results!ce00000000000a06.ce00000000r60009'
+  - _id: ce00000000r6000a
+    type: text
+    range: [10, 10]
+    weight: 1
+    drawn: false
+    name: 'Wear and tear (SG p. 277)'
+    description: ''
+    img: null
+    flags:
+      tb2e:
+        campEvents:
+          isDisaster: false
+    _key: '!tables.results!ce00000000000a06.ce00000000r6000a'
+  - _id: ce00000000r6000b
+    type: text
+    range: [11, 12]
+    weight: 1
+    drawn: false
+    name: 'Safe camp (SG p. 277)'
+    description: ''
+    img: null
+    flags:
+      tb2e:
+        campEvents:
+          isDisaster: false
+    _key: '!tables.results!ce00000000000a06.ce00000000r6000b'
+  - _id: ce00000000r6000d
+    type: text
+    range: [13, 13]
+    weight: 1
+    drawn: false
+    name: 'Lovely view (SG p. 277)'
+    description: ''
+    img: null
+    flags:
+      tb2e:
+        campEvents:
+          isDisaster: false
+    _key: '!tables.results!ce00000000000a06.ce00000000r6000d'
+  - _id: ce00000000r6000e
+    type: text
+    range: [14, 14]
+    weight: 1
+    drawn: false
+    name: 'Verdant wilderness (SG p. 277)'
+    description: ''
+    img: null
+    flags:
+      tb2e:
+        campEvents:
+          isDisaster: false
+    _key: '!tables.results!ce00000000000a06.ce00000000r6000e'
+  - _id: ce00000000r6000f
+    type: text
+    range: [15, 15]
+    weight: 1
+    drawn: false
+    name: 'Sweet water (SG p. 277)'
+    description: ''
+    img: null
+    flags:
+      tb2e:
+        campEvents:
+          isDisaster: false
+          isPersistent: true
+    _key: '!tables.results!ce00000000000a06.ce00000000r6000f'
+  - _id: ce00000000r60010
+    type: text
+    range: [16, 16]
+    weight: 1
+    drawn: false
+    name: 'Game trail (SG p. 277)'
+    description: ''
+    img: null
+    flags:
+      tb2e:
+        campEvents:
+          isDisaster: false
+    _key: '!tables.results!ce00000000000a06.ce00000000r60010'
+  - _id: ce00000000r60011
+    type: text
+    range: [17, 17]
+    weight: 1
+    drawn: false
+    name: 'Greens (SG p. 277)'
+    description: ''
+    img: null
+    flags:
+      tb2e:
+        campEvents:
+          isDisaster: false
+    _key: '!tables.results!ce00000000000a06.ce00000000r60011'
+  - _id: ce00000000r60012
+    type: text
+    range: [18, 18]
+    weight: 1
+    drawn: false
+    name: 'Out of the wind (SG p. 278)'
+    description: ''
+    img: null
+    flags:
+      tb2e:
+        campEvents:
+          isDisaster: false
+          isPersistent: true
+    _key: '!tables.results!ce00000000000a06.ce00000000r60012'
+  - _id: ce00000000r60013
+    type: document
+    range: [19, 19]
+    weight: 1
+    drawn: false
+    name: 'Fellow traveler — roll Fellow Traveler Class (SG p. 278)'
+    documentUuid: Compendium.tb2e.camp-events.RollTable.ce00000000000b62
+    description: ''
+    img: null
+    flags:
+      tb2e:
+        campEvents:
+          isDisaster: false
+    _key: '!tables.results!ce00000000000a06.ce00000000r60013'
+  - _id: ce00000000r60014
+    type: text
+    range: [20, 20]
+    weight: 1
+    drawn: false
+    name: 'Standing stones (SG p. 278)'
+    description: ''
+    img: null
+    flags:
+      tb2e:
+        campEvents:
+          isDisaster: false
+          isPersistent: true
+    _key: '!tables.results!ce00000000000a06.ce00000000r60014'

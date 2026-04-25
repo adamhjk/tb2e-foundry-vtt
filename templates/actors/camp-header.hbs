@@ -1,0 +1,23 @@
+{{!-- Camp actor header — mirrors npc-header/monster-header layout. --}}
+<header class="camp-header">
+  <div class="portrait">
+    <img src="{{actor.img}}" data-action="editImage" data-edit="img" alt="{{actor.name}}">
+  </div>
+  <div class="header-fields">
+    <input type="text" name="name" value="{{actor.name}}"
+           placeholder="{{localize 'TB2E.Camp.Sheet.NamePlaceholder'}}" class="character-name">
+    <div class="header-summary">
+      <span class="summary-line">
+        <i class="fa-solid fa-campground"></i>
+        {{typeLabel}}
+        {{#if system.isDwarvenMade}} · {{localize "TB2E.Camp.Sheet.DwarvenMadeLabel"}}{{/if}}
+      </span>
+      {{#if system.disastersThisAdventure}}
+      <span class="summary-line header-disasters" title="{{localize 'TB2E.Camp.Sheet.DisastersThisAdventure'}}">
+        <i class="fa-solid fa-triangle-exclamation"></i>
+        {{system.disastersThisAdventure}}
+      </span>
+      {{/if}}
+    </div>
+  </div>
+</header>

@@ -1,0 +1,20 @@
+_id: ce00000000000b11
+name: 'Corrosion Location'
+img: systems/tb2e/icons/ffffff/transparent/1x1/delapouite/stone-bust.svg
+description: "Scholar's Guide, p. 267 — inner roll for Ancient Ruins result 7 (Strange corrosion)"
+formula: '1d6'
+replacement: true
+displayRoll: true
+_key: '!tables!ce00000000000b11'
+flags:
+  tb2e:
+    campEvents:
+      isSubtable: true
+      parentCampType: ancient-ruins
+results:
+  - { _id: ce00000000rb1101, type: text, range: [1, 1], weight: 1, drawn: false, name: 'Torso (SG p. 267)',            description: '', img: null, flags: {}, _key: '!tables.results!ce00000000000b11.ce00000000rb1101' }
+  - { _id: ce00000000rb1102, type: text, range: [2, 2], weight: 1, drawn: false, name: 'Belt (SG p. 267)',             description: '', img: null, flags: {}, _key: '!tables.results!ce00000000000b11.ce00000000rb1102' }
+  - { _id: ce00000000rb1103, type: text, range: [3, 3], weight: 1, drawn: false, name: 'Head (SG p. 267)',             description: '', img: null, flags: {}, _key: '!tables.results!ce00000000000b11.ce00000000rb1103' }
+  - { _id: ce00000000rb1104, type: text, range: [4, 4], weight: 1, drawn: false, name: 'Pouch (SG p. 267)',            description: '', img: null, flags: {}, _key: '!tables.results!ce00000000000b11.ce00000000rb1104' }
+  - { _id: ce00000000rb1105, type: text, range: [5, 5], weight: 1, drawn: false, name: 'Pack or satchel (SG p. 267)',  description: '', img: null, flags: {}, _key: '!tables.results!ce00000000000b11.ce00000000rb1105' }
+  - { _id: ce00000000rb1106, type: text, range: [6, 6], weight: 1, drawn: false, name: 'Feet (SG p. 267)',             description: '', img: null, flags: {}, _key: '!tables.results!ce00000000000b11.ce00000000rb1106' }

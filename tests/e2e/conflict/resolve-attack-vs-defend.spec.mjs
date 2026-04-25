@@ -224,7 +224,7 @@ test.describe('§16 Conflict: Resolve — Attack vs Defend', () => {
   });
 
   test(
-    'Attack vs Defend (versus): attacker wins by margin, loser HP reduced (DH pp.120-127)',
+    'Attack vs Defend (versus): attacker wins by margin, HP unchanged (manual GM application; DH pp.120-127)',
     async ({ page }, testInfo) => {
       const tag = `e2e-resolve-avd-${testInfo.parallelIndex}-${Date.now()}`;
       const stamp = Date.now();
@@ -639,12 +639,12 @@ test.describe('§16 Conflict: Resolve — Attack vs Defend', () => {
         }, resolutionMessageId);
         expect(resFlags).toEqual({ type: 'resolution', winnerId: captainId });
 
-        // --- EXPECTED (fixme) HP ASSERTIONS ------------------------------
-        // This is the production gap TEST_PLAN L453 calls for. Once the
-        // fix lands (see header "Fix shape"), the loser's actor HP
-        // should drop by `margin`, and the winner's HP should be
-        // untouched (no cascade — attack-vs-defend damage is
-        // one-directional).
+        // --- HP ANTI-SPEC: manual application by design ------------------
+        // The resolution pipeline does NOT auto-apply HP damage. The GM
+        // applies the margin manually via the panel HP controls
+        // (conflict-panel.mjs L341-360). Both combatants' HP must stay
+        // at their starting disposition (4 each) after the resolution
+        // card posts.
         const hpAfter = await page.evaluate(({ capA, mA }) => {
           return {
             captainA: game.actors.get(capA)?.system.conflict?.hp?.value ?? null,
@@ -652,7 +652,10 @@ test.describe('§16 Conflict: Resolve — Attack vs Defend', () => {
           };
         }, { capA: captainId, mA: monAId });
         expect(hpAfter.captainA).toBe(4);
-        expect(hpAfter.monA).toBe(4 - margin);
+        expect(hpAfter.monA).toBe(4);
+        // `margin` is still computed and surfaced via the resolution
+        // card; it just isn't auto-written to HP.
+        expect(margin).toBeGreaterThan(0);
 
         /* ---------- Mark volley resolved ---------- */
 

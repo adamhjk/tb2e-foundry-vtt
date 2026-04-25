@@ -1,0 +1,18 @@
+_id: ce00000000000b53
+name: 'Eavesdrop Topic'
+img: systems/tb2e/icons/ffffff/transparent/1x1/delapouite/hut.svg
+description: "Scholar's Guide, p. 275 — inner roll for Squatting result 15 (Eavesdropping)"
+formula: '1d6'
+replacement: true
+displayRoll: true
+_key: '!tables!ce00000000000b53'
+flags:
+  tb2e:
+    campEvents:
+      isSubtable: true
+      parentCampType: squatting-in-town
+results:
+  - { _id: ce00000000rb5301, type: text, range: [1, 2], weight: 1, drawn: false, name: 'A cult (SG p. 275)',                 description: '', img: null, flags: {}, _key: '!tables.results!ce00000000000b53.ce00000000rb5301' }
+  - { _id: ce00000000rb5303, type: text, range: [3, 4], weight: 1, drawn: false, name: 'A local secret (SG p. 275)',         description: '', img: null, flags: {}, _key: '!tables.results!ce00000000000b53.ce00000000rb5303' }
+  - { _id: ce00000000rb5305, type: text, range: [5, 5], weight: 1, drawn: false, name: 'A political matter (SG p. 275)',     description: '', img: null, flags: {}, _key: '!tables.results!ce00000000000b53.ce00000000rb5305' }
+  - { _id: ce00000000rb5306, type: text, range: [6, 6], weight: 1, drawn: false, name: "One of the town's guilds (SG p. 275)",description: '', img: null, flags: {}, _key: '!tables.results!ce00000000000b53.ce00000000rb5306' }

@@ -1,0 +1,68 @@
+{{!-- Camp Panel — Main Wrapper --}}
+<div class="camp-panel-wrapper camp-panel-shell">
+
+  {{!-- Header bar --}}
+  <div class="panel-header-bar">
+    <div class="panel-header-info">
+      <h2 class="panel-camp-title">
+        <i class="fa-solid fa-campground"></i>
+        {{localize "TB2E.CampPanel.Title"}}
+      </h2>
+    </div>
+    {{#if isGM}}
+      {{#if campState.active}}
+      <button type="button" class="camp-header-reset-btn" data-action="cancelCamp"
+              title="{{localize 'TB2E.Camp.Reset.Tooltip'}}">
+        <i class="fa-solid fa-rotate-left"></i> {{localize "TB2E.Camp.Reset.Button"}}
+      </button>
+      {{/if}}
+    {{/if}}
+  </div>
+
+  {{!-- Tab strip --}}
+  <nav class="panel-tabs">
+    {{#each tabs}}
+    <button type="button"
+            class="panel-tab {{this.state}} {{#if this.isActive}}active{{/if}}"
+            data-action="switchTab" data-tab="{{this.id}}">
+      <span class="tab-state-icon">
+        {{#if (eq this.state "completed")}}<i class="fa-solid fa-check"></i>{{/if}}
+        {{#if (eq this.state "current")}}<i class="fa-solid fa-play"></i>{{/if}}
+        {{#if (eq this.state "upcoming")}}<i class="fa-regular fa-circle"></i>{{/if}}
+      </span>
+      <i class="{{this.icon}}"></i>
+      {{this.label}}
+    </button>
+    {{/each}}
+  </nav>
+
+  {{!-- Tab content --}}
+  <div class="panel-content">
+    {{#if isSiteTab}}
+    {{> "systems/tb2e/templates/camp/panel-site.hbs"}}
+    {{/if}}
+
+    {{#if isSetupTab}}
+    {{> "systems/tb2e/templates/camp/panel-setup.hbs"}}
+    {{/if}}
+
+    {{#if isDecisionsTab}}
+    {{> "systems/tb2e/templates/camp/panel-decisions.hbs"}}
+    {{/if}}
+
+    {{#if isEventsTab}}
+    {{> "systems/tb2e/templates/camp/panel-events.hbs"}}
+    {{/if}}
+
+    {{#if isStrategyTab}}
+    {{> "systems/tb2e/templates/camp/panel-strategy.hbs"}}
+    {{/if}}
+
+    {{#if isBreakTab}}
+    {{> "systems/tb2e/templates/camp/panel-break.hbs"}}
+    {{/if}}
+  </div>
+
+  {{!-- Roster strip --}}
+  {{> "systems/tb2e/templates/camp/panel-roster.hbs"}}
+</div>

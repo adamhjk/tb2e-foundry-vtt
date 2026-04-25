@@ -1,0 +1,103 @@
+{{!-- Camp actor body — SG pp. 90–96. Persistent site state. --}}
+<section class="camp-body scrollable">
+
+  {{!-- Identity --}}
+  <fieldset>
+    <legend><i class="fa-solid fa-map-location-dot"></i> {{localize "TB2E.Camp.Sheet.SiteLegend"}}</legend>
+    <div class="field-grid">
+      <div class="field-pair">
+        <label>{{localize "TB2E.Camp.Sheet.TypeLabel"}}</label>
+        <select name="system.type" {{#unless isGM}}disabled{{/unless}}>
+          {{#each typeOptions}}
+          <option value="{{this.key}}" {{#if this.selected}}selected{{/if}}>{{this.label}}</option>
+          {{/each}}
+        </select>
+      </div>
+      <div class="field-pair">
+        <label>{{localize "TB2E.Camp.Sheet.DefaultDangerLabel"}}</label>
+        <select name="system.defaultDanger" {{#unless isGM}}disabled{{/unless}}>
+          {{#each dangerOptions}}
+          <option value="{{this.key}}" {{#if this.selected}}selected{{/if}}>{{this.label}}</option>
+          {{/each}}
+        </select>
+      </div>
+    </div>
+    <label class="camp-sheet-inline-check">
+      <input type="checkbox" name="system.isDwarvenMade" {{#if system.isDwarvenMade}}checked{{/if}}
+             {{#unless isGM}}disabled{{/unless}}>
+      {{localize "TB2E.Camp.Sheet.DwarvenMadeLabel"}}
+      <span class="hint">{{localize "TB2E.Camp.Sheet.DwarvenMadeHint"}}</span>
+    </label>
+  </fieldset>
+
+  {{!-- Amenities --}}
+  <fieldset>
+    <legend><i class="fa-solid fa-house"></i> {{localize "TB2E.Camp.Sheet.AmenitiesHeading"}}</legend>
+    <p class="hint">{{localize "TB2E.Camp.Sheet.AmenitiesHint"}}</p>
+    <div class="camp-sheet-amenities">
+      <button type="button" class="camp-sheet-amenity{{#if system.amenities.shelter}} active{{/if}}"
+              data-action="toggleAmenity" data-amenity="shelter" {{#unless isGM}}disabled{{/unless}}>
+        <i class="fa-solid fa-house"></i> {{localize "TB2E.Camp.Amenity.shelter"}}
+      </button>
+      <button type="button" class="camp-sheet-amenity{{#if system.amenities.concealment}} active{{/if}}"
+              data-action="toggleAmenity" data-amenity="concealment" {{#unless isGM}}disabled{{/unless}}>
+        <i class="fa-solid fa-eye-slash"></i> {{localize "TB2E.Camp.Amenity.concealment"}}
+      </button>
+      <button type="button" class="camp-sheet-amenity{{#if system.amenities.water}} active{{/if}}"
+              data-action="toggleAmenity" data-amenity="water" {{#unless isGM}}disabled{{/unless}}>
+        <i class="fa-solid fa-droplet"></i> {{localize "TB2E.Camp.Amenity.water"}}
+      </button>
+    </div>
+  </fieldset>
+
+  {{!-- Disasters --}}
+  <fieldset>
+    <legend><i class="fa-solid fa-triangle-exclamation"></i> {{localize "TB2E.Camp.Sheet.DisastersHeading"}}</legend>
+    <div class="camp-sheet-disasters-row">
+      <label class="field-pair">
+        <span>{{localize "TB2E.Camp.Sheet.DisastersThisAdventure"}}</span>
+        <input type="number" name="system.disastersThisAdventure" value="{{system.disastersThisAdventure}}"
+               min="0" {{#unless isGM}}readonly{{/unless}}>
+      </label>
+      {{#if isGM}}
+      <button type="button" class="camp-sheet-reset-btn" data-action="resetDisasters"
+              title="{{localize 'TB2E.Camp.Sheet.ResetDisastersTitle'}}">
+        <i class="fa-solid fa-rotate-left"></i> {{localize "TB2E.Camp.Sheet.ResetDisasters"}}
+      </button>
+      {{/if}}
+    </div>
+  </fieldset>
+
+  {{!-- Visit history --}}
+  <fieldset>
+    <legend><i class="fa-solid fa-clock-rotate-left"></i> {{localize "TB2E.Camp.Sheet.VisitsHeading"}}</legend>
+    {{#if visits.length}}
+    <ul class="camp-sheet-visits">
+      {{#each visits}}
+      <li class="camp-sheet-visit camp-sheet-visit--{{this.outcome}}">
+        <span class="camp-sheet-visit-outcome">{{this.outcomeLabel}}</span>
+        {{#if this.when}}<span class="camp-sheet-visit-when">{{this.when}}</span>{{/if}}
+        {{#if this.disasterLabel}}<span class="camp-sheet-visit-disaster">{{this.disasterLabel}}</span>{{/if}}
+        {{#if this.notes}}<span class="camp-sheet-visit-notes">{{this.notes}}</span>{{/if}}
+        {{#if @root.isGM}}
+        <button type="button" class="camp-sheet-visit-remove" data-action="removeVisit" data-index="{{this.idx}}"
+                title="{{localize 'TB2E.Camp.Sheet.RemoveVisit'}}">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+        {{/if}}
+      </li>
+      {{/each}}
+    </ul>
+    {{else}}
+    <p class="hint">{{localize "TB2E.Camp.Sheet.NoVisits"}}</p>
+    {{/if}}
+  </fieldset>
+
+  {{!-- Notes --}}
+  <fieldset>
+    <legend><i class="fa-solid fa-feather"></i> {{localize "TB2E.Camp.Sheet.NotesHeading"}}</legend>
+    <textarea name="system.notes" rows="4" class="camp-sheet-notes"
+              {{#unless isGM}}readonly{{/unless}}>{{system.notes}}</textarea>
+  </fieldset>
+
+</section>

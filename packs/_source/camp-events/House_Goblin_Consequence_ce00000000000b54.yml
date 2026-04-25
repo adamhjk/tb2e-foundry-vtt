@@ -1,0 +1,17 @@
+_id: ce00000000000b54
+name: 'House Goblin Consequence'
+img: systems/tb2e/icons/ffffff/transparent/1x1/delapouite/hut.svg
+description: "Scholar's Guide, p. 276 — inner roll if the house goblin is not fed"
+formula: '1d6'
+replacement: true
+displayRoll: true
+_key: '!tables!ce00000000000b54'
+flags:
+  tb2e:
+    campEvents:
+      isSubtable: true
+      parentCampType: squatting-in-town
+results:
+  - { _id: ce00000000rb5401, type: text, range: [1, 4], weight: 1, drawn: false, name: 'Disturbed sleep — +1 Ob recover exhausted, sick or injured (SG p. 276)', description: '', img: null, flags: {}, _key: '!tables.results!ce00000000000b54.ce00000000rb5401' }
+  - { _id: ce00000000rb5405, type: text, range: [5, 5], weight: 1, drawn: false, name: 'Steals an object from you (SG p. 276)',                                  description: '', img: null, flags: {}, _key: '!tables.results!ce00000000000b54.ce00000000rb5405' }
+  - { _id: ce00000000rb5406, type: text, range: [6, 6], weight: 1, drawn: false, name: 'Revokes its friendship and disappears (SG p. 276)',                       description: '', img: null, flags: {}, _key: '!tables.results!ce00000000000b54.ce00000000rb5406' }

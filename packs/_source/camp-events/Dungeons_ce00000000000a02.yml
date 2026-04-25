@@ -1,0 +1,309 @@
+_id: ce00000000000a02
+name: 'Dungeons Camp Events'
+img: systems/tb2e/icons/ffffff/transparent/1x1/delapouite/cave-entrance.svg
+description: "Scholar's Guide, pp. 268–269"
+formula: '3d6'
+replacement: true
+displayRoll: true
+_key: '!tables!ce00000000000a02'
+flags:
+  tb2e:
+    campEvents:
+      campType: dungeons
+results:
+  - _id: ce00000000r20000
+    type: text
+    range: [-99, 0]
+    weight: 1
+    drawn: false
+    name: 'Flood (SG p. 268)'
+    description: ''
+    img: null
+    flags:
+      tb2e:
+        campEvents:
+          isDisaster: true
+          isUnavertable: false
+          avert:
+            allowed: true
+            kind: test
+            skill: survivalist
+            ob: 4
+            notes: 'Watch may make tests to get to safety or save packs and gear.'
+    _key: '!tables.results!ce00000000000a02.ce00000000r20000'
+  - _id: ce00000000r20001
+    type: text
+    range: [1, 1]
+    weight: 1
+    drawn: false
+    name: 'Roof or floor collapses (SG p. 268)'
+    description: ''
+    img: null
+    flags:
+      tb2e:
+        campEvents:
+          isDisaster: true
+          isUnavertable: false
+          avert:
+            allowed: true
+            kind: test
+            skill: survivalist
+            ob: 4
+            notes: 'Watch may spend 1 check to lead the group to safety.'
+    _key: '!tables.results!ce00000000000a02.ce00000000r20001'
+  - _id: ce00000000r20002
+    type: text
+    range: [2, 2]
+    weight: 1
+    drawn: false
+    name: 'Foul vapors (SG p. 268)'
+    description: ''
+    img: null
+    flags:
+      tb2e:
+        campEvents:
+          isDisaster: true
+          isUnavertable: true
+          avert:
+            allowed: false
+            notes: 'No watch will save you. Camp ends as you flee choking.'
+    _key: '!tables.results!ce00000000000a02.ce00000000r20002'
+  - _id: ce00000000r20003
+    type: document
+    range: [3, 3]
+    weight: 1
+    drawn: false
+    name: 'Monsters attack — roll Dungeon Interlopers (SG p. 268)'
+    documentUuid: Compendium.tb2e.camp-events.RollTable.ce00000000000b21
+    description: ''
+    img: null
+    flags:
+      tb2e:
+        campEvents:
+          isDisaster: true
+          isUnavertable: false
+          avert:
+            allowed: true
+            kind: conflict
+            notes: 'Watch may spend 1 check to test or engage in a conflict to avert.'
+    _key: '!tables.results!ce00000000000a02.ce00000000r20003'
+  - _id: ce00000000r20004
+    type: document
+    range: [4, 4]
+    weight: 1
+    drawn: false
+    name: 'Curiosity — roll Dungeon Curiosity (SG p. 268)'
+    documentUuid: Compendium.tb2e.camp-events.RollTable.ce00000000000b22
+    description: ''
+    img: null
+    flags:
+      tb2e:
+        campEvents:
+          isDisaster: true
+          isUnavertable: false
+          avert:
+            allowed: true
+            kind: test
+            skill: persuader
+            ob: 4
+            notes: 'Watch may spend 1 check to trick or drive away the creature.'
+    _key: '!tables.results!ce00000000000a02.ce00000000r20004'
+  - _id: ce00000000r20005
+    type: text
+    range: [5, 5]
+    weight: 1
+    drawn: false
+    name: 'Vermin (SG p. 268)'
+    description: ''
+    img: null
+    flags:
+      tb2e:
+        campEvents:
+          isDisaster: false
+    _key: '!tables.results!ce00000000000a02.ce00000000r20005'
+  - _id: ce00000000r20006
+    type: text
+    range: [6, 6]
+    weight: 1
+    drawn: false
+    name: 'Offal (SG p. 268)'
+    description: ''
+    img: null
+    flags:
+      tb2e:
+        campEvents:
+          isDisaster: false
+    _key: '!tables.results!ce00000000000a02.ce00000000r20006'
+  - _id: ce00000000r20007
+    type: text
+    range: [7, 7]
+    weight: 1
+    drawn: false
+    name: 'Breakage (SG p. 268)'
+    description: ''
+    img: null
+    flags:
+      tb2e:
+        campEvents:
+          isDisaster: false
+    _key: '!tables.results!ce00000000000a02.ce00000000r20007'
+  - _id: ce00000000r20008
+    type: text
+    range: [8, 8]
+    weight: 1
+    drawn: false
+    name: 'Dust (SG p. 268)'
+    description: ''
+    img: null
+    flags:
+      tb2e:
+        campEvents:
+          isDisaster: false
+    _key: '!tables.results!ce00000000000a02.ce00000000r20008'
+  - _id: ce00000000r20009
+    type: text
+    range: [9, 9]
+    weight: 1
+    drawn: false
+    name: 'Wear and tear (SG p. 268)'
+    description: ''
+    img: null
+    flags:
+      tb2e:
+        campEvents:
+          isDisaster: false
+    _key: '!tables.results!ce00000000000a02.ce00000000r20009'
+  - _id: ce00000000r2000a
+    type: text
+    range: [10, 11]
+    weight: 1
+    drawn: false
+    name: 'Safe camp (SG p. 269)'
+    description: ''
+    img: null
+    flags:
+      tb2e:
+        campEvents:
+          isDisaster: false
+    _key: '!tables.results!ce00000000000a02.ce00000000r2000a'
+  - _id: ce00000000r2000c
+    type: text
+    range: [12, 12]
+    weight: 1
+    drawn: false
+    name: 'Clear water (SG p. 269)'
+    description: ''
+    img: null
+    flags:
+      tb2e:
+        campEvents:
+          isDisaster: false
+    _key: '!tables.results!ce00000000000a02.ce00000000r2000c'
+  - _id: ce00000000r2000d
+    type: text
+    range: [13, 13]
+    weight: 1
+    drawn: false
+    name: 'Luck — 2D coins, Pack 1 (SG p. 269)'
+    description: ''
+    img: null
+    flags:
+      tb2e:
+        campEvents:
+          isDisaster: false
+    _key: '!tables.results!ce00000000000a02.ce00000000r2000d'
+  - _id: ce00000000r2000e
+    type: text
+    range: [14, 14]
+    weight: 1
+    drawn: false
+    name: 'Fungus (SG p. 269)'
+    description: ''
+    img: null
+    flags:
+      tb2e:
+        campEvents:
+          isDisaster: false
+    _key: '!tables.results!ce00000000000a02.ce00000000r2000e'
+  - _id: ce00000000r2000f
+    type: document
+    range: [15, 15]
+    weight: 1
+    drawn: false
+    name: 'Gear — roll Gear subtable (SG p. 269)'
+    documentUuid: Compendium.tb2e.loot-tables.RollTable.lt00000000000008
+    description: ''
+    img: null
+    flags:
+      tb2e:
+        campEvents:
+          isDisaster: false
+    _key: '!tables.results!ce00000000000a02.ce00000000r2000f'
+  - _id: ce00000000r20010
+    type: text
+    range: [16, 16]
+    weight: 1
+    drawn: false
+    name: 'Connections (SG p. 269)'
+    description: ''
+    img: null
+    flags:
+      tb2e:
+        campEvents:
+          isDisaster: false
+    _key: '!tables.results!ce00000000000a02.ce00000000r20010'
+  - _id: ce00000000r20011
+    type: document
+    range: [17, 17]
+    weight: 1
+    drawn: false
+    name: 'Treasure — roll Treasure & Valuables 1 (SG p. 269)'
+    documentUuid: Compendium.tb2e.loot-tables.RollTable.lt0000000000000e
+    description: ''
+    img: null
+    flags:
+      tb2e:
+        campEvents:
+          isDisaster: false
+    _key: '!tables.results!ce00000000000a02.ce00000000r20011'
+  - _id: ce00000000r20012
+    type: text
+    range: [18, 18]
+    weight: 1
+    drawn: false
+    name: 'Antiquity (SG p. 269)'
+    description: ''
+    img: null
+    flags:
+      tb2e:
+        campEvents:
+          isDisaster: false
+    _key: '!tables.results!ce00000000000a02.ce00000000r20012'
+  - _id: ce00000000r20013
+    type: document
+    range: [19, 19]
+    weight: 1
+    drawn: false
+    name: 'Etchings — roll Tome of Ancient Lore (SG p. 269)'
+    documentUuid: Compendium.tb2e.loot-tables.RollTable.lt00000000000007
+    description: ''
+    img: null
+    flags:
+      tb2e:
+        campEvents:
+          isDisaster: false
+    _key: '!tables.results!ce00000000000a02.ce00000000r20013'
+  - _id: ce00000000r20014
+    type: document
+    range: [20, 20]
+    weight: 1
+    drawn: false
+    name: 'Death grip — roll Magic subtable (SG p. 269)'
+    documentUuid: Compendium.tb2e.loot-tables.RollTable.lt0000000000000a
+    description: ''
+    img: null
+    flags:
+      tb2e:
+        campEvents:
+          isDisaster: false
+    _key: '!tables.results!ce00000000000a02.ce00000000r20014'

@@ -1,5 +1,7 @@
-{{!-- tb2e loot draw card — golden amber treatment, chain trace, terminal drops --}}
-<div class="tb2e-chat-card card-accent--amber loot-card">
+{{!-- tb2e draw card — golden amber treatment, chain trace, terminal drops.
+     Shared between loot-tables and camp-events packs — kindCfg (label + icon)
+     is provided by TB2ELootTable._toLootMessage. --}}
+<div class="tb2e-chat-card card-accent--amber loot-card loot-card--{{kind}}">
   <div class="card-header">
     <img class="card-portrait" src="{{table.img}}" alt="{{table.name}}">
     <div class="card-info">
@@ -8,7 +10,7 @@
       <span class="card-subtitle">{{table.pageRef}}</span>
       {{/if}}
       <span class="card-label">
-        <i class="fa-solid fa-coins"></i> {{localize "TB2E.Loot.Draw"}}
+        <i class="{{labelIcon}}"></i> {{localize labelKey}}
       </span>
     </div>
   </div>
@@ -71,6 +73,6 @@
   </div>
 
   <div class="card-banner banner-amber">
-    <i class="fa-solid fa-sack-dollar"></i> {{localize "TB2E.Loot.Booty"}}
+    <i class="{{bannerIcon}}"></i> {{localize bannerKey}}
   </div>
 </div>

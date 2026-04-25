@@ -1,0 +1,205 @@
+/* ============================================ */
+/*  Camp Sheet                                   */
+/* ============================================ */
+
+/* Camp Header — follows the npc/monster-header convention: small portrait,
+   name input, summary line. No over-sized image dominating the top. */
+
+.tb2e.sheet.camp .camp-header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.75rem 1rem;
+  background: var(--tb-bg-raised);
+  border-bottom: 2px solid var(--tb-amber, var(--tb-steel));
+  position: relative;
+  flex-shrink: 0;
+}
+
+.tb2e.sheet.camp .camp-header::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at 30% 50%, rgba(200, 155, 60, 0.08) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.tb2e.sheet.camp .camp-header .portrait img {
+  border-color: var(--tb-amber, var(--tb-steel));
+}
+
+.tb2e.sheet.camp .camp-header .portrait img:hover {
+  border-color: var(--tb-amber-glow, var(--tb-steel-bright));
+}
+
+.tb2e.sheet.camp .camp-header .header-summary {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  font-size: 0.85rem;
+  color: var(--tb-text-dim);
+  margin-top: 0.25rem;
+}
+
+.tb2e.sheet.camp .camp-header .summary-line i {
+  margin-right: 0.25rem;
+  color: var(--tb-amber, var(--tb-steel));
+}
+
+.tb2e.sheet.camp .camp-header .header-disasters {
+  color: var(--tb-red, #c13a3a);
+}
+
+/* Camp Body — scrollable, fieldset-based sections. */
+
+.tb2e.sheet.camp .camp-body {
+  padding: 1rem;
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+}
+
+/* Amenities strip — horizontal chips. */
+.tb2e.sheet.camp .camp-sheet-amenities {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+.tb2e.sheet.camp .camp-sheet-amenity {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0.35rem 0.7rem;
+  background: var(--tb-bg-surface);
+  border: 1px solid var(--tb-border);
+  border-radius: var(--tb-radius);
+  font-size: 0.85rem;
+  color: var(--tb-text-dim);
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s, border-color 0.15s;
+}
+
+.tb2e.sheet.camp .camp-sheet-amenity:hover:not(:disabled) {
+  border-color: var(--tb-amber, var(--tb-steel-bright));
+  color: var(--tb-text-bright);
+}
+
+.tb2e.sheet.camp .camp-sheet-amenity.active {
+  background: var(--tb-amber, var(--tb-steel));
+  color: var(--tb-bg-darkest, #1a1a1a);
+  border-color: var(--tb-amber, var(--tb-steel));
+}
+
+.tb2e.sheet.camp .camp-sheet-amenity:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+/* Disasters row — counter + reset button inline. */
+.tb2e.sheet.camp .camp-sheet-disasters-row {
+  display: flex;
+  align-items: flex-end;
+  gap: 0.75rem;
+}
+
+.tb2e.sheet.camp .camp-sheet-disasters-row input[type="number"] {
+  max-width: 5rem;
+}
+
+.tb2e.sheet.camp .camp-sheet-reset-btn {
+  background: transparent;
+  border: 1px solid var(--tb-border);
+  color: var(--tb-text-dim);
+  border-radius: var(--tb-radius);
+  padding: 0.35rem 0.65rem;
+  cursor: pointer;
+  font-size: 0.85rem;
+}
+
+.tb2e.sheet.camp .camp-sheet-reset-btn:hover {
+  border-color: var(--tb-amber, var(--tb-steel-bright));
+  color: var(--tb-text-bright);
+}
+
+/* Visit history list. */
+.tb2e.sheet.camp .camp-sheet-visits {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.tb2e.sheet.camp .camp-sheet-visit {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.35rem 0.55rem;
+  background: var(--tb-bg-surface);
+  border-left: 3px solid var(--tb-border);
+  border-radius: var(--tb-radius);
+  font-size: 0.85rem;
+}
+
+.tb2e.sheet.camp .camp-sheet-visit--safe     { border-left-color: var(--tb-green, #6e8b3d); }
+.tb2e.sheet.camp .camp-sheet-visit--disaster { border-left-color: var(--tb-amber, #c89b3c); }
+.tb2e.sheet.camp .camp-sheet-visit--broken   { border-left-color: var(--tb-red, #c13a3a); }
+
+.tb2e.sheet.camp .camp-sheet-visit-outcome {
+  font-family: var(--tb-font-heading);
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--tb-text-body);
+}
+
+.tb2e.sheet.camp .camp-sheet-visit-when,
+.tb2e.sheet.camp .camp-sheet-visit-notes {
+  color: var(--tb-text-faint);
+  font-style: italic;
+}
+
+.tb2e.sheet.camp .camp-sheet-visit-remove {
+  margin-left: auto;
+  background: transparent;
+  border: none;
+  color: var(--tb-text-faint);
+  cursor: pointer;
+  padding: 0.1rem 0.3rem;
+}
+
+.tb2e.sheet.camp .camp-sheet-visit-remove:hover {
+  color: var(--tb-red, #c13a3a);
+}
+
+/* Inline checkbox label (dwarven-made toggle). */
+.tb2e.sheet.camp .camp-sheet-inline-check {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+  font-size: 0.9rem;
+  color: var(--tb-text-body);
+}
+
+.tb2e.sheet.camp .camp-sheet-inline-check input[type="checkbox"] {
+  appearance: auto;
+  width: 14px; height: 14px;
+  margin: 0;
+}
+
+.tb2e.sheet.camp .camp-sheet-inline-check .hint {
+  color: var(--tb-text-faint);
+  font-size: 0.8rem;
+  font-style: italic;
+}
+
+/* Notes textarea — full width, reasonable height. */
+.tb2e.sheet.camp .camp-sheet-notes {
+  width: 100%;
+  min-height: 5rem;
+  resize: vertical;
+}

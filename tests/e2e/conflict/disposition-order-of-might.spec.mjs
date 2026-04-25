@@ -8,99 +8,32 @@ import { RollChatCard } from '../pages/RollChatCard.mjs';
 test.use({ viewport: { width: 1600, height: 900 } });
 
 /**
- * §13 Conflict: Disposition — Order of Might (SG p.80, p.171-174).
+ * §13 Conflict: Disposition — Order of Might does NOT apply to disposition
+ * (SG p.80, p.171-174).
  *
  * SG p.80 "The Greater the Might, the More You Hurt":
- *   "When two opponents with different Might ratings are engaged in a
- *   kill, capture or drive off conflict, the one with the higher Might
- *   has a serious advantage. They have a +1s bonus per point of Might
- *   greater than their opponent for all successful tests in these
+ *   "your Might grants +1s per point of Might greater than your opponent's
+ *   for all successful or tied actions in kill, capture, and drive off
  *   conflicts."
  *
- * The key phrase is "all successful tests in these conflicts" — i.e.,
- * every post-success test rolled during a kill/capture/driveOff
- * conflict. The disposition test (DH pp.120-122, rolled once per team
- * at the start of the conflict to set that team's HP total) is such a
- * test — it is the first roll inside the conflict, and nothing in the
- * rule carves it out from the "all successful tests" scope.
+ * SG p.174 reiterates: "+1s bonus per point of Might greater than their
+ * opponent for all successful tests in these conflicts."
  *
- * -------------------------------------------------------------------
- * Expected production behavior (per SG p.80)
- * -------------------------------------------------------------------
- *   - Party (Might M_ours) vs Monster side (Might M_theirs), Kill.
- *   - Let delta = max(M_ours - M_theirs, 0).
- *   - When the party captain rolls disposition, `contextModifiers`
- *     includes an Order of Might bonus of `+<delta>s` (type: "success",
- *     timing: "post", label "Order of Might +Ns").
- *   - `_handleDispositionRoll` applies postSuccessMods to
- *     `finalSuccesses` (tb2e-roll.mjs L1681-1687), so the stored
- *     disposition total is `baseSuccesses + delta + dispositionAbility`.
- *   - The disadvantaged side gets no such bonus (delta = 0 by clamp).
+ * The bonus applies to successful or tied ACTIONS — i.e., the volley
+ * actions during the conflict (attack, defend, feint, maneuver). The
+ * disposition test sets each team's HP before any actions are taken; it
+ * is not itself an action and is not gated on "success or tie" against
+ * an opponent. RAW: no Order of Might bonus on the disposition roll.
  *
- * -------------------------------------------------------------------
- * Current production behavior (the gap this spec encodes)
- * -------------------------------------------------------------------
- * `computeOrderModifier` exists (module/dice/conflict-roll.mjs L312-345)
- * and correctly returns a `+<delta>s` success modifier for
- * MIGHT_CONFLICT_TYPES={"kill","capture","driveOff"} — but it is ONLY
- * consumed from `ConflictPanel.#onRollConflictAction`
- * (conflict-panel.mjs L1927-1933), i.e., the volley action rolls in
- * the resolve phase.
+ * This spec is an anti-spec: it pins the production behavior so a future
+ * change cannot quietly re-add the bonus to disposition. The volley path
+ * (conflict-panel.mjs #onRollConflictAction) is where `computeOrderModifier`
+ * legitimately fires; the disposition path (#onRollDisposition) must not.
  *
- * The disposition roll dispatcher `ConflictPanel.#onRollDisposition`
- * (conflict-panel.mjs L1582-1653) builds its own `contextModifiers`
- * array (L1615) but only adds the monster group-help dice bonus
- * (L1616-1632). It never calls `computeOrderModifier`. So the
- * disposition total for a Kill conflict with a Might advantage ends
- * up `successes + dispositionAbility` — unchanged from a non-Might
- * conflict — which is the bug this fixme is guarding.
- *
- * Fix shape (mirrors the volley path at conflict-panel.mjs L1927-1933):
- *
- *   const opponentGroupId = Array.from(combat.groups)
- *     .find(g => g.id !== groupId)?.id;
- *   const orderMod = computeOrderModifier({
- *     conflictType: combat.system.conflictType,
- *     ourGroupId: groupId,
- *     opponentGroupId,
- *     combat
- *   });
- *   if ( orderMod ) contextModifiers.push(orderMod);
- *
- * (Plus the matching import at conflict-panel.mjs L4.)
- *
- * -------------------------------------------------------------------
- * Test fixture (deterministic)
- * -------------------------------------------------------------------
- *   Party side:
- *     - Captain: character Might=5, fighter=3, health=4.
- *       (Adventurers default to Might 3 per character.mjs L86.)
- *     - Member: default character.
- *   Monster side:
- *     - Captain: Kobold (Might=1, per packs/_source/monsters/Kobold_…yml).
- *     - Member: another Kobold.
- *   Kill conflict. PRNG stubbed to 0.001 → every d6 rolls 6.
- *
- *   Delta = 5 - 1 = 4 → +4s Order of Might on the party's roll.
- *   Base successes from fighter=3: 3. Plus +4s (Order of Might): 7.
- *   Plus health=4: disposition total = 7 + 4 = 11.
- *
- *   Current (buggy) total: 3 + 4 = 7 (no +4s applied).
- *
- * -------------------------------------------------------------------
- * Why the spec is a single `test.fixme`, not an anti-spec
- * -------------------------------------------------------------------
- * Checking the test plan (TEST_PLAN.md L393), the checkbox is phrased
- * positively: "team with higher Might bonus receives +1s per point
- * advantage (SG p.80; see `computeOrderModifier`)". An anti-spec that
- * only asserts the absence of the bonus would green up the checkbox
- * on a broken implementation and hide the bug. A `test.fixme` that
- * encodes the expected behavior surfaces the gap and fails closed
- * when the fix lands, making it trivial to remove the fixme.
- *
- * Guard removal: when `#onRollDisposition` is patched to invoke
- * `computeOrderModifier` + push the modifier into `contextModifiers`,
- * drop the `test.fixme` here and flip TEST_PLAN.md L393 to `[x]`.
+ * Fixture: Kill conflict, party captain Might=5 / fighter=3 / health=4
+ * vs two Kobolds (Might=1). PRNG all-6s → fighter=3 rolls 3 successes.
+ * Expected disposition total = 3 (successes) + 4 (health) = 7.
+ * Buggy behavior would give 3 + 4 (Might delta) + 4 = 11.
  */
 
 const MONSTER_PACK_ID = 'tb2e.monsters';
@@ -197,7 +130,7 @@ test.describe('§13 Conflict: Disposition — Order of Might', () => {
   });
 
   test(
-    'Kill conflict: party with higher Might gets +1s per point on disposition roll',
+    'Kill conflict: Order of Might is NOT applied to the disposition roll',
     async ({ page }, testInfo) => {
       const tag = `e2e-disp-oom-${testInfo.parallelIndex}-${Date.now()}`;
       const stamp = Date.now();
@@ -214,8 +147,10 @@ test.describe('§13 Conflict: Disposition — Order of Might', () => {
       try {
         // Arrange — Might-advantaged party vs two Kobolds (Might 1).
         // Party captain fighter=3 (all-6s → 3 base successes), health=4.
-        // Party captain Might=5 → delta=4 vs Kobolds' Might=1.
-        // Expected disposition = 3 + 4 (Order of Might) + 4 (health) = 11.
+        // Party captain Might=5; delta to Kobolds = 4. RAW: Order of Might
+        // does NOT apply to disposition (SG p.80 — "successful or tied
+        // actions" is volley-action wording).
+        // Expected disposition = 3 (successes) + 4 (health) = 7.
         const captainId = await createCaptainCharacter(page, {
           name: charAName, tag, fighter: 3, health: 4, might: 5
         });
@@ -284,11 +219,12 @@ test.describe('§13 Conflict: Disposition — Order of Might', () => {
         // `computeOrderModifier` (conflict-roll.mjs L185, L316-320).
         await panel.selectConflictType('kill');
 
-        // Pre-flight sanity: at this point `computeOrderModifier` already
-        // returns a +4s mod if invoked. Prove the function would produce
-        // the expected bonus so that when the implementation gap is
-        // closed, we know the plumbing — not the calculation — is all
-        // that needs to change.
+        // Pre-flight sanity: `computeOrderModifier` itself still returns
+        // the +4s mod when invoked directly — the function is correct, it
+        // just must not be wired into the disposition-roll path. This
+        // assertion guards against accidental regression in the helper
+        // (versus a future change that erroneously re-wires it into
+        // #onRollDisposition).
         const expectedMod = await page.evaluate(
           async ({ cId, gId }) => {
             const combat = game.combats.get(cId);
@@ -345,26 +281,21 @@ test.describe('§13 Conflict: Disposition — Order of Might', () => {
         const card = new RollChatCard(page);
         await card.expectPresent();
 
-        // --- EXPECTED (fixme) ASSERTIONS ---------------------------------
-        // These will fail against current source, which is the point of
-        // the fixme. When `#onRollDisposition` pushes the Order-of-Might
-        // modifier into `contextModifiers`, all four should pass.
-
-        // The disposition card's modifier list contains the Order of
-        // Might bonus, with the localized label from lang/en.json L502
-        // ("Order of Might +Ns") and a +4s value.
+        // The disposition card's modifier list must NOT contain an Order
+        // of Might entry — the bonus belongs on volley actions, not on
+        // the disposition test (SG p.80).
         const modsOnCard = await page.evaluate(() => {
           const msg = game.messages.contents.at(-1);
-          return msg?.flags?.tb2e?.allModifiers ?? msg?.flags?.tb2e?.modifiers
-            ?? msg?.flags?.tb2e?.postSuccessMods ?? [];
+          return [
+            ...(msg?.flags?.tb2e?.roll?.modifiers ?? []),
+            ...(msg?.flags?.tb2e?.postSuccessMods ?? [])
+          ];
         });
         const orderEntry = modsOnCard.find((m) =>
           typeof m.label === 'string'
             && m.label.includes('Order of Might')
         );
-        expect(orderEntry).toBeTruthy();
-        expect(orderEntry.value).toBe(4);
-        expect(orderEntry.type).toBe('success');
+        expect(orderEntry).toBeUndefined();
 
         await card.clickFinalize();
 
@@ -375,14 +306,14 @@ test.describe('§13 Conflict: Disposition — Order of Might', () => {
           }
         });
 
-        // Disposition total with Order of Might: 3 base successes + 4
-        // Order of Might + 4 health = 11.
+        // Disposition total without Order of Might: 3 base successes + 4
+        // (health) = 7.
         await expect
           .poll(() => page.evaluate(({ cId, gId }) => {
             const c = game.combats.get(cId);
             return c?.system.groupDispositions?.[gId]?.rolled ?? null;
           }, { cId: combatId, gId: partyGroupId }), { timeout: 10_000 })
-          .toBe(11);
+          .toBe(7);
       } finally {
         await cleanupTaggedActors(page, tag);
       }

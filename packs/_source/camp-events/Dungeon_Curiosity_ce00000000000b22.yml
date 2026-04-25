@@ -1,0 +1,18 @@
+_id: ce00000000000b22
+name: 'Dungeon Curiosity'
+img: systems/tb2e/icons/ffffff/transparent/1x1/delapouite/cave-entrance.svg
+description: "Scholar's Guide, p. 268 — inner roll for Dungeons result 4 (Curiosity)"
+formula: '1d6'
+replacement: true
+displayRoll: true
+_key: '!tables!ce00000000000b22'
+flags:
+  tb2e:
+    campEvents:
+      isSubtable: true
+      parentCampType: dungeons
+results:
+  - { _id: ce00000000rb2201, type: document, range: [1, 1], weight: 1, drawn: false, name: 'Black Dragon (SG p. 268)',   documentUuid: 'Compendium.tb2e.monsters.Actor.a1b2c3d4e5f60003', description: '', img: null, flags: {}, _key: '!tables.results!ce00000000000b22.ce00000000rb2201' }
+  - { _id: ce00000000rb2202, type: document, range: [2, 2], weight: 1, drawn: false, name: 'Troll haunt (SG p. 268)',    documentUuid: 'Compendium.tb2e.monsters.Actor.a1b2c3d4e5f60013', description: '', img: null, flags: {}, _key: '!tables.results!ce00000000000b22.ce00000000rb2202' }
+  - { _id: ce00000000rb2203, type: document, range: [3, 5], weight: 1, drawn: false, name: 'Stone spider (SG p. 268)',   documentUuid: 'Compendium.tb2e.monsters.Actor.a1b2c3d4e5f60011', description: '', img: null, flags: {}, _key: '!tables.results!ce00000000000b22.ce00000000rb2203' }
+  - { _id: ce00000000rb2206, type: document, range: [6, 6], weight: 1, drawn: false, name: 'Owlbear (SG p. 268)',        documentUuid: 'Compendium.tb2e.monsters.Actor.a1b2c3d4e5f60023', description: '', img: null, flags: {}, _key: '!tables.results!ce00000000000b22.ce00000000rb2206' }

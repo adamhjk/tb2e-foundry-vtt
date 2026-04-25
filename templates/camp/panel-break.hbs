@@ -1,0 +1,70 @@
+{{!-- Break Camp tab — summary + end-camp button. SG pp. 95–96. --}}
+<div class="panel-tab-content break-tab">
+
+  {{#unless hasCampActor}}
+  <div class="camp-setup-empty">
+    <p>{{localize "TB2E.Camp.Setup.NoCamp"}}</p>
+    <button type="button" class="camp-advance-btn" data-action="switchTab" data-tab="site">
+      <i class="fa-solid fa-arrow-left"></i> {{localize "TB2E.Camp.Back"}}
+    </button>
+  </div>
+  {{else}}
+
+  <section class="camp-decisions-section">
+    <h3 class="camp-decisions-heading">{{localize "TB2E.Camp.Break.SummaryHeading"}}</h3>
+    <dl class="camp-break-summary">
+      <dt>{{localize "TB2E.Camp.Break.Site"}}</dt>
+      <dd>{{campActor.name}} · {{campTypeLabel}}</dd>
+      <dt>{{localize "TB2E.Camp.Break.Danger"}}</dt>
+      <dd>{{dangerLabel}}</dd>
+      <dt>{{localize "TB2E.Camp.Break.Fire"}}</dt>
+      <dd>{{#if (eq campState.fire "lit")}}{{localize "TB2E.Camp.Decisions.FireLit"}}{{else}}{{localize "TB2E.Camp.Decisions.FireDark"}}{{/if}}</dd>
+      <dt>{{localize "TB2E.Camp.Break.Watch"}}</dt>
+      <dd>{{#if watcherDetails.length}}{{#each watcherDetails}}{{this.name}}{{#unless @last}}, {{/unless}}{{/each}}{{else}}{{localize "TB2E.Camp.Break.NoWatch"}}{{/if}}</dd>
+      {{#if campState.events.rolled}}
+      <dt>{{localize "TB2E.Camp.Break.EventsRoll"}}</dt>
+      <dd>{{campState.events.total}} ({{campState.events.modifier}} mod) {{#if eventsResult}}→ {{eventsResult.name}}{{/if}}</dd>
+      <dt>{{localize "TB2E.Camp.Break.Outcome"}}</dt>
+      <dd class="camp-break-outcome camp-break-outcome--{{campState.events.outcome}}">{{campState.events.outcome}}</dd>
+      {{/if}}
+      <dt>{{localize "TB2E.Camp.Break.TestsMade"}}</dt>
+      <dd>{{campState.log.length}}</dd>
+      <dt>{{localize "TB2E.Camp.Break.ChecksRemaining"}}</dt>
+      <dd class="camp-break-checks{{#if partyCheckTotal}} camp-break-checks-lose{{/if}}">
+        {{partyCheckTotal}} {{#if partyCheckTotal}}({{localize "TB2E.Camp.Break.WillBeDiscarded"}}){{/if}}
+      </dd>
+    </dl>
+  </section>
+
+  <section class="camp-decisions-section camp-break-notice">
+    <p>{{localize "TB2E.Camp.Break.Notice"}}</p>
+    <ul>
+      <li>{{localize "TB2E.Camp.Break.NoticeDiscard"}}</li>
+      <li>{{localize "TB2E.Camp.Break.NoticeTurnReset"}}</li>
+      <li>{{localize "TB2E.Camp.Break.NoticePhaseReturn"}}</li>
+    </ul>
+  </section>
+
+  {{#if isGM}}
+  <section class="camp-decisions-section camp-break-discard-section">
+    <label class="camp-break-discard-label">
+      <input type="checkbox" class="camp-break-discard-toggle" checked>
+      {{localize "TB2E.Camp.Break.DiscardChecksLabel"}}
+    </label>
+    <p class="hint">{{localize "TB2E.Camp.Break.DiscardChecksHint"}}</p>
+  </section>
+  {{/if}}
+
+  <div class="camp-decisions-footer">
+    <button type="button" class="camp-back-btn" data-action="switchTab" data-tab="strategy">
+      <i class="fa-solid fa-arrow-left"></i> {{localize "TB2E.Camp.Back"}}
+    </button>
+    {{#if isGM}}
+    <button type="button" class="camp-end-camp-btn" data-action="endCamp">
+      <i class="fa-solid fa-sun"></i> {{localize "TB2E.Camp.Break.EndCamp"}}
+    </button>
+    {{/if}}
+  </div>
+  {{/unless}}
+
+</div>

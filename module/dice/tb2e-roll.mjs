@@ -1572,19 +1572,21 @@ async function _handleVersusRoll({ actor, type, key, label, baseDice, poolSize, 
 
   const isOpponent = !!config.challengeMessageId;
 
-  // Store raw successes in roll flags (no obstacle-based pass/fail for versus)
+  // -s post mods (Hungry/Exhausted team penalties) apply unconditionally;
+  // +s post mods (Order of Might per SG p.80, L3 trait benefit) only count
+  // "for successful or tied actions" — defer their application to versus
+  // resolution where the comparison can be made. _executeVersusResolution
+  // reads postSuccessMods from each side's flags and applies +s only to
+  // the side that tied or won the raw comparison.
+  const autoSuccessBonus = postSuccessMods
+    .filter(m => m.value < 0)
+    .reduce((s, m) => s + m.value, 0);
+  const adjustedSuccesses = Math.max(successes + autoSuccessBonus, 0);
+
   rollFlags.roll.successes = successes;
-  rollFlags.roll.finalSuccesses = successes;
+  rollFlags.roll.finalSuccesses = adjustedSuccesses;
   rollFlags.roll.obstacle = null;
   rollFlags.roll.pass = null;
-
-  // Apply post-success modifiers to the stored successes
-  const successBonus = postSuccessMods.reduce((s, m) => s + m.value, 0);
-  if ( successBonus !== 0 ) {
-    const adjusted = Math.max(successes + successBonus, 0);
-    rollFlags.roll.successes = successes;
-    rollFlags.roll.finalSuccesses = adjusted;
-  }
 
   // Build template data — reuse roll-result.hbs with versus mode
   const tbFlagsForTemplate = { ...rollFlags, resolved: false };

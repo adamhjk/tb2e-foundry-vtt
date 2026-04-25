@@ -1,0 +1,18 @@
+_id: ce00000000000b21
+name: 'Dungeon Interlopers'
+img: systems/tb2e/icons/ffffff/transparent/1x1/delapouite/cave-entrance.svg
+description: "Scholar's Guide, p. 268 — inner roll for Dungeons result 3 (Monsters attack)"
+formula: '1d6'
+replacement: true
+displayRoll: true
+_key: '!tables!ce00000000000b21'
+flags:
+  tb2e:
+    campEvents:
+      isSubtable: true
+      parentCampType: dungeons
+results:
+  - { _id: ce00000000rb2101, type: document, range: [1, 1], weight: 1, drawn: false, name: 'Oozes 1d3 (SG p. 268)',     documentUuid: 'Compendium.tb2e.monsters.Actor.a1b2c3d4e5f60006', description: '', img: null, flags: {}, _key: '!tables.results!ce00000000000b21.ce00000000rb2101' }
+  - { _id: ce00000000rb2102, type: document, range: [2, 2], weight: 1, drawn: false, name: 'Goblins 3d6 (SG p. 268)',   documentUuid: 'Compendium.tb2e.monsters.Actor.a1b2c3d4e5f6000c', description: '', img: null, flags: {}, _key: '!tables.results!ce00000000000b21.ce00000000rb2102' }
+  - { _id: ce00000000rb2103, type: document, range: [3, 4], weight: 1, drawn: false, name: 'Troll rats 2d6 (SG p. 268)', documentUuid: 'Compendium.tb2e.monsters.Actor.a1b2c3d4e5f60015', description: '', img: null, flags: {}, _key: '!tables.results!ce00000000000b21.ce00000000rb2103' }
+  - { _id: ce00000000rb2105, type: document, range: [5, 6], weight: 1, drawn: false, name: 'Strix 2d6 (SG p. 268)',     documentUuid: 'Compendium.tb2e.monsters.Actor.a1b2c3d4e5f60025', description: '', img: null, flags: {}, _key: '!tables.results!ce00000000000b21.ce00000000rb2105' }

@@ -80,6 +80,7 @@ prototypeToken:
   actorLink: false
   appendNumber: true
   disposition: -1
+  lockRotation: true
   texture:
     src: systems/tb2e/assets/tokens/disturbed-spirit.webp
 items: []

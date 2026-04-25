@@ -1,0 +1,319 @@
+_id: ce00000000000a03
+name: 'Natural Caves Camp Events'
+img: systems/tb2e/icons/ffffff/transparent/1x1/delapouite/stalactites.svg
+description: "Scholar's Guide, pp. 270–271"
+formula: '3d6'
+replacement: true
+displayRoll: true
+_key: '!tables!ce00000000000a03'
+flags:
+  tb2e:
+    campEvents:
+      campType: natural-caves
+results:
+  - _id: ce00000000r30000
+    type: text
+    range: [-99, 0]
+    weight: 1
+    drawn: false
+    name: 'Cave-in (SG p. 270)'
+    description: ''
+    img: null
+    flags:
+      tb2e:
+        campEvents:
+          isDisaster: true
+          isUnavertable: false
+          avert:
+            allowed: true
+            kind: test
+            skill: scout
+            ob: 4
+            notes: 'Watch may spend 1 check to sound the alarm and get the group to safety.'
+    _key: '!tables.results!ce00000000000a03.ce00000000r30000'
+  - _id: ce00000000r30001
+    type: document
+    range: [1, 1]
+    weight: 1
+    drawn: false
+    name: 'Lair — roll Cave Lair Owner (SG p. 270)'
+    documentUuid: Compendium.tb2e.camp-events.RollTable.ce00000000000b31
+    description: ''
+    img: null
+    flags:
+      tb2e:
+        campEvents:
+          isDisaster: true
+          isUnavertable: false
+          avert:
+            allowed: true
+            kind: test
+            skill: scout
+            ob: 4
+            notes: 'Watch may spend 1 check to drive off the creature.'
+    _key: '!tables.results!ce00000000000a03.ce00000000r30001'
+  - _id: ce00000000r30002
+    type: text
+    range: [2, 2]
+    weight: 1
+    drawn: false
+    name: 'Rock fall (SG p. 270)'
+    description: ''
+    img: null
+    flags:
+      tb2e:
+        campEvents:
+          isDisaster: true
+          isUnavertable: false
+          avert:
+            allowed: true
+            kind: test
+            skill: survivalist
+            ob: 4
+            notes: 'Watch may spend 1 check to drag the group to safety before the way is sealed.'
+    _key: '!tables.results!ce00000000000a03.ce00000000r30002'
+  - _id: ce00000000r30003
+    type: text
+    range: [3, 3]
+    weight: 1
+    drawn: false
+    name: 'Flood (SG p. 270)'
+    description: ''
+    img: null
+    flags:
+      tb2e:
+        campEvents:
+          isDisaster: true
+          isUnavertable: false
+          avert:
+            allowed: true
+            kind: test
+            skill: scout
+            ob: 4
+            notes: 'Watch may spend 1 check to sound the alarm and get the group to safety.'
+    _key: '!tables.results!ce00000000000a03.ce00000000r30003'
+  - _id: ce00000000r30004
+    type: text
+    range: [4, 4]
+    weight: 1
+    drawn: false
+    name: 'Foul air (SG p. 270)'
+    description: ''
+    img: null
+    flags:
+      tb2e:
+        campEvents:
+          isDisaster: true
+          isUnavertable: false
+          avert:
+            allowed: true
+            kind: test
+            skill: survivalist
+            ob: 4
+            notes: 'Watch may spend 1 check to vent the air or get the group to safety.'
+    _key: '!tables.results!ce00000000000a03.ce00000000r30004'
+  - _id: ce00000000r30005
+    type: document
+    range: [5, 5]
+    weight: 1
+    drawn: false
+    name: 'Raid — roll Cave Raiders (SG p. 270)'
+    documentUuid: Compendium.tb2e.camp-events.RollTable.ce00000000000b32
+    description: ''
+    img: null
+    flags:
+      tb2e:
+        campEvents:
+          isDisaster: true
+          isUnavertable: false
+          avert:
+            allowed: true
+            kind: conflict
+            skill: ''
+            ob: 0
+            notes: 'Watch may spend 1 check to confront the raiders.'
+    _key: '!tables.results!ce00000000000a03.ce00000000r30005'
+  - _id: ce00000000r30006
+    type: text
+    range: [6, 6]
+    weight: 1
+    drawn: false
+    name: 'Bad temperature (SG p. 270)'
+    description: ''
+    img: null
+    flags:
+      tb2e:
+        campEvents:
+          isDisaster: false
+    _key: '!tables.results!ce00000000000a03.ce00000000r30006'
+  - _id: ce00000000r30007
+    type: text
+    range: [7, 7]
+    weight: 1
+    drawn: false
+    name: 'Lost (SG p. 270)'
+    description: ''
+    img: null
+    flags:
+      tb2e:
+        campEvents:
+          isDisaster: false
+    _key: '!tables.results!ce00000000000a03.ce00000000r30007'
+  - _id: ce00000000r30008
+    type: text
+    range: [8, 8]
+    weight: 1
+    drawn: false
+    name: 'Damp (SG p. 271)'
+    description: ''
+    img: null
+    flags:
+      tb2e:
+        campEvents:
+          isDisaster: false
+    _key: '!tables.results!ce00000000000a03.ce00000000r30008'
+  - _id: ce00000000r30009
+    type: text
+    range: [9, 9]
+    weight: 1
+    drawn: false
+    name: 'Claustrophobia (SG p. 271)'
+    description: ''
+    img: null
+    flags:
+      tb2e:
+        campEvents:
+          isDisaster: false
+    _key: '!tables.results!ce00000000000a03.ce00000000r30009'
+  - _id: ce00000000r3000a
+    type: text
+    range: [10, 10]
+    weight: 1
+    drawn: false
+    name: 'Unlucky (SG p. 271)'
+    description: ''
+    img: null
+    flags:
+      tb2e:
+        campEvents:
+          isDisaster: false
+    _key: '!tables.results!ce00000000000a03.ce00000000r3000a'
+  - _id: ce00000000r3000b
+    type: text
+    range: [11, 12]
+    weight: 1
+    drawn: false
+    name: 'Safe camp (SG p. 271)'
+    description: ''
+    img: null
+    flags:
+      tb2e:
+        campEvents:
+          isDisaster: false
+    _key: '!tables.results!ce00000000000a03.ce00000000r3000b'
+  - _id: ce00000000r3000d
+    type: text
+    range: [13, 13]
+    weight: 1
+    drawn: false
+    name: 'Cache (SG p. 271)'
+    description: ''
+    img: null
+    flags:
+      tb2e:
+        campEvents:
+          isDisaster: false
+    _key: '!tables.results!ce00000000000a03.ce00000000r3000d'
+  - _id: ce00000000r3000e
+    type: text
+    range: [14, 14]
+    weight: 1
+    drawn: false
+    name: 'Fungus (SG p. 271)'
+    description: ''
+    img: null
+    flags:
+      tb2e:
+        campEvents:
+          isDisaster: false
+    _key: '!tables.results!ce00000000000a03.ce00000000r3000e'
+  - _id: ce00000000r3000f
+    type: text
+    range: [15, 15]
+    weight: 1
+    drawn: false
+    name: 'Creature comfort (SG p. 271)'
+    description: ''
+    img: null
+    flags:
+      tb2e:
+        campEvents:
+          isDisaster: false
+    _key: '!tables.results!ce00000000000a03.ce00000000r3000f'
+  - _id: ce00000000r30010
+    type: text
+    range: [16, 16]
+    weight: 1
+    drawn: false
+    name: 'Dictionary (SG p. 271)'
+    description: ''
+    img: null
+    flags:
+      tb2e:
+        campEvents:
+          isDisaster: false
+    _key: '!tables.results!ce00000000000a03.ce00000000r30010'
+  - _id: ce00000000r30011
+    type: text
+    range: [17, 17]
+    weight: 1
+    drawn: false
+    name: 'Spring (SG p. 271)'
+    description: ''
+    img: null
+    flags:
+      tb2e:
+        campEvents:
+          isDisaster: false
+    _key: '!tables.results!ce00000000000a03.ce00000000r30011'
+  - _id: ce00000000r30012
+    type: document
+    range: [18, 18]
+    weight: 1
+    drawn: false
+    name: 'Remains — roll Books & Maps subtable (SG p. 271)'
+    documentUuid: Compendium.tb2e.loot-tables.RollTable.lt00000000000006
+    description: ''
+    img: null
+    flags:
+      tb2e:
+        campEvents:
+          isDisaster: false
+    _key: '!tables.results!ce00000000000a03.ce00000000r30012'
+  - _id: ce00000000r30013
+    type: document
+    range: [19, 19]
+    weight: 1
+    drawn: false
+    name: 'Gem cluster — roll Gem subtable (SG p. 271)'
+    documentUuid: Compendium.tb2e.loot-tables.RollTable.lt00000000000012
+    description: ''
+    img: null
+    flags:
+      tb2e:
+        campEvents:
+          isDisaster: false
+    _key: '!tables.results!ce00000000000a03.ce00000000r30013'
+  - _id: ce00000000r30014
+    type: text
+    range: [20, 20]
+    weight: 1
+    drawn: false
+    name: 'Basin (SG p. 271)'
+    description: ''
+    img: null
+    flags:
+      tb2e:
+        campEvents:
+          isDisaster: false
+    _key: '!tables.results!ce00000000000a03.ce00000000r30014'

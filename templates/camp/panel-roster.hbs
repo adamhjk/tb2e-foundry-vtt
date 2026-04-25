@@ -1,0 +1,20 @@
+{{!-- Roster strip — per-PC at-a-glance: portrait, checks, conditions, watch. --}}
+<div class="panel-roster camp-panel-roster">
+  {{#each partyChecks}}
+  <div class="camp-roster-entry{{#if this.isWatcher}} watcher{{/if}}{{#unless this.hasChecks}} no-checks{{/unless}}"
+       title="{{this.name}}">
+    <img class="camp-roster-img" src="{{this.img}}" alt="{{this.name}}">
+    <div class="camp-roster-body">
+      <span class="camp-roster-name">{{this.name}}</span>
+      <span class="camp-roster-meta">
+        <span class="camp-roster-pips">
+          {{#each this.pips}}<i class="fa-solid fa-check"></i>{{/each}}
+          {{#unless this.hasChecks}}<i class="fa-solid fa-minus"></i>{{/unless}}
+        </span>
+        {{#if this.isWatcher}}<span class="camp-roster-watch" title="{{localize 'TB2E.Camp.Strategy.Watcher'}}">👁</span>{{/if}}
+        {{#each this.conditions}}<span class="camp-roster-cond">{{this}}</span>{{/each}}
+      </span>
+    </div>
+  </div>
+  {{/each}}
+</div>

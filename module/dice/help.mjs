@@ -45,14 +45,25 @@ function _getSkillRating(actor, key) {
   return skillData[key]?.rating ?? 0;
 }
 
+/** Actor types that can act as a helper. Excludes location-style types
+ *  like "camp" which are present in game.actors / scene tokens but aren't
+ *  creatures and have no `system.conditions` schema. */
+const HELPER_ACTOR_TYPES = new Set(["character", "monster", "npc"]);
+
 /**
  * Check if an actor is blocked from helping anyone.
  * @param {Actor} actor
  * @returns {{ blocked: boolean, reason: string|null }}
  */
 export function isBlockedFromHelping(actor) {
-  if ( actor.system.conditions.dead ) return { blocked: true, reason: "TB2E.Help.BlockedDead" };
-  if ( actor.system.conditions.afraid ) return { blocked: true, reason: "TB2E.Help.BlockedAfraid" };
+  // Non-creature actor types (e.g. "camp") don't have a conditions schema
+  // and aren't valid helpers. Block defensively to avoid crashing the
+  // roll dialog when one slips into the candidate pool.
+  if ( !HELPER_ACTOR_TYPES.has(actor.type) ) return { blocked: true, reason: null };
+  const conditions = actor.system?.conditions;
+  if ( !conditions ) return { blocked: true, reason: null };
+  if ( conditions.dead ) return { blocked: true, reason: "TB2E.Help.BlockedDead" };
+  if ( conditions.afraid ) return { blocked: true, reason: "TB2E.Help.BlockedAfraid" };
   const conflictHP = actor.system.conflict?.hp;
   if ( conflictHP?.max > 0 && conflictHP.value <= 0 ) return { blocked: true, reason: "TB2E.Help.BlockedConflictKO" };
   return { blocked: false, reason: null };
@@ -90,6 +101,7 @@ export function getEligibleHelpers({ actor, type, key, testContext = {}, candida
     const rollerTokenId = actor.isToken ? actor.token?.id : null;
     const scenePool = (canvas?.scene?.tokens ?? []).filter(t => {
       if ( !t.actor ) return false;
+      if ( !HELPER_ACTOR_TYPES.has(t.actor.type) ) return false;
       // Exclude the roller: by token ID for unlinked tokens (so other tokens sharing the
       // same base actor are NOT excluded), or by actorId for linked actors.
       if ( rollerTokenId ) {
@@ -107,6 +119,7 @@ export function getEligibleHelpers({ actor, type, key, testContext = {}, candida
       const sceneActorIds = new Set((canvas?.scene?.tokens ?? []).map(t => t.actorId).filter(Boolean));
       pool = game.actors.filter(a => {
         if ( a.id === actor.id ) return false;
+        if ( !HELPER_ACTOR_TYPES.has(a.type) ) return false;
         if ( !sceneActorIds.has(a.id) ) return false;
         return (a.system.conflict?.team ?? "party") === rollerTeam;
       });

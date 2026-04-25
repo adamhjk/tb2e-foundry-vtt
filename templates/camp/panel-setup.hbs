@@ -1,0 +1,116 @@
+{{!-- Setup tab — camp actor summary + per-visit danger override + party check pool.
+     SG p. 90 (make-camp entry), p. 91 (amenities), p. 93 (danger levels). --}}
+<div class="panel-tab-content setup-tab">
+
+  {{#unless hasCampActor}}
+  <div class="camp-setup-empty">
+    <p>{{localize "TB2E.Camp.Setup.NoCamp"}}</p>
+    <button type="button" class="camp-advance-btn" data-action="switchTab" data-tab="site">
+      <i class="fa-solid fa-arrow-left"></i> {{localize "TB2E.Camp.Back"}}
+    </button>
+  </div>
+  {{else}}
+
+  <section class="camp-setup-section">
+    <h3 class="camp-setup-heading">{{localize "TB2E.Camp.Setup.SiteHeading"}}</h3>
+    <div class="camp-setup-site">
+      <img class="camp-setup-img" src="{{campActor.img}}" alt="{{campActor.name}}">
+      <div class="camp-setup-site-body">
+        <div class="camp-setup-site-name">{{campActor.name}}</div>
+        <div class="camp-setup-site-type">
+          {{campTypeLabel}}
+          {{#if campActor.system.isDwarvenMade}} · <span class="camp-setup-dwarven">{{localize "TB2E.Camp.Sheet.DwarvenMadeLabel"}}</span>{{/if}}
+        </div>
+      </div>
+      {{#if isGM}}
+      <button type="button" class="camp-setup-sheet-btn"
+              data-action="openCampSheet" data-camp-id="{{campActor.id}}"
+              title="{{localize 'TB2E.Camp.Site.OpenSheet'}}">
+        <i class="fa-solid fa-up-right-from-square"></i>
+      </button>
+      {{/if}}
+    </div>
+  </section>
+
+  <section class="camp-setup-section">
+    <h3 class="camp-setup-heading">{{localize "TB2E.Camp.Setup.AmenitiesHeading"}}</h3>
+    <p class="camp-setup-hint">{{localize "TB2E.Camp.Setup.AmenitiesHint"}}</p>
+    <ul class="camp-setup-amenities">
+      <li class="{{#if campActor.system.amenities.shelter}}present{{else}}missing{{/if}}">
+        <i class="fa-solid fa-house"></i>
+        {{localize "TB2E.Camp.Amenity.shelter"}}
+        {{#if campActor.system.amenities.shelter}}<i class="fa-solid fa-check"></i>{{/if}}
+      </li>
+      <li class="{{#if campActor.system.amenities.concealment}}present{{else}}missing{{/if}}">
+        <i class="fa-solid fa-eye-slash"></i>
+        {{localize "TB2E.Camp.Amenity.concealment"}}
+        {{#if campActor.system.amenities.concealment}}<i class="fa-solid fa-check"></i>{{/if}}
+      </li>
+      <li class="{{#if campActor.system.amenities.water}}present{{else}}missing{{/if}}">
+        <i class="fa-solid fa-droplet"></i>
+        {{localize "TB2E.Camp.Amenity.water"}}
+        {{#if campActor.system.amenities.water}}<i class="fa-solid fa-check"></i>{{/if}}
+      </li>
+    </ul>
+  </section>
+
+  <section class="camp-setup-section">
+    <h3 class="camp-setup-heading">{{localize "TB2E.Camp.Setup.DangerHeading"}}</h3>
+    <p class="camp-setup-hint">{{localize "TB2E.Camp.Setup.DangerHint"}}</p>
+    <div class="camp-setup-danger">
+      {{#each dangerOptions}}
+      <label class="camp-setup-danger-choice{{#if (eq this.key ../campState.danger)}} selected{{/if}}">
+        <input type="radio" name="danger" value="{{this.key}}"
+               {{#if (eq this.key ../campState.danger)}}checked{{/if}}
+               {{#unless ../isGM}}disabled{{/unless}}
+               data-action="setDanger">
+        {{this.label}}
+      </label>
+      {{/each}}
+    </div>
+  </section>
+
+  <section class="camp-setup-section">
+    <h3 class="camp-setup-heading">{{localize "TB2E.Camp.Setup.ChecksHeading"}}</h3>
+    <p class="camp-setup-hint">{{localize "TB2E.Camp.Setup.ChecksHint"}}</p>
+    <ul class="camp-setup-checks">
+      {{#each partyChecks}}
+      <li class="camp-setup-pc{{#unless this.hasChecks}} no-checks{{/unless}}">
+        <img class="camp-setup-pc-img" src="{{this.img}}" alt="{{this.name}}">
+        <span class="camp-setup-pc-name">{{this.name}}</span>
+        <span class="camp-setup-pc-pips">
+          {{#if this.hasChecks}}
+            {{#each this.pips}}<i class="fa-solid fa-check"></i>{{/each}}
+          {{else}}
+            <i class="fa-solid fa-minus"></i>
+          {{/if}}
+        </span>
+      </li>
+      {{/each}}
+    </ul>
+    <div class="camp-setup-checks-total{{#unless canBeginDecisions}} camp-setup-checks-empty{{/unless}}">
+      <strong>{{localize "TB2E.Camp.Setup.TotalLabel"}}</strong>
+      <span>{{partyCheckTotal}} {{#if (eq partyCheckTotal 1)}}{{localize "TB2E.Camp.Setup.CheckSingular"}}{{else}}{{localize "TB2E.Camp.Setup.CheckPlural"}}{{/if}}</span>
+      {{#unless canBeginDecisions}}
+      <span class="camp-setup-checks-warning">
+        <i class="fa-solid fa-triangle-exclamation"></i> {{localize "TB2E.Camp.Setup.ChecksWarning"}}
+      </span>
+      {{/unless}}
+    </div>
+  </section>
+
+  <div class="camp-setup-footer">
+    <button type="button" class="camp-back-btn" data-action="switchTab" data-tab="site">
+      <i class="fa-solid fa-arrow-left"></i> {{localize "TB2E.Camp.Back"}}
+    </button>
+    {{#if isGM}}
+    <button type="button" class="camp-advance-btn"
+            data-action="advanceTo" data-phase="decisions"
+            {{#unless canBeginDecisions}}disabled{{/unless}}>
+      {{localize "TB2E.Camp.Next"}} <i class="fa-solid fa-arrow-right"></i>
+    </button>
+    {{/if}}
+  </div>
+  {{/unless}}
+
+</div>

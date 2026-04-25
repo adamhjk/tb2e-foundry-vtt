@@ -1,0 +1,20 @@
+_id: ce00000000000b62
+name: 'Fellow Traveler Class'
+img: systems/tb2e/icons/ffffff/transparent/1x1/delapouite/forest-camp.svg
+description: "Scholar's Guide, p. 278 — inner roll for Wilderness result 19 (Fellow traveler)"
+formula: '1d6'
+replacement: true
+displayRoll: true
+_key: '!tables!ce00000000000b62'
+flags:
+  tb2e:
+    campEvents:
+      isSubtable: true
+      parentCampType: wilderness
+results:
+  - { _id: ce00000000rb6201, type: text, range: [1, 1], weight: 1, drawn: false, name: 'Ranger (SG p. 278)',   description: '', img: null, flags: {}, _key: '!tables.results!ce00000000000b62.ce00000000rb6201' }
+  - { _id: ce00000000rb6202, type: text, range: [2, 2], weight: 1, drawn: false, name: 'Outcast (SG p. 278)',  description: '', img: null, flags: {}, _key: '!tables.results!ce00000000000b62.ce00000000rb6202' }
+  - { _id: ce00000000rb6203, type: text, range: [3, 3], weight: 1, drawn: false, name: 'Magician (SG p. 278)', description: '', img: null, flags: {}, _key: '!tables.results!ce00000000000b62.ce00000000rb6203' }
+  - { _id: ce00000000rb6204, type: text, range: [4, 4], weight: 1, drawn: false, name: 'Warrior (SG p. 278)',  description: '', img: null, flags: {}, _key: '!tables.results!ce00000000000b62.ce00000000rb6204' }
+  - { _id: ce00000000rb6205, type: text, range: [5, 5], weight: 1, drawn: false, name: 'Burglar (SG p. 278)',  description: '', img: null, flags: {}, _key: '!tables.results!ce00000000000b62.ce00000000rb6205' }
+  - { _id: ce00000000rb6206, type: text, range: [6, 6], weight: 1, drawn: false, name: 'Theurge (SG p. 278)',  description: '', img: null, flags: {}, _key: '!tables.results!ce00000000000b62.ce00000000rb6206' }

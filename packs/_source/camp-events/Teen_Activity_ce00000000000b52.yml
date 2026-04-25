@@ -1,0 +1,17 @@
+_id: ce00000000000b52
+name: 'Teen Activity'
+img: systems/tb2e/icons/ffffff/transparent/1x1/delapouite/hut.svg
+description: "Scholar's Guide, p. 275 — inner roll for Squatting result 11 (Dalliance)"
+formula: '1d6'
+replacement: true
+displayRoll: true
+_key: '!tables!ce00000000000b52'
+flags:
+  tb2e:
+    campEvents:
+      isSubtable: true
+      parentCampType: squatting-in-town
+results:
+  - { _id: ce00000000rb5201, type: text, range: [1, 2], weight: 1, drawn: false, name: 'Consummate a passionate love (SG p. 275)', description: '', img: null, flags: {}, _key: '!tables.results!ce00000000000b52.ce00000000rb5201' }
+  - { _id: ce00000000rb5203, type: text, range: [3, 4], weight: 1, drawn: false, name: 'Dabble in magic (SG p. 275)',              description: '', img: null, flags: {}, _key: '!tables.results!ce00000000000b52.ce00000000rb5203' }
+  - { _id: ce00000000rb5205, type: text, range: [5, 6], weight: 1, drawn: false, name: 'Play a cruel trick on a friend (SG p. 275)',description: '', img: null, flags: {}, _key: '!tables.results!ce00000000000b52.ce00000000rb5205' }

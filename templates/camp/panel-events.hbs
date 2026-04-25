@@ -1,0 +1,164 @@
+{{!-- Events tab — 3d6 roll with modifiers, result card, avert UI.
+     SG p. 93 (modifier list), p. 94 (result handling). --}}
+<div class="panel-tab-content events-tab">
+
+  {{#unless hasCampActor}}
+  <div class="camp-setup-empty">
+    <p>{{localize "TB2E.Camp.Setup.NoCamp"}}</p>
+    <button type="button" class="camp-advance-btn" data-action="switchTab" data-tab="site">
+      <i class="fa-solid fa-arrow-left"></i> {{localize "TB2E.Camp.Back"}}
+    </button>
+  </div>
+  {{else}}
+
+  {{!-- Modifier breakdown --}}
+  <section class="camp-decisions-section">
+    <h3 class="camp-decisions-heading">{{localize "TB2E.Camp.Events.ModifierHeading"}}</h3>
+    <ul class="camp-events-breakdown">
+      {{#each eventsModifier.breakdown}}
+      <li class="camp-events-mod{{#if (eq this.key "gm-situational")}} gm-situational{{/if}}">
+        <span class="camp-events-mod-label">{{this.label}}</span>
+        {{#if (eq this.key "gm-situational")}}
+          {{#if @root.isGM}}
+          <button type="button" class="camp-events-mod-adjust" data-action="adjustGmSit" data-delta="-1">−</button>
+          {{/if}}
+          <span class="camp-events-mod-value">{{this.value}}</span>
+          {{#if @root.isGM}}
+          <button type="button" class="camp-events-mod-adjust" data-action="adjustGmSit" data-delta="1">+</button>
+          {{/if}}
+        {{else}}
+          <span class="camp-events-mod-value">{{this.value}}</span>
+        {{/if}}
+      </li>
+      {{/each}}
+      <li class="camp-events-mod camp-events-mod-total">
+        <span class="camp-events-mod-label">{{localize "TB2E.Camp.Events.NetModifier"}}</span>
+        <span class="camp-events-mod-value">{{eventsModifier.net}}</span>
+      </li>
+    </ul>
+  </section>
+
+  {{!-- Roll button --}}
+  <section class="camp-decisions-section camp-events-roll-section">
+    {{#unless campState.events.rolled}}
+      {{#if isGM}}
+      <button type="button" class="camp-events-roll-btn" data-action="rollEvents">
+        <i class="fa-solid fa-dice-d6"></i> {{localize "TB2E.Camp.Events.RollButton"}}
+      </button>
+      {{else}}
+      <p class="camp-decisions-hint">{{localize "TB2E.Camp.Events.WaitingForGM"}}</p>
+      {{/if}}
+    {{else}}
+      <div class="camp-events-roll-summary">
+        <span class="camp-events-roll-dice">
+          {{#each campState.events.dice}}<i class="fa-solid fa-dice-d6"></i> {{this}} {{/each}}
+        </span>
+        <span class="camp-events-roll-plus">+ {{campState.events.modifier}}</span>
+        <span class="camp-events-roll-equals">= <strong>{{campState.events.total}}</strong></span>
+        {{#if isGM}}
+        <button type="button" class="camp-events-reroll-btn" data-action="rollEvents"
+                title="{{localize 'TB2E.Camp.Events.Reroll'}}">
+          <i class="fa-solid fa-rotate"></i> {{localize "TB2E.Camp.Events.Reroll"}}
+        </button>
+        {{/if}}
+      </div>
+    {{/unless}}
+  </section>
+
+  {{!-- Result card --}}
+  {{#if eventsResult}}
+  <section class="camp-decisions-section camp-events-result {{#if eventsResult.isDisaster}}disaster{{/if}}">
+    <h3 class="camp-decisions-heading">
+      {{#if eventsResult.isDisaster}}
+        {{#if eventsResult.isUnavertable}}
+        <i class="fa-solid fa-skull-crossbones"></i> {{localize "TB2E.Camp.Events.Unavertable"}}
+        {{else}}
+        <i class="fa-solid fa-triangle-exclamation"></i> {{localize "TB2E.Camp.Events.DisasterHeading"}}
+        {{/if}}
+      {{else}}
+      <i class="fa-solid fa-circle-check"></i> {{localize "TB2E.Camp.Events.ResultHeading"}}
+      {{/if}}
+    </h3>
+    <div class="camp-events-result-name">{{eventsResult.name}}</div>
+
+    {{!-- Disaster status copy + avert controls. The Next button lives in
+         the shared footer below (always visible, gated on outcome). --}}
+    {{#if eventsResult.isDisaster}}
+      {{#if eventsResult.isUnavertable}}
+        <p class="camp-events-result-note">{{localize "TB2E.Camp.Events.UnavertableNote"}}</p>
+      {{else}}
+        {{#if eventsResult.avert}}
+        <p class="camp-events-avert-config">
+          {{localize "TB2E.Camp.Events.AvertConfig"}}:
+          {{eventsResult.avert.kind}}{{#if eventsResult.avert.skill}} · {{eventsResult.avert.skill}}{{/if}}{{#if eventsResult.avert.ob}} · Ob {{eventsResult.avert.ob}}{{/if}}
+        </p>
+        {{#if eventsResult.avert.notes}}
+        <p class="camp-decisions-hint">{{eventsResult.avert.notes}}</p>
+        {{/if}}
+        {{/if}}
+
+        {{#if (eq campState.events.outcome "pending")}}
+          {{#if isGM}}
+          <div class="camp-events-avert-buttons">
+            {{#each watcherDetails}}
+            <button type="button" class="camp-events-avert-btn"
+                    data-action="markAvert" data-success="true" data-actor-id="{{this.id}}">
+              <i class="fa-solid fa-shield"></i> {{localize "TB2E.Camp.Events.Avert"}} ({{this.name}})
+            </button>
+            {{/each}}
+            <button type="button" class="camp-events-avert-btn failed"
+                    data-action="markAvert" data-success="false">
+              <i class="fa-solid fa-xmark"></i> {{localize "TB2E.Camp.Events.AvertFailed"}}
+            </button>
+          </div>
+          <label class="camp-events-unavertable-toggle">
+            <input type="checkbox" data-action="toggleUnavertable">
+            {{localize "TB2E.Camp.Events.GMOverrideUnavertable"}}
+          </label>
+          {{/if}}
+        {{/if}}
+
+        {{#if (eq campState.events.outcome "averted")}}
+        <p class="camp-events-averted">
+          <i class="fa-solid fa-circle-check"></i> {{localize "TB2E.Camp.Events.Averted"}}
+        </p>
+        {{/if}}
+
+        {{#if (eq campState.events.outcome "ended")}}
+          {{#unless watcherDetails.length}}
+          <p class="camp-events-no-watch">{{localize "TB2E.Camp.Events.NoWatch"}}</p>
+          {{else}}
+          <p class="camp-events-ended">
+            <i class="fa-solid fa-ban"></i> {{localize "TB2E.Camp.Events.Ended"}}
+          </p>
+          {{/unless}}
+        {{/if}}
+      {{/if}}
+    {{else}}
+      <p class="camp-events-result-note">{{localize "TB2E.Camp.Events.SafeNote"}}</p>
+    {{/if}}
+  </section>
+  {{/if}}
+
+  {{!-- Shared footer: Back + contextual Next. --}}
+  <div class="camp-decisions-footer">
+    <button type="button" class="camp-back-btn" data-action="switchTab" data-tab="decisions">
+      <i class="fa-solid fa-arrow-left"></i> {{localize "TB2E.Camp.Back"}}
+    </button>
+    {{#if isGM}}
+      {{#if (eq campState.events.outcome "ended")}}
+      <button type="button" class="camp-advance-btn" data-action="advanceTo" data-phase="break">
+        {{localize "TB2E.Camp.Events.GoToBreak"}} <i class="fa-solid fa-arrow-right"></i>
+      </button>
+      {{else}}
+      <button type="button" class="camp-advance-btn" data-action="advanceTo" data-phase="strategy"
+              {{#unless campState.events.rolled}}disabled
+              {{else}}{{#if (eq campState.events.outcome "pending")}}disabled{{/if}}{{/unless}}>
+        {{localize "TB2E.Camp.Next"}} <i class="fa-solid fa-arrow-right"></i>
+      </button>
+      {{/if}}
+    {{/if}}
+  </div>
+  {{/unless}}
+
+</div>

@@ -1,0 +1,283 @@
+_id: ce00000000000a01
+name: 'Ancient Ruins Camp Events'
+img: systems/tb2e/icons/ffffff/transparent/1x1/delapouite/stone-bust.svg
+description: "Scholar's Guide, pp. 266–267"
+formula: '3d6'
+replacement: true
+displayRoll: true
+_key: '!tables!ce00000000000a01'
+flags:
+  tb2e:
+    campEvents:
+      campType: ancient-ruins
+results:
+  - _id: ce00000000r10000
+    type: text
+    range: [-99, 1]
+    weight: 1
+    drawn: false
+    name: 'Collapse (SG p. 266)'
+    description: ''
+    img: null
+    flags:
+      tb2e:
+        campEvents:
+          isDisaster: true
+          isUnavertable: true
+          avert:
+            allowed: false
+            notes: 'Nothing can be done to prevent this. Camp ends.'
+    _key: '!tables.results!ce00000000000a01.ce00000000r10000'
+  - _id: ce00000000r10002
+    type: text
+    range: [2, 2]
+    weight: 1
+    drawn: false
+    name: 'Pits of despair (SG p. 266)'
+    description: ''
+    img: null
+    flags:
+      tb2e:
+        campEvents:
+          isDisaster: true
+          isUnavertable: true
+          avert:
+            allowed: false
+            notes: 'The watch cannot prevent this disaster.'
+    _key: '!tables.results!ce00000000000a01.ce00000000r10002'
+  - _id: ce00000000r10003
+    type: text
+    range: [3, 3]
+    weight: 1
+    drawn: false
+    name: 'Terror (SG p. 266)'
+    description: ''
+    img: null
+    flags:
+      tb2e:
+        campEvents:
+          isDisaster: true
+          isUnavertable: true
+          avert:
+            allowed: false
+            notes: 'Test Will Ob 8 to remain sane. Suggested failure: afraid. Camp ends either way.'
+    _key: '!tables.results!ce00000000000a01.ce00000000r10003'
+  - _id: ce00000000r10004
+    type: text
+    range: [4, 4]
+    weight: 1
+    drawn: false
+    name: 'Lair (SG p. 266)'
+    description: ''
+    img: null
+    flags:
+      tb2e:
+        campEvents:
+          isDisaster: true
+          isUnavertable: false
+          avert:
+            allowed: true
+            kind: test
+            skill: survivalist
+            ob: 4
+            notes: 'Watch may spend 1 check to test to escape before being swallowed, or engage in a conflict to avert the disaster.'
+    _key: '!tables.results!ce00000000000a01.ce00000000r10004'
+  - _id: ce00000000r10005
+    type: text
+    range: [5, 5]
+    weight: 1
+    drawn: false
+    name: 'Cursed (SG p. 266)'
+    description: ''
+    img: null
+    flags:
+      tb2e:
+        campEvents:
+          isDisaster: false
+    _key: '!tables.results!ce00000000000a01.ce00000000r10005'
+  - _id: ce00000000r10006
+    type: text
+    range: [6, 6]
+    weight: 1
+    drawn: false
+    name: 'Wild magic and strange gods (SG p. 266)'
+    description: ''
+    img: null
+    flags:
+      tb2e:
+        campEvents:
+          isDisaster: false
+    _key: '!tables.results!ce00000000000a01.ce00000000r10006'
+  - _id: ce00000000r10007
+    type: document
+    range: [7, 7]
+    weight: 1
+    drawn: false
+    name: 'Strange corrosion — roll Corrosion Location (SG p. 267)'
+    documentUuid: Compendium.tb2e.camp-events.RollTable.ce00000000000b11
+    description: ''
+    img: null
+    flags:
+      tb2e:
+        campEvents:
+          isDisaster: false
+    _key: '!tables.results!ce00000000000a01.ce00000000r10007'
+  - _id: ce00000000r10008
+    type: text
+    range: [8, 8]
+    weight: 1
+    drawn: false
+    name: 'Pestilence (SG p. 267)'
+    description: ''
+    img: null
+    flags:
+      tb2e:
+        campEvents:
+          isDisaster: false
+    _key: '!tables.results!ce00000000000a01.ce00000000r10008'
+  - _id: ce00000000r10009
+    type: text
+    range: [9, 9]
+    weight: 1
+    drawn: false
+    name: 'Whispers (SG p. 267)'
+    description: ''
+    img: null
+    flags:
+      tb2e:
+        campEvents:
+          isDisaster: false
+    _key: '!tables.results!ce00000000000a01.ce00000000r10009'
+  - _id: ce00000000r1000a
+    type: text
+    range: [10, 10]
+    weight: 1
+    drawn: false
+    name: 'Penetrating chill (SG p. 267)'
+    description: ''
+    img: null
+    flags:
+      tb2e:
+        campEvents:
+          isDisaster: false
+    _key: '!tables.results!ce00000000000a01.ce00000000r1000a'
+  - _id: ce00000000r1000b
+    type: text
+    range: [11, 12]
+    weight: 1
+    drawn: false
+    name: 'Safe camp (SG p. 267)'
+    description: ''
+    img: null
+    flags:
+      tb2e:
+        campEvents:
+          isDisaster: false
+    _key: '!tables.results!ce00000000000a01.ce00000000r1000b'
+  - _id: ce00000000r1000d
+    type: text
+    range: [13, 13]
+    weight: 1
+    drawn: false
+    name: 'Rare herbs (SG p. 267)'
+    description: ''
+    img: null
+    flags:
+      tb2e:
+        campEvents:
+          isDisaster: false
+    _key: '!tables.results!ce00000000000a01.ce00000000r1000d'
+  - _id: ce00000000r1000e
+    type: text
+    range: [14, 14]
+    weight: 1
+    drawn: false
+    name: 'Mirror font (SG p. 267)'
+    description: ''
+    img: null
+    flags:
+      tb2e:
+        campEvents:
+          isDisaster: false
+    _key: '!tables.results!ce00000000000a01.ce00000000r1000e'
+  - _id: ce00000000r1000f
+    type: document
+    range: [15, 15]
+    weight: 1
+    drawn: false
+    name: 'Ancient engravings — Scholar Ob 6; Tome of Ancient Lore subtable (SG p. 267)'
+    documentUuid: Compendium.tb2e.loot-tables.RollTable.lt00000000000007
+    description: ''
+    img: null
+    flags:
+      tb2e:
+        campEvents:
+          isDisaster: false
+    _key: '!tables.results!ce00000000000a01.ce00000000r1000f'
+  - _id: ce00000000r10010
+    type: text
+    range: [16, 16]
+    weight: 1
+    drawn: false
+    name: 'Shrine of the Immortals (SG p. 267)'
+    description: ''
+    img: null
+    flags:
+      tb2e:
+        campEvents:
+          isDisaster: false
+    _key: '!tables.results!ce00000000000a01.ce00000000r10010'
+  - _id: ce00000000r10011
+    type: text
+    range: [17, 17]
+    weight: 1
+    drawn: false
+    name: 'Sanctuary (SG p. 267)'
+    description: ''
+    img: null
+    flags:
+      tb2e:
+        campEvents:
+          isDisaster: false
+    _key: '!tables.results!ce00000000000a01.ce00000000r10011'
+  - _id: ce00000000r10012
+    type: document
+    range: [18, 18]
+    weight: 1
+    drawn: false
+    name: 'Votive statues — Works of Art subtable (SG p. 267)'
+    documentUuid: Compendium.tb2e.loot-tables.RollTable.lt00000000000019
+    description: ''
+    img: null
+    flags:
+      tb2e:
+        campEvents:
+          isDisaster: false
+    _key: '!tables.results!ce00000000000a01.ce00000000r10012'
+  - _id: ce00000000r10013
+    type: document
+    range: [19, 19]
+    weight: 1
+    drawn: false
+    name: 'Artifact — Magic subtable (SG p. 267)'
+    documentUuid: Compendium.tb2e.loot-tables.RollTable.lt0000000000000a
+    description: ''
+    img: null
+    flags:
+      tb2e:
+        campEvents:
+          isDisaster: false
+    _key: '!tables.results!ce00000000000a01.ce00000000r10013'
+  - _id: ce00000000r10014
+    type: text
+    range: [20, 20]
+    weight: 1
+    drawn: false
+    name: 'Impossible distances (SG p. 267)'
+    description: ''
+    img: null
+    flags:
+      tb2e:
+        campEvents:
+          isDisaster: false
+    _key: '!tables.results!ce00000000000a01.ce00000000r10014'

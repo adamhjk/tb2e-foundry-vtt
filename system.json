@@ -1,10 +1,10 @@
 {
   "id": "tb2e",
   "title": "Torchbearer 2nd Edition",
-  "version": "0.3.1",
+  "version": "0.4.0",
   "url": "https://github.com/adamhjk/tb2e-foundry-vtt",
   "manifest": "https://github.com/adamhjk/tb2e-foundry-vtt/releases/latest/download/system.json",
-  "download": "https://github.com/adamhjk/tb2e-foundry-vtt/releases/download/release-0.3.1/tb2e-release-0.3.1.zip",
+  "download": "https://github.com/adamhjk/tb2e-foundry-vtt/releases/download/release-0.4.0/tb2e-release-0.4.0.zip",
   "compatibility": {
     "minimum": "13",
     "verified": "13"
@@ -24,7 +24,8 @@
     "Actor": {
       "character": {},
       "monster": {},
-      "npc": {}
+      "npc": {},
+      "camp": {}
     },
     "Item": {
       "trait": {},
@@ -72,7 +73,8 @@
     { "name": "npcs",        "label": "NPCs",        "path": "packs/npcs",        "type": "Actor" },
     { "name": "iconic-characters", "label": "Iconic Characters", "path": "packs/iconic-characters", "type": "Actor" },
     { "name": "phase-scenes", "label": "Phase Scenes", "path": "packs/phase-scenes", "type": "Scene" },
-    { "name": "loot-tables", "label": "Loot Tables", "path": "packs/loot-tables", "type": "RollTable" }
+    { "name": "loot-tables", "label": "Loot Tables", "path": "packs/loot-tables", "type": "RollTable" },
+    { "name": "camp-events", "label": "Camp Events", "path": "packs/camp-events", "type": "RollTable" }
   ],
   "packFolders": [
     {
@@ -102,7 +104,8 @@
         "richer-loot",
         "potions",
         "magic-items",
-        "loot-tables"
+        "loot-tables",
+        "camp-events"
       ]
     },
     {

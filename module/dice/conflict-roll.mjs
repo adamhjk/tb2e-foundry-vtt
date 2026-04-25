@@ -333,6 +333,10 @@ export function computeOrderModifier({ conflictType, ourGroupId, opponentGroupId
   const diff = ours - theirs;
   if ( diff <= 0 ) return null;
 
+  // Build a `display` string the same way createModifier does, so the roll
+  // dialog's modifier list and the chat-card breakdown render "+3s" instead
+  // of the literal word "undefined" (the modifier list templates read
+  // `m.display` directly — see tb2e-roll.mjs L525).
   return {
     label: game.i18n.format(labelKey, { n: diff }),
     type: "success",
@@ -340,7 +344,8 @@ export function computeOrderModifier({ conflictType, ourGroupId, opponentGroupId
     source: "conflict",
     icon: attribute === "might" ? "fa-solid fa-hand-fist" : "fa-solid fa-crown",
     color: "--tb-amber",
-    timing: "post"
+    timing: "post",
+    display: `+${diff}s`
   };
 }
 
@@ -360,6 +365,10 @@ export function computeTeamConditionPenalties(combat, groupId) {
   const hasHungry    = members.some(c => c.actor?.system?.conditions?.hungry);
   const hasExhausted = members.some(c => c.actor?.system?.conditions?.exhausted);
 
+  // `display` is set inline (matching computeOrderModifier) because these
+  // mods bypass createModifier and flow through testContext.contextModifiers,
+  // which is spread as-is into the dialog modifier list at tb2e-roll.mjs L1257.
+  // Without it the dialog renders the literal word "undefined" via L525.
   const mods = [];
   if ( hasHungry ) {
     mods.push({
@@ -369,7 +378,8 @@ export function computeTeamConditionPenalties(combat, groupId) {
       source: "condition",
       icon: "fa-solid fa-drumstick-bite",
       color: "--tb-cond-hungry",
-      timing: "post"
+      timing: "post",
+      display: "−1s"
     });
   }
   if ( hasExhausted ) {
@@ -380,7 +390,8 @@ export function computeTeamConditionPenalties(combat, groupId) {
       source: "condition",
       icon: "fa-solid fa-bed",
       color: "--tb-cond-exhausted",
-      timing: "post"
+      timing: "post",
+      display: "−1s"
     });
   }
   return mods;

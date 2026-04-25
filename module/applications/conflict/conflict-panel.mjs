@@ -1636,21 +1636,12 @@ export default class ConflictPanel extends HandlebarsApplicationMixin(Applicatio
     // 48-49, 54). All conflict types.
     contextModifiers.push(...computeTeamConditionPenalties(combat, groupId));
 
-    // Order of Might (SG p.80) and Aura of Authority / Precedence (SG p.82)
-    // apply +1s per point of advantage to all successful tests in their
-    // respective conflict families — including the disposition test (first
-    // roll of the conflict). MIGHT_CONFLICT_TYPES = {kill, capture, driveOff};
-    // PRECEDENCE_CONFLICT_TYPES = {convince, convinceCrowd, negotiate}.
-    // Volley action rolls at L1927-1933 already consume this helper; mirror
-    // that here so the disposition test receives the advantage too.
-    const opponentGroupId = Array.from(combat.groups).find(g => g.id !== groupId)?.id;
-    const orderMod = computeOrderModifier({
-      conflictType: combat.system.conflictType,
-      ourGroupId: groupId,
-      opponentGroupId,
-      combat
-    });
-    if ( orderMod ) contextModifiers.push(orderMod);
+    // Order of Might (SG p.80) and Aura of Authority (SG p.82) apply only
+    // to "successful or tied actions" — i.e. the volley action rolls during
+    // the conflict (attack/defend/feint/maneuver). The disposition test
+    // sets HP before the conflict's actions begin and is not itself an
+    // action, so the bonus is NOT applied here. Volley rolls pick it up at
+    // #onRollConflictAction below.
 
     await rollTest({
       actor,

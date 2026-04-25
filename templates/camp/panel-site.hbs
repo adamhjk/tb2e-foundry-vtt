@@ -1,0 +1,86 @@
+{{!-- Site tab — pick an existing camp or create a new one. SG p. 91. --}}
+<div class="panel-tab-content site-tab">
+
+  {{#if existingCamps.length}}
+  <div class="camp-site-section">
+    <h3 class="camp-site-heading">{{localize "TB2E.Camp.Site.ContinueExisting"}}</h3>
+    <ul class="camp-site-list">
+      {{#each existingCamps}}
+      <li class="camp-site-entry{{#if this.selected}} selected{{/if}}" data-camp-id="{{this.id}}">
+        <img class="camp-site-img" src="{{this.img}}" alt="{{this.name}}">
+        <div class="camp-site-body">
+          <div class="camp-site-name">{{this.name}}</div>
+          <div class="camp-site-meta">
+            <span class="camp-site-type">{{this.typeLabel}}</span>
+            <span class="camp-site-sep">·</span>
+            <span class="camp-site-danger">{{this.dangerLabel}}</span>
+            <span class="camp-site-sep">·</span>
+            <span class="camp-site-amenities">{{this.amenitiesSummary}}</span>
+          </div>
+          <div class="camp-site-stats">
+            <span>{{localize "TB2E.Camp.Site.Visits"}}: {{this.visits}}</span>
+            <span>{{localize "TB2E.Camp.Site.Disasters"}}: {{this.disasters}}</span>
+          </div>
+        </div>
+        {{#if @root.isGM}}
+        <div class="camp-site-actions">
+          <button type="button" class="camp-site-select-btn"
+                  data-action="selectCamp" data-camp-id="{{this.id}}">
+            {{#if this.selected}}{{localize "TB2E.Camp.Site.Reselect"}}{{else}}{{localize "TB2E.Camp.Site.Select"}}{{/if}}
+          </button>
+          <button type="button" class="camp-site-sheet-btn"
+                  data-action="openCampSheet" data-camp-id="{{this.id}}"
+                  title="{{localize 'TB2E.Camp.Site.OpenSheet'}}">
+            <i class="fa-solid fa-up-right-from-square"></i>
+          </button>
+        </div>
+        {{/if}}
+      </li>
+      {{/each}}
+    </ul>
+  </div>
+  <div class="camp-site-divider">{{localize "TB2E.Camp.Site.Or"}}</div>
+  {{/if}}
+
+  {{#if isGM}}
+  <div class="camp-site-section">
+    <h3 class="camp-site-heading">{{localize "TB2E.Camp.Site.CreateNew"}}</h3>
+    <form class="camp-new-camp-form" onsubmit="return false;">
+      <div class="form-group">
+        <label for="camp-new-name">{{localize "TB2E.Camp.Dialog.NewCamp.NameLabel"}}</label>
+        <input type="text" id="camp-new-name" name="name" placeholder="{{localize 'TB2E.Camp.Sheet.NamePlaceholder'}}" required>
+      </div>
+      <div class="form-group">
+        <label for="camp-new-type">{{localize "TB2E.Camp.Dialog.NewCamp.TypeLabel"}}</label>
+        <select id="camp-new-type" name="type">
+          {{#each campTypeOptions}}
+          <option value="{{this.key}}">{{this.label}}</option>
+          {{/each}}
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="camp-new-danger">{{localize "TB2E.Camp.Dialog.NewCamp.DangerLabel"}}</label>
+        <select id="camp-new-danger" name="defaultDanger">
+          {{#each dangerOptions}}
+          <option value="{{this.key}}">{{this.label}}</option>
+          {{/each}}
+        </select>
+      </div>
+      <button type="button" class="camp-create-btn" data-action="createNewCamp">
+        <i class="fa-solid fa-plus"></i> {{localize "TB2E.Camp.Dialog.NewCamp.Create"}}
+      </button>
+    </form>
+  </div>
+  {{/if}}
+
+  {{#if campState.campActorId}}
+  <div class="camp-site-footer">
+    {{#if isGM}}
+    <button type="button" class="camp-advance-btn" data-action="advanceTo" data-phase="setup">
+      {{localize "TB2E.Camp.Next"}} <i class="fa-solid fa-arrow-right"></i>
+    </button>
+    {{/if}}
+  </div>
+  {{/if}}
+
+</div>

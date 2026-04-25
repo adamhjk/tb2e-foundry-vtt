@@ -1,0 +1,102 @@
+{{!-- Strategy tab — spend checks (SG pp. 94–95, DH p. 81). --}}
+<div class="panel-tab-content strategy-tab">
+
+  {{#unless hasCampActor}}
+  <div class="camp-setup-empty">
+    <p>{{localize "TB2E.Camp.Setup.NoCamp"}}</p>
+    <button type="button" class="camp-advance-btn" data-action="switchTab" data-tab="site">
+      <i class="fa-solid fa-arrow-left"></i> {{localize "TB2E.Camp.Back"}}
+    </button>
+  </div>
+  {{else}}
+
+  <section class="camp-decisions-section">
+    <h3 class="camp-decisions-heading">{{localize "TB2E.Camp.Strategy.PoolHeading"}}</h3>
+    <ul class="camp-strategy-pcs">
+      {{#each partyChecks}}
+      <li class="camp-strategy-pc{{#unless this.hasChecks}} no-checks{{/unless}}{{#if this.isWatcher}} watcher{{/if}}">
+        <div class="camp-strategy-pc-header">
+          <img class="camp-strategy-pc-img" src="{{this.img}}" alt="{{this.name}}">
+          <span class="camp-strategy-pc-name">{{this.name}}</span>
+          <span class="camp-strategy-pc-pips">
+            {{#if this.hasChecks}}
+              {{#each this.pips}}<i class="fa-solid fa-check"></i>{{/each}}
+            {{else}}
+              <i class="fa-solid fa-minus"></i>
+            {{/if}}
+          </span>
+          {{#if this.isWatcher}}<span class="camp-strategy-badge watcher">👁 {{localize "TB2E.Camp.Strategy.Watcher"}}</span>{{/if}}
+          {{#each this.conditions}}<span class="camp-strategy-badge condition">{{this}}</span>{{/each}}
+        </div>
+        {{#if @root.isGM}}
+        <div class="camp-strategy-actions">
+          <button type="button" class="camp-strategy-btn"
+                  data-action="spendCheck" data-actor-id="{{this.id}}" data-purpose="test"
+                  {{#unless this.canTest}}disabled{{/unless}}>
+            {{localize "TB2E.Camp.Strategy.Test"}} (1 ✓)
+          </button>
+          <button type="button" class="camp-strategy-btn{{#if this.isWatcher}} blocked{{/if}}"
+                  data-action="spendCheck" data-actor-id="{{this.id}}" data-purpose="recover"
+                  {{#unless this.canRecover}}disabled{{/unless}}>
+            {{localize "TB2E.Camp.Strategy.Recover"}} (1 ✓)
+          </button>
+          <button type="button" class="camp-strategy-btn{{#if this.isWatcher}} blocked{{/if}}{{#if this.hasMemorized}} used{{/if}}"
+                  data-action="recordMemorize" data-actor-id="{{this.id}}"
+                  {{#unless this.canMemorize}}disabled{{/unless}}>
+            {{localize "TB2E.Camp.Strategy.Memorize"}} (1 ✓)
+          </button>
+          <button type="button" class="camp-strategy-btn{{#if this.isWatcher}} blocked{{/if}}{{#if this.hasPurified}} used{{/if}}"
+                  data-action="recordPurify" data-actor-id="{{this.id}}"
+                  {{#unless this.canPurify}}disabled{{/unless}}>
+            {{localize "TB2E.Camp.Strategy.Purify"}} (1 ✓)
+          </button>
+          <button type="button" class="camp-strategy-btn"
+                  data-action="useInstinct" data-actor-id="{{this.id}}"
+                  title="{{#if this.isExhausted}}{{localize 'TB2E.Camp.Strategy.InstinctExhaustedHint'}}{{else}}{{localize 'TB2E.Camp.Strategy.InstinctFreeHint'}}{{/if}}">
+            {{this.instinctLabel}}
+          </button>
+          {{#if this.shareTargets.length}}
+          <select class="camp-strategy-share-select" data-actor-id="{{this.id}}"
+                  {{#unless this.hasChecks}}disabled{{/unless}}>
+            <option value="">{{localize "TB2E.Camp.Strategy.ShareWith"}}...</option>
+            {{#each this.shareTargets}}
+            <option value="{{this.id}}">{{this.name}}</option>
+            {{/each}}
+          </select>
+          {{/if}}
+        </div>
+        {{/if}}
+      </li>
+      {{/each}}
+    </ul>
+  </section>
+
+  {{#if logEntries.length}}
+  <section class="camp-decisions-section">
+    <h3 class="camp-decisions-heading">{{localize "TB2E.Camp.Strategy.LogHeading"}}</h3>
+    <ul class="camp-strategy-log">
+      {{#each logEntries}}
+      <li class="camp-strategy-log-entry camp-strategy-log-{{this.kind}}">
+        <span class="camp-strategy-log-kind">{{this.kindLabel}}:</span>
+        <span class="camp-strategy-log-actor">{{this.actorName}}</span>
+        {{#if this.toName}}<span class="camp-strategy-log-arrow">→</span><span class="camp-strategy-log-actor">{{this.toName}}</span>{{/if}}
+        {{#if this.detail}}<span class="camp-strategy-log-detail">— {{this.detail}}</span>{{/if}}
+      </li>
+      {{/each}}
+    </ul>
+  </section>
+  {{/if}}
+
+  <div class="camp-decisions-footer">
+    <button type="button" class="camp-back-btn" data-action="switchTab" data-tab="events">
+      <i class="fa-solid fa-arrow-left"></i> {{localize "TB2E.Camp.Back"}}
+    </button>
+    {{#if isGM}}
+    <button type="button" class="camp-advance-btn" data-action="advanceTo" data-phase="break">
+      {{localize "TB2E.Camp.Next"}} <i class="fa-solid fa-arrow-right"></i>
+    </button>
+    {{/if}}
+  </div>
+  {{/unless}}
+
+</div>

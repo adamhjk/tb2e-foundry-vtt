@@ -12,8 +12,32 @@
  * core rendering.
  */
 
-const TB2E_PACK = "tb2e.loot-tables";
 const TB2E_TEMPLATE = "systems/tb2e/templates/chat/loot-draw.hbs";
+
+/**
+ * Packs for which this subclass intercepts `.draw()` to render the tb2e
+ * chat card. Each entry declares the `kind` context used by the template
+ * to swap the header label/icon and the footer banner — the rest of the
+ * card (chain trace, drops, anchor links) is identical across kinds.
+ */
+const TB2E_PACK_KINDS = {
+  "tb2e.loot-tables": {
+    kind: "loot",
+    labelKey: "TB2E.Loot.Draw",
+    labelIcon: "fa-solid fa-coins",
+    bannerKey: "TB2E.Loot.Booty",
+    bannerIcon: "fa-solid fa-sack-dollar",
+    flagKey: "lootDraw"
+  },
+  "tb2e.camp-events": {
+    kind: "camp-event",
+    labelKey: "TB2E.CampEvents.Draw",
+    labelIcon: "fa-solid fa-campground",
+    bannerKey: "TB2E.CampEvents.CampIsMade",
+    bannerIcon: "fa-solid fa-fire-flame-curved",
+    flagKey: "campEventDraw"
+  }
+};
 
 export default class TB2ELootTable extends RollTable {
 
@@ -70,18 +94,37 @@ export default class TB2ELootTable extends RollTable {
    * other tables get the default behavior.
    */
   /**
-   * Is this RollTable part of the tb2e loot-tables pack (or a world copy of one)?
+   * Resolve the tb2e pack kind for this table. Matches by direct pack or by
+   * compendium-source lineage (so world-copies of compendium tables still
+   * render with the right visual treatment).
+   * @returns {object|null} pack kind config (see TB2E_PACK_KINDS) or null.
+   */
+  get tb2eKind() {
+    const direct = TB2E_PACK_KINDS[this.pack];
+    if ( direct ) return direct;
+    const src = this._stats?.compendiumSource;
+    if ( typeof src === "string" ) {
+      for ( const [pack, cfg] of Object.entries(TB2E_PACK_KINDS) ) {
+        if ( src.startsWith(`Compendium.${pack}.`) ) return cfg;
+      }
+    }
+    return null;
+  }
+
+  /**
+   * Back-compat alias — true when this is any tb2e-styled draw target
+   * (loot or camp event). Pre-existing callers that asked `isLootTable`
+   * wanted "should this produce the tb2e chat card?", which is now the
+   * union of loot and camp-event tables.
    * @type {boolean}
    */
   get isLootTable() {
-    if ( this.pack === TB2E_PACK ) return true;
-    const src = this._stats?.compendiumSource;
-    if ( typeof src === "string" && src.startsWith(`Compendium.${TB2E_PACK}.`) ) return true;
-    return false;
+    return this.tb2eKind !== null;
   }
 
   async draw({roll, recursive=true, results=[], displayChat=true, rollMode, chain}={}) {
-    if ( !this.isLootTable ) {
+    const kindCfg = this.tb2eKind;
+    if ( !kindCfg ) {
       return super.draw({roll, recursive, results, displayChat, rollMode});
     }
 
@@ -97,17 +140,39 @@ export default class TB2ELootTable extends RollTable {
     if ( !results.length ) return { roll, results };
 
     if ( displayChat ) {
-      await this._toLootMessage(results, { roll, chain, messageOptions: { rollMode } });
+      await this._toLootMessage(results, { roll, chain, kindCfg, messageOptions: { rollMode } });
     }
     return { roll, results, chain };
   }
 
   /**
-   * Render and post the tb2e loot-draw chat card.
+   * Render and post the tb2e chat card. `kindCfg` is the pack-kind config
+   * from {@link TB2E_PACK_KINDS}: it tells the template which label/icon
+   * pairs to render in the header and footer banner. The structural
+   * treatment (chain trace, drops, content-link anchors, amber accent) is
+   * identical for loot and camp-event tables.
    * @private
    */
-  async _toLootMessage(results, { roll, chain, messageOptions={} }) {
+  async _toLootMessage(results, { roll, chain, kindCfg, messageOptions={} }) {
+    kindCfg ??= this.tb2eKind ?? TB2E_PACK_KINDS["tb2e.loot-tables"];
     messageOptions.rollMode ??= game.settings.get("core", "rollMode");
+
+    // For camp-event draws, detect disaster via the TOP-LEVEL result's
+    // `flags.tb2e.campEvents.isDisaster` (subtable terminals don't carry
+    // the flag). The banner + icon swap to a "Disaster!" treatment so the
+    // card is readable at a glance.
+    if ( kindCfg.kind === "camp-event" ) {
+      const total = roll?.total ?? 0;
+      const topLevel = this.getResultsForRoll(total)[0];
+      const topFlags = topLevel?.flags?.tb2e?.campEvents ?? {};
+      if ( topFlags.isDisaster ) {
+        kindCfg = {
+          ...kindCfg,
+          bannerKey:  "TB2E.CampEvents.DisasterBanner",
+          bannerIcon: "fa-solid fa-triangle-exclamation"
+        };
+      }
+    }
 
     // Build terminal drops: for document results, resolve to the linked Item (or nested RollTable).
     // Use the document's own `toAnchor()` to get a fully-wired content link
@@ -149,6 +214,11 @@ export default class TB2ELootTable extends RollTable {
 
     const rollHTML = (this.displayRoll && roll) ? await roll.render() : null;
     const content = await foundry.applications.handlebars.renderTemplate(TB2E_TEMPLATE, {
+      kind:        kindCfg.kind,
+      labelKey:    kindCfg.labelKey,
+      labelIcon:   kindCfg.labelIcon,
+      bannerKey:   kindCfg.bannerKey,
+      bannerIcon:  kindCfg.bannerIcon,
       table: {
         id: this.id,
         name: this.name,
@@ -170,7 +240,7 @@ export default class TB2ELootTable extends RollTable {
       sound: roll ? CONFIG.sounds.dice : null,
       flags: {
         "core.RollTable": this.id,
-        "tb2e": { lootDraw: true }
+        "tb2e": { [kindCfg.flagKey]: true }
       }
     };
 

@@ -1,7 +1,6 @@
 import { _logAdvancement, _logBLLearning } from "./tb2e-roll.mjs";
 import { _checkWiseAdvancement } from "./post-roll.mjs";
 import { processWiseAiders, logAdvancementForSide } from "./roll-utils.mjs";
-import { resolveActionEffect } from "./conflict-roll.mjs";
 import { abilities, skills } from "../config.mjs";
 
 /**
@@ -141,11 +140,40 @@ async function _executeVersusResolution(initiatorMessage, opponentMessage) {
   if ( !initiatorVs || !opponentVs ) return;
   if ( initiatorVs.resolved ) return; // Already resolved
 
-  // Read final successes from roll flags (post-roll actions may have modified them)
+  // Read post-auto-mod successes from roll flags. _handleVersusRoll has
+  // already applied -s post mods (Hungry/Exhausted) but DEFERRED +s post
+  // mods (Order of Might per SG p.80, L3 trait benefit) — those only apply
+  // "for successful or tied actions", which we can finally evaluate now
+  // that both sides have rolled.
   const iRoll = initiatorMessage.flags.tb2e.roll;
   const oRoll = opponentMessage.flags.tb2e.roll;
-  const iSuccesses = iRoll.finalSuccesses ?? iRoll.successes;
-  const oSuccesses = oRoll.finalSuccesses ?? oRoll.successes;
+  const iBase = iRoll.finalSuccesses ?? iRoll.successes;
+  const oBase = oRoll.finalSuccesses ?? oRoll.successes;
+
+  const iCondBonus = (initiatorMessage.flags.tb2e.postSuccessMods || [])
+    .filter(m => m.value > 0)
+    .reduce((s, m) => s + m.value, 0);
+  const oCondBonus = (opponentMessage.flags.tb2e.postSuccessMods || [])
+    .filter(m => m.value > 0)
+    .reduce((s, m) => s + m.value, 0);
+
+  // Each side that tied or won the raw comparison gets to apply its +s
+  // bonus. The losing side's +s does not fire (SG p.80: "for all
+  // successful or tied actions").
+  let iSuccesses = iBase;
+  let oSuccesses = oBase;
+  if ( iBase >= oBase ) iSuccesses = iBase + iCondBonus;
+  if ( oBase >= iBase ) oSuccesses = oBase + oCondBonus;
+
+  // Persist the resolved totals on each roll message so subsequent reads
+  // (e.g., the resolution card, downstream HP application) see the same
+  // numbers the comparison used.
+  if ( iSuccesses !== iBase ) {
+    await initiatorMessage.update({ "flags.tb2e.roll.finalSuccesses": iSuccesses });
+  }
+  if ( oSuccesses !== oBase ) {
+    await opponentMessage.update({ "flags.tb2e.roll.finalSuccesses": oSuccesses });
+  }
 
   const isTied = iSuccesses === oSuccesses;
   const initiatorWins = iSuccesses > oSuccesses;
@@ -222,41 +250,9 @@ async function _executeVersusResolution(initiatorMessage, opponentMessage) {
     }
   });
 
-  // Apply HP effect from the versus resolution (SG p.69, DH p.123).
-  // Attack/Feint winner: loser's combatant takes `margin` damage.
-  // Defend winner (versus): winning defender's combatant restores `margin` HP.
-  // Maneuver/none: no HP change here — handled by the MoS spend dialog
-  // downstream or explicitly a no-op.
-  if ( winnerTc.isConflict ) {
-    const effect = resolveActionEffect(winnerTc.conflictAction, margin, "versus");
-    const combat = game.combats.get(winnerTc.combatId);
-    if ( combat && effect.amount > 0 ) {
-      const winnerCombatantId = winnerTc.combatantId;
-      const loserTc = initiatorWins
-        ? (opponentMessage.flags.tb2e?.testContext || {})
-        : (initiatorMessage.flags.tb2e?.testContext || {});
-      const loserCombatantId = loserTc?.combatantId;
-
-      if ( effect.type === "damage" && loserCombatantId ) {
-        const loser = combat.combatants.get(loserCombatantId);
-        if ( loser?.actor ) {
-          const hp = loser.actor.system.conflict?.hp;
-          const newVal = Math.max(0, (hp?.value ?? 0) - effect.amount);
-          // Use combatant.actor.update so synthetic tokens write through to
-          // the token's synthetic actor (CLAUDE.md §Unlinked Actors).
-          await loser.actor.update({ "system.conflict.hp.value": newVal });
-        }
-      } else if ( effect.type === "restore" && winnerCombatantId ) {
-        const winner = combat.combatants.get(winnerCombatantId);
-        if ( winner?.actor ) {
-          const hp = winner.actor.system.conflict?.hp;
-          const max = hp?.max ?? 0;
-          const newVal = Math.min(max, (hp?.value ?? 0) + effect.amount);
-          await winner.actor.update({ "system.conflict.hp.value": newVal });
-        }
-      }
-    }
-  }
+  // HP changes are applied manually via the conflict panel HP +/- controls
+  // (conflict-panel.mjs L351). The resolution card surfaces the action,
+  // winner, and margin so the GM can apply damage/restore by hand.
 
   // Mark both versus flags as resolved
   await initiatorMessage.setFlag("tb2e", "versus.resolved", true);

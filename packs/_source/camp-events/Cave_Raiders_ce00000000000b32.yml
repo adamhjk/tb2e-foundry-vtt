@@ -1,0 +1,58 @@
+_id: ce00000000000b32
+name: 'Cave Raiders'
+img: systems/tb2e/icons/ffffff/transparent/1x1/delapouite/mountain-cave.svg
+description: "Scholar's Guide, p. 270 — inner roll for Natural Caves result 5 (Raid)"
+formula: '1d6'
+replacement: true
+displayRoll: true
+_key: '!tables!ce00000000000b32'
+flags:
+  tb2e:
+    campEvents:
+      isSubtable: true
+      parentCampType: natural-caves
+results:
+  - _id: ce00000000rb3201
+    type: document
+    range: [1, 2]
+    weight: 1
+    drawn: false
+    name: 'Kobolds 2d6 (SG p. 270)'
+    documentUuid: Compendium.tb2e.monsters.Actor.a1b2c3d4e5f60001
+    description: ''
+    img: null
+    flags: {}
+    _key: '!tables.results!ce00000000000b32.ce00000000rb3201'
+  - _id: ce00000000rb3203
+    type: document
+    range: [3, 4]
+    weight: 1
+    drawn: false
+    name: 'Goblins 2d6 (SG p. 270)'
+    documentUuid: Compendium.tb2e.monsters.Actor.a1b2c3d4e5f6000c
+    description: ''
+    img: null
+    flags: {}
+    _key: '!tables.results!ce00000000000b32.ce00000000rb3203'
+  - _id: ce00000000rb3205
+    type: document
+    range: [5, 5]
+    weight: 1
+    drawn: false
+    name: 'Troll bats 3d6 (SG p. 270)'
+    documentUuid: Compendium.tb2e.monsters.Actor.a1b2c3d4e5f60014
+    description: ''
+    img: null
+    flags: {}
+    _key: '!tables.results!ce00000000000b32.ce00000000rb3205'
+  - _id: ce00000000rb3206
+    type: document
+    range: [6, 6]
+    weight: 1
+    drawn: false
+    name: 'Orcs 2d6 (SG p. 270)'
+    documentUuid: Compendium.tb2e.monsters.Actor.a1b2c3d4e5f60002
+    description: ''
+    img: null
+    flags: {}
+    _key: '!tables.results!ce00000000000b32.ce00000000rb3206'

@@ -47,6 +47,7 @@ prototypeToken:
   actorLink: false
   appendNumber: true
   disposition: 0
+  lockRotation: true
   texture:
     src: systems/tb2e/assets/tokens/laborer.webp
 items:

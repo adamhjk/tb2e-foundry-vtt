@@ -8,15 +8,26 @@ import { activatePostRollListeners, activateNatureCrisisListeners, activateWiseA
 import { activateSpellSourceListeners } from "./module/dice/spell-casting.mjs";
 import { activateBurdenListeners } from "./module/dice/invocation-casting.mjs";
 import { activateGrindConditionListeners, processGrindApplyMailbox } from "./module/applications/grind-tracker.mjs";
+import { defaultCampState } from "./module/data/camp/state.mjs";
+import { processCampActionMailbox } from "./module/applications/camp/mailbox.mjs";
 import WizardCompendiumsConfig from "./module/applications/settings/wizard-compendiums-config.mjs";
 
 Hooks.once("init", function() {
-  globalThis.tb2e = game.tb2e = { dice, conflictPanel: null, grindTracker: null };
+  globalThis.tb2e = game.tb2e = { dice, conflictPanel: null, grindTracker: null, campPanel: null };
 
   // Register grind tracker world settings.
   game.settings.register("tb2e", "grindPhase", { scope: "world", config: false, type: String, default: "adventure" });
   game.settings.register("tb2e", "grindTurn", { scope: "world", config: false, type: Number, default: 1 });
   game.settings.register("tb2e", "grindExtreme", { scope: "world", config: false, type: Boolean, default: false });
+
+  // Camp phase session state (SG pp. 90–96). Mutators live in
+  // module/data/camp/state.mjs; the Camp Panel reads this via `getCampState()`.
+  game.settings.register("tb2e", "campState", {
+    scope: "world",
+    config: false,
+    type: Object,
+    default: defaultCampState()
+  });
 
   // Register wizard compendium pack overrides.
   game.settings.register("tb2e", "wizardCompendiums", {
@@ -84,6 +95,11 @@ Hooks.once("init", function() {
     makeDefault: true,
     label: "TB2E.SheetNPC"
   });
+  DSC.registerSheet(Actor, "tb2e", applications.actor.CampSheet, {
+    types: ["camp"],
+    makeDefault: true,
+    label: "TB2E.SheetCamp"
+  });
   DSC.unregisterSheet(Item, "core", foundry.appv1.sheets.ItemSheet);
   DSC.registerSheet(Item, "tb2e", applications.item.GearSheet, {
     types: ["weapon", "armor", "container", "gear", "supply", "spellbook", "scroll", "relic"],
@@ -103,6 +119,14 @@ Hooks.once("init", function() {
 
   // Preload grind tracker template.
   foundry.applications.handlebars.loadTemplates(["systems/tb2e/templates/grind-tracker.hbs"]);
+
+  // Preload camp panel top-level template. Partials are preloaded in the
+  // CampPanel class static initializer (see module/applications/camp/camp-panel.mjs).
+  foundry.applications.handlebars.loadTemplates([
+    "systems/tb2e/templates/camp/panel.hbs",
+    "systems/tb2e/templates/actors/camp-header.hbs",
+    "systems/tb2e/templates/actors/camp-body.hbs"
+  ]);
 
   // Preload templates.
   foundry.applications.handlebars.loadTemplates([
@@ -188,6 +212,8 @@ Hooks.on("updateActor", (actor, changes, options, userId) => {
   if ( pending?.messageId ) processSynergyMailbox(actor, pending);
   const pendingWise = changes.flags?.tb2e?.pendingWiseAdvancement;
   if ( pendingWise?.field ) processWiseAdvancementMailbox(actor, pendingWise);
+  const pendingCampAction = changes.flags?.tb2e?.pendingCampAction;
+  if ( pendingCampAction?.kind ) processCampActionMailbox(actor, changes);
   const pendingVersus = changes.flags?.tb2e?.pendingVersusFinalize;
   if ( pendingVersus?.messageId ) processVersusFinalize(actor, pendingVersus);
   const pendingHP = changes.flags?.tb2e?.pendingConflictHP;
@@ -339,10 +365,46 @@ Hooks.on("getSceneControlButtons", (controls) => {
       else tracker.render({ force: true });
     }
   };
+  tokens.tools["camp-panel"] = {
+    name: "camp-panel",
+    title: "TB2E.CampPanel.Title",
+    icon: "fa-solid fa-campground",
+    button: true,
+    visible: true,
+    onChange: () => {
+      const panel = applications.CampPanel.getInstance();
+      if ( panel.rendered ) panel.close();
+      else panel.render({ force: true });
+    }
+  };
+});
+
+// Set camp-actor defaults on create: camping-tent icon, linked token
+// (so dragging the actor onto a scene pins the camp per SG p. 91).
+Hooks.on("preCreateActor", (actor, data, options, userId) => {
+  if ( data.type !== "camp" ) return;
+  const updates = {};
+  if ( !data.img ) updates.img = "systems/tb2e/icons/ffffff/transparent/1x1/delapouite/camping-tent.svg";
+  updates.prototypeToken = foundry.utils.mergeObject(data.prototypeToken ?? {}, {
+    actorLink: true,
+    texture: { src: data.img || "systems/tb2e/icons/ffffff/transparent/1x1/delapouite/camping-tent.svg" },
+    disposition: CONST.TOKEN_DISPOSITIONS.NEUTRAL
+  }, { inplace: false });
+  actor.updateSource(updates);
 });
 
 // Auto-assign combatants to the correct team group when added to a conflict.
 Hooks.on("preCreateCombatant", (combatant, data, options, userId) => {
+  // Camp actors are map-pinned locations, not creatures — never let one
+  // become a combatant (whether dragged onto the tracker, dropped on a
+  // scene during conflict, or auto-added via a script). Block creation
+  // and surface a friendly notification.
+  const candidate = data.actorId ? game.actors.get(data.actorId) : null;
+  if ( candidate?.type === "camp" ) {
+    ui.notifications?.warn(game.i18n.localize("TB2E.Conflict.CampNotCombatant"));
+    return false;
+  }
+
   const combat = combatant.parent;
   if ( !combat?.isConflict ) return;
 

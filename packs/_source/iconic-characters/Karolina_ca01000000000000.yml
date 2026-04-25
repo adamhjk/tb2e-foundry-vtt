@@ -69,6 +69,7 @@ prototypeToken:
   actorLink: true
   appendNumber: false
   disposition: 1
+  lockRotation: true
   texture:
     src: systems/tb2e/assets/tokens/karolina.webp
 items:

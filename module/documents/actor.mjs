@@ -59,6 +59,7 @@ export default class TB2EActor extends Actor {
         disposition,
         displayBars: CONST.TOKEN_DISPLAY_MODES.ALWAYS,
         displayName: CONST.TOKEN_DISPLAY_MODES.ALWAYS,
+        lockRotation: true,
         bar1: { attribute: "conflict.hp" }
       }});
     }

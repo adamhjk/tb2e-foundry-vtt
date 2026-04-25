@@ -8,114 +8,26 @@ import { RollChatCard } from '../pages/RollChatCard.mjs';
 test.use({ viewport: { width: 1600, height: 900 } });
 
 /**
- * §13 Conflict: Disposition — Aura of Authority / Precedence (SG p.82).
+ * §13 Conflict: Disposition — Aura of Authority does NOT apply to disposition
+ * (SG p.82).
  *
- * SG p.82 "The Aura of Authority":
- *   In a convince, negotiate or convince-a-crowd conflict, the side with
- *   the higher Precedence gains a +1s bonus per point of Precedence
- *   greater than their opponent. If one side has no applicable Precedence
- *   at all, the rule does not apply ("they simply won't be heard").
+ * SG p.82 "The Aura of Authority" mirrors SG p.80 ("The Greater the Might"):
+ * +1s per point of Precedence greater than the opponent's, applied "for all
+ * successful or tied actions" — i.e., the volley actions during the
+ * convince/negotiate/convinceCrowd conflict, not the disposition test that
+ * sets HP before any actions occur.
  *
- * This is the Convince-conflict analog of Order of Might (SG p.80). It's
- * a post-success modifier on "successful tests in these conflicts" —
- * which, per DH pp.120-122, includes the disposition test (the first
- * roll inside the conflict, rolled once per team to set that team's
- * HP total).
+ * This is the Precedence analog of disposition-order-of-might.spec.mjs.
+ * Same RAW reasoning: the disposition test isn't an action, so the bonus
+ * doesn't apply there. Volley action rolls during the conflict pick the
+ * bonus up via `computeOrderModifier` at conflict-panel.mjs
+ * #onRollConflictAction.
  *
- * -------------------------------------------------------------------
- * Expected production behavior (per SG p.82)
- * -------------------------------------------------------------------
- *   - Party (Precedence P_ours) vs NPC/monster side (Precedence P_theirs),
- *     Convince conflict.
- *   - Let delta = max(P_ours - P_theirs, 0).
- *   - When the party captain rolls disposition, `contextModifiers`
- *     includes an Aura of Authority bonus of `+<delta>s`
- *     (type: "success", timing: "post",
- *     label "Aura of Authority +Ns" — lang/en.json L503).
- *   - `_handleDispositionRoll` applies postSuccessMods to
- *     `finalSuccesses` (tb2e-roll.mjs L1681-1687), so the stored
- *     disposition total is `baseSuccesses + delta + dispositionAbility`.
- *   - The disadvantaged side gets no such bonus (diff ≤ 0 → null).
- *
- * -------------------------------------------------------------------
- * Current production behavior (the gap this spec encodes)
- * -------------------------------------------------------------------
- * `computeOrderModifier` (module/dice/conflict-roll.mjs L312-345) is a
- * single dispatcher for BOTH Order of Might (Might conflicts) and Aura
- * of Authority (Precedence conflicts). The Precedence branch at
- * L321-328 correctly returns a `+<delta>s` success modifier for
- * PRECEDENCE_CONFLICT_TYPES={"convince","convinceCrowd","negotiate"}
- * (conflict-roll.mjs L188), reading team precedence via
- * `getTeamPrecedence` (L287-295) which delegates to
- * `_readActorPrecedence` (L264-273) — character precedence lives at
- * `system.abilities.precedence` (NumberField, character.mjs L83),
- * monster precedence at `system.precedence` (string/numeric, parsed by
- * `parsePrecedence` at L198-231). `_handleDispositionRoll` applies
- * `postSuccessMods` to `finalSuccesses` at tb2e-roll.mjs L1681-1687 —
- * the downstream plumbing exists end-to-end.
- *
- * The gap is the same one covered by disposition-order-of-might.spec.mjs
- * (TEST_PLAN.md L393): `ConflictPanel.#onRollDisposition`
- * (conflict-panel.mjs L1582-1653) builds its own `contextModifiers`
- * array at L1615 but only pushes the monster group-help dice bonus
- * (L1616-1632). It never calls `computeOrderModifier`. So for a
- * Convince conflict the disposition total ends up
- * `successes + dispositionAbility`, ignoring any Precedence advantage.
- * `computeOrderModifier` IS consumed for volley action rolls
- * (conflict-panel.mjs L1927-1933) but not the disposition roll.
- *
- * Fix shape (identical to the Order of Might fixme; one code change
- * closes both):
- *
- *   const opponentGroupId = Array.from(combat.groups)
- *     .find(g => g.id !== groupId)?.id;
- *   const orderMod = computeOrderModifier({
- *     conflictType: combat.system.conflictType,
- *     ourGroupId: groupId,
- *     opponentGroupId,
- *     combat
- *   });
- *   if ( orderMod ) contextModifiers.push(orderMod);
- *
- * (Plus the matching import at conflict-panel.mjs L4.)
- *
- * -------------------------------------------------------------------
- * Test fixture (deterministic)
- * -------------------------------------------------------------------
- *   Party side:
- *     - Captain: character persuader=3, will=4, precedence=5.
- *       (Character precedence is a writable NumberField,
- *       character.mjs L83, max 7.)
- *     - Member: default character (precedence defaults to 0 per
- *       character.mjs L83, which is ≤ the captain — captain's 5
- *       dominates `getTeamPrecedence`, conflict-roll.mjs L287-295).
- *   Opponent side:
- *     - Captain: Kobold (precedence="1", packs/_source/monsters/
- *       Kobold_a1b2c3d4e5f60001.yml L9).
- *     - Member: another Kobold.
- *   Convince conflict. PRNG stubbed to 0.001 → every d6 rolls 6.
- *
- *   Delta = 5 - 1 = 4 → +4s Aura of Authority on the party's roll.
- *   Base successes from persuader=3: 3. Plus +4s (post-success): 7.
- *   Plus will=4 (config.mjs L286 sets dispositionAbility=will for
- *   convince): disposition total = 7 + 4 = 11.
- *
- *   Current (buggy) total: 3 + 4 = 7 (no +4s applied).
- *
- * -------------------------------------------------------------------
- * Why the spec is a single `test.fixme`, not an anti-spec
- * -------------------------------------------------------------------
- * TEST_PLAN.md L394 phrases the checkbox positively: "team with higher
- * Precedence gains +1s (SG p.82)". An anti-spec would green up the
- * checkbox on a broken implementation and hide the bug. A `test.fixme`
- * that encodes the expected behavior fails closed until the dispatcher
- * wiring lands, making the TEST_PLAN flip a one-line change.
- *
- * Guard removal: when `#onRollDisposition` is patched to invoke
- * `computeOrderModifier` + push the modifier into `contextModifiers`,
- * drop the `test.fixme` here (and on disposition-order-of-might —
- * both fail through the same plumbing gap) and flip TEST_PLAN.md L394
- * to `[x]`.
+ * Fixture: Convince conflict, party captain persuader=3 / will=4 /
+ * precedence=5 vs two Kobolds (precedence=1). PRNG all-6s → persuader=3
+ * rolls 3 successes. Expected disposition total = 3 (successes) + 4 (will,
+ * convince's dispositionAbility per config.mjs) = 7.
+ * Buggy behavior would give 3 + 4 (precedence delta) + 4 = 11.
  */
 
 const MONSTER_PACK_ID = 'tb2e.monsters';
@@ -213,7 +125,7 @@ test.describe('§13 Conflict: Disposition — Aura of Authority (Precedence)', (
   });
 
   test(
-    'Convince conflict: party with higher Precedence gets +1s per point on disposition roll',
+    'Convince conflict: Aura of Authority is NOT applied to the disposition roll',
     async ({ page }, testInfo) => {
       const tag = `e2e-disp-prec-${testInfo.parallelIndex}-${Date.now()}`;
       const stamp = Date.now();
@@ -232,8 +144,10 @@ test.describe('§13 Conflict: Disposition — Aura of Authority (Precedence)', (
         // (precedence=1 per Kobold_a1b2c3d4e5f60001.yml L9).
         // Party captain persuader=3 (all-6s → 3 base successes),
         // will=4 (convince's dispositionAbility per config.mjs L286),
-        // precedence=5 → delta = 5 - 1 = 4 vs Kobolds.
-        // Expected disposition = 3 + 4 (Aura of Authority) + 4 (will) = 11.
+        // precedence=5; delta to Kobolds = 4. RAW: Aura of Authority does
+        // NOT apply to disposition (SG p.82 — "successful or tied actions"
+        // is volley-action wording).
+        // Expected disposition = 3 (successes) + 4 (will) = 7.
         const captainId = await createCaptainCharacter(page, {
           name: charAName, tag, persuader: 3, will: 4, precedence: 5
         });
@@ -305,12 +219,11 @@ test.describe('§13 Conflict: Disposition — Aura of Authority (Precedence)', (
         // (conflict-roll.mjs L188, L321-328).
         await panel.selectConflictType('convince');
 
-        // Pre-flight sanity: at this point `computeOrderModifier` already
-        // returns a +4s mod if invoked. Prove the function would produce
-        // the expected bonus so that when the implementation gap is
-        // closed, we know the plumbing — not the calculation — is all
-        // that needs to change. (Mirrors the Order-of-Might spec's
-        // pre-flight assertion at L288-311.)
+        // Pre-flight sanity: `computeOrderModifier` itself still returns
+        // the +4s mod when invoked directly — the function is correct, it
+        // just must not be wired into the disposition-roll path. Guards
+        // against accidental regression of the helper. (Mirrors the Order
+        // of Might anti-spec.)
         const expectedMod = await page.evaluate(
           async ({ cId, gId }) => {
             const combat = game.combats.get(cId);
@@ -367,26 +280,21 @@ test.describe('§13 Conflict: Disposition — Aura of Authority (Precedence)', (
         const card = new RollChatCard(page);
         await card.expectPresent();
 
-        // --- EXPECTED (fixme) ASSERTIONS ---------------------------------
-        // These will fail against current source, which is the point of
-        // the fixme. When `#onRollDisposition` pushes the Aura of Authority
-        // modifier into `contextModifiers`, all four should pass.
-
-        // The disposition card's modifier list contains the Aura of
-        // Authority bonus, with the localized label from lang/en.json L503
-        // ("Aura of Authority +Ns") and a +4s value.
+        // The disposition card's modifier list must NOT contain an Aura
+        // of Authority entry — the bonus belongs on volley actions, not
+        // on the disposition test (SG p.82).
         const modsOnCard = await page.evaluate(() => {
           const msg = game.messages.contents.at(-1);
-          return msg?.flags?.tb2e?.allModifiers ?? msg?.flags?.tb2e?.modifiers
-            ?? msg?.flags?.tb2e?.postSuccessMods ?? [];
+          return [
+            ...(msg?.flags?.tb2e?.roll?.modifiers ?? []),
+            ...(msg?.flags?.tb2e?.postSuccessMods ?? [])
+          ];
         });
         const auraEntry = modsOnCard.find((m) =>
           typeof m.label === 'string'
             && m.label.includes('Aura of Authority')
         );
-        expect(auraEntry).toBeTruthy();
-        expect(auraEntry.value).toBe(4);
-        expect(auraEntry.type).toBe('success');
+        expect(auraEntry).toBeUndefined();
 
         await card.clickFinalize();
 
@@ -397,14 +305,14 @@ test.describe('§13 Conflict: Disposition — Aura of Authority (Precedence)', (
           }
         });
 
-        // Disposition total with Aura of Authority: 3 base successes + 4
-        // Aura of Authority + 4 will = 11.
+        // Disposition total without Aura of Authority: 3 base successes
+        // + 4 (will) = 7.
         await expect
           .poll(() => page.evaluate(({ cId, gId }) => {
             const c = game.combats.get(cId);
             return c?.system.groupDispositions?.[gId]?.rolled ?? null;
           }, { cId: combatId, gId: partyGroupId }), { timeout: 10_000 })
-          .toBe(11);
+          .toBe(7);
       } finally {
         await cleanupTaggedActors(page, tag);
       }
